@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace System.Fluent.Tests
+namespace System.Fluent.Tests.Enumerable
 {
     [TestClass]
     public sealed class ForEachTest
