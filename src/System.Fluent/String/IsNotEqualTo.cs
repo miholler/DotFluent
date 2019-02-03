@@ -12,7 +12,7 @@
         /// <param name="comparison">The comparison type to use.</param>
         /// <returns>true if the strings are not considered equal; otherwise, false.</returns>
         public static bool IsNotEqualTo(this string source, string value, StringComparison comparison = StringComparison.InvariantCultureIgnoreCase)
-            => string.Compare(source, value, comparison) != 0;
+            => !string.Equals(source, value, comparison);
 
         #endregion
     }

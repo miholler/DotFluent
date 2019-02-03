@@ -1,5 +1,8 @@
 ﻿namespace System.Fluent
 {
+    /// <summary>
+    /// Provides extension methods for <see cref="string"/> objects.
+    /// </summary>
     public static partial class StringExtensions
     {
         #region Methods
@@ -12,7 +15,7 @@
         /// <param name="comparison">The comparison type to use.</param>
         /// <returns>true if the strings are considered equal; otherwise, false.</returns>
         public static bool IsEqualTo(this string source, string value, StringComparison comparison = StringComparison.InvariantCultureIgnoreCase)
-            => string.Compare(source, value, comparison) == 0;
+            => string.Equals(source, value, comparison);
 
         #endregion
     }
