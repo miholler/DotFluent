@@ -20,7 +20,7 @@ namespace System.Fluent.Tests.Object
         {
             object obj = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => obj.ThrowIfNull(() => new ArgumentNullException("obj")));
+            Assert.ThrowsException<ArgumentNullException>(() => obj.ThrowIfNull(() => new ArgumentNullException(nameof(obj))));
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace System.Fluent.Tests.Object
         {
             var obj = new object();
 
-            Assert.AreSame(obj.ThrowIfNull(() => new ArgumentNullException("obj")), obj);
+            Assert.AreSame(obj.ThrowIfNull(() => new ArgumentNullException(nameof(obj))), obj);
         }
 
         #endregion
