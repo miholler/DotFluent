@@ -7,6 +7,21 @@ namespace System.Fluent.Tests.String
     {
         #region Methods
 
+        [TestMethod]
+        [DataRow("ABC", "ABC", false)]
+        [DataRow("ABC", "abc", true)]
+        [DataRow("ABC", "CBA", true)]
+        [DataRow("", "", false)]
+        [DataRow("ABC", "", true)]
+        [DataRow("", "ABC", true)]
+        [DataRow("", null, true)]
+        [DataRow(null, "", true)]
+        [DataRow(null, "ABC", true)]
+        [DataRow("ABC", null, true)]
+        [DataRow(null, null, false)]
+        public void IsNotEqualTo(string source, string value, bool expectedResult)
+            => Assert.AreEqual(source.IsNotEqualTo(value), expectedResult);
+
         /*
         Compare three versions of the letter 'I' 
         LATIN SMALL LETTER I (U+0069)
@@ -38,7 +53,7 @@ namespace System.Fluent.Tests.String
         [DataRow("\u0069", "\u0069", StringComparison.OrdinalIgnoreCase, false)]
         [DataRow("\u0049", "\u0049", StringComparison.OrdinalIgnoreCase, false)]
         [DataRow("\u0131", "\u0131", StringComparison.OrdinalIgnoreCase, false)]
-        public void IsNotEqualTo(string source, string value, StringComparison comparison, bool expectedResult)
+        public void IsNotEqualToWithComparison(string source, string value, StringComparison comparison, bool expectedResult)
             => Assert.AreEqual(source.IsNotEqualTo(value, comparison), expectedResult);
 
         #endregion
