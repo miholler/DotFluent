@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2019
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9C1E01B3-7695-4323-A73B-CF311B62447A}"
 EndProject
@@ -9,7 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3D59BAB7-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Fluent", "src\System.Fluent\System.Fluent.csproj", "{DE51F255-3C8D-45F0-B52A-5D4008861D42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Fluent.Tests", "test\System.Fluent.Tests\System.Fluent.Tests.csproj", "{DED704CA-0F9D-4E2A-AE7D-BF41974A0E52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Fluent.Tests", "test\System.Fluent.Tests\System.Fluent.Tests.csproj", "{DED704CA-0F9D-4E2A-AE7D-BF41974A0E52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8EEF158F-1BA2-466B-BF36-1AAF025953A2}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

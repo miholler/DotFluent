@@ -2,6 +2,9 @@
 
 namespace System.Fluent
 {
+    /// <summary>
+    /// Provides extension methods for objects that implement <see cref="IEnumerable{T}"/>.
+    /// </summary>
     public static partial class EnumerableExtensions
     {
         #region Methods

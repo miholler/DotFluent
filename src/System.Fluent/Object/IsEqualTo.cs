@@ -1,5 +1,8 @@
 ﻿namespace System.Fluent
 {
+    /// <summary>
+    /// Provides extension methods for all objects.
+    /// </summary>
     public static partial class ObjectExtensions
     {
         #region Methods
