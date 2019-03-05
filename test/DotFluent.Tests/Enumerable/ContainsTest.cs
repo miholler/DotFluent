@@ -1,0 +1,37 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+
+namespace DotFluent.Tests.Enumerable
+{
+    [TestClass]
+    public sealed class ContainsTest
+    {
+        #region Methods
+
+        [TestMethod]
+        public void SourceNullThrowsException()
+        {
+            IEnumerable<int> source = null;
+
+            Assert.ThrowsException<ArgumentNullException>(() => source.Contains(0, (x, y) => x == y));
+        }
+
+        [TestMethod]
+        public void ComparerNullThrowsException()
+        {
+            var source = new[] { 1, 2, 3 };
+
+            Assert.ThrowsException<ArgumentNullException>(() => source.Contains(1, null));
+        }
+
+        [TestMethod]
+        [DataRow(new int[0], 0, false)]
+        [DataRow(new int[] { 1, 2, 3 }, 4, false)]
+        [DataRow(new int[] { 1, 2, 3 }, 2, true)]
+        public void Contains(IEnumerable<int> source, int value, bool expectedResult)
+            => Assert.AreEqual(source.Contains(value, (x, y) => x == y), expectedResult);
+
+        #endregion
+    }
+}
