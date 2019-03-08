@@ -21,9 +21,17 @@ namespace DotFluent.Tests.Enumerable
         [TestMethod]
         public void ComparerNullThrowsException()
         {
-            var source = new[] { 1, 2, 3 };
+            var source = new int[0];
 
             Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(null));
+        }
+
+        [TestMethod]
+        public void HashCodeProviderNullThrowsException()
+        {
+            var source = new int[0];
+
+            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct((x, y) => x == y, null));
         }
 
         [TestMethod]
@@ -32,6 +40,16 @@ namespace DotFluent.Tests.Enumerable
         [DataRow(new[] { 1, 1, 2, 2, 3 }, new[] { 1, 2, 3 })]
         public void Distinct(IEnumerable<int> source, IEnumerable<int> expectedResult)
             => Assert.IsTrue(source.Distinct((x, y) => x == y).SequenceEqual(expectedResult));
+
+        [TestMethod]
+        [DataRow(new int[0], new int[0])]
+        [DataRow(new[] { 1, 2, 3 }, new[] { 1, 2, 3 })]
+        [DataRow(new[] { 1, 1, 2, 2, 3 }, new[] { 1, 2, 3 })]
+        public void DistinctWithHashCode(IEnumerable<int> source, IEnumerable<int> expectedResult)
+        {
+            var hash = GetHashCode();
+            Assert.IsTrue(source.Distinct((x, y) => x == y, x => x.GetHashCode() ^ hash).SequenceEqual(expectedResult));
+        }
 
         #endregion
     }

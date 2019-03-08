@@ -20,7 +20,7 @@ namespace DotFluent.Tests.Enumerable
         [TestMethod]
         public void ComparerNullThrowsException()
         {
-            var source = new[] { 1, 2, 3 };
+            var source = new int[0];
 
             Assert.ThrowsException<ArgumentNullException>(() => source.Contains(1, null));
         }
