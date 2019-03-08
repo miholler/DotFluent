@@ -96,6 +96,17 @@ namespace DotFluent.Tests.Enumerable
         }
 
         [TestMethod]
+        public void ComparerNullThrowsException()
+        {
+            Func<int, int, bool> comparer = null;
+
+            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparer));
+            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparer));
+            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparer));
+            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparer));
+        }
+
+        [TestMethod]
         public void GroupBy()
         {
             var results = _messages.GroupBy(x => x.Subject, (x, y) => x.IsEqualTo(y)).ToArray();
