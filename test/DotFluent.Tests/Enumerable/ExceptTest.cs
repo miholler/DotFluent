@@ -17,6 +17,7 @@ namespace DotFluent.Tests.Enumerable
             var second = new int[0];
 
             Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -26,6 +27,7 @@ namespace DotFluent.Tests.Enumerable
             IEnumerable<int> second = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -35,6 +37,7 @@ namespace DotFluent.Tests.Enumerable
             var second = new int[0];
 
             Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, null));
+            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, null, x => x.GetHashCode()));
         }
 
         [TestMethod]

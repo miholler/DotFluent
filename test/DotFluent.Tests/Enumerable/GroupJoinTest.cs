@@ -62,6 +62,7 @@ namespace DotFluent.Tests.Enumerable
             IEnumerable<Artist> artists = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -70,6 +71,7 @@ namespace DotFluent.Tests.Enumerable
             IEnumerable<Album> albums = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -78,6 +80,7 @@ namespace DotFluent.Tests.Enumerable
             Func<Artist, int> keySelector = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, keySelector, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, keySelector, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -86,6 +89,7 @@ namespace DotFluent.Tests.Enumerable
             Func<Album, int> keySelector = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, keySelector, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, keySelector, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -94,6 +98,7 @@ namespace DotFluent.Tests.Enumerable
             Func<Artist, IEnumerable<Album>, object> resultSelector = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, resultSelector, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, resultSelector, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -102,6 +107,7 @@ namespace DotFluent.Tests.Enumerable
             Func<int, int, bool> comparer = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, comparer));
+            Assert.ThrowsException<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, comparer, x => x.GetHashCode()));
         }
 
         [TestMethod]

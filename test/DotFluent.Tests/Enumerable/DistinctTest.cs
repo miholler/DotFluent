@@ -16,6 +16,7 @@ namespace DotFluent.Tests.Enumerable
             IEnumerable<int> source = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => source.Distinct((x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct((x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -24,6 +25,7 @@ namespace DotFluent.Tests.Enumerable
             var source = new int[0];
 
             Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(null));
+            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(null, x => x.GetHashCode()));
         }
 
         [TestMethod]
