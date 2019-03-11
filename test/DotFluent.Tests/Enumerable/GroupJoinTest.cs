@@ -127,8 +127,10 @@ namespace DotFluent.Tests.Enumerable
             var albumCounts = new[] { 1, 2, 0 };
             for (var i = 0; i < groups.Length; i++)
             {
-                var count = groups[i].Albums.Count();
+                var group = groups[i];
+                var count = group.Albums.Count();
                 Assert.IsTrue(count == albumCounts[i]);
+                Assert.IsTrue(group.Albums.All(x => x.ArtistId == group.Artist.Id));
             }
         }
 
@@ -142,8 +144,10 @@ namespace DotFluent.Tests.Enumerable
             var albumCounts = new[] { 1, 2, 0 };
             for (var i = 0; i < groups.Length; i++)
             {
-                var count = groups[i].Albums.Count();
+                var group = groups[i];
+                var count = group.Albums.Count();
                 Assert.IsTrue(count == albumCounts[i]);
+                Assert.IsTrue(group.Albums.All(x => x.ArtistId == group.Artist.Id));
             }
         }
 
