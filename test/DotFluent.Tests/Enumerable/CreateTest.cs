@@ -18,12 +18,20 @@ namespace DotFluent.Tests.Enumerable
         }
 
         [TestMethod]
-        public void CreateWithNull()
+        public void CreateWithArrayNull()
+        {
+            object[] elements = null;
+            var source = Sequence.Create(elements);
+
+            Assert.IsTrue(source.IsNotNull() && source.None());
+        }
+
+        [TestMethod]
+        public void CreateWithElementNull()
         {
             var source = Sequence.Create(new object(), null, new object()).ToArray();
 
-            Assert.IsTrue(source.IsNotNullOrEmpty());
-            Assert.IsTrue(source.Contains(null));
+            Assert.IsTrue(source.IsNotNullOrEmpty() && source.Contains(null));
         }
 
         [TestMethod]
@@ -31,8 +39,7 @@ namespace DotFluent.Tests.Enumerable
         {
             var source = Sequence.Create(1, 2, 3).ToArray();
 
-            Assert.IsTrue(source.IsNotNullOrEmpty());
-            Assert.IsTrue(source.SequenceEqual(new[] { 1, 2, 3 }));
+            Assert.IsTrue(source.IsNotNullOrEmpty() && source.SequenceEqual(new[] { 1, 2, 3 }));
         }
 
         #endregion
