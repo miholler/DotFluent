@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DotFluent
 {
-    public static partial class EnumerableExtensions
+    public static partial class Sequence
     {
         #region Methods
 

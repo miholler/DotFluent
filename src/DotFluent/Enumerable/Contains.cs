@@ -6,9 +6,10 @@ using System.Linq;
 namespace DotFluent
 {
     /// <summary>
-    /// Provides extension methods for objects that implement <see cref="IEnumerable{T}"/>.
+    /// Provides a set of static methods for querying objects
+    /// that implement <see cref="IEnumerable{T}"/>.
     /// </summary>
-    public static partial class EnumerableExtensions
+    public static partial class Sequence
     {
         #region Methods
 

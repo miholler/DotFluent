@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DotFluent
 {
-    public static partial class EnumerableExtensions
+    public static partial class Sequence
     {
         #region Methods
 
