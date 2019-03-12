@@ -13,7 +13,7 @@ namespace DotFluent
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">The sequence of values to order.</param>
-        /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted in ascending order.</returns>
+        /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted.</returns>
         public static IOrderedEnumerable<TSource> Order<TSource>(this IEnumerable<TSource> source)
             => source.OrderBy(x => x);
 
@@ -24,7 +24,7 @@ namespace DotFluent
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">The sequence of values to order.</param>
         /// <param name="comparison">A function to compare values.</param>
-        /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted in ascending order.</returns>
+        /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted.</returns>
         public static IOrderedEnumerable<TSource> Order<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
             => source.OrderBy(x => x, Comparer<TSource>.Create(comparison));
 
@@ -35,7 +35,7 @@ namespace DotFluent
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">The sequence of values to order.</param>
         /// <param name="comparer">A comparer to compare values.</param>
-        /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted in ascending order.</returns>
+        /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted.</returns>
         public static IOrderedEnumerable<TSource> Order<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
             => source.OrderBy(x => x, comparer);
 
