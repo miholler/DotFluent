@@ -19,7 +19,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare values.</param>
         /// <returns>true if the two source sequences are of equal length and their corresponding elements compare equal according to comparer; otherwise, false.</returns>
         public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
-            => first.SequenceEqual(second, new GenericEqualityComparer<TSource>(comparer));
+            => first.SequenceEqual(second, GenericEqualityComparer<TSource>.Create(comparer));
 
         #endregion
     }

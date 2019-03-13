@@ -20,7 +20,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TSource}"/> where each object contains a collection of objects and a key.</returns>
         public static IEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TKey, bool> comparer)
-            => source.GroupBy(keySelector, new GenericEqualityComparer<TKey>(comparer));
+            => source.GroupBy(keySelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Groups the elements of a sequence according to a specified key selector function
@@ -34,7 +34,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TSource}"/> where each object contains a collection of objects and a key.</returns>
         public static IEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => source.GroupBy(keySelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => source.GroupBy(keySelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         /// <summary>
         /// Groups the elements of a sequence according to a key selector function. The keys
@@ -50,7 +50,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TElement}"/> where each object contains a collection of objects of type TElement and a key.</returns>
         public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, TKey, bool> comparer)
-            => source.GroupBy(keySelector, elementSelector, new GenericEqualityComparer<TKey>(comparer));
+            => source.GroupBy(keySelector, elementSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Groups the elements of a sequence according to a key selector function. The keys
@@ -67,7 +67,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TElement}"/> where each object contains a collection of objects of type TElement and a key.</returns>
         public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => source.GroupBy(keySelector, elementSelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => source.GroupBy(keySelector, elementSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         /// <summary>
         /// Groups the elements of a sequence according to a specified key selector function
@@ -83,7 +83,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, Func<TKey, TKey, bool> comparer)
-            => source.GroupBy(keySelector, resultSelector, new GenericEqualityComparer<TKey>(comparer));
+            => source.GroupBy(keySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Groups the elements of a sequence according to a specified key selector function
@@ -100,7 +100,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => source.GroupBy(keySelector, resultSelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => source.GroupBy(keySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         /// <summary>
         /// Groups the elements of a sequence according to a specified key selector function
@@ -119,7 +119,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, Func<TKey, TKey, bool> comparer)
-            => source.GroupBy(keySelector, elementSelector, resultSelector, new GenericEqualityComparer<TKey>(comparer));
+            => source.GroupBy(keySelector, elementSelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Groups the elements of a sequence according to a specified key selector function
@@ -139,7 +139,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => source.GroupBy(keySelector, elementSelector, resultSelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => source.GroupBy(keySelector, elementSelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         #endregion
     }

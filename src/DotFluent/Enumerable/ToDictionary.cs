@@ -20,7 +20,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values.</returns>
         public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TKey, bool> comparer)
-            => source.ToDictionary(keySelector, new GenericEqualityComparer<TKey>(comparer));
+            => source.ToDictionary(keySelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Creates a dictionary from a sequence according to a specified 
@@ -34,7 +34,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values.</returns>
         public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => source.ToDictionary(keySelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => source.ToDictionary(keySelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         /// <summary>
         /// Creates a dictionary from a sequence according to a specified 
@@ -50,7 +50,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>A <see cref="Dictionary{TKey, TElement}"/> that contains values of type TElement selected from the input sequence.</returns>
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, TKey, bool> comparer)
-            => source.ToDictionary(keySelector, elementSelector, new GenericEqualityComparer<TKey>(comparer));
+            => source.ToDictionary(keySelector, elementSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Creates a dictionary from a sequence according to a specified 
@@ -67,7 +67,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>A <see cref="Dictionary{TKey, TElement}"/> that contains values of type TElement selected from the input sequence.</returns>
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => source.ToDictionary(keySelector, elementSelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => source.ToDictionary(keySelector, elementSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         #endregion
     }

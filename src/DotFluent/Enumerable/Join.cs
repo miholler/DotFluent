@@ -25,7 +25,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare keys.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
         public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, Func<TKey, TKey, bool> comparer)
-            => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, new GenericEqualityComparer<TKey>(comparer));
+            => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
         /// Correlates the elements of two sequences based on matching keys. 
@@ -44,7 +44,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
         public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-            => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, new GenericEqualityComparer<TKey>(comparer, hashCodeProvider));
+            => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
 
         #endregion
     }

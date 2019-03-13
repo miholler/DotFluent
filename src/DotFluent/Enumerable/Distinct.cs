@@ -17,7 +17,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare values.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
         public static IEnumerable<TSource> Distinct<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, bool> comparer)
-            => source.Distinct(new GenericEqualityComparer<TSource>(comparer));
+            => source.Distinct(GenericEqualityComparer<TSource>.Create(comparer));
 
         /// <summary>
         /// Returns distinct elements from a sequence by using specified compare functions to compare values.
@@ -28,7 +28,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a value.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
         public static IEnumerable<TSource> Distinct<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, bool> comparer, Func<TSource, int> hashCodeProvider)
-            => source.Distinct(new GenericEqualityComparer<TSource>(comparer, hashCodeProvider));
+            => source.Distinct(GenericEqualityComparer<TSource>.Create(comparer, hashCodeProvider));
 
         #endregion
     }

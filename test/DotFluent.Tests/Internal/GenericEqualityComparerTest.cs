@@ -12,7 +12,7 @@ namespace DotFluent.Tests.Internal
         [TestMethod]
         public void EqualsTest()
         {
-            var source = new Dictionary<int, int>(new GenericEqualityComparer<int>((x, y) => x == y));
+            var source = new Dictionary<int, int>(GenericEqualityComparer<int>.Create((x, y) => x == y));
             source.Add(0, 1);
 
             Assert.IsTrue(source.ContainsKey(0));
@@ -22,7 +22,7 @@ namespace DotFluent.Tests.Internal
         [TestMethod]
         public void GetHashCodeTest()
         {
-            var source = new Dictionary<int, int>(new GenericEqualityComparer<int>((x, y) => x == y, x => x.GetHashCode()));
+            var source = new Dictionary<int, int>(GenericEqualityComparer<int>.Create((x, y) => x == y, x => x.GetHashCode()));
             source.Add(0, 1);
 
             Assert.IsTrue(source.ContainsKey(0));

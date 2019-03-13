@@ -43,6 +43,25 @@ namespace DotFluent.Internal
         #region Methods
 
         /// <summary>
+        /// Creates an equality comparer by using the specified compare function
+        /// to compare objects for equality.
+        /// </summary>
+        /// <param name="comparer">A function to compare objects.</param>
+        /// <returns>A new <see cref="GenericEqualityComparer{T}"/>.</returns>
+        public static GenericEqualityComparer<T> Create(Func<T, T, bool> comparer)
+            => new GenericEqualityComparer<T>(comparer);
+
+        /// <summary>
+        /// Creates an equality comparer by using the specified compare functions
+        /// to compare objects for equality.
+        /// </summary>
+        /// <param name="comparer">A function to compare objects.</param>
+        /// <param name="hashCodeProvider">A function to resolve a hash code for an object.</param>
+        /// <returns>A new <see cref="GenericEqualityComparer{T}"/>.</returns>
+        public static GenericEqualityComparer<T> Create(Func<T, T, bool> comparer, Func<T, int> hashCodeProvider)
+            => new GenericEqualityComparer<T>(comparer, hashCodeProvider);
+
+        /// <summary>
         /// Determines whether the specified objects are equal.
         /// </summary>
         /// <param name="x">The first object of type T to compare.</param>

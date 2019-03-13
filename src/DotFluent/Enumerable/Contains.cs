@@ -22,7 +22,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare values.</param>
         /// <returns>true if the source sequence contains an element that has the specified value; otherwise, false.</returns>
         public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource value, Func<TSource, TSource, bool> comparer)
-            => source.Contains(value, new GenericEqualityComparer<TSource>(comparer));
+            => source.Contains(value, GenericEqualityComparer<TSource>.Create(comparer));
 
         #endregion
     }

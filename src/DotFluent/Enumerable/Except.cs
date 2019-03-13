@@ -18,7 +18,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare values.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
-            => first.Except(second, new GenericEqualityComparer<TSource>(comparer));
+            => first.Except(second, GenericEqualityComparer<TSource>.Create(comparer));
 
         /// <summary>
         /// Produces the set difference of two sequences by using specified compare functions to compare values.
@@ -30,7 +30,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a value.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer, Func<TSource, int> hashCodeProvider)
-            => first.Except(second, new GenericEqualityComparer<TSource>(comparer, hashCodeProvider));
+            => first.Except(second, GenericEqualityComparer<TSource>.Create(comparer, hashCodeProvider));
 
         #endregion
     }

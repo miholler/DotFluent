@@ -19,7 +19,7 @@ namespace DotFluent
         /// <param name="comparer">A function to compare values.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
         public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
-            => first.Intersect(second, new GenericEqualityComparer<TSource>(comparer));
+            => first.Intersect(second, GenericEqualityComparer<TSource>.Create(comparer));
 
         /// <summary>
         /// Produces the set intersection of two sequences by using
@@ -32,7 +32,7 @@ namespace DotFluent
         /// <param name="hashCodeProvider">A function to resolve a hash code for a value.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
         public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer, Func<TSource, int> hashCodeProvider)
-            => first.Intersect(second, new GenericEqualityComparer<TSource>(comparer, hashCodeProvider));
+            => first.Intersect(second, GenericEqualityComparer<TSource>.Create(comparer, hashCodeProvider));
 
         #endregion
     }
