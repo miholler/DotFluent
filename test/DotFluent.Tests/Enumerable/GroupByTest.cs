@@ -23,37 +23,25 @@ namespace DotFluent.Tests.Enumerable
             {
                 Id = 1,
                 Subject = "Message 1",
-                Body = new MessageBody()
-                {
-                    Text = "Hello world!"
-                }
+                Body = "Hello world!"
             });
             _messages.Add(new Message()
             {
                 Id = 2,
                 Subject = "Message 2",
-                Body = new MessageBody()
-                {
-                    Text = "Hello from world!"
-                }
+                Body = "Hello from world!"
             });
             _messages.Add(new Message()
             {
                 Id = 3,
                 Subject = "Message 3",
-                Body = new MessageBody()
-                {
-                    Text = "Hello"
-                }
+                Body = "Hello"
             });
             _messages.Add(new Message()
             {
                 Id = 4,
                 Subject = "Message 3",
-                Body = new MessageBody()
-                {
-                    Text = "World!"
-                }
+                Body = "World!"
             });
         }
 
@@ -90,7 +78,7 @@ namespace DotFluent.Tests.Enumerable
         [TestMethod]
         public void ElementSelectorNullThrowsException()
         {
-            Func<Message, MessageBody> elementSelector = null;
+            Func<Message, string> elementSelector = null;
 
             Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, elementSelector, (x, y) => x == y));
             Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, elementSelector, (x, y) => x == y, x => x.GetHashCode()));
@@ -103,8 +91,8 @@ namespace DotFluent.Tests.Enumerable
         {
             Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (Func<int, IEnumerable<Message>, Message>)null, (x, y) => x == y));
             Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (Func<int, IEnumerable<Message>, Message>)null, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (Func<int, IEnumerable<MessageBody>, MessageBody>)null, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (Func<int, IEnumerable<MessageBody>, MessageBody>)null, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (Func<int, IEnumerable<string>, string>)null, (x, y) => x == y));
+            Assert.ThrowsException<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (Func<int, IEnumerable<string>, string>)null, (x, y) => x == y, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -141,7 +129,7 @@ namespace DotFluent.Tests.Enumerable
 
             Assert.IsTrue(results.Length == 3);
             Assert.IsNotNull(group);
-            Assert.AreEqual(string.Join(' ', group.Select(x => x.Body.Text).ToArray()), "Hello World!");
+            Assert.AreEqual(group.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
 
         [TestMethod]
@@ -153,7 +141,7 @@ namespace DotFluent.Tests.Enumerable
 
             Assert.IsTrue(results.Length == 3);
             Assert.IsNotNull(group);
-            Assert.AreEqual(string.Join(' ', group.Select(x => x.Body.Text).ToArray()), "Hello World!");
+            Assert.AreEqual(group.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
 
         [TestMethod]
@@ -164,7 +152,7 @@ namespace DotFluent.Tests.Enumerable
 
             Assert.IsTrue(results.Length == 3);
             Assert.IsNotNull(group);
-            Assert.AreEqual(string.Join(' ', group.Select(x => x.Text).ToArray()), "Hello World!");
+            Assert.AreEqual(group.Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
 
         [TestMethod]
@@ -176,13 +164,13 @@ namespace DotFluent.Tests.Enumerable
 
             Assert.IsTrue(results.Length == 3);
             Assert.IsNotNull(group);
-            Assert.AreEqual(string.Join(' ', group.Select(x => x.Text).ToArray()), "Hello World!");
+            Assert.AreEqual(group.Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
 
         [TestMethod]
         public void GroupByWithResultSelector()
         {
-            var results = _messages.GroupBy(x => x.Subject, (k, ie) => string.Join(' ', ie.Select(x => x.Body.Text).ToArray()), (x, y) => x.IsEqualTo(y)).ToArray();
+            var results = _messages.GroupBy(x => x.Subject, (k, ie) => ie.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y)).ToArray();
             var body = results.LastOrDefault();
 
             Assert.IsTrue(results.Length == 3);
@@ -194,7 +182,7 @@ namespace DotFluent.Tests.Enumerable
         public void GroupByWithResultSelectorAndHashCode()
         {
             var hash = GetHashCode();
-            var results = _messages.GroupBy(x => x.Subject, (k, ie) => string.Join(' ', ie.Select(x => x.Body.Text).ToArray()), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
+            var results = _messages.GroupBy(x => x.Subject, (k, ie) => ie.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
             var body = results.LastOrDefault();
 
             Assert.IsTrue(results.Length == 3);
@@ -205,7 +193,7 @@ namespace DotFluent.Tests.Enumerable
         [TestMethod]
         public void GroupByWithElementAndResultSelector()
         {
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => string.Join(' ', ie.Select(x => x.Text).ToArray()), (x, y) => x.IsEqualTo(y)).ToArray();
+            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => ie.Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y)).ToArray();
             var body = results.LastOrDefault();
 
             Assert.IsTrue(results.Length == 3);
@@ -217,7 +205,7 @@ namespace DotFluent.Tests.Enumerable
         public void GroupByWithElementAndResultSelectorAndHashCode()
         {
             var hash = GetHashCode();
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => string.Join(' ', ie.Select(x => x.Text).ToArray()), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
+            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => ie.Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
             var body = results.LastOrDefault();
 
             Assert.IsTrue(results.Length == 3);
@@ -237,16 +225,7 @@ namespace DotFluent.Tests.Enumerable
 
             public string Subject { get; set; }
 
-            public MessageBody Body { get; set; }
-
-            #endregion
-        }
-
-        private sealed class MessageBody
-        {
-            #region Properties
-
-            public string Text { get; set; }
+            public string Body { get; set; }
 
             #endregion
         }
