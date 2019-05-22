@@ -12,7 +12,7 @@ namespace DotFluent
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="obj">The object to check for null.</param>
         /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
-        /// <returns>The <typeparamref name="T"/> if not null.</returns>
+        /// <returns>The object if not null.</returns>
         public static T ThrowIfNull<T>(this T obj, string paramName = null)
         {
             if (obj.IsNull())
@@ -27,7 +27,7 @@ namespace DotFluent
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="obj">The object to check for null.</param>
         /// <param name="factory">A function to create the <see cref="Exception"/>.</param>
-        /// <returns>The <typeparamref name="T"/> if not null.</returns>
+        /// <returns>The object if not null.</returns>
         public static T ThrowIfNull<T>(this T obj, Func<Exception> factory)
         {
             if (obj.IsNull())
