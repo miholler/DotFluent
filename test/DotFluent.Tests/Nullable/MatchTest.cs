@@ -44,9 +44,9 @@ namespace DotFluent.Tests.Nullable
         public void MatchSome()
         {
             var invoked = false;
-            var nullable = new int?(5);
+            var nullable = new int?(1);
 
-            nullable.Match(x => invoked = x == 5);
+            nullable.Match(x => invoked = x == 1);
 
             Assert.IsTrue(invoked);
         }
@@ -56,38 +56,38 @@ namespace DotFluent.Tests.Nullable
         {
             var someInvoked = false;
             var noneInvoked = false;
-            var nullable = new int?(5);
+            var nullable = new int?();
 
-            nullable.Match(x => { someInvoked = x == 5; }, () => { someInvoked = false; });
-            Assert.IsTrue(someInvoked);
-
-            nullable = null;
             nullable.Match(x => { noneInvoked = false; }, () => { noneInvoked = true; });
             Assert.IsTrue(noneInvoked);
+
+            nullable = 1;
+            nullable.Match(x => { someInvoked = x == 1; }, () => { someInvoked = false; });
+            Assert.IsTrue(someInvoked);
         }
 
         [TestMethod]
         public void MatchWithFuncAndValue()
         {
-            var nullable = new int?(5);
+            var nullable = new int?();
             var result = nullable.Match(x => x, -1);
-            Assert.AreEqual(result, nullable.Value);
-
-            nullable = null;
-            result = nullable.Match(x => x, -1);
             Assert.AreEqual(result, -1);
+
+            nullable = 1;
+            result = nullable.Match(x => x, -1);
+            Assert.AreEqual(result, nullable.Value);            
         }
 
         [TestMethod]
         public void MatchWithFuncs()
         {
-            var nullable = new int?(5);
+            var nullable = new int?();
             var result = nullable.Match(x => x, () => -1);
-            Assert.AreEqual(result, nullable.Value);
-
-            nullable = null;
-            result = nullable.Match(x => x, () => -1);
             Assert.AreEqual(result, -1);
+
+            nullable = 1;
+            result = nullable.Match(x => x, () => -1);
+            Assert.AreEqual(result, nullable.Value);            
         }
 
         #endregion
