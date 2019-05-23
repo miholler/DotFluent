@@ -16,7 +16,7 @@ namespace DotFluent
             => !string.Equals(source, value);
 
         /// <summary>
-        /// Determines whether two strings are not considered equal based on a provided comparison type.
+        /// Determines whether two strings are not considered equal based on a specified comparison type.
         /// </summary>
         /// <param name="source">The first string to compare.</param>
         /// <param name="value">The second string to compare.</param>

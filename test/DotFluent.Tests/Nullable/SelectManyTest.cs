@@ -1,0 +1,59 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+
+namespace DotFluent.Tests.Nullable
+{
+    [TestClass]
+    public sealed class SelectManyTest
+    {
+        #region Methods
+
+        [TestMethod]
+        public void SelectorNullThrowsException()
+        {
+            var nullable = new int?();
+
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(default(Func<int, int?>)));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(default(Func<int, int?>), (x, y) => x + y));
+        }
+
+        [TestMethod]
+        public void ResultSelectorNullThrowsException()
+        {
+            var nullable = new int?();
+
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(x => x, default(Func<int, int, int>)));
+        }
+
+        [TestMethod]
+        public void SelectMany()
+        {
+            var nullable = new int?();
+            var result = nullable.SelectMany(x => new int?(x));
+            Assert.IsFalse(result.HasValue);
+
+            nullable = 1;
+            result = nullable.SelectMany(x => new int?(x));
+            Assert.IsTrue(result.HasValue);
+            Assert.AreEqual(result.Value, 1);
+        }
+
+        [TestMethod]
+        public void SelectManyWithResultSelector()
+        {
+            var nullable = new int?();
+            var result = nullable.SelectMany(x => new int?(x), (x, y) => x + y);
+            Assert.IsFalse(result.HasValue);
+
+            nullable = 1;
+            result = nullable.SelectMany(x => new int?(), (x, y) => x + y);
+            Assert.IsFalse(result.HasValue);
+
+            result = nullable.SelectMany(x => new int?(x), (x, y) => x + y);
+            Assert.IsTrue(result.HasValue);
+            Assert.AreEqual(result.Value, 2);
+        }
+
+        #endregion
+    }
+}
