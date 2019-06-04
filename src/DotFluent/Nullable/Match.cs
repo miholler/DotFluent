@@ -35,7 +35,7 @@ namespace DotFluent
         }
 
         /// <summary>
-        /// Performs a specified action, based on whether a nullable object has a value.
+        /// Performs a specified action based on whether a nullable object has a value.
         /// </summary>
         /// <typeparam name="T">The type of the value of source.</typeparam>
         /// <param name="source">The nullable to check for having a value.</param>
@@ -53,7 +53,7 @@ namespace DotFluent
         }
 
         /// <summary>
-        /// Invokes a specified function, or returns a specified alternative value, 
+        /// Invokes a specified function, or returns a specified alternative value 
         /// based on whether a nullable object has a value.
         /// </summary>
         /// <typeparam name="TSource">The type of the value of source.</typeparam>
@@ -70,7 +70,7 @@ namespace DotFluent
         }
 
         /// <summary>
-        /// Invokes a specified function, based on whether a nullable object has a value.
+        /// Invokes a specified function based on whether a nullable object has a value.
         /// </summary>
         /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <typeparam name="TResult">The type of the value returned by the invoked function.</typeparam>
