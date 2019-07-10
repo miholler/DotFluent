@@ -12,7 +12,7 @@ namespace DotFluent.Tests.Tasks
         [TestMethod]
         public async Task SourceNullThrowsException()
         {
-            var source = default(Task<int>);
+            Task<int> source = null;
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Select(x => x++));
         }
