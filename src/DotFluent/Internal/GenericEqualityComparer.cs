@@ -23,7 +23,7 @@ namespace DotFluent.Internal
         /// using the specified compare function to compare objects for equality.
         /// </summary>
         /// <param name="comparer">A function to compare objects.</param>
-        public GenericEqualityComparer(Func<T, T, bool> comparer) : this(comparer, x => x.GetHashCode())
+        public GenericEqualityComparer(Func<T, T, bool> comparer) : this(comparer, x => 0)
         { }
 
         /// <summary>
