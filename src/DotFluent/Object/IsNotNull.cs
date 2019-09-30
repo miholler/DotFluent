@@ -7,10 +7,10 @@
         /// <summary>
         /// Determines wheter an object instance is not null.
         /// </summary>
-        /// <param name="obj">The object to check for not null.</param>
+        /// <param name="source">The object to check for not null.</param>
         /// <returns>true if the object is not null; otherwise, false.</returns>
-        public static bool IsNotNull(this object obj)
-            => obj != null;
+        public static bool IsNotNull(this object source)
+            => source != null;
 
         #endregion
     }
