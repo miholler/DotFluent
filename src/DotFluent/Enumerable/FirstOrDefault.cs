@@ -55,8 +55,8 @@ namespace DotFluent
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <param name="defaultValue">The value to return if the source sequence is empty or if no element satisfies the condition.</param>
         /// <returns>
-        /// The specified default value if the source sequence is empty or if no element passes the test specified by predicate;
-        /// otherwise, the first element in the source sequence that passes the test specified by predicate.
+        /// The specified default value if the source sequence is empty or if no element passes the test in the predicate function;
+        /// otherwise, the first element that passes the test in the predicate function.
         /// </returns>
         public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, TSource defaultValue)
             => source.FirstOrDefault(predicate, () => defaultValue);
@@ -70,8 +70,8 @@ namespace DotFluent
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <param name="defaultFactory">A function to create a default value.</param>
         /// <returns>
-        /// The default value created by the specified function if the source sequence is empty or if no element passes the test specified by predicate;
-        /// otherwise, the first element in the source sequence that passes the test specified by predicate.
+        /// The default value created by the specified function if the source sequence is empty or if no element passes the test in the predicate function;
+        /// otherwise, the first element that passes the test in the predicate function.
         /// </returns>
         public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TSource> defaultFactory)
         {
