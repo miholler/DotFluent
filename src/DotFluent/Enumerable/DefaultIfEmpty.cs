@@ -14,7 +14,10 @@ namespace DotFluent
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">The sequence to return a default value for if it is empty.</param>
         /// <param name="defaultFactory">A function to create a default value.</param>
-        /// <returns>An <see cref="IEnumerable{TSource}"/> that contains a default value if the source sequence is empty; otherwise, the source sequence.</returns>
+        /// <returns>
+        /// An <see cref="IEnumerable{TSource}"/> that contains the default value created by the specified function if the source sequence
+        /// is empty; otherwise, the source sequence.
+        /// </returns>
         public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
         {
             source.ThrowIfNull(nameof(source));
