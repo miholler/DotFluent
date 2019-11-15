@@ -21,7 +21,7 @@ namespace DotFluent.Tests.Enumerable
         [TestMethod]
         public void DefaultFactoryNullThrowsException()
         {
-            var source = new int[0];
+            var source = new[] { 1, 2, 3 };
 
             Assert.ThrowsException<ArgumentNullException>(() => source.DefaultIfEmpty(null).ToArray());
         }
