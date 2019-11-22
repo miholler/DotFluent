@@ -23,6 +23,11 @@ namespace DotFluent
             source.ThrowIfNull(nameof(source));
             defaultFactory.ThrowIfNull(nameof(defaultFactory));
 
+            return DefaultIfEmptyIterator(source, defaultFactory);
+        }
+
+        private static IEnumerable<TSource> DefaultIfEmptyIterator<TSource>(IEnumerable<TSource> source, Func<TSource> defaultFactory)
+        {
             using (var enumerator = source.GetEnumerator())
             {
                 if (!enumerator.MoveNext())
