@@ -35,9 +35,10 @@ namespace DotFluent.Tests.Enumerable
         {
             var first = new int[0];
             var second = new int[0];
+            Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, null));
-            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, null, x => x.GetHashCode()));
+            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, comparer));
+            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, comparer, x => x.GetHashCode()));
         }
 
         [TestMethod]
@@ -45,8 +46,9 @@ namespace DotFluent.Tests.Enumerable
         {
             var first = new int[0];
             var second = new int[0];
+            Func<int, int> hashCodeProvider = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, (x, y) => x == y, null));
+            Assert.ThrowsException<ArgumentNullException>(() => first.Except(second, (x, y) => x == y, hashCodeProvider));
         }
 
         [TestMethod]

@@ -12,17 +12,19 @@ namespace DotFluent.Tests.Nullable
         public void SelectorNullThrowsException()
         {
             var nullable = new int?();
+            Func<int, int?> selector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(default(Func<int, int?>)));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(default(Func<int, int?>), (x, y) => x + y));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(selector));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(selector, (x, y) => x + y));
         }
 
         [TestMethod]
         public void ResultSelectorNullThrowsException()
         {
             var nullable = new int?();
+            Func<int, int, int> resultSelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(x => x, default(Func<int, int, int>)));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(x => x, resultSelector));
         }
 
         [TestMethod]

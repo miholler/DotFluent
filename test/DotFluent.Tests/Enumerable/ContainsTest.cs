@@ -21,8 +21,9 @@ namespace DotFluent.Tests.Enumerable
         public void ComparerNullThrowsException()
         {
             var source = new int[0];
+            Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Contains(1, null));
+            Assert.ThrowsException<ArgumentNullException>(() => source.Contains(1, comparer));
         }
 
         [TestMethod]

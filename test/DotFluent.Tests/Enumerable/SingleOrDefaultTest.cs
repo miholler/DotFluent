@@ -24,18 +24,20 @@ namespace DotFluent.Tests.Enumerable
         public void DefaultFactoryNullThrowsExceotion()
         {
             var source = new[] { 1, 2, 3 };
+            Func<int> defaultFactory = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(null));
-            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(x => x == 0, null));
+            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(defaultFactory));
+            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(x => x == 0, defaultFactory));
         }
 
         [TestMethod]
         public void PredicateNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
+            Func<int, bool> predicate = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(null, 0));
-            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(null, () => 0));
+            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(predicate, 0));
+            Assert.ThrowsException<ArgumentNullException>(() => source.SingleOrDefault(predicate, () => 0));
         }
 
         [TestMethod]

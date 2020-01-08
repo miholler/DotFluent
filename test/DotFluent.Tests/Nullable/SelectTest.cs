@@ -12,8 +12,9 @@ namespace DotFluent.Tests.Nullable
         public void SelectorNullThrowsException()
         {
             var nullable = new int?();
+            Func<int, int> selector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Select(default(Func<int, int>)));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Select(selector));
         }
 
         [TestMethod]

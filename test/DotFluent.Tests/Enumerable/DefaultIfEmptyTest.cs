@@ -22,8 +22,9 @@ namespace DotFluent.Tests.Enumerable
         public void DefaultFactoryNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
+            Func<int> defaultFactory = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.DefaultIfEmpty(null).ToArray());
+            Assert.ThrowsException<ArgumentNullException>(() => source.DefaultIfEmpty(defaultFactory).ToArray());
         }
 
         [TestMethod]

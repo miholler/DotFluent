@@ -22,17 +22,19 @@ namespace DotFluent.Tests.Tasks
         public async Task SelectorNullThrowsException()
         {
             var source = Task.FromResult(1);
+            Func<int, Task<int>> selector = null; 
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(default(Func<int, Task<int>>)));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(default(Func<int, Task<int>>), (x, y) => x + y));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(selector));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(selector, (x, y) => x + y));
         }
 
         [TestMethod]
         public async Task ResultSelectorNullThrowsException()
         {
             var source = Task.FromResult(1);
+            Func<int, int, int> resultSelector = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(x => Task.FromResult(++x), default(Func<int, int, int>)));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(x => Task.FromResult(++x), resultSelector));
         }
 
         [TestMethod]
