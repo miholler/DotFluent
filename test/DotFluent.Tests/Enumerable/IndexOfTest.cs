@@ -23,8 +23,9 @@ namespace DotFluent.Tests.Enumerable
         public void ComparerFunctionNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
+            Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.IndexOf(0, default(Func<int, int, bool>)));
+            Assert.ThrowsException<ArgumentNullException>(() => source.IndexOf(0, comparer));
         }
 
         [TestMethod]

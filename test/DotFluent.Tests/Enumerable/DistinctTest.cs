@@ -23,17 +23,19 @@ namespace DotFluent.Tests.Enumerable
         public void ComparerNullThrowsException()
         {
             var source = new int[0];
+            Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(null));
-            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(null, x => x.GetHashCode()));
+            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(comparer));
+            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct(comparer, x => x.GetHashCode()));
         }
 
         [TestMethod]
         public void HashCodeProviderNullThrowsException()
         {
             var source = new int[0];
+            Func<int, int> hashCodeProvider = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct((x, y) => x == y, null));
+            Assert.ThrowsException<ArgumentNullException>(() => source.Distinct((x, y) => x == y, hashCodeProvider));
         }
 
         [TestMethod]

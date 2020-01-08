@@ -12,21 +12,25 @@ namespace DotFluent.Tests.Nullable
         public void NoneNullThrowsException()
         {
             var nullable = new int?();
+            Action none = null;
+            Func<int?> noneFunc = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(default(Action)));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(x => { x++; }, null));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(x => x++, null));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(none));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(x => { x++; }, none));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(x => x++, noneFunc));
         }
 
         [TestMethod]
         public void SomeNullThrowsException()
         {
             var nullable = new int?();
+            Action<int> some = null;
+            Func<int, int> someFunc = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(default(Action<int>)));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(null, () => { }));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(null, 5));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(null, () => 5));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(some));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(some, () => { }));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(someFunc, 5));
+            Assert.ThrowsException<ArgumentNullException>(() => nullable.Match(someFunc, () => 5));
         }
 
         [TestMethod]

@@ -32,8 +32,9 @@ namespace DotFluent.Tests.Enumerable
         {
             var first = new int[0];
             var second = new int[0];
+            Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => first.SequenceEqual(second, null));
+            Assert.ThrowsException<ArgumentNullException>(() => first.SequenceEqual(second, comparer));
         }
 
         [TestMethod]
