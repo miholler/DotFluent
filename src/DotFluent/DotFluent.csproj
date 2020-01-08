@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <Authors>Michael Holler</Authors>
-    <Version>1.6.1</Version>
+    <Version>1.8.0</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Provides a set of extension methods to chain method calls and increase code readablity.</Description>
-    <PackageTags>Fluent, Extensions</PackageTags>
+    <PackageTags>Fluent, Extensions, Linq</PackageTags>
   </PropertyGroup>
 
 </Project>

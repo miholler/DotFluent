@@ -21,8 +21,9 @@ namespace DotFluent.Tests.Tasks
         public async Task SelectorNullThrowsException()
         {
             var source = Task.FromResult(1);
+            Func<int, int> selector = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Select(default(Func<int, int>)));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Select(selector));
         }
 
         [TestMethod]

@@ -10,30 +10,30 @@ namespace DotFluent
         /// Throws an <see cref="ArgumentNullException"/> if an object is null; otherwise, returns the object.
         /// </summary>
         /// <typeparam name="T">The type of the object.</typeparam>
-        /// <param name="obj">The object to check for null.</param>
+        /// <param name="source">The object to check for null.</param>
         /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
         /// <returns>The object if not null.</returns>
-        public static T ThrowIfNull<T>(this T obj, string paramName = null)
+        public static T ThrowIfNull<T>(this T source, string paramName = null)
         {
-            if (obj.IsNull())
+            if (source.IsNull())
                 throw new ArgumentNullException(paramName);
 
-            return obj;
+            return source;
         }
 
         /// <summary>
         /// Throws an <see cref="Exception"/> created by a specified function if an object is null; otherwise, returns the object.
         /// </summary>
         /// <typeparam name="T">The type of the object.</typeparam>
-        /// <param name="obj">The object to check for null.</param>
+        /// <param name="source">The object to check for null.</param>
         /// <param name="factory">A function to create the <see cref="Exception"/>.</param>
         /// <returns>The object if not null.</returns>
-        public static T ThrowIfNull<T>(this T obj, Func<Exception> factory)
+        public static T ThrowIfNull<T>(this T source, Func<Exception> factory)
         {
-            if (obj.IsNull())
+            if (source.IsNull())
                 throw factory();
 
-            return obj;
+            return source;
         }
 
         #endregion
