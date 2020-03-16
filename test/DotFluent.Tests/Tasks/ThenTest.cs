@@ -256,10 +256,10 @@ namespace DotFluent.Tests.Tasks
         public async Task ThenWithResultSelector()
         {
             var firstResult = await Task.FromResult(1)
-                .Then(x => x++);
+                .Then(x => x + 2);
 
-            var secondResult = await Task.FromResult(1)
-                .Then(x => x++, null);
+            var secondResult = await Task.FromResult(2)
+                .Then(x => ++x, null);
 
             Assert.AreEqual(firstResult, secondResult);
         }
@@ -274,7 +274,7 @@ namespace DotFluent.Tests.Tasks
                         .Then(x =>
                         {
                             cts.Cancel();
-                            return x++;
+                            return x;
                         }, cts.Token)
                         .Then(ShouldNotBeCalled, cts.Token));
 
@@ -294,7 +294,7 @@ namespace DotFluent.Tests.Tasks
                         .Then(x =>
                         {
                             cts.Cancel();
-                            return x++;
+                            return x;
                         }, null, cts.Token)
                         .Then(ShouldNotBeCalled, null, cts.Token));
 
@@ -412,10 +412,10 @@ namespace DotFluent.Tests.Tasks
         public async Task ThenWithTaskResultSelector()
         {
             var firstResult = await Task.FromResult(1)
-                .Then(x => Task.FromResult(x++));
+                .Then(x => Task.FromResult(x + 2));
 
-            var secondResult = await Task.FromResult(1)
-                .Then(x => Task.FromResult(x++), null);
+            var secondResult = await Task.FromResult(2)
+                .Then(x => Task.FromResult(++x), null);
 
             Assert.AreEqual(firstResult, secondResult);
         }
@@ -430,7 +430,7 @@ namespace DotFluent.Tests.Tasks
                         .Then(x =>
                         {
                             cts.Cancel();
-                            return Task.FromResult(x++);
+                            return Task.FromResult(x);
                         }, cts.Token)
                         .Then(ShouldNotBeCalled, cts.Token));
 
@@ -439,7 +439,7 @@ namespace DotFluent.Tests.Tasks
                         .Then(x =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(x++);
+                            return Task.FromResult(x);
                         }, cts.Token));
             }
 
@@ -450,7 +450,7 @@ namespace DotFluent.Tests.Tasks
                         .Then(x =>
                         {
                             cts.Cancel();
-                            return Task.FromResult(x++);
+                            return Task.FromResult(x);
                         }, null, cts.Token)
                         .Then(ShouldNotBeCalled, null, cts.Token));
 
@@ -459,7 +459,7 @@ namespace DotFluent.Tests.Tasks
                         .Then(x =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(x++);
+                            return Task.FromResult(x);
                         }, null, cts.Token));
             }
         }
