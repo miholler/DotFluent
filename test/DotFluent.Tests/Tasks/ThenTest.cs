@@ -35,12 +35,12 @@ namespace DotFluent.Tests.Tasks
         {
             var source = Task.FromResult(0);
             Action action = null;
-            Action<int> sourceAction = null;
+            Action<int> genericAction = null;
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(action));
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(action, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(sourceAction));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(sourceAction, TaskScheduler.Current));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(genericAction));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(genericAction, TaskScheduler.Current));
         }
 
         [TestMethod]
