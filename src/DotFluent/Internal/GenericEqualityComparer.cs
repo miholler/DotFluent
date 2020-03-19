@@ -20,7 +20,7 @@ namespace DotFluent.Internal
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericEqualityComparer{T}"/> class 
-        /// using the specified compare function to compare objects for equality.
+        /// using a specified compare function to compare objects for equality.
         /// </summary>
         /// <param name="comparer">A function to compare objects.</param>
         public GenericEqualityComparer(Func<T, T, bool> comparer) : this(comparer, x => 0)
@@ -28,7 +28,7 @@ namespace DotFluent.Internal
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericEqualityComparer{T}"/> class
-        /// using the specified compare functions to compare objects for equality.
+        /// using specified compare functions to compare objects for equality.
         /// </summary>
         /// <param name="comparer">A function to compare objects.</param>
         /// <param name="hashCodeProvider">A function to resolve a hash code for an object.</param>
@@ -43,7 +43,7 @@ namespace DotFluent.Internal
         #region Methods
 
         /// <summary>
-        /// Creates an equality comparer by using the specified compare function
+        /// Creates an equality comparer by using a specified compare function
         /// to compare objects for equality.
         /// </summary>
         /// <param name="comparer">A function to compare objects.</param>
@@ -52,7 +52,7 @@ namespace DotFluent.Internal
             => new GenericEqualityComparer<T>(comparer);
 
         /// <summary>
-        /// Creates an equality comparer by using the specified compare functions
+        /// Creates an equality comparer by using specified compare functions
         /// to compare objects for equality.
         /// </summary>
         /// <param name="comparer">A function to compare objects.</param>

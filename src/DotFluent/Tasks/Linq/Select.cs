@@ -19,12 +19,7 @@ namespace DotFluent.Tasks.Linq
         /// <param name="selector">A transform function to apply to the value.</param>
         /// <returns>A <see cref="Task{TResult}"/> whose return value is the result of invoking the transform function on the return value of source.</returns>
         public static Task<TResult> Select<TSource, TResult>(this Task<TSource> source, Func<TSource, TResult> selector)
-        {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
-
-            return source.ContinueWith(x => selector(x.Result));
-        }
+            => source.Then(selector);
 
         #endregion
     }
