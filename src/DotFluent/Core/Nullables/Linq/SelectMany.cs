@@ -19,11 +19,7 @@ namespace DotFluent.Linq
         /// otherwise, an empty <see cref="Nullable{TResult}"/>.
         /// </returns>
         public static TResult? SelectMany<TSource, TResult>(this TSource? source, Func<TSource, TResult?> selector) where TSource : struct where TResult : struct
-        {
-            selector.ThrowIfNull(nameof(selector));
-
-            return source.HasValue ? selector(source.Value) : new TResult?();
-        }
+            => source.FlatMap(selector);
 
         /// <summary>
         /// Projects the value of a nullable object into another nullable using a specified function,
