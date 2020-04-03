@@ -9,10 +9,10 @@ namespace DotFluent
         /// <summary>
         /// Performs a specified action if a nullable object has no value.
         /// </summary>
-        /// <typeparam name="T">The type of the value of source.</typeparam>
+        /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <param name="source">The nullable to check for having a value.</param>
         /// <param name="none">An action to perform if a value is missing.</param>
-        public static void Match<T>(this T? source, Action none) where T : struct
+        public static void Match<TSource>(this TSource? source, Action none) where TSource : struct
         {
             none.ThrowIfNull(nameof(none));
 
@@ -23,10 +23,10 @@ namespace DotFluent
         /// <summary>
         /// Performs a specified action if a nullable object has a value.
         /// </summary>
-        /// <typeparam name="T">The type of the value of source.</typeparam>
+        /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <param name="source">The nullable to check for having a value.</param>
         /// <param name="some">An action to perform if a value is present.</param>
-        public static void Match<T>(this T? source, Action<T> some) where T : struct
+        public static void Match<TSource>(this TSource? source, Action<TSource> some) where TSource : struct
         {
             some.ThrowIfNull(nameof(some));
 
@@ -37,11 +37,11 @@ namespace DotFluent
         /// <summary>
         /// Performs a specified action based on whether a nullable object has a value.
         /// </summary>
-        /// <typeparam name="T">The type of the value of source.</typeparam>
+        /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <param name="source">The nullable to check for having a value.</param>
         /// <param name="some">An action to perform if a value is present.</param>
         /// <param name="none">An action to perform if a value is missing.</param>
-        public static void Match<T>(this T? source, Action<T> some, Action none) where T : struct
+        public static void Match<TSource>(this TSource? source, Action<TSource> some, Action none) where TSource : struct
         {
             some.ThrowIfNull(nameof(some));
             none.ThrowIfNull(nameof(none));

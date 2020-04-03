@@ -9,11 +9,11 @@ namespace DotFluent
         /// <summary>
         /// Throws an <see cref="ArgumentNullException"/> if an object is null; otherwise, returns the object.
         /// </summary>
-        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <typeparam name="TSource">The type of the object.</typeparam>
         /// <param name="source">The object to check for null.</param>
         /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
         /// <returns>The object if not null.</returns>
-        public static T ThrowIfNull<T>(this T source, string paramName = null)
+        public static TSource ThrowIfNull<TSource>(this TSource source, string paramName = null)
         {
             if (source.IsNull())
                 throw new ArgumentNullException(paramName);
@@ -24,11 +24,11 @@ namespace DotFluent
         /// <summary>
         /// Throws an <see cref="Exception"/> created by a specified function if an object is null; otherwise, returns the object.
         /// </summary>
-        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <typeparam name="TSource">The type of the object.</typeparam>
         /// <param name="source">The object to check for null.</param>
         /// <param name="factory">A function to create the <see cref="Exception"/>.</param>
         /// <returns>The object if not null.</returns>
-        public static T ThrowIfNull<T>(this T source, Func<Exception> factory)
+        public static TSource ThrowIfNull<TSource>(this TSource source, Func<Exception> factory)
         {
             if (source.IsNull())
                 throw factory();
