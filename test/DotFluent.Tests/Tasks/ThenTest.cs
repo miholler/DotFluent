@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Tests.Tasks
 {
     [TestClass]
-    public sealed class ThenTest
+    public sealed class ThenTest : TaskTest
     {
         #region Methods
 
@@ -515,9 +515,6 @@ namespace DotFluent.Tests.Tasks
             ThrowException();
             return Task.FromResult(arg);
         }
-
-        private static void ShouldNotBeCalled()
-            => throw new InvalidOperationException("This action should not be called!");
 
         #endregion
     }
