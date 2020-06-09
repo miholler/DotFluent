@@ -137,24 +137,24 @@ namespace DotFluent.Tests.Tasks
             {
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     Task.FromResult(0)
-                        .Then(x => { cts.Cancel(); }, cts.Token)
+                        .Then(x => cts.Cancel(), cts.Token)
                             .Then(ShouldNotBeCalled, cts.Token));
 
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     Task.FromCanceled<int>(cts.Token)
-                        .Then(x => { ShouldNotBeCalled(); }, cts.Token));
+                        .Then(x => ShouldNotBeCalled(), cts.Token));
             }
 
             using (var cts = new CancellationTokenSource())
             {
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     Task.FromResult(0)
-                        .Then(x => { cts.Cancel(); }, null, cts.Token)
+                        .Then(x => cts.Cancel(), null, cts.Token)
                             .Then(ShouldNotBeCalled, null, cts.Token));
 
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     Task.FromCanceled<int>(cts.Token)
-                        .Then(x => { ShouldNotBeCalled(); }, null, cts.Token));
+                        .Then(x => ShouldNotBeCalled(), null, cts.Token));
             }
         }
 

@@ -139,11 +139,11 @@ namespace DotFluent.Tests.Tasks
             var result = 1;
 
             await GetFaultedTask()
-                .Catch<ArgumentNullException>(x => { ShouldNotBeCalled(); })
+                .Catch<ArgumentNullException>(x => ShouldNotBeCalled())
                 .Catch<NotImplementedException>(x => { result++; });
 
             await GetFaultedTask()
-                .Catch<ArgumentNullException>(x => { ShouldNotBeCalled(); }, null)
+                .Catch<ArgumentNullException>(x => ShouldNotBeCalled(), null)
                 .Catch<NotImplementedException>(x => { result++; }, null);
 
             Assert.AreEqual(result, 3);
@@ -156,26 +156,26 @@ namespace DotFluent.Tests.Tasks
             {
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     GetFaultedTask()
-                        .Catch<NotImplementedException>(x => { cts.Cancel(); }, cts.Token)
+                        .Catch<NotImplementedException>(x => cts.Cancel(), cts.Token)
                         .Then(ShouldNotBeCalled, cts.Token));
 
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     Task.FromCanceled(cts.Token)
                         .Then(GetFaultedTask, cts.Token)
-                        .Catch<NotImplementedException>(x => { ShouldNotBeCalled(); }, cts.Token));
+                        .Catch<NotImplementedException>(x => ShouldNotBeCalled(), cts.Token));
             }
 
             using (var cts = new CancellationTokenSource())
             {
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     GetFaultedTask()
-                        .Catch<NotImplementedException>(x => { cts.Cancel(); }, null, cts.Token)
+                        .Catch<NotImplementedException>(x => cts.Cancel(), null, cts.Token)
                         .Then(ShouldNotBeCalled, null, cts.Token));
 
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
                     Task.FromCanceled(cts.Token)
                         .Then(GetFaultedTask, null, cts.Token)
-                        .Catch<NotImplementedException>(x => { ShouldNotBeCalled(); }, null, cts.Token));
+                        .Catch<NotImplementedException>(x => ShouldNotBeCalled(), null, cts.Token));
             }
         }
 
@@ -197,8 +197,8 @@ namespace DotFluent.Tests.Tasks
             try
             {
                 await Task.CompletedTask
-                    .Catch<NotImplementedException>(x => { ShouldNotBeCalled(); })
-                    .Catch<NotImplementedException>(x => { ShouldNotBeCalled(); }, null);
+                    .Catch<NotImplementedException>(x => ShouldNotBeCalled())
+                    .Catch<NotImplementedException>(x => ShouldNotBeCalled(), null);
             }
             catch (Exception ex)
             {
