@@ -52,7 +52,7 @@ namespace DotFluent.Linq
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, IEqualityComparer<TSource> comparer)
         {
             source.ThrowIfNull(nameof(source));
-            comparer = comparer ?? EqualityComparer<TSource>.Default;
+            comparer ??= EqualityComparer<TSource>.Default;
 
             var index = 0;
             foreach (var item in source)
