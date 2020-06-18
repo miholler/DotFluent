@@ -5,7 +5,7 @@
         #region Methods
 
         /// <summary>
-        /// Determines whether a specified string is null, empty, or consists only of 
+        /// Determines whether a string is null, empty, or consists only of 
         /// white-space characters.
         /// </summary>
         /// <param name="source">The string to test.</param>

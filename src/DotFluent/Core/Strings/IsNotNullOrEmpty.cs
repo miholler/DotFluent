@@ -5,7 +5,7 @@
         #region Methods
 
         /// <summary>
-        /// Determines whether a specified string is not null and not an empty string.
+        /// Determines whether a string is not null and not an empty string.
         /// </summary>
         /// <param name="source">The string to test.</param>
         /// <returns>true if the string is not null and not an empty string (""); otherwise, false.</returns>
