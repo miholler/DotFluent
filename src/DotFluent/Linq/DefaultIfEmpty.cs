@@ -28,19 +28,17 @@ namespace DotFluent.Linq
 
         private static IEnumerable<TSource> DefaultIfEmptyIterator<TSource>(IEnumerable<TSource> source, Func<TSource> defaultFactory)
         {
-            using (var enumerator = source.GetEnumerator())
+            using var enumerator = source.GetEnumerator();
+            if (!enumerator.MoveNext())
             {
-                if (!enumerator.MoveNext())
-                {
-                    yield return defaultFactory();
-                    yield break;
-                }
-                do
-                {
-                    yield return enumerator.Current;
-                }
-                while (enumerator.MoveNext());
+                yield return defaultFactory();
+                yield break;
             }
+            do
+            {
+                yield return enumerator.Current;
+            }
+            while (enumerator.MoveNext());
         }
 
         #endregion
