@@ -18,7 +18,7 @@ namespace DotFluent.Tests.Linq
         #region Methods
 
         [ClassInitialize]
-        public static void Initialize(TestContext context)
+        public static void Initialize(TestContext _)
         {
             _messages.Add(new Message()
             {
@@ -125,7 +125,7 @@ namespace DotFluent.Tests.Linq
         [TestMethod]
         public void GroupBy()
         {
-            bool comparer(string x, string y) => x.IsEqualTo(y);
+            static bool comparer(string x, string y) => x.IsEqualTo(y);
             var results = _messages.GroupBy(x => x.Subject, comparer).ToArray();
             var group = results.LastOrDefault();
 
@@ -149,7 +149,7 @@ namespace DotFluent.Tests.Linq
         [TestMethod]
         public void GroupByWithElementSelector()
         {
-            bool comparer(string x, string y) => x.IsEqualTo(y);
+            static bool comparer(string x, string y) => x.IsEqualTo(y);
             var results = _messages.GroupBy(x => x.Subject, x => x.Body, comparer).ToArray();
             var group = results.LastOrDefault();
 

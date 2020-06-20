@@ -18,7 +18,7 @@ namespace DotFluent.Tests.Linq
         #region Methods
 
         [ClassInitialize]
-        public static void Initialize(TestContext context)
+        public static void Initialize(TestContext _)
         {
             _items.Add((1, "Item One"));
             _items.Add((2, "Item Two"));
