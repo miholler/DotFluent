@@ -123,7 +123,7 @@ namespace DotFluent.Tests.Linq
         public void GroupJoin()
         {
             var groups = _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y).ToArray();
-            Assert.IsTrue(groups.Length == 3);
+            Assert.AreEqual(groups.Length, 3);
 
             var albumCounts = new[] { 1, 2, 0 };
             for (var i = 0; i < groups.Length; i++)
@@ -140,14 +140,14 @@ namespace DotFluent.Tests.Linq
         {
             var hash = GetHashCode();
             var groups = _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode() ^ hash).ToArray();
-            Assert.IsTrue(groups.Length == 3);
+            Assert.AreEqual(groups.Length, 3);
 
             var albumCounts = new[] { 1, 2, 0 };
             for (var i = 0; i < groups.Length; i++)
             {
                 var group = groups[i];
                 var count = group.Albums.Count();
-                Assert.IsTrue(count == albumCounts[i]);
+                Assert.AreEqual(count, albumCounts[i]);
                 Assert.IsTrue(group.Albums.All(x => x.ArtistId == group.Artist.Id));
             }
         }
