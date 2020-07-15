@@ -35,7 +35,7 @@ namespace DotFluent.Tests.Linq
         {
             var source = new List<int[]>();
 
-            Assert.IsTrue(source.Flatten().SequenceEqual(new int[0]));
+            Assert.IsTrue(source.Flatten().None());
 
             source.AddRange(Sequence.Create(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 7, 8, 9 }));
 
@@ -47,27 +47,27 @@ namespace DotFluent.Tests.Linq
         {
             var source = new List<TreeItem>();
 
-            Assert.IsTrue(source.Flatten(x => x.Children).SequenceEqual(Sequence.Create<TreeItem>()));
+            Assert.IsTrue(source.Flatten(x => x.Children).None());
 
             source.AddRange(Sequence.Create(
                 new TreeItem()
                 {
                     Id = 1,
-                    Children = new List<TreeItem>(Sequence.Create(
+                    Children = Sequence.Create(
                         new TreeItem()
                         {
                             Id = 2,
-                            Children = new List<TreeItem>(Sequence.Create(
+                            Children = Sequence.Create(
                                 new TreeItem()
                                 {
                                     Id = 3
-                                }))
-                        }))
+                                })
+                        })
                 },
                 new TreeItem()
                 {
                     Id = 4,
-                    Children = new List<TreeItem>(Sequence.Create(
+                    Children = Sequence.Create(
                         new TreeItem()
                         {
                             Id = 5
@@ -75,7 +75,7 @@ namespace DotFluent.Tests.Linq
                         new TreeItem()
                         {
                             Id = 6
-                        }))
+                        })
                 }));
 
             Assert.IsTrue(source.Flatten(x => x.Children).Select(x => x.Id).SequenceEqual(new[] { 1, 2, 3, 4, 5, 6 }));
