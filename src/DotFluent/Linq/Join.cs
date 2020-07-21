@@ -25,8 +25,8 @@ namespace DotFluent.Linq
             => outer.Join(inner, keySelector, resultSelector, EqualityComparer<TKey>.Default);
 
         /// <summary>
-        /// Correlates the elements of two sequences based on matching keys. 
-        /// A specified function is used to compare keys.
+        /// Correlates the elements of two sequences based on matching keys. A specified
+        /// function is used to compare keys.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of the sequences.</typeparam>
         /// <typeparam name="TKey">The type of the keys returned by the key selector function.</typeparam>
@@ -41,8 +41,8 @@ namespace DotFluent.Linq
             => outer.Join(inner, keySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
-        /// Correlates the elements of two sequences based on matching keys. 
-        /// Specified functions are used to compare keys.
+        /// Correlates the elements of two sequences based on matching keys. Specified 
+        /// functions are used to compare keys.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of the sequences.</typeparam>
         /// <typeparam name="TKey">The type of the keys returned by the key selector function.</typeparam>
@@ -78,8 +78,8 @@ namespace DotFluent.Linq
         }
 
         /// <summary>
-        /// Correlates the elements of two sequences based on matching keys. 
-        /// A specified function is used to compare keys.
+        /// Correlates the elements of two sequences based on matching keys. A specified
+        /// function is used to compare keys.
         /// </summary>
         /// <typeparam name="TOuter">The type of the elements of the first sequence.</typeparam>
         /// <typeparam name="TInner">The type of the elements of the second sequence.</typeparam>
@@ -96,8 +96,8 @@ namespace DotFluent.Linq
             => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
 
         /// <summary>
-        /// Correlates the elements of two sequences based on matching keys. 
-        /// Specified functions are used to compare keys.
+        /// Correlates the elements of two sequences based on matching keys. Specified
+        /// functions are used to compare keys.
         /// </summary>
         /// <typeparam name="TOuter">The type of the elements of the first sequence.</typeparam>
         /// <typeparam name="TInner">The type of the elements of the second sequence.</typeparam>
