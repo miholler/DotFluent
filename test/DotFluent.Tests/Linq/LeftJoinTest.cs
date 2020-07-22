@@ -15,7 +15,7 @@ namespace DotFluent.Tests.Linq
         [TestMethod]
         [DataRow(null, new int[0])]
         [DataRow(new int[0], null)]
-        public void SequenceNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
+        public void OuterOrInnerNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
         {
             outer.Invoking(x => x.LeftJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i })).ShouldThrow<ArgumentNullException>();
             outer.Invoking(x => x.LeftJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y)).ShouldThrow<ArgumentNullException>();
