@@ -17,8 +17,8 @@ namespace DotFluent.Linq
         {
             source.ThrowIfNull(nameof(source));
 
-            using (var enumerator = source.GetEnumerator())
-                return !enumerator.MoveNext();
+            using var enumerator = source.GetEnumerator();
+            return !enumerator.MoveNext();
         }
 
         /// <summary>

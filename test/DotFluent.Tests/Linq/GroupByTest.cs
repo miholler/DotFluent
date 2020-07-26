@@ -18,7 +18,7 @@ namespace DotFluent.Tests.Linq
         #region Methods
 
         [ClassInitialize]
-        public static void Initialize(TestContext context)
+        public static void Initialize(TestContext _)
         {
             _messages.Add(new Message()
             {
@@ -125,11 +125,11 @@ namespace DotFluent.Tests.Linq
         [TestMethod]
         public void GroupBy()
         {
-            bool comparer(string x, string y) => x.IsEqualTo(y);
+            static bool comparer(string x, string y) => x.IsEqualTo(y);
             var results = _messages.GroupBy(x => x.Subject, comparer).ToArray();
             var group = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsNotNull(group);
             Assert.AreEqual(group.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
@@ -141,7 +141,7 @@ namespace DotFluent.Tests.Linq
             var results = _messages.GroupBy(x => x.Subject, (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
             var group = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsNotNull(group);
             Assert.AreEqual(group.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
@@ -149,11 +149,11 @@ namespace DotFluent.Tests.Linq
         [TestMethod]
         public void GroupByWithElementSelector()
         {
-            bool comparer(string x, string y) => x.IsEqualTo(y);
+            static bool comparer(string x, string y) => x.IsEqualTo(y);
             var results = _messages.GroupBy(x => x.Subject, x => x.Body, comparer).ToArray();
             var group = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsNotNull(group);
             Assert.AreEqual(group.Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
@@ -165,7 +165,7 @@ namespace DotFluent.Tests.Linq
             var results = _messages.GroupBy(x => x.Subject, x => x.Body, (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
             var group = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsNotNull(group);
             Assert.AreEqual(group.Aggregate((x, y) => $"{x} {y}"), "Hello World!");
         }
@@ -176,7 +176,7 @@ namespace DotFluent.Tests.Linq
             var results = _messages.GroupBy(x => x.Subject, (k, ie) => ie.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y)).ToArray();
             var body = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsTrue(body.IsNotNullOrEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
@@ -188,7 +188,7 @@ namespace DotFluent.Tests.Linq
             var results = _messages.GroupBy(x => x.Subject, (k, ie) => ie.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
             var body = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsTrue(body.IsNotNullOrEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
@@ -199,7 +199,7 @@ namespace DotFluent.Tests.Linq
             var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => ie.Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y)).ToArray();
             var body = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsTrue(body.IsNotNullOrEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
@@ -211,7 +211,7 @@ namespace DotFluent.Tests.Linq
             var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => ie.Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
             var body = results.LastOrDefault();
 
-            Assert.IsTrue(results.Length == 3);
+            Assert.AreEqual(results.Length, 3);
             Assert.IsTrue(body.IsNotNullOrEmpty());
             Assert.AreEqual(body, "Hello World!");
         }

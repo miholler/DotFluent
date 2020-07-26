@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Tests.Tasks
 {
     [TestClass]
-    public sealed class FinallyTest
+    public sealed class FinallyTest : TaskTest
     {
         #region Methods
 
@@ -84,11 +84,11 @@ namespace DotFluent.Tests.Tasks
                     .Finally(ThrowException, null));
 
             var result = 1;
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
                 GetFaultedTask()
                     .Finally(() => { result++; }));
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
                 GetFaultedTask()
                     .Finally(() => { result++; }, null));
 
@@ -156,31 +156,19 @@ namespace DotFluent.Tests.Tasks
                     .Finally(ThrowException, null));
 
             var result = 1;
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
                 GetFaultedTask<int>()
                     .Finally(() => { result++; }));
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
                 GetFaultedTask<int>()
                     .Finally(() => { result++; }, null));
 
             Assert.AreEqual(result, 3);
         }
 
-        private static Task GetFaultedTask()
-            => Task.FromException(GetException());
-
-        private static Task<T> GetFaultedTask<T>()
-            => Task.FromException<T>(GetException());
-
         private static void ThrowException()
-            => throw GetException();
-
-        private static void ShouldNotBeCalled()
-            => throw new InvalidOperationException("This action should not be called!");
-
-        private static Exception GetException()
-            => new Exception("This is expected!");
+            => throw new Exception("This is expected!");
 
         #endregion
     }
