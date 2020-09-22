@@ -1,5 +1,6 @@
 ﻿using DotFluent.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 
 namespace DotFluent.Tests.Nullables.Linq
@@ -12,24 +13,17 @@ namespace DotFluent.Tests.Nullables.Linq
         [TestMethod]
         public void SelectorNullThrowsException()
         {
-            var nullable = new int?();
+            var source = new int?();
             Func<int, int> selector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Select(selector));
+            source.Invoking(x => x.Select(selector)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
-        public void Select()
-        {
-            var nullable = new int?();
-            var result = nullable.Select(x => ++x);
-            Assert.IsFalse(result.HasValue);
-
-            nullable = 1;
-            result = nullable.Select(x => ++x);
-            Assert.IsTrue(result.HasValue);
-            Assert.AreEqual(result.Value, 2);
-        }
+        [DataRow(null, null)]
+        [DataRow(1, 2)]
+        public void Select(int? source, int? expectedResult)
+            => source.Select(x => ++x).ShouldBe(expectedResult);
 
         #endregion
     }

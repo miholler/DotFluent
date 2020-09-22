@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 
 namespace DotFluent.Tests.Nullables
@@ -11,24 +12,17 @@ namespace DotFluent.Tests.Nullables
         [TestMethod]
         public void MapperNullThrowsException()
         {
-            var nullable = new int?();
+            var source = new int?();
             Func<int, int> mapper = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.Map(mapper));
+            source.Invoking(x => x.Map(mapper)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
-        public void Map()
-        {
-            var nullable = new int?();
-            var result = nullable.Map(x => ++x);
-            Assert.IsFalse(result.HasValue);
-
-            nullable = 1;
-            result = nullable.Map(x => ++x);
-            Assert.IsTrue(result.HasValue);
-            Assert.AreEqual(result.Value, 2);
-        }
+        [DataRow(null, null)]
+        [DataRow(1, 2)]
+        public void Map(int? source, int? expectedResult)
+            => source.Map(x => ++x).ShouldBe(expectedResult);
 
         #endregion
     }
