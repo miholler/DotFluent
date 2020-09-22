@@ -1,0 +1,83 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
+using System;
+using System.Collections.Generic;
+
+namespace DotFluent.Tests.Collections.Dictionaries
+{
+    [TestClass]
+    public sealed class AddOrUpdateTest
+    {
+        #region Methods
+
+        [TestMethod]
+        public void SourceNullThrowsException()
+        {
+            IDictionary<int, int> source = null;
+
+            source.Invoking(x => x.AddOrUpdate(1, 1, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
+            source.Invoking(x => x.AddOrUpdate(1, k => 1, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public void KeyNullThrowsException()
+        {
+            var source = new Dictionary<object, int>();
+
+            source.Invoking(x => x.AddOrUpdate(null, 1, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
+            source.Invoking(x => x.AddOrUpdate(null, k => 1, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public void AddValueFactoryNullThrowsException()
+        {
+            var source = new Dictionary<int, int>();
+            Func<int, int> addValueFactory = null;
+
+            source.Invoking(x => x.AddOrUpdate(1, addValueFactory, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public void UpdateValueFactoryNullThrowsException()
+        {
+            var source = new Dictionary<int, int>();
+            Func<int, int, int> updateValueFactory = null;
+
+            source.Invoking(x => x.AddOrUpdate(1, 1, updateValueFactory)).ShouldThrow<ArgumentNullException>();
+            source.Invoking(x => x.AddOrUpdate(1, k => 1, updateValueFactory)).ShouldThrow<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        [DataRow(0, 1, 2)]
+        [DataRow(1, 1, 2)]
+        public void Add(int overload, int key, int value)
+        {
+            var source = new Dictionary<int, int>();
+            var result = overload switch
+            {
+                1 => source.AddOrUpdate(key, k => value, (k, v) => ++v),
+                _ => source.AddOrUpdate(key, value, (k, v) => ++v)
+            };
+            result.ShouldBe(value);
+        }
+
+        [TestMethod]
+        [DataRow(0, 1, 2)]
+        [DataRow(1, 1, 2)]
+        public void Update(int overload, int key, int value)
+        {
+            var source = new Dictionary<int, int>()
+            {
+                { key, value }
+            };
+            var result = overload switch
+            {
+                1 => source.AddOrUpdate(key, k => value, (k, v) => ++v),
+                _ => source.AddOrUpdate(key, value, (k, v) => ++v)
+            };
+            result.ShouldBe(++value);
+        }
+
+        #endregion
+    }
+}
