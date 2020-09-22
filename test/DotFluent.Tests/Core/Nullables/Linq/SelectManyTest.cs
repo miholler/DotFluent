@@ -1,5 +1,6 @@
 ﻿using DotFluent.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 
 namespace DotFluent.Tests.Nullables.Linq
@@ -12,50 +13,35 @@ namespace DotFluent.Tests.Nullables.Linq
         [TestMethod]
         public void SelectorNullThrowsException()
         {
-            var nullable = new int?();
+            var source = new int?();
             Func<int, int?> selector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(selector));
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(selector, (x, y) => x + y));
+            source.Invoking(x => x.SelectMany(selector)).ShouldThrow<ArgumentNullException>();
+            source.Invoking(x => x.SelectMany(selector, (x, y) => x + y)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
         public void ResultSelectorNullThrowsException()
         {
-            var nullable = new int?();
+            var source = new int?();
             Func<int, int, int> resultSelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.SelectMany(x => x, resultSelector));
+            source.Invoking(x => x.SelectMany(x => x, resultSelector)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
-        public void SelectMany()
-        {
-            var nullable = new int?();
-            var result = nullable.SelectMany(x => new int?(x));
-            Assert.IsFalse(result.HasValue);
-
-            nullable = 1;
-            result = nullable.SelectMany(x => new int?(x));
-            Assert.IsTrue(result.HasValue);
-            Assert.AreEqual(result.Value, 1);
-        }
+        [DataRow(null, null)]
+        [DataRow(1, 1)]
+        public void SelectMany(int? source, int? expectedResult)
+            => source.SelectMany(x => new int?(x)).ShouldBe(expectedResult);
 
         [TestMethod]
-        public void SelectManyWithResultSelector()
-        {
-            var nullable = new int?();
-            var result = nullable.SelectMany(x => new int?(x), (x, y) => x + y);
-            Assert.IsFalse(result.HasValue);
-
-            nullable = 1;
-            result = nullable.SelectMany(x => new int?(), (x, y) => x + y);
-            Assert.IsFalse(result.HasValue);
-
-            result = nullable.SelectMany(x => new int?(x), (x, y) => x + y);
-            Assert.IsTrue(result.HasValue);
-            Assert.AreEqual(result.Value, 2);
-        }
+        [DataRow(null, null, null)]
+        [DataRow(null, 0, null)]
+        [DataRow(1, null, null)]
+        [DataRow(1, 1, 2)]
+        public void SelectManyWithResultSelector(int? source, int? selectorResult, int? expectedResult)
+            => source.SelectMany(x => selectorResult, (x, y) => x + y).ShouldBe(expectedResult);
 
         #endregion
     }
