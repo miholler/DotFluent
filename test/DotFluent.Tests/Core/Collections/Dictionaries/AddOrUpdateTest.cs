@@ -48,34 +48,19 @@ namespace DotFluent.Tests.Collections.Dictionaries
         }
 
         [TestMethod]
-        [DataRow(0, 1, 2)]
-        [DataRow(1, 1, 2)]
-        public void Add(int overload, int key, int value)
+        [DataRow(0, 1, 2, false, 2)]
+        [DataRow(1, 1, 2, false, 2)]
+        [DataRow(0, 1, 2, true, 3)]
+        [DataRow(1, 1, 2, true, 3)]
+        public void AddOrUpdate(int overload, int key, int value, bool isExisting, int expectedResult)
         {
-            var source = new Dictionary<int, int>();
+            var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>();
             var result = overload switch
             {
                 1 => source.AddOrUpdate(key, k => value, (k, v) => ++v),
                 _ => source.AddOrUpdate(key, value, (k, v) => ++v)
             };
-            result.ShouldBe(value);
-        }
-
-        [TestMethod]
-        [DataRow(0, 1, 2)]
-        [DataRow(1, 1, 2)]
-        public void Update(int overload, int key, int value)
-        {
-            var source = new Dictionary<int, int>()
-            {
-                { key, value }
-            };
-            var result = overload switch
-            {
-                1 => source.AddOrUpdate(key, k => value, (k, v) => ++v),
-                _ => source.AddOrUpdate(key, value, (k, v) => ++v)
-            };
-            result.ShouldBe(++value);
+            result.ShouldBe(expectedResult);
         }
 
         #endregion
