@@ -26,7 +26,7 @@ namespace DotFluent
         /// or the result of updateValueFactory (if the key was present).
         /// </returns>
         public static TValue AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue addValue, Func<TKey, TValue, TValue> updateValueFactory)
-            => source.AddOrUpdate(key, x => addValue, updateValueFactory);
+            => source.AddOrUpdate(key, k => addValue, updateValueFactory);
 
         /// <summary>
         /// Uses specified functions to add a key/value pair to a dictionary if the key does not already exist,
