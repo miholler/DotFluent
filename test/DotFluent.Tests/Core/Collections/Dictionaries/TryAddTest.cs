@@ -21,7 +21,7 @@ namespace DotFluent.Tests.Collections.Dictionaries
         [TestMethod]
         public void KeyNullThrowsException()
         {
-            var source = new Dictionary<object, int>();
+            var source = new Dictionary<object, int>() as IDictionary<object, int>;
 
             source.Invoking(x => x.TryAdd(null, 1)).ShouldThrow<ArgumentNullException>();
         }
@@ -31,7 +31,7 @@ namespace DotFluent.Tests.Collections.Dictionaries
         [DataRow(1, 2, true, false)]
         public void TryAdd(int key, int value, bool isExisting, bool expectedResult)
         {
-            var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>();
+            var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>() as IDictionary<int, int>;
 
             source.TryAdd(key, value).ShouldBe(expectedResult);
         }
