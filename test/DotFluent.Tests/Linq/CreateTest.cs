@@ -32,7 +32,7 @@ namespace DotFluent.Tests.Linq
         {
             var source = Sequence.Create(new object(), null, new object()).ToArray();
 
-            Assert.IsTrue(source.IsNotNullOrEmpty() && source.Contains(null));
+            Assert.IsTrue(source.IsNotNullNorEmpty() && source.Contains(null));
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace DotFluent.Tests.Linq
         {
             var source = Sequence.Create(1, 2, 3).ToArray();
 
-            Assert.IsTrue(source.IsNotNullOrEmpty() && source.SequenceEqual(new[] { 1, 2, 3 }));
+            Assert.IsTrue(source.IsNotNullNorEmpty() && source.SequenceEqual(new[] { 1, 2, 3 }));
         }
 
         #endregion

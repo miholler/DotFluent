@@ -82,7 +82,7 @@ namespace DotFluent.Tests.Linq
             var keys = _items.Select(x => x.Id).ToArray();
             var dict = _items.ToDictionary(x => x.Id, (x, y) => x == y);
 
-            Assert.IsTrue(dict.IsNotNullOrEmpty() && dict.Keys.SequenceEqual(keys));
+            Assert.IsTrue(dict.IsNotNullNorEmpty() && dict.Keys.SequenceEqual(keys));
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace DotFluent.Tests.Linq
             var keys = _items.Select(x => x.Id).ToArray();
             var dict = _items.ToDictionary(x => x.Id, (x, y) => x == y, x => x.GetHashCode() ^ hash);
 
-            Assert.IsTrue(dict.IsNotNullOrEmpty() && dict.Keys.SequenceEqual(keys));
+            Assert.IsTrue(dict.IsNotNullNorEmpty() && dict.Keys.SequenceEqual(keys));
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace DotFluent.Tests.Linq
             var names = _items.Select(x => x.Name).ToArray();
             var dict = _items.ToDictionary(x => x.Id, x => x.Name, (x, y) => x == y);
 
-            Assert.IsTrue(dict.IsNotNullOrEmpty() && dict.Keys.SequenceEqual(keys) && dict.Values.SequenceEqual(names));
+            Assert.IsTrue(dict.IsNotNullNorEmpty() && dict.Keys.SequenceEqual(keys) && dict.Values.SequenceEqual(names));
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace DotFluent.Tests.Linq
             var names = _items.Select(x => x.Name).ToArray();
             var dict = _items.ToDictionary(x => x.Id, x => x.Name, (x, y) => x == y, x => x.GetHashCode() ^ hash);
 
-            Assert.IsTrue(dict.IsNotNullOrEmpty() && dict.Keys.SequenceEqual(keys) && dict.Values.SequenceEqual(names));
+            Assert.IsTrue(dict.IsNotNullNorEmpty() && dict.Keys.SequenceEqual(keys) && dict.Values.SequenceEqual(names));
         }
 
         #endregion
