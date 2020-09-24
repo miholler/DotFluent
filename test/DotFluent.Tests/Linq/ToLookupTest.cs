@@ -96,7 +96,7 @@ namespace DotFluent.Tests.Linq
         {
             var lookup = _persons.ToLookup(x => x.CountryId, (x, y) => x == y);
 
-            Assert.IsTrue(lookup.IsNotNullOrEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Any(y => y.Name == x.Name)));
+            Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Any(y => y.Name == x.Name)));
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace DotFluent.Tests.Linq
             var hash = GetHashCode();
             var lookup = _persons.ToLookup(x => x.CountryId, (x, y) => x == y, x => x.GetHashCode() ^ hash);
 
-            Assert.IsTrue(lookup.IsNotNullOrEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Any(y => y.Name == x.Name)));
+            Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Any(y => y.Name == x.Name)));
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace DotFluent.Tests.Linq
         {
             var lookup = _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y);
 
-            Assert.IsTrue(lookup.IsNotNullOrEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Contains(x.Name)));
+            Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Contains(x.Name)));
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace DotFluent.Tests.Linq
             var hash = GetHashCode();
             var lookup = _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, x => x.GetHashCode() ^ hash);
 
-            Assert.IsTrue(lookup.IsNotNullOrEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Contains(x.Name)));
+            Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Contains(x.Name)));
         }
 
         #endregion
