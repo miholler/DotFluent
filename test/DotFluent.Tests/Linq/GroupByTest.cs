@@ -177,7 +177,7 @@ namespace DotFluent.Tests.Linq
             var body = results.LastOrDefault();
 
             Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullOrEmpty());
+            Assert.IsTrue(body.IsNotNullNorEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
 
@@ -189,7 +189,7 @@ namespace DotFluent.Tests.Linq
             var body = results.LastOrDefault();
 
             Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullOrEmpty());
+            Assert.IsTrue(body.IsNotNullNorEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
 
@@ -200,7 +200,7 @@ namespace DotFluent.Tests.Linq
             var body = results.LastOrDefault();
 
             Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullOrEmpty());
+            Assert.IsTrue(body.IsNotNullNorEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
 
@@ -212,7 +212,7 @@ namespace DotFluent.Tests.Linq
             var body = results.LastOrDefault();
 
             Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullOrEmpty());
+            Assert.IsTrue(body.IsNotNullNorEmpty());
             Assert.AreEqual(body, "Hello World!");
         }
 

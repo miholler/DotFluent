@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 
 namespace DotFluent.Tests.Nullables
@@ -11,28 +12,17 @@ namespace DotFluent.Tests.Nullables
         [TestMethod]
         public void DefaultFactoryNullThrowsException()
         {
-            var nullable = new int?();
+            var source = new int?();
+            Func<int> defaultFactory = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => nullable.GetValueOrDefault(null));
+            source.Invoking(x => x.GetValueOrDefault(defaultFactory)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
-        public void GetValueOrDefaultHasValue()
-        {
-            var nullable = new int?(1);
-            var value = nullable.GetValueOrDefault(() => -1);
-
-            Assert.AreEqual(value, 1);
-        }
-
-        [TestMethod]
-        public void GetValueOrDefaultNoValue()
-        {
-            var nullable = new int?();
-            var value = nullable.GetValueOrDefault(() => -1);
-
-            Assert.AreEqual(value, -1);
-        }
+        [DataRow(null, -1, -1)]
+        [DataRow(1, -1, 1)]
+        public void GetValueOrDefault(int? source, int defaultValue, int expectedResult)
+            => source.GetValueOrDefault(() => defaultValue).ShouldBe(expectedResult);
 
         #endregion
     }
