@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DotFluent.Optional
 {
@@ -6,7 +8,7 @@ namespace DotFluent.Optional
     /// Represents an optional value.
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
-    public struct Option<T>
+    public struct Option<T> : IEnumerable<T>
     {
         #region Fields
         
@@ -59,6 +61,26 @@ namespace DotFluent.Optional
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
         public static Option<T> Some(T value)
             => new Option<T>(value);
+
+        /// <summary>
+        /// Gets an enumerator for the current option.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerator{T}"/> for the option.</returns>
+        public IEnumerator<T> GetEnumerator()
+            => AsEnumerable().GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
+
+        /// <summary>
+        /// Converts the current option to a sequence with one or zero elements.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> containing one or zero elements.</returns>
+        public IEnumerable<T> AsEnumerable()
+        {
+            if (IsSome)
+                yield return _value;
+        }
 
         #endregion
 
