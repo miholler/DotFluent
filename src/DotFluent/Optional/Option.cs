@@ -8,7 +8,7 @@ namespace DotFluent.Optional
     /// Represents an optional value.
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
-    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>
+    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable
     {
         #region Fields
 
@@ -83,12 +83,28 @@ namespace DotFluent.Optional
         }
 
         /// <summary>
+        /// Compares the specified option with the current option.
+        /// </summary>
+        /// <param name="other">The option to compare with the current option.</param>
+        /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
+        public int CompareTo(Option<T> other)
+            => IsNone && other.IsNone ? 0 : IsSome && other.IsNone ? 1 : IsNone && other.IsSome ? -1 : Comparer<T>.Default.Compare(_value, other._value);
+
+        /// <summary>
+        /// Compares the specified object with the current option.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current option.</param>
+        /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
+        public int CompareTo(object obj)
+            => obj is Option<T> option ? CompareTo(option) : 1;
+
+        /// <summary>
         /// Determines whether the specified option is equal to the current option.
         /// </summary>
         /// <param name="other">The option to compare with the current option.</param>
         /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
         public bool Equals(Option<T> other)
-            => (IsNone && other.IsNone) || (IsSome && other.IsSome && _value.IsEqualTo(other._value));
+            => (IsNone && other.IsNone) || (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
 
         /// <summary>
         /// Determines whether the specified object is equal to the current option.
@@ -123,6 +139,42 @@ namespace DotFluent.Optional
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
         public static implicit operator Option<T>(T value)
             => new Option<T>(value);
+
+        /// <summary>
+        /// Determines whether a specified option is less than another specified option.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>true if the left option is less than the right option; otherwise false.</returns>
+        public static bool operator <(Option<T> left, Option<T> right)
+            => left.CompareTo(right) < 0;
+
+        /// <summary>
+        /// Determines whether a specified option is less than or equal to another specified option.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>true if the left option is less than or equal to the right option; otherwise false.</returns>
+        public static bool operator <=(Option<T> left, Option<T> right)
+            => left.CompareTo(right) <= 0;
+
+        /// <summary>
+        /// Determines whether a specified option is greater than another specified option.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>true if the left option is greater than the right option; otherwise false.</returns>
+        public static bool operator >(Option<T> left, Option<T> right)
+            => left.CompareTo(right) > 0;
+
+        /// <summary>
+        /// Determines whether a specified option is greater than or equal to another specified option.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>true if the left option is greater than or equal to the right option; otherwise false.</returns>
+        public static bool operator >=(Option<T> left, Option<T> right)
+            => left.CompareTo(right) >= 0;
 
         /// <summary>
         /// Determines whether two specified options are equal.
