@@ -8,10 +8,10 @@ namespace DotFluent.Optional
     /// Represents an optional value.
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
-    public struct Option<T> : IEnumerable<T>
+    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>
     {
         #region Fields
-        
+
         private readonly T _value;
         
         #endregion
@@ -63,7 +63,7 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
-        /// Gets an enumerator for the current option.
+        /// Returns an enumerator for the current option.
         /// </summary>
         /// <returns>An <see cref="IEnumerator{T}"/> for the option.</returns>
         public IEnumerator<T> GetEnumerator()
@@ -82,6 +82,36 @@ namespace DotFluent.Optional
                 yield return _value;
         }
 
+        /// <summary>
+        /// Determines whether the specified option is equal to the current option.
+        /// </summary>
+        /// <param name="other">The option to compare with the current option.</param>
+        /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
+        public bool Equals(Option<T> other)
+            => (IsNone && other.IsNone) || (IsSome && other.IsSome && _value.IsEqualTo(other._value));
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current option.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current option.</param>
+        /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
+        public override bool Equals(object obj)
+            => obj is Option<T> option && Equals(option);
+
+        /// <summary>
+        /// Returns a hash code for the current option.
+        /// </summary>
+        /// <returns>A hash code for the current option.</returns>
+        public override int GetHashCode()
+            => IsSome ? _value?.GetHashCode() ?? 1 : 0;
+
+        /// <summary>
+        /// Returns a string that represents the current option.
+        /// </summary>
+        /// <returns>A string that represents the current option.</returns>
+        public override string ToString()
+            => IsSome ? $"Some({_value?.ToString() ?? "null"})" : "None";
+
         #endregion
 
         #region Operators
@@ -93,6 +123,24 @@ namespace DotFluent.Optional
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
         public static implicit operator Option<T>(T value)
             => new Option<T>(value);
+
+        /// <summary>
+        /// Determines whether two specified options are equal.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>true if the specified options are equal; otherwise false.</returns>
+        public static bool operator ==(Option<T> left, Option<T> right)
+            => left.Equals(right);
+
+        /// <summary>
+        /// Determines whether two specified options are not equal.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>true if the specified options are not equal; otherwise false.</returns>
+        public static bool operator !=(Option<T> left, Option<T> right)
+            => !left.Equals(right);
 
         #endregion
     }
