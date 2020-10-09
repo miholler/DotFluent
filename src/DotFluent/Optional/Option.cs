@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace DotFluent.Optional
 {
@@ -8,20 +9,30 @@ namespace DotFluent.Optional
     /// Represents an optional value.
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
-    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable
+    [Serializable]
+    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, ISerializable
     {
         #region Fields
 
         private readonly T _value;
-        
+
         #endregion
 
-        //Ctor
+        #region Ctors
+
         private Option(T value)
         {
             _value = value;
             IsSome = true;
         }
+
+        private Option(SerializationInfo info, StreamingContext context)
+        {
+            IsSome = (bool)info.GetValue(nameof(IsSome), typeof(bool));
+            _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T)) : default;
+        }
+
+        #endregion
 
         #region Properties
 
@@ -71,6 +82,13 @@ namespace DotFluent.Optional
 
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
+
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(IsSome), IsSome);
+            if (IsSome)
+                info.AddValue(nameof(Value), _value);
+        }
 
         /// <summary>
         /// Converts the current option to a sequence with one or zero elements.
