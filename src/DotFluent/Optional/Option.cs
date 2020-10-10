@@ -74,6 +74,23 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
+        /// Determines whether the current option contains a specified value.
+        /// </summary>
+        /// <param name="value">The value to locate in the option.</param>
+        /// <returns>true if the option contains the specified value; otherwise, false.</returns>
+        public bool Contains(T value)
+            => IsSome && EqualityComparer<T>.Default.Equals(_value, value);
+
+        /// <summary>
+        /// Determines whether the current option contains a value that
+        /// satisfies a condition.
+        /// </summary>
+        /// <param name="predicate">A function to test the value for a condition.</param>
+        /// <returns>true if the option contains a value that satisfies the condition; otherwise, false.</returns>
+        public bool Exists(Func<T, bool> predicate)
+            => IsSome && predicate(_value);
+
+        /// <summary>
         /// Populates a storage object with the data needed to serialize the current option.
         /// </summary>
         /// <param name="info">The storage object to populate with data.</param>
