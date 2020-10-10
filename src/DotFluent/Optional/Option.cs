@@ -74,6 +74,18 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
+        /// Populates a storage object with the data needed to serialize the current option.
+        /// </summary>
+        /// <param name="info">The storage object to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(IsSome), IsSome);
+            if (IsSome)
+                info.AddValue(nameof(Value), _value);
+        }
+
+        /// <summary>
         /// Returns an enumerator for the current option.
         /// </summary>
         /// <returns>An <see cref="IEnumerator{T}"/> for the option.</returns>
@@ -82,13 +94,6 @@ namespace DotFluent.Optional
 
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
-
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(IsSome), IsSome);
-            if (IsSome)
-                info.AddValue(nameof(Value), _value);
-        }
 
         /// <summary>
         /// Converts the current option to a sequence with one or zero elements.
