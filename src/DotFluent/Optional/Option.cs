@@ -164,6 +164,24 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
+        /// Performs a logical AND operation on two specified options.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>An <see cref="Option{T}"/> representing the result of the logical AND operation.</returns>
+        public static Option<T> operator &(Option<T> left, Option<T> right)
+            => left.Equals(right) ? left : None;
+
+        /// <summary>
+        /// Performs a logical OR operation on two specified options.
+        /// </summary>
+        /// <param name="left">The first option to compare.</param>
+        /// <param name="right">The second option to compare.</param>
+        /// <returns>An <see cref="Option{T}"/> representing the result of the logical OR operation.</returns>
+        public static Option<T> operator |(Option<T> left, Option<T> right)
+            => left.IsSome ? left : right;
+
+        /// <summary>
         /// Determines whether a specified option is less than another specified option.
         /// </summary>
         /// <param name="left">The first option to compare.</param>
