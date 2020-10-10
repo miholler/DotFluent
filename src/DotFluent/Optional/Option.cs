@@ -217,6 +217,22 @@ namespace DotFluent.Optional
         public static bool operator !=(Option<T> left, Option<T> right)
             => !left.Equals(right);
 
+        /// <summary>
+        /// Determines whether a specified option is a 'Some' value.
+        /// </summary>
+        /// <param name="option">The option to check.</param>
+        /// <returns>true if the option is a 'Some' value; otherwise, false.</returns>
+        public static bool operator true(Option<T> option)
+            => option.IsSome;
+
+        /// <summary>
+        /// Determines whether a specified option is a 'None' value.
+        /// </summary>
+        /// <param name="option">The option to check.</param>
+        /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
+        public static bool operator false(Option<T> option)
+            => option.IsNone;
+
         #endregion
     }
 }
