@@ -74,6 +74,21 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
+        /// Returns the number of values contained in the current option.
+        /// </summary>
+        /// <returns>
+        /// An integer indicating the number of values contained in the option.
+        /// <para>
+        ///     'Some' value: 1
+        /// </para>
+        /// <para>
+        ///     'None' value: 0
+        /// </para>
+        /// </returns>
+        public int Count()
+            => IsSome ? 1 : 0;
+
+        /// <summary>
         /// Determines whether the current option contains a specified value.
         /// </summary>
         /// <param name="value">The value to locate in the option.</param>
