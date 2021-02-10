@@ -22,7 +22,7 @@ namespace DotFluent
         /// <param name="addValue">The value to be added for an absent key.</param>
         /// <param name="updateValueFactory">A function used to generate a new value for an existing key based on the key's existing value.</param>
         /// <returns>
-        /// The new value for the key. This will be either be addValue (if the key was absent) 
+        /// The new value for the key. This will either be addValue (if the key was absent) 
         /// or the result of updateValueFactory (if the key was present).
         /// </returns>
         public static TValue AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue addValue, Func<TKey, TValue, TValue> updateValueFactory)
@@ -39,7 +39,7 @@ namespace DotFluent
         /// <param name="addValueFactory">A function used to generate a value for an absent key.</param>
         /// <param name="updateValueFactory">A function used to generate a new value for an existing key based on the key's existing value.</param>
         /// <returns>
-        /// The new value for the key. This will be either be the result of addValueFactory (if the key was absent)
+        /// The new value for the key. This will either be the result of addValueFactory (if the key was absent)
         /// or the result of updateValueFactory (if the key was present).
         /// </returns>
         public static TValue AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
