@@ -74,6 +74,22 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
+        /// Removes the value from the current option if it does not
+        /// satisfy a condition.
+        /// </summary>
+        /// <param name="predicate">A function to test the value for a condition.</param>
+        /// <returns>
+        /// An <see cref="Option{T}"/> whose value satisfies the condition in the predicate function;
+        /// otherwise, an empty <see cref="Option{T}"/>.
+        /// </returns>
+        public Option<T> Filter(Func<T, bool> predicate)
+        {
+            predicate.ThrowIfNull(nameof(predicate));
+            
+            return IsSome && predicate(_value) ? this : None;
+        }
+
+        /// <summary>
         /// Returns the number of values contained in the current option.
         /// </summary>
         /// <returns>
@@ -103,7 +119,11 @@ namespace DotFluent.Optional
         /// <param name="predicate">A function to test the value for a condition.</param>
         /// <returns>true if the option contains a value that satisfies the condition; otherwise, false.</returns>
         public bool Exists(Func<T, bool> predicate)
-            => IsSome && predicate(_value);
+        {
+            predicate.ThrowIfNull(nameof(predicate));
+
+            return IsSome && predicate(_value);
+        }
 
         /// <summary>
         /// Populates a storage object with the data needed to serialize the current option.
