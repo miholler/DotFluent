@@ -74,6 +74,74 @@ namespace DotFluent.Optional
             => new Option<T>(value);
 
         /// <summary>
+        /// Performs a specified action if the current option is a 'None' value.
+        /// </summary>
+        /// <param name="none">An action to perform if a value is missing.</param>
+        public void Match(Action none)
+        {
+            none.ThrowIfNull(nameof(none));
+
+            if (IsNone)
+                none();
+        }
+
+        /// <summary>
+        /// Performs a specified action if the current option is a 'Some' value.
+        /// </summary>
+        /// <param name="some">An action to perform if a value is present.</param>
+        public void Match(Action<T> some)
+        {
+            some.ThrowIfNull(nameof(some));
+
+            if (IsSome)
+                some(_value);
+        }
+
+        /// <summary>
+        /// Performs a specified action based on whether the current option
+        /// is a 'Some' or a 'None' value.
+        /// </summary>
+        /// <param name="some">An action to perform if a value is present.</param>
+        /// <param name="none">An action to perform if a value is missing.</param>
+        public void Match(Action<T> some, Action none)
+        {
+            some.ThrowIfNull(nameof(some));
+            none.ThrowIfNull(nameof(none));
+
+            if (IsSome)
+                some(_value);
+            else
+                none();
+        }
+
+        /// <summary>
+        /// Invokes a specified function, or returns a specified alternative value 
+        /// based on whether the current option is a 'Some' or a 'None' value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result value.</typeparam>
+        /// <param name="some">A function to invoke if a value is present.</param>
+        /// <param name="none">The value to return if a value is missing.</param>
+        /// <returns>The result of the invoked function if a value is present; otherwise the specified alternative value.</returns>
+        public TResult Match<TResult>(Func<T, TResult> some, TResult none)
+            => Match(some, () => none);
+
+        /// <summary>
+        /// Invokes a specified function based on whether the current option
+        /// is a 'Some' or a 'None' value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result value.</typeparam>
+        /// <param name="some">A function to invoke if a value is present.</param>
+        /// <param name="none">A function to invoke if a value is missing.</param>
+        /// <returns>The result of the invoked function.</returns>
+        public TResult Match<TResult>(Func<T, TResult> some, Func<TResult> none)
+        {
+            some.ThrowIfNull(nameof(some));
+            none.ThrowIfNull(nameof(none));
+
+            return IsSome ? some(_value) : none();
+        }
+
+        /// <summary>
         /// Removes the value from the current option if it does not
         /// satisfy a condition.
         /// </summary>
@@ -88,6 +156,16 @@ namespace DotFluent.Optional
             
             return IsSome && predicate(_value) ? this : None;
         }
+
+        /// <summary>
+        /// Removes the value from the current option if it is a null value.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="Option{T}"/> whose value is not null; 
+        /// otherwise, an empty <see cref="Option{T}"/>.
+        /// </returns>
+        public Option<T> Secure()
+            => Filter(x => x.IsNotNull());
 
         /// <summary>
         /// Returns the number of values contained in the current option.
