@@ -142,6 +142,41 @@ namespace DotFluent.Optional
         }
 
         /// <summary>
+        /// Projects the value of the current option into a new form using a specified function,
+        /// or returns an empty option based on whether the current option is a 'Some' or a 'None' value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the value returned by mapper.</typeparam>
+        /// <param name="mapper">A transform function to apply to the value.</param>
+        /// <returns>
+        /// An <see cref="Option{TResult}"/> whose value is the result of invoking the transform function on the source value;
+        /// otherwise, an empty <see cref="Option{TResult}"/>.
+        /// </returns>
+        public Option<TResult> Map<TResult>(Func<T, TResult> mapper)
+        {
+            mapper.ThrowIfNull(nameof(mapper));
+
+            return Match(x => Option.Some(mapper(x)), Option.None<TResult>);
+        }
+
+        /// <summary>
+        /// Projects the value of the current option into another option using a specified function
+        /// and flattens the result, or returns an empty option based on whether the current option 
+        /// is a 'Some' or a 'None' value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the value of the option returned by mapper.</typeparam>
+        /// <param name="mapper">A transform function to apply to the value.</param>
+        /// <returns>
+        /// An <see cref="Option{TResult}"/> whose value is the flattened result of invoking the transform function on the source value;
+        /// otherwise, an empty <see cref="Option{TResult}"/>.
+        /// </returns>
+        public Option<TResult> FlatMap<TResult>(Func<T, Option<TResult>> mapper)
+        {
+            mapper.ThrowIfNull(nameof(mapper));
+
+            return Match(mapper, Option.None<TResult>);
+        }
+
+        /// <summary>
         /// Removes the value from the current option if it does not
         /// satisfy a condition.
         /// </summary>
