@@ -321,12 +321,12 @@ namespace DotFluent.Optional
         #region Operators
 
         /// <summary>
-        /// Implicitly converts a value into an option that is a 'Some' value.
+        /// Implicitly converts a value into an option.
         /// </summary>
         /// <param name="value">The input value.</param>
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
         public static implicit operator Option<T>(T value)
-            => new Option<T>(value);
+            => value.IsNotNull() ? Some(value) : None;
 
         /// <summary>
         /// Performs a logical AND operation on two specified options.
