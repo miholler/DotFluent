@@ -18,7 +18,7 @@ namespace DotFluent.Optional.Linq
         /// <param name="source">The option whose value is to be transformed.</param>
         /// <param name="selector">A transform function to apply to the value.</param>
         /// <returns>
-        /// A <see cref="Option{TResult}"/> whose value is the result of invoking the transform function on the value of source; 
+        /// An <see cref="Option{TResult}"/> whose value is the result of invoking the transform function on the value of source; 
         /// otherwise, an empty <see cref="Option{TResult}"/>.
         /// </returns>
         public static Option<TResult> Select<TSource, TResult>(this Option<TSource> source, Func<TSource, TResult> selector)
