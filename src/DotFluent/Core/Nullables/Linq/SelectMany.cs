@@ -41,13 +41,7 @@ namespace DotFluent.Linq
             nullableSelector.ThrowIfNull(nameof(nullableSelector));
             resultSelector.ThrowIfNull(nameof(resultSelector));
 
-            if (source.HasValue)
-            {
-                var nullable = nullableSelector(source.Value);
-                if (nullable.HasValue)
-                    return resultSelector(source.Value, nullable.Value);
-            }
-            return new TResult?();
+            return source.FlatMap(x => nullableSelector(x).Map(y => resultSelector(x, y)));
         }
 
         #endregion
