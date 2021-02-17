@@ -177,6 +177,30 @@ namespace DotFluent.Optional
         }
 
         /// <summary>
+        /// Returns an alternative option if the current option is a 'None' value.
+        /// </summary>
+        /// <param name="other">The option to return if a value is missing.</param>
+        /// <returns>An <see cref="Option{T}"/> representing a value; otherwise, the specified alternative <see cref="Option{T}"/>.</returns>
+        public Option<T> OrElse(Option<T> other)
+            => OrElse(() => other);
+
+        /// <summary>
+        /// Returns an alternative option created by a specified function 
+        /// if the current option is a 'None' value.
+        /// </summary>
+        /// <param name="otherFactory">A function to create an alternative option.</param>
+        /// <returns>
+        /// An <see cref="Option{T}"/> representing a value; otherwise, an alternative <see cref="Option{T}"/> created by
+        /// the specified function.
+        /// </returns>
+        public Option<T> OrElse(Func<Option<T>> otherFactory)
+        {
+            otherFactory.ThrowIfNull(nameof(otherFactory));
+
+            return IsSome ? this : otherFactory();
+        }
+
+        /// <summary>
         /// Removes the value from the current option if it does not
         /// satisfy a condition.
         /// </summary>

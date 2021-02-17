@@ -24,7 +24,7 @@ namespace DotFluent.Optional.Unsafe
         /// </summary>
         /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <param name="source">The option to retrieve the value of.</param>
-        /// <param name="defaultValue">The value to return if the option is a 'None' value.</param>
+        /// <param name="defaultValue">The value to return if a value is missing.</param>
         /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the defaultValue parameter.</returns>
         public static TSource GetValueOrDefault<TSource>(this Option<TSource> source, TSource defaultValue)
             => source.GetValueOrDefault(() => defaultValue);
