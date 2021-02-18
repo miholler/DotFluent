@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DotFluent.Tests.Tasks
+namespace DotFluent.Tasks
 {
     public abstract class TaskTest
     {

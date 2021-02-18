@@ -1,11 +1,10 @@
-﻿using DotFluent.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DotFluent.Tests.Tasks
+namespace DotFluent.Tasks
 {
     [TestClass]
     public sealed class ThenTest : TaskTest
