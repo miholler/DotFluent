@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DotFluent.Tests.Strings
+namespace DotFluent
 {
     [TestClass]
-    public sealed class IsNullOrWhiteSpaceTest
+    public sealed class StringIsNullOrWhiteSpaceTest
     {
         #region Methods
 

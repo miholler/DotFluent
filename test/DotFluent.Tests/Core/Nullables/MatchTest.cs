@@ -2,10 +2,10 @@
 using Shouldly;
 using System;
 
-namespace DotFluent.Tests.Nullables
+namespace DotFluent
 {
     [TestClass]
-    public sealed class MatchTest
+    public sealed class NullableMatchTest
     {
         #region Methods
 
