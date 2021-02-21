@@ -24,7 +24,7 @@ namespace DotFluent
         [TestMethod]
         public void SomeNullThrowsException()
         {
-            var source = new int?();
+            var source = new int?(0);
             Action<int> some = null;
             Func<int, int> someFunc = null;
 
@@ -35,49 +35,38 @@ namespace DotFluent
         }
 
         [TestMethod]
-        public void MatchNone()
-        {
-            var invoked = false;
-            var source = new int?();
-
-            source.Match(() => invoked = true);
-
-            invoked.ShouldBeTrue();
-        }
-
-        [TestMethod]
-        public void MatchSome()
-        {
-            var invoked = false;
-            var source = new int?(1);
-
-            source.Match(x => invoked = x == 1);
-
-            invoked.ShouldBeTrue();
-        }
-
-        [TestMethod]
-        [DataRow(null, 1, -1, -1)]
-        [DataRow(1, 1, -1, 2)]
-        public void MatchWithActions(int? source, int some, int none, int expectedResult)
+        [DataRow(null, 1, 1, 0)]
+        [DataRow(1, 1, 2, 1)]
+        [DataRow(1, 1, 2, 2)]
+        [DataRow(null, 1, 1, 2)]
+        [DataRow(1, 1, 2, 3)]
+        [DataRow(null, 1, 1, 3)]
+        [DataRow(1, 1, 2, 4)]
+        [DataRow(null, 1, 1, 4)]
+        public void Match(int? source, int value, int expectedResult, int overload)
         {
             var result = 0;
-            source.Match(x => { result = x + some; }, () => { result = none; });
-
+            
+            switch (overload)
+            {
+                case 1:
+                    source.Match(x => result = x + value);
+                    break;
+                case 2:
+                    source.Match(x => { result = x + value; }, () => { result = value; });
+                    break;
+                case 3:
+                    result = source.Match(x => x + value, value);
+                    break;
+                case 4:
+                    result = source.Match(x => x + value, () => value);
+                    break;
+                default:
+                    source.Match(() => result = value);
+                    break;
+            }
             result.ShouldBe(expectedResult);
         }
-
-        [TestMethod]
-        [DataRow(null, 1, -1, -1)]
-        [DataRow(1, 1, -1, 2)]
-        public void MatchWithFuncAndValue(int? source, int some, int none, int expectedResult)
-            => source.Match(x => x + some, none).ShouldBe(expectedResult);
-
-        [TestMethod]
-        [DataRow(null, 1, -1, -1)]
-        [DataRow(1, 1, -1, 2)]
-        public void MatchWithFuncs(int? source, int some, int none, int expectedResult)
-            => source.Match(x => x + some, () => none).ShouldBe(expectedResult);
 
         #endregion
     }
