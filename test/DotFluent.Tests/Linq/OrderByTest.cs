@@ -1,10 +1,9 @@
-﻿using DotFluent.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotFluent.Tests.Linq
+namespace DotFluent.Linq
 {
     [TestClass]
     public sealed class OrderByTest

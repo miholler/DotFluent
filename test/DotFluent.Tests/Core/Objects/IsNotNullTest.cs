@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DotFluent.Tests.Objects
+namespace DotFluent
 {
     [TestClass]
-    public sealed class IsNotNullTest
+    public sealed class ObjectIsNotNullTest
     {
         #region Methods
 

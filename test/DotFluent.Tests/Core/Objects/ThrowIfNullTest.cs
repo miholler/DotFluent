@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace DotFluent.Tests.Objects
+namespace DotFluent
 {
     [TestClass]
-    public sealed class ThrowIfNullTest
+    public sealed class ObjectThrowIfNullTest
     {
         #region Methods
 

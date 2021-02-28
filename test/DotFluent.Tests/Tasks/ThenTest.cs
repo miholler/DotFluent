@@ -1,10 +1,10 @@
-﻿using DotFluent.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DotFluent.Tests.Tasks
+namespace DotFluent.Tasks
 {
     [TestClass]
     public sealed class ThenTest : TaskTest
@@ -12,54 +12,64 @@ namespace DotFluent.Tests.Tasks
         #region Methods
 
         [TestMethod]
-        public async Task SourceNullThrowsException()
+        public void SourceNullThrowsException()
         {
             Task<int> source = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(() => { }));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(() => { }, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(() => 0));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(() => 0, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(() => Task.FromResult(0)));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(() => Task.FromResult(0), TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(x => { x++; }));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(x => { x++; }, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(x => x++));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(x => x++, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(x => Task.FromResult(++x)));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(x => Task.FromResult(++x), TaskScheduler.Current));
+            source.Awaiting(x => x.Then(() => { })).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => { }, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => Task.CompletedTask)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => Task.CompletedTask, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => 0)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => 0, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => Task.FromResult(0))).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(() => Task.FromResult(0), TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => { x++; })).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => { x++; }, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => Task.CompletedTask)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => Task.CompletedTask, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => x++)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => x++, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => Task.FromResult(++x))).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(x => Task.FromResult(++x), TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
-        public async Task ActionNullThrowsException()
+        public void ActionNullThrowsException()
         {
             var source = Task.FromResult(0);
             Action action = null;
             Action<int> genericAction = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(action));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(action, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(genericAction));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(genericAction, TaskScheduler.Current));
+            source.Awaiting(x => x.Then(action)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(action, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(genericAction)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(genericAction, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
-        public async Task SelectorNullThrowsException()
+        public void SelectorNullThrowsException()
         {
             var source = Task.FromResult(0);
+            Func<Task> taskSelector = null;
             Func<int> selector = null;
+            Func<Task<int>> genericTaskSelector = null;
+            Func<int, Task> taskResultSelector = null;
             Func<int, int> resultSelector = null;
-            Func<Task<int>> taskSelector = null;
-            Func<int, Task<int>> taskResultSelector = null;
+            Func<int, Task<int>> genericTaskResultSelector = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(selector));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(selector, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(resultSelector));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(resultSelector, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(taskSelector));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(taskSelector, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(taskResultSelector));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Then(taskResultSelector, TaskScheduler.Current));
+            source.Awaiting(x => x.Then(taskSelector)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(taskSelector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(selector)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(selector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(genericTaskSelector)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(genericTaskSelector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(taskResultSelector)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(taskResultSelector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(resultSelector)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(resultSelector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(genericTaskResultSelector)).ShouldThrow<ArgumentNullException>();
+            source.Awaiting(x => x.Then(genericTaskResultSelector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -71,49 +81,339 @@ namespace DotFluent.Tests.Tasks
                 .Then(() => { result++; })
                     .Then(() => { result++; }, null);
 
-            Assert.AreEqual(result, 3);
+            result.ShouldBe(3);
         }
 
         [TestMethod]
-        public async Task ThenCanceled()
+        public void ThenCanceled()
         {
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.CompletedTask
+                Task.CompletedTask
+                    .Awaiting(x => x
                         .Then(() => cts.Cancel(), cts.Token)
-                            .Then(ShouldNotBeCalled, cts.Token));
+                            .Then(ShouldNotBeCalled, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
 
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled(cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token));
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(ShouldNotBeCalled, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
 
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.CompletedTask
+                Task.CompletedTask
+                    .Awaiting(x => x
                         .Then(() => cts.Cancel(), null, cts.Token)
-                            .Then(ShouldNotBeCalled, null, cts.Token));
+                            .Then(ShouldNotBeCalled, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
 
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled(cts.Token)
-                        .Then(ShouldNotBeCalled, null, cts.Token));
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(ShouldNotBeCalled, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
         }
 
         [TestMethod]
-        public async Task ThenFaulted()
+        public void ThenFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.CompletedTask
-                    .Then(ThrowException)
-                        .Then(ShouldNotBeCalled));
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentException)
+                        .Then(ShouldNotBeCalled))
+                .ShouldThrow<ArgumentException>();
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentException, null)
+                        .Then(ShouldNotBeCalled, null))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [TestMethod]
+        public async Task ThenWithTaskSelector()
+        {
+            var result = 1;
+
+            await Task.CompletedTask
+                .Then(() => 
+                { 
+                    result++;
+                    return Task.CompletedTask;
+                })
+                .Then(() => 
+                { 
+                    result++;
+                    return Task.CompletedTask;
+                }, null);
+
+            result.ShouldBe(3);
+        }
+
+        [TestMethod]
+        public void ThenWithTaskSelectorCanceled()
+        {
+            using (var cts = new CancellationTokenSource())
+            {
                 Task.CompletedTask
-                    .Then(ThrowException, null)
-                        .Then(ShouldNotBeCalled, null));
+                    .Awaiting(x => x
+                        .Then(() =>
+                        { 
+                            cts.Cancel();
+                            return Task.CompletedTask;
+                        }, cts.Token)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.CompletedTask;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.CompletedTask;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+            }
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.CompletedTask
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            cts.Cancel();
+                            return Task.CompletedTask;
+                        }, null, cts.Token)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.CompletedTask;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.CompletedTask;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+            }
+        }
+
+        [TestMethod]
+        public void ThenWithTaskSelectorFaulted()
+        {
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionTaskSelector)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.CompletedTask;
+                        }))
+                .ShouldThrow<ArgumentException>();
+
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionTaskSelector, null)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.CompletedTask;
+                        }, null))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [TestMethod]
+        public async Task ThenWithSelector()
+        {
+            var firstResult = await Task.CompletedTask
+                .Then(() => 1);
+
+            var secondResult = await Task.CompletedTask
+                .Then(() => 1, null);
+
+            firstResult.ShouldBe(secondResult);
+        }
+
+        [TestMethod]
+        public void ThenWithSelectorCanceled()
+        {
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.CompletedTask
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            cts.Cancel();
+                            return 0;
+                        }, cts.Token)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return 0;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return 0;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+            }
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.CompletedTask
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            cts.Cancel();
+                            return 0;
+                        }, null, cts.Token)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return 0;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return 0;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+            }
+        }
+
+        [TestMethod]
+        public void ThenWithSelectorFaulted()
+        {
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionSelector)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return 0;
+                        }))
+                .ShouldThrow<ArgumentException>();
+
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionSelector, null)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return 0;
+                        }, null))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [TestMethod]
+        public async Task ThenWithGenericTaskSelector()
+        {
+            var firstResult = await Task.CompletedTask
+                .Then(() => Task.FromResult(1));
+
+            var secondResult = await Task.CompletedTask
+                .Then(() => Task.FromResult(1), null);
+
+            firstResult.ShouldBe(secondResult);
+        }
+
+        [TestMethod]
+        public void ThenWithGenericTaskSelectorCanceled()
+        {
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.CompletedTask
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            cts.Cancel();
+                            return Task.FromResult(0);
+                        }, cts.Token)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(0);
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(0);
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+            }
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task.CompletedTask
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            cts.Cancel();
+                            return Task.FromResult(0);
+                        }, null, cts.Token)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(0);
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled(cts.Token)
+                    .Awaiting(x => x
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(0);
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+            }
+        }
+
+        [TestMethod]
+        public void ThenWithGenericTaskSelectorFaulted()
+        {
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionGenericTaskSelector)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(0);
+                        }))
+                .ShouldThrow<ArgumentException>();
+
+            Task.CompletedTask
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionGenericTaskSelector, null)
+                        .Then(() =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(0);
+                        }, null))
+                .ShouldThrow<ArgumentException>();
         }
 
         [TestMethod]
@@ -127,129 +427,165 @@ namespace DotFluent.Tests.Tasks
             await Task.FromResult(1)
                 .Then(x => { result += x; }, null);
 
-            Assert.AreEqual(result, 3);
+            result.ShouldBe(3);
         }
 
         [TestMethod]
-        public async Task ThenWithGenericActionCanceled()
+        public void ThenWithGenericActionCanceled()
         {
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromResult(0)
-                        .Then(x => cts.Cancel(), cts.Token)
-                            .Then(ShouldNotBeCalled, cts.Token));
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y => cts.Cancel(), cts.Token)
+                            .Then(() => 0)
+                                .Then(y => ShouldNotBeCalled(), cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
 
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled<int>(cts.Token)
-                        .Then(x => ShouldNotBeCalled(), cts.Token));
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y => ShouldNotBeCalled(), cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
 
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromResult(0)
-                        .Then(x => cts.Cancel(), null, cts.Token)
-                            .Then(ShouldNotBeCalled, null, cts.Token));
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y => cts.Cancel(), null, cts.Token)
+                            .Then(() => 0, null)
+                                .Then(y => ShouldNotBeCalled(), null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
 
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled<int>(cts.Token)
-                        .Then(x => ShouldNotBeCalled(), null, cts.Token));
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y => ShouldNotBeCalled(), null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
         }
 
         [TestMethod]
-        public async Task ThenWithGenericActionFaulted()
+        public void ThenWithGenericActionFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.FromResult(0)
-                    .Then(ThrowException)
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentException)
                         .Then(() => 0)
-                            .Then(x => ShouldNotBeCalled()));
+                            .Then(y => ShouldNotBeCalled()))
+                .ShouldThrow<ArgumentException>();
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.FromResult(0)
-                    .Then(ThrowException, null)
-                        .Then(() => 0)
-                            .Then(x => ShouldNotBeCalled(), null));
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentException, null)
+                        .Then(() => 0, null)
+                            .Then(y => ShouldNotBeCalled(), null))
+                .ShouldThrow<ArgumentException>();
         }
 
         [TestMethod]
-        public async Task ThenWithSelector()
+        public async Task ThenWithTaskResultSelector()
         {
-            var firstResult = await Task.CompletedTask
-                .Then(() => 1);
+            var result = 1;
 
-            var secondResult = await Task.CompletedTask
-                .Then(() => 1, null);
+            await Task.FromResult(1)
+                .Then(x =>
+                {
+                    result += x;
+                    return Task.CompletedTask;
+                });
 
-            Assert.AreEqual(firstResult, secondResult);
+            await Task.FromResult(1)
+                .Then(x =>
+                {
+                    result += x;
+                    return Task.CompletedTask;
+                }, null);
+
+            result.ShouldBe(3);
         }
 
         [TestMethod]
-        public async Task ThenWithSelectorCanceled()
+        public void ThenWithTaskResultSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.CompletedTask
-                        .Then(() =>
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             cts.Cancel();
-                            return 0;
+                            return Task.CompletedTask;
                         }, cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token));
+                            .Then(() => 0)
+                                .Then(y =>
+                                {
+                                    ShouldNotBeCalled();
+                                    return Task.CompletedTask;
+                                }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
 
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled(cts.Token)
-                        .Then(() =>
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return 0;
-                        }, cts.Token));
+                            return Task.CompletedTask;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
 
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.CompletedTask
-                        .Then(() =>
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             cts.Cancel();
-                            return 0;
+                            return Task.CompletedTask;
                         }, null, cts.Token)
-                        .Then(ShouldNotBeCalled, null, cts.Token));
+                            .Then(() => 0, null)
+                                .Then(y =>
+                                {
+                                    ShouldNotBeCalled();
+                                    return Task.CompletedTask;
+                                }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
 
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled(cts.Token)
-                        .Then(() =>
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return 0;
-                        }, null, cts.Token));
+                            return Task.CompletedTask;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
         }
 
         [TestMethod]
-        public async Task ThenWithSelectorFaulted()
+        public void ThenWithTaskResultSelectorFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() => 
-                Task.CompletedTask
-                    .Then(ThrowExceptionSelector)
-                        .Then(() =>
-                        {
-                            ShouldNotBeCalled();
-                            return 0;
-                        }));
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionTaskSelector)
+                        .Then(() => 0)
+                            .Then(y =>
+                            {
+                                ShouldNotBeCalled();
+                                return Task.CompletedTask;
+                            }))
+                .ShouldThrow<ArgumentException>();
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.CompletedTask
-                    .Then(ThrowExceptionSelector, null)
-                        .Then(() =>
-                        {
-                            ShouldNotBeCalled();
-                            return 0;
-                        }, null));
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionTaskSelector, null)
+                        .Then(() => 0, null)
+                            .Then(y =>
+                            {
+                                ShouldNotBeCalled();
+                                return Task.CompletedTask;
+                            }, null))
+                .ShouldThrow<ArgumentException>();
         }
 
         [TestMethod]
@@ -261,155 +597,91 @@ namespace DotFluent.Tests.Tasks
             var secondResult = await Task.FromResult(2)
                 .Then(x => ++x, null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            firstResult.ShouldBe(secondResult);
         }
 
         [TestMethod]
-        public async Task ThenWithResultSelectorCanceled()
+        public void ThenWithResultSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromResult(0)
-                        .Then(x =>
-                        {
-                            cts.Cancel();
-                            return x;
-                        }, cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token));
-
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled<int>(cts.Token)
-                        .Then(x =>
-                        {
-                            ShouldNotBeCalled();
-                            return 0;
-                        }, cts.Token));
-            }
-
-            using (var cts = new CancellationTokenSource())
-            {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromResult(0)
-                        .Then(x =>
-                        {
-                            cts.Cancel();
-                            return x;
-                        }, null, cts.Token)
-                        .Then(ShouldNotBeCalled, null, cts.Token));
-
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled<int>(cts.Token)
-                        .Then(x =>
-                        {
-                            ShouldNotBeCalled();
-                            return 0;
-                        }, null, cts.Token));
-            }
-        }
-
-        [TestMethod]
-        public async Task ThenWithResultSelectorFaulted()
-        {
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
                 Task.FromResult(0)
-                    .Then(ThrowExceptionSelector)
-                        .Then(x =>
-                        {
-                            ShouldNotBeCalled();
-                            return x;
-                        }));
-
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.FromResult(0)
-                    .Then(ThrowExceptionSelector, null)
-                        .Then(x =>
-                        {
-                            ShouldNotBeCalled();
-                            return x;
-                        }, null));
-        }
-
-        [TestMethod]
-        public async Task ThenWithTaskSelector()
-        {
-            var firstResult = await Task.CompletedTask
-                .Then(() => Task.FromResult(1));
-
-            var secondResult = await Task.CompletedTask
-                .Then(() => Task.FromResult(1), null);
-
-            Assert.AreEqual(firstResult, secondResult);
-        }
-
-        [TestMethod]
-        public async Task ThenWithTaskSelectorCanceled()
-        {
-            using (var cts = new CancellationTokenSource())
-            {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.CompletedTask
-                        .Then(() =>
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             cts.Cancel();
-                            return Task.FromResult(0);
+                            return y;
                         }, cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token));
-
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled(cts.Token)
-                        .Then(() =>
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(0);
-                        }, cts.Token));
+                            return y;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y =>
+                        {
+                            ShouldNotBeCalled();
+                            return y;
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
 
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.CompletedTask
-                        .Then(() =>
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             cts.Cancel();
-                            return Task.FromResult(0);
+                            return y;
                         }, null, cts.Token)
-                        .Then(ShouldNotBeCalled, null, cts.Token));
-
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled(cts.Token)
-                        .Then(() =>
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(0);
-                        }, null, cts.Token));
+                            return y;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y =>
+                        {
+                            ShouldNotBeCalled();
+                            return y;
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
         }
 
         [TestMethod]
-        public async Task ThenWithTaskSelectorFaulted()
+        public void ThenWithResultSelectorFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.CompletedTask
-                    .Then(ThrowExceptionTaskSelector)
-                        .Then(() =>
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionSelector)
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(0);
-                        }));
+                            return y;
+                        }))
+                .ShouldThrow<ArgumentException>();
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.CompletedTask
-                    .Then(ThrowExceptionTaskSelector, null)
-                        .Then(() =>
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionSelector, null)
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(0);
-                        }, null));
+                            return y;
+                        }, null))
+                .ShouldThrow<ArgumentException>();
         }
 
         [TestMethod]
-        public async Task ThenWithTaskResultSelector()
+        public async Task ThenWithGenericTaskResultSelector()
         {
             var firstResult = await Task.FromResult(1)
                 .Then(x => Task.FromResult(x + 2));
@@ -417,102 +689,128 @@ namespace DotFluent.Tests.Tasks
             var secondResult = await Task.FromResult(2)
                 .Then(x => Task.FromResult(++x), null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            firstResult.ShouldBe(secondResult);
         }
 
         [TestMethod]
-        public async Task ThenWithTaskResultSelectorCanceled()
+        public void ThenWithGenericTaskResultSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromResult(0)
-                        .Then(x =>
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             cts.Cancel();
-                            return Task.FromResult(x);
+                            return Task.FromResult(y);
                         }, cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token));
-
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled<int>(cts.Token)
-                        .Then(x =>
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(x);
-                        }, cts.Token));
+                            return Task.FromResult(y);
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(y);
+                        }, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
 
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromResult(0)
-                        .Then(x =>
+                Task.FromResult(0)
+                    .Awaiting(x => x
+                        .Then(y =>
                         {
                             cts.Cancel();
-                            return Task.FromResult(x);
+                            return Task.FromResult(y);
                         }, null, cts.Token)
-                        .Then(ShouldNotBeCalled, null, cts.Token));
-
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
-                    Task.FromCanceled<int>(cts.Token)
-                        .Then(x =>
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(x);
-                        }, null, cts.Token));
+                            return Task.FromResult(y);
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
+
+                Task.FromCanceled<int>(cts.Token)
+                    .Awaiting(x => x
+                        .Then(y =>
+                        {
+                            ShouldNotBeCalled();
+                            return Task.FromResult(y);
+                        }, null, cts.Token))
+                    .ShouldThrow<TaskCanceledException>();
             }
         }
 
         [TestMethod]
-        public async Task ThenWithTaskResultSelectorFaulted()
+        public void ThenWithGenericTaskResultSelectorFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.FromResult(0)
-                    .Then(ThrowExceptionTaskSelector)
-                        .Then(x =>
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionGenericTaskSelector)
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(x);
-                        }));
+                            return Task.FromResult(y);
+                        }))
+                .ShouldThrow<ArgumentException>();
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
-                Task.FromResult(0)
-                    .Then(ThrowExceptionTaskSelector, null)
-                        .Then(x =>
+            Task.FromResult(0)
+                .Awaiting(x => x
+                    .Then(ThrowArgumentExceptionGenericTaskSelector, null)
+                        .Then(y =>
                         {
                             ShouldNotBeCalled();
-                            return Task.FromResult(x);
-                        }, null));
+                            return Task.FromResult(y);
+                        }, null))
+                .ShouldThrow<ArgumentException>();
         }
 
-        private static void ThrowException()
-            => throw new Exception("This is expected!");
+        private static void ThrowArgumentException()
+            => throw new ArgumentException("This is expected!");
 
-        private static void ThrowException<T>(T _)
-            => ThrowException();
+        private static void ThrowArgumentException<T>(T _)
+            => ThrowArgumentException();
 
-        private static int ThrowExceptionSelector()
+        private static int ThrowArgumentExceptionSelector()
         {
-            ThrowException();
+            ThrowArgumentException();
             return 0;
         }
 
-        private static T ThrowExceptionSelector<T>(T arg)
+        private static T ThrowArgumentExceptionSelector<T>(T arg)
         {
-            ThrowException();
+            ThrowArgumentException();
             return arg;
         }
 
-        private static Task<int> ThrowExceptionTaskSelector()
+        private static Task ThrowArgumentExceptionTaskSelector()
         {
-            ThrowException();
+            ThrowArgumentException();
+            return Task.CompletedTask;
+        }
+
+        private static Task ThrowArgumentExceptionTaskSelector<T>(T _)
+        {
+            ThrowArgumentException();
+            return Task.CompletedTask;
+        }
+
+        private static Task<int> ThrowArgumentExceptionGenericTaskSelector()
+        {
+            ThrowArgumentException();
             return Task.FromResult(0);
         }
 
-        private static Task<T> ThrowExceptionTaskSelector<T>(T arg)
+        private static Task<T> ThrowArgumentExceptionGenericTaskSelector<T>(T arg)
         {
-            ThrowException();
+            ThrowArgumentException();
             return Task.FromResult(arg);
         }
 

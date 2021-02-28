@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DotFluent.Tests.Strings
+namespace DotFluent
 {
     [TestClass]
-    public sealed class IsLikeTest
+    public sealed class StringIsLikeTest
     {
         #region Methods
 

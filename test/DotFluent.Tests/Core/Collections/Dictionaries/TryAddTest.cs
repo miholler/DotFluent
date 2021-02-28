@@ -3,10 +3,10 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 
-namespace DotFluent.Tests.Collections.Dictionaries
+namespace DotFluent
 {
     [TestClass]
-    public sealed class TryAddTest
+    public sealed class DictionaryTryAddTest
     {
         #region Methods
 
