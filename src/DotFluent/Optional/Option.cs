@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace DotFluent.Optional
 {
@@ -26,6 +27,7 @@ namespace DotFluent.Optional
             IsSome = true;
         }
 
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         private Option(SerializationInfo info, StreamingContext context)
         {
             IsSome = (bool)info.GetValue(nameof(IsSome), typeof(bool));
@@ -267,6 +269,7 @@ namespace DotFluent.Optional
         /// </summary>
         /// <param name="info">The storage object to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(IsSome), IsSome);
