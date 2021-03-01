@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Provides a set of types and extension methods to chain method calls and increase code readability.</Description>
     <PackageProjectUrl>https://bitbucket.org/miholler/dotfluent/wiki/Home</PackageProjectUrl>
-    <PackageTags>Fluent, Extensions, Linq, Task, Promise</PackageTags>
+    <PackageTags>Fluent, Extensions, Linq, Task, Promise, Option, Maybe</PackageTags>
   </PropertyGroup>
 
 </Project>
