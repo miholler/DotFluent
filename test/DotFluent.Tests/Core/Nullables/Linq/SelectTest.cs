@@ -1,12 +1,11 @@
-﻿using DotFluent.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System;
 
-namespace DotFluent.Tests.Nullables.Linq
+namespace DotFluent.Linq
 {
     [TestClass]
-    public sealed class SelectTest
+    public sealed class NullableSelectTest
     {
         #region Methods
 

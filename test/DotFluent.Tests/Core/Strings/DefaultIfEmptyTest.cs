@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace DotFluent.Tests.Strings
+namespace DotFluent
 {
     [TestClass]
-    public sealed class DefaultIfEmptyTest
+    public sealed class StringDefaultIfEmptyTest
     {
         #region Methods
 

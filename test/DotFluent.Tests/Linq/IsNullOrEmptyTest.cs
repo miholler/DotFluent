@@ -1,8 +1,7 @@
-﻿using DotFluent.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace DotFluent.Tests.Linq
+namespace DotFluent.Linq
 {
     [TestClass]
     public sealed class IsNullOrEmptyTest

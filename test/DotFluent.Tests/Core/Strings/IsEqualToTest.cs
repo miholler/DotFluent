@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace DotFluent.Tests.Strings
+namespace DotFluent
 {
     [TestClass]
-    public sealed class IsEqualToTest
+    public sealed class StringIsEqualToTest
     {
         #region Methods
 

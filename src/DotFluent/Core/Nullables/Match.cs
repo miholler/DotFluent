@@ -63,11 +63,7 @@ namespace DotFluent
         /// <param name="none">The value to return if a value is missing.</param>
         /// <returns>The result of the invoked function if a value is present; otherwise the specified alternative value.</returns>
         public static TResult Match<TSource, TResult>(this TSource? source, Func<TSource, TResult> some, TResult none) where TSource : struct
-        {
-            some.ThrowIfNull(nameof(some));
-
-            return source.HasValue ? some(source.Value) : none;
-        }
+            => source.Match(some, () => none);
 
         /// <summary>
         /// Invokes a specified function based on whether a nullable object has a value.

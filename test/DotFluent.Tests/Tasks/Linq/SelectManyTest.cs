@@ -1,9 +1,8 @@
-﻿using DotFluent.Tasks.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
 
-namespace DotFluent.Tests.Tasks.Linq
+namespace DotFluent.Tasks.Linq
 {
     [TestClass]
     public sealed class SelectManyTest
