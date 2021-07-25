@@ -11,7 +11,7 @@
         /// <param name="source">The nullable object to create an option from.</param>
         /// <returns>An <see cref="Option{TSource}"/> representing the value of source.</returns>
         public static Option<TSource> ToOption<TSource>(this TSource? source) where TSource : struct
-            => source.Match(x => Some(x), None<TSource>);
+            => source.Match(Some, None<TSource>);
 
         #endregion
     }
