@@ -66,6 +66,8 @@ namespace DotFluent.Optional
 
         [TestMethod]
         [DataRow(null, 1, 1, 0)]
+        [DataRow(1, 0, 0, 0)]
+        [DataRow(null, 0, 0, 1)]
         [DataRow(1, 1, 2, 1)]
         [DataRow(1, 1, 2, 2)]
         [DataRow(null, 1, 1, 2)]
