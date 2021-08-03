@@ -5,10 +5,6 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    /// <summary>
-    /// Provides a set of static methods for working with 
-    /// <see cref="Option{T}"/> instances asynchronously.
-    /// </summary>
     public static partial class OptionTask
     {
         #region Methods
@@ -33,7 +29,7 @@ namespace DotFluent.Optional.Tasks
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<Option<TResult>>(cancellationToken)
-                : source.Match(x => mapper(x).Then(Option.Some, cancellationToken), () => Task.FromResult(Option.None<TResult>()));
+                : source.Match(x => mapper(x)?.Then(Option.Some, cancellationToken), () => Task.FromResult(Option.None<TResult>()));
         }
 
         #endregion

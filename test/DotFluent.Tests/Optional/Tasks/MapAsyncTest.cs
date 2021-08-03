@@ -30,7 +30,7 @@ namespace DotFluent.Optional.Tasks
 
             await option
                 .Awaiting(x => x.MapAsync(_ => default(Task<int>)))
-                .ShouldThrowAsync<ArgumentNullException>();
+                .ShouldThrowAsync<NullReferenceException>();
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
-        public async Task MapAsyncCanceledBefore()
+        public async Task MapAsyncCanceled()
         {
             var option = await OptionTask.NoneAsync<int>();
             using var cts = new CancellationTokenSource();
@@ -57,7 +57,7 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
-        public async Task MapAsyncCanceled()
+        public async Task MapAsyncMappingCanceled()
         {
             var option = await OptionTask.SomeAsync(0);
             using var cts = new CancellationTokenSource();
