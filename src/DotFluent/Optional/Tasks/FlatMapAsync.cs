@@ -28,7 +28,7 @@ namespace DotFluent.Optional.Tasks
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<Option<TResult>>(cancellationToken)
-                : source.Match(mapper, () => Task.FromResult(Option.None<TResult>()));
+                : source.Match(mapper, None<TResult>);
         }
 
         #endregion
