@@ -26,7 +26,7 @@ namespace DotFluent.Optional.Tasks
         public async Task FlattenAsyncCanceled()
         {
             var option = await OptionTask.None<Option<int>>();
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             cts.Cancel();
 
             await option

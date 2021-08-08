@@ -38,11 +38,11 @@ namespace DotFluent
         }
 
         [TestMethod]
-        [DataRow(0, 1, 2, false)]
-        [DataRow(1, 1, 2, false)]
-        [DataRow(0, 1, 2, true)]
-        [DataRow(1, 1, 2, true)]
-        public void GetOrAdd(int overload, int key, int value, bool isExisting)
+        [DataRow(1, 2, false, 0)]
+        [DataRow(1, 2, false, 1)]
+        [DataRow(1, 2, true, 0)]
+        [DataRow(1, 2, true, 1)]
+        public void GetOrAdd(int key, int value, bool isExisting, int overload)
         {
             var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>();
             var result = overload switch

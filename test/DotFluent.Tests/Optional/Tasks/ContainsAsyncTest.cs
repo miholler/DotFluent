@@ -48,7 +48,7 @@ namespace DotFluent.Optional.Tasks
         public async Task ContainsAsyncCanceled()
         {
             var option = await OptionTask.None<int>();
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             cts.Cancel();
 
             await option
@@ -60,7 +60,7 @@ namespace DotFluent.Optional.Tasks
         public async Task ContainsAsyncValueFactoryCanceled()
         {
             var option = await OptionTask.None<int>();
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
 
             await option
                 .Awaiting(x => x.ContainsAsync(() =>

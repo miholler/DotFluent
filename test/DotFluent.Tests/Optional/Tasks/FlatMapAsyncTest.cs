@@ -38,7 +38,7 @@ namespace DotFluent.Optional.Tasks
         public async Task FlatMapAsyncCanceled()
         {
             var option = await OptionTask.None<int>();
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             cts.Cancel();
 
             await option

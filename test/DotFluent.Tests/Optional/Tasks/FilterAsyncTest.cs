@@ -49,7 +49,7 @@ namespace DotFluent.Optional.Tasks
         public async Task FilterAsyncCanceled()
         {
             var option = await OptionTask.None<int>();
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             cts.Cancel();
 
             await option
@@ -61,7 +61,7 @@ namespace DotFluent.Optional.Tasks
         public async Task FilterAsyncPredicateCanceled()
         {
             var option = await OptionTask.Some(0);
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
 
             await option
                 .Awaiting(x => x.FilterAsync(_ =>
