@@ -14,12 +14,12 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task SourceNullThrowsException()
         {
-            Task<Option<int>> source = null;
+            Task<Option<int>> optionTask = null;
 
-            await source
+            await optionTask
                 .Awaiting(x => x.ContainsAsync(0))
                 .ShouldThrowAsync<ArgumentNullException>();
-            await source
+            await optionTask
                 .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0)))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
@@ -27,10 +27,10 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ValueFactoryNullThrowsException()
         {
-            var source = OptionTask.None<int>();
+            var optionTask = OptionTask.None<int>();
             Func<Task<int>> valueFactory = null;
 
-            await source
+            await optionTask
                 .Awaiting(x => x.ContainsAsync(valueFactory))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
@@ -44,11 +44,11 @@ namespace DotFluent.Optional.Tasks
         [DataRow(1, 1, true, 1)]
         public async Task ContainsAsync(int? source, int value, bool expectedResult, int overload)
         {
-            var sourceTask = source.ToOptionAsync();
+            var optionTask = source.ToOptionAsync();
             var result = overload switch
             {
-                1 => await sourceTask.ContainsAsync(() => Task.FromResult(value)),
-                _ => await sourceTask.ContainsAsync(value)
+                1 => await optionTask.ContainsAsync(() => Task.FromResult(value)),
+                _ => await optionTask.ContainsAsync(value)
             };
 
             result.ShouldBe(expectedResult);
@@ -57,14 +57,14 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ContainsAsyncCanceled()
         {
-            var source = OptionTask.None<int>();
+            var optionTask = OptionTask.None<int>();
             using var cts = new CancellationTokenSource();
             cts.Cancel();
 
-            await source
+            await optionTask
                 .Awaiting(x => x.ContainsAsync(0, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
-            await source
+            await optionTask
                 .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
         }
