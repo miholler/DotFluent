@@ -15,7 +15,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task OtherFactoryNullThrowsException()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             Func<Task<Option<int>>> otherFactory = null;
 
             await option
@@ -39,12 +39,12 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task OrElseAsyncCanceled()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             var cts = new CancellationTokenSource();
             cts.Cancel();
 
             await option
-                .OrElseAsync(() => OptionTask.NoneAsync<int>(), cts.Token)
+                .OrElseAsync(() => OptionTask.None<int>(), cts.Token)
                 .ShouldThrowAsync<TaskCanceledException>();
         }
 

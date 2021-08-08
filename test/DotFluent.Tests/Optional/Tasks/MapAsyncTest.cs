@@ -15,7 +15,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task MapperNullThrowsException()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             Func<int, Task<int>> mapper = null;
 
             await option
@@ -26,7 +26,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task MapperReturningNullThrowsException()
         {
-            var option = await OptionTask.SomeAsync(0);
+            var option = await OptionTask.Some(0);
 
             await option
                 .Awaiting(x => x.MapAsync(_ => default(Task<int>)))
@@ -47,7 +47,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task MapAsyncCanceled()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             using var cts = new CancellationTokenSource();
             cts.Cancel();
 
@@ -59,7 +59,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task MapAsyncMappingCanceled()
         {
-            var option = await OptionTask.SomeAsync(0);
+            var option = await OptionTask.Some(0);
             using var cts = new CancellationTokenSource();
 
             await option

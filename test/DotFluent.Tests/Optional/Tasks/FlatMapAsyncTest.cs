@@ -15,7 +15,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task MapperNullThrowsException()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             Func<int, Task<Option<int>>> mapper = null;
 
             await option
@@ -29,7 +29,7 @@ namespace DotFluent.Optional.Tasks
         public async Task FlatMapAsync(int? source, IEnumerable<int> expectedResult)
         {
             var option = await source.ToOptionAsync();
-            var result = await option.FlatMapAsync(x => OptionTask.SomeAsync(x));
+            var result = await option.FlatMapAsync(x => OptionTask.Some(x));
 
             result.ShouldBe(expectedResult);
         }
@@ -37,12 +37,12 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task FlatMapAsyncCanceled()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             var cts = new CancellationTokenSource();
             cts.Cancel();
 
             await option
-                .Awaiting(x => x.FlatMapAsync(y => OptionTask.SomeAsync(y), cts.Token))
+                .Awaiting(x => x.FlatMapAsync(y => OptionTask.Some(y), cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
         }
 

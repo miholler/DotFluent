@@ -14,7 +14,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task NoneNullThrowsException()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             Func<Task> none = null;
             Func<Task<int>> noneValue = null;
 
@@ -32,7 +32,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task SomeNullThrowsException()
         {
-            var option = await OptionTask.SomeAsync(0);
+            var option = await OptionTask.Some(0);
             Func<int, Task> some = null;
             Func<int, Task<int>> someValue = null;
 
@@ -106,7 +106,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task MatchAsyncCanceled()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             using var cts = new CancellationTokenSource();
             cts.Cancel();
 

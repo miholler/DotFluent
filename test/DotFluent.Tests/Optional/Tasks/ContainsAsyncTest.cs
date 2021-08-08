@@ -14,7 +14,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ValueFactoryNullThrowsException()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             Func<Task<int>> valueFactory = null;
 
             await option
@@ -25,7 +25,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ValueFactoryReturningNullThrowsException()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
 
             await option
                 .Awaiting(x => x.ContainsAsync(() => null))
@@ -47,7 +47,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ContainsAsyncCanceled()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             var cts = new CancellationTokenSource();
             cts.Cancel();
 
@@ -59,7 +59,7 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ContainsAsyncValueFactoryCanceled()
         {
-            var option = await OptionTask.NoneAsync<int>();
+            var option = await OptionTask.None<int>();
             var cts = new CancellationTokenSource();
 
             await option

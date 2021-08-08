@@ -14,8 +14,8 @@ namespace DotFluent.Optional.Tasks
         /// <param name="source">The nullable object to create an option from.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>
-        /// A <see cref="Task{TResult}"/> that represents the asynchronous creation of an <see cref="Option{TSource}"/>
-        /// representing the value of source.
+        /// A <see cref="Task{TResult}"/> representing the asynchronous 'to option' operation. The value of the TResult parameter contains
+        /// an <see cref="Option{TSource}"/> representing the value of source.
         /// </returns>
         public static Task<Option<TSource>> ToOptionAsync<TSource>(this TSource? source, CancellationToken cancellationToken = default) where TSource : struct
             => cancellationToken.IsCancellationRequested
