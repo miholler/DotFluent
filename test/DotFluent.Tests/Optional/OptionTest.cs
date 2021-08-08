@@ -214,6 +214,15 @@ namespace DotFluent.Optional
                 .ShouldBe(expectedResult);
 
         [TestMethod]
+        public void ExistsPredicateNullThrowsException()
+        {
+            var option = Option<int>.None;
+            Func<int, bool> predicate = null;
+
+            option.Invoking(x => x.Exists(predicate)).ShouldThrow<ArgumentNullException>();
+        }
+
+        [TestMethod]
         [DataRow(null, 1, false)]
         [DataRow(1, 2, false)]
         [DataRow(1, 1, true)]
