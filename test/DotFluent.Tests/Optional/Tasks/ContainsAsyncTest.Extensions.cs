@@ -27,10 +27,9 @@ namespace DotFluent.Optional.Tasks
         [TestMethod]
         public async Task ValueFactoryNullThrowsException()
         {
-            var optionTask = OptionTask.None<int>();
             Func<Task<int>> valueFactory = null;
 
-            await optionTask
+            await OptionTask.None<int>()
                 .Awaiting(x => x.ContainsAsync(valueFactory))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
