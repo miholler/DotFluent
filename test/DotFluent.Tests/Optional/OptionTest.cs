@@ -177,13 +177,13 @@ namespace DotFluent.Optional
         }
 
         [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new int[0])]
-        [DataRow(2, new[] { 2 })]
-        public void Filter(int? source, IEnumerable<int> expectedResult)
+        [DataRow(null, 1, new int[0])]
+        [DataRow(1, 2, new int[0])]
+        [DataRow(1, 1, new[] { 1 })]
+        public void Filter(int? source, int value, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
-                .Filter(x => x % 2 == 0)
+                .Filter(x => x == value)
                 .ShouldBe(expectedResult);
 
         [TestMethod]

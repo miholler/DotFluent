@@ -34,13 +34,13 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new int[0])]
-        [DataRow(2, new[] { 2 })]
-        public async Task FilterAsync(int? source, IEnumerable<int> expectedResult)
+        [DataRow(null, 1, new int[0])]
+        [DataRow(1, 2, new int[0])]
+        [DataRow(1, 1, new[] { 1 })]
+        public async Task FilterAsync(int? source, int value, IEnumerable<int> expectedResult)
         {
             var option = await source.ToOptionAsync();
-            var result = await option.FilterAsync(x => Task.FromResult(x % 2 == 0));
+            var result = await option.FilterAsync(x => Task.FromResult(x == value));
 
             result.ShouldBe(expectedResult);
         }
