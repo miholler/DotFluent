@@ -22,10 +22,10 @@ namespace DotFluent.Optional.Tasks
                 .Awaiting(x => x.MatchAsync(none))
                 .ShouldThrowAsync<ArgumentNullException>();
             await option
-                .Awaiting(x => x.MatchAsync(y => Task.CompletedTask, none))
+                .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, none))
                 .ShouldThrowAsync<ArgumentNullException>();
             await option
-                .Awaiting(x => x.MatchAsync(y => Task.FromResult(0), noneValue))
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), noneValue))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
@@ -114,16 +114,16 @@ namespace DotFluent.Optional.Tasks
                 .Awaiting(x => x.MatchAsync(() => Task.CompletedTask, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
             await option
-                .Awaiting(x => x.MatchAsync(y => Task.CompletedTask, cts.Token))
+                .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
             await option
-                .Awaiting(x => x.MatchAsync(y => Task.CompletedTask, () => Task.CompletedTask, cts.Token))
+                .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, () => Task.CompletedTask, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
             await option
-                .Awaiting(x => x.MatchAsync(y => Task.FromResult(0), 0, cts.Token))
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), 0, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
             await option
-                .Awaiting(x => x.MatchAsync(y => Task.FromResult(0), () => Task.FromResult(0), cts.Token))
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => Task.FromResult(0), cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
         }
 
