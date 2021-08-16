@@ -11,7 +11,7 @@ namespace DotFluent.Optional
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
     [Serializable]
-    public struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, ISerializable
+    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, ISerializable
     {
         #region Fields
 
@@ -55,7 +55,7 @@ namespace DotFluent.Optional
         /// Gets whether the current option is a 'Some' value.
         /// </summary>
         /// <returns>true if the option is a 'Some' value; otherwise, false.</returns>
-        public bool IsSome { get; private set; }
+        public bool IsSome { get; init; }
 
         /// <summary>
         /// Gets whether the current option is a 'None' value. 

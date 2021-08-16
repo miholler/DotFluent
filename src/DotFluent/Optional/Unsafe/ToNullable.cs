@@ -2,7 +2,7 @@
 
 namespace DotFluent.Optional.Unsafe
 {
-    public static partial class OptionUnsafe
+    public static partial class UnsafeOption
     {
         #region Methods
 

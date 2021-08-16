@@ -13,9 +13,7 @@ namespace DotFluent.Optional
         [DataRow(null, new int[0])]
         [DataRow(1, new[] { 1 })]
         public void Flatten(int? source, IEnumerable<int> expectedResult)
-            => source
-                .ToOption()
-                .Map(x => Option.Some(x))
+            => Option.Some(source.ToOption())
                 .Flatten()
                 .ShouldBe(expectedResult);
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 using System.Threading.Tasks;
 
@@ -14,27 +15,37 @@ namespace DotFluent.Tasks.Linq
         {
             Task<int> source = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(x => Task.FromResult(++x)));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(x => Task.FromResult(++x), (x, y) => x + y));
+            await source
+                .Awaiting(x => x.SelectMany(y => Task.FromResult(++y)))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await source
+                .Awaiting(x => x.SelectMany(y => Task.FromResult(++y), (y, z) => y + z))
+                .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
         public async Task SelectorNullThrowsException()
         {
-            var source = Task.FromResult(1);
-            Func<int, Task<int>> selector = null; 
+            var source = Task.FromResult(0);
+            Func<int, Task<int>> selector = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(selector));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(selector, (x, y) => x + y));
+            await source
+                .Awaiting(x => x.SelectMany(selector))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await source
+                .Awaiting(x => x.SelectMany(selector, (y, z) => y + z))
+                .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
         public async Task ResultSelectorNullThrowsException()
         {
-            var source = Task.FromResult(1);
+            var source = Task.FromResult(0);
             Func<int, int, int> resultSelector = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.SelectMany(x => Task.FromResult(++x), resultSelector));
+            await source
+                .Awaiting(x => x.SelectMany(y => Task.FromResult(++y), resultSelector))
+                .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -42,7 +53,7 @@ namespace DotFluent.Tasks.Linq
         {
             var result = await Task.FromResult(1).SelectMany(x => Task.FromResult(++x));
 
-            Assert.AreEqual(result, 2);
+            result.ShouldBe(2);
         }
 
         [TestMethod]
@@ -50,7 +61,7 @@ namespace DotFluent.Tasks.Linq
         {
             var result = await Task.FromResult(1).SelectMany(x => Task.FromResult(++x), (x, y) => x + y);
 
-            Assert.AreEqual(result, 3);
+            result.ShouldBe(3);
         }
 
         #endregion
