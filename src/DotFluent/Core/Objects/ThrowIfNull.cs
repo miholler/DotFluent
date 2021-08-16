@@ -7,7 +7,7 @@ namespace DotFluent
         #region Methods
 
         /// <summary>
-        /// Throws an <see cref="ArgumentNullException"/> if an object instance is null; otherwise, returns the instance.
+        /// Throws an <see cref="ArgumentNullException"/> if an object is null; otherwise, returns the object.
         /// </summary>
         /// <typeparam name="TSource">The type of the object.</typeparam>
         /// <param name="source">The object to check for null.</param>
@@ -17,8 +17,7 @@ namespace DotFluent
             => source ?? throw new ArgumentNullException(paramName);
 
         /// <summary>
-        /// Throws an <see cref="Exception"/> created by a specified function if an object instance is null; 
-        /// otherwise, returns the instance.
+        /// Throws an <see cref="Exception"/> created by a specified function if an object is null; otherwise, returns the object.
         /// </summary>
         /// <typeparam name="TSource">The type of the object.</typeparam>
         /// <param name="source">The object to check for null.</param>
