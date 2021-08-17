@@ -66,6 +66,8 @@ namespace DotFluent.Optional
 
         [TestMethod]
         [DataRow(null, 1, 1, 0)]
+        [DataRow(1, 0, 0, 0)]
+        [DataRow(null, 0, 0, 1)]
         [DataRow(1, 1, 2, 1)]
         [DataRow(1, 1, 2, 2)]
         [DataRow(null, 1, 1, 2)]
@@ -175,13 +177,13 @@ namespace DotFluent.Optional
         }
 
         [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new int[0])]
-        [DataRow(2, new[] { 2 })]
-        public void Filter(int? source, IEnumerable<int> expectedResult)
+        [DataRow(null, 1, new int[0])]
+        [DataRow(1, 2, new int[0])]
+        [DataRow(1, 1, new[] { 1 })]
+        public void Filter(int? source, int value, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
-                .Filter(x => x % 2 == 0)
+                .Filter(x => x == value)
                 .ShouldBe(expectedResult);
 
         [TestMethod]
@@ -210,6 +212,15 @@ namespace DotFluent.Optional
                 .ToOption()
                 .Contains(value)
                 .ShouldBe(expectedResult);
+
+        [TestMethod]
+        public void ExistsPredicateNullThrowsException()
+        {
+            var option = Option<int>.None;
+            Func<int, bool> predicate = null;
+
+            option.Invoking(x => x.Exists(predicate)).ShouldThrow<ArgumentNullException>();
+        }
 
         [TestMethod]
         [DataRow(null, 1, false)]

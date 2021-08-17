@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 using System.Threading.Tasks;
 
@@ -14,7 +15,9 @@ namespace DotFluent.Tasks.Linq
         {
             Task<int> source = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Select(x => x++));
+            await source
+                .Awaiting(x => x.Select(y => y++))
+                .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -23,7 +26,9 @@ namespace DotFluent.Tasks.Linq
             var source = Task.FromResult(1);
             Func<int, int> selector = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Select(selector));
+            await source
+                .Awaiting(x => x.Select(selector))
+                .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -31,7 +36,7 @@ namespace DotFluent.Tasks.Linq
         {
             var result = await Task.FromResult(1).Select(x => ++x);
 
-            Assert.AreEqual(result, 2);
+            result.ShouldBe(2);
         }
 
         #endregion

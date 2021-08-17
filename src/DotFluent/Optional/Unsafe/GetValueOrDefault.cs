@@ -6,7 +6,7 @@ namespace DotFluent.Optional.Unsafe
     /// Provides a set of static methods for working 
     /// with <see cref="Option{T}"/> instances.
     /// </summary>
-    public static partial class OptionUnsafe
+    public static partial class UnsafeOption
     {
         #region Methods
 
