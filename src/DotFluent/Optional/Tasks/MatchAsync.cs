@@ -42,8 +42,8 @@ namespace DotFluent.Optional.Tasks
         /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
         public static Task MatchAsync<TSource>(this Option<TSource> source, Func<TSource, Task> some, Func<Task> none, CancellationToken cancellationToken = default)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled(cancellationToken)
@@ -83,8 +83,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<TResult> MatchAsync<TSource, TResult>(this Option<TSource> source, Func<TSource, Task<TResult>> some, Func<Task<TResult>> none, CancellationToken cancellationToken = default)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<TResult>(cancellationToken)

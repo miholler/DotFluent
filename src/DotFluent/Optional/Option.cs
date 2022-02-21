@@ -31,7 +31,7 @@ namespace DotFluent.Optional
         private Option(SerializationInfo info, StreamingContext context)
         {
             IsSome = (bool)info.GetValue(nameof(IsSome), typeof(bool));
-            _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T)) : default;
+            _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T)) : default!;
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace DotFluent.Optional
         /// <param name="value">The input value.</param>
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
         public static Option<T> Some(T value)
-            => new Option<T>(value);
+            => new (value);
 
         /// <summary>
         /// Performs a specified action if the current option is a 'None' value.
@@ -81,7 +81,7 @@ namespace DotFluent.Optional
         /// <param name="none">An action to perform if a value is missing.</param>
         public void Match(Action none)
         {
-            none.ThrowIfNull(nameof(none));
+            none.ThrowIfNull();
 
             if (IsNone)
                 none();
@@ -93,7 +93,7 @@ namespace DotFluent.Optional
         /// <param name="some">An action to perform if a value is present.</param>
         public void Match(Action<T> some)
         {
-            some.ThrowIfNull(nameof(some));
+            some.ThrowIfNull();
 
             if (IsSome)
                 some(_value);
@@ -107,8 +107,8 @@ namespace DotFluent.Optional
         /// <param name="none">An action to perform if a value is missing.</param>
         public void Match(Action<T> some, Action none)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             if (IsSome)
                 some(_value);
@@ -137,8 +137,8 @@ namespace DotFluent.Optional
         /// <returns>The result of the invoked function.</returns>
         public TResult Match<TResult>(Func<T, TResult> some, Func<TResult> none)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return IsSome ? some(_value) : none();
         }
@@ -155,7 +155,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<TResult> Map<TResult>(Func<T, TResult> mapper)
         {
-            mapper.ThrowIfNull(nameof(mapper));
+            mapper.ThrowIfNull();
 
             return Match(x => Option.Some(mapper(x)), Option.None<TResult>);
         }
@@ -173,7 +173,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<TResult> FlatMap<TResult>(Func<T, Option<TResult>> mapper)
         {
-            mapper.ThrowIfNull(nameof(mapper));
+            mapper.ThrowIfNull();
 
             return Match(mapper, Option.None<TResult>);
         }
@@ -197,7 +197,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<T> OrElse(Func<Option<T>> otherFactory)
         {
-            otherFactory.ThrowIfNull(nameof(otherFactory));
+            otherFactory.ThrowIfNull();
 
             return IsSome ? this : otherFactory();
         }
@@ -213,7 +213,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<T> Filter(Func<T, bool> predicate)
         {
-            predicate.ThrowIfNull(nameof(predicate));
+            predicate.ThrowIfNull();
             
             return IsSome && predicate(_value) ? this : None;
         }
@@ -259,7 +259,7 @@ namespace DotFluent.Optional
         /// <returns>true if the option contains a value that satisfies the condition; otherwise, false.</returns>
         public bool Exists(Func<T, bool> predicate)
         {
-            predicate.ThrowIfNull(nameof(predicate));
+            predicate.ThrowIfNull();
 
             return IsSome && predicate(_value);
         }

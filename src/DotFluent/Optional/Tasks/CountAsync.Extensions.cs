@@ -26,7 +26,7 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<int> CountAsync<TSource>(this Task<Option<TSource>> source, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             return source.Then(x => x.Count(), cancellationToken);
         }

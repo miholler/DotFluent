@@ -22,7 +22,7 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> OrElseAsync<TSource>(this Task<Option<TSource>> source, Option<TSource> other, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             return source.Then(x => x.OrElse(other), cancellationToken);
         }
@@ -42,8 +42,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> OrElseAsync<TSource>(this Task<Option<TSource>> source, Func<Task<Option<TSource>>> otherFactory, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            otherFactory.ThrowIfNull(nameof(otherFactory));
+            source.ThrowIfNull();
+            otherFactory.ThrowIfNull();
 
             return source.Then(x => x.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
         }

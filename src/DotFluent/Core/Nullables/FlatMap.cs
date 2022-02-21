@@ -23,7 +23,7 @@ namespace DotFluent
         /// </returns>
         public static TResult? FlatMap<TSource, TResult>(this TSource? source, Func<TSource, TResult?> mapper) where TSource : struct where TResult : struct
         {
-            mapper.ThrowIfNull(nameof(mapper));
+            mapper.ThrowIfNull();
 
             return source.HasValue ? mapper(source.Value) : new TResult?();
         }

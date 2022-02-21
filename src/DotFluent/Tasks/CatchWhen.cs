@@ -45,9 +45,9 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task CatchWhen<TException>(this Task source, Func<TException, bool> predicate, Action<TException> action, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<VoidResult>();
             source.ContinueWith(x =>
@@ -115,9 +115,9 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, TSource> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<TSource>();
             source.ContinueWith(x =>
@@ -184,9 +184,9 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, Task<TSource>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task<TSource>>();
             source.ContinueWith(x =>

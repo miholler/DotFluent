@@ -28,8 +28,8 @@ namespace DotFluent.Linq
         /// <returns>The default value created by the specified function if the source sequence is empty; otherwise, the last element in the source sequence.</returns>
         public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            source.ThrowIfNull();
+            defaultFactory.ThrowIfNull();
 
             switch (source)
             {
@@ -83,9 +83,9 @@ namespace DotFluent.Linq
         /// </returns>
         public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TSource> defaultFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
+            defaultFactory.ThrowIfNull();
 
             var resultFactory = defaultFactory;
             foreach (var item in source)

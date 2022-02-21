@@ -35,8 +35,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Catch(this Task source, Action action, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<VoidResult>();
             source.ContinueWith(x =>
@@ -86,8 +86,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Catch<TException>(this Task source, Action<TException> action, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<VoidResult>();
             source.ContinueWith(x =>
@@ -142,8 +142,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<TSource> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<TSource>();
             source.ContinueWith(x =>
@@ -191,8 +191,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<Task<TSource>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task<TSource>>();
             source.ContinueWith(x =>
@@ -243,8 +243,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, TSource> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<TSource>();
             source.ContinueWith(x =>
@@ -301,8 +301,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, Task<TSource>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task<TSource>>();
             source.ContinueWith(x =>

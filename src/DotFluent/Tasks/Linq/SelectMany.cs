@@ -35,8 +35,8 @@ namespace DotFluent.Tasks.Linq
         /// </returns>
         public static Task<TNewResult> SelectMany<TSource, TResult, TNewResult>(this Task<TSource> source, Func<TSource, Task<TResult>> taskSelector, Func<TSource, TResult, TNewResult> resultSelector)
         {
-            taskSelector.ThrowIfNull(nameof(taskSelector));
-            resultSelector.ThrowIfNull(nameof(resultSelector));
+            taskSelector.ThrowIfNull();
+            resultSelector.ThrowIfNull();
 
             return source.Then(x => taskSelector(x).Then(y => resultSelector(x, y)));
         }

@@ -29,8 +29,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Finally(this Task source, Action action, TaskScheduler scheduler)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<VoidResult>();
             source.ContinueWith(x =>
@@ -82,8 +82,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
         public static Task<TSource> Finally<TSource>(this Task<TSource> source, Action action, TaskScheduler scheduler)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<TSource>();
             source.ContinueWith(x =>

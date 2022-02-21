@@ -49,9 +49,9 @@ namespace DotFluent.Linq
         /// The zero-based index of the specified element if the source sequence contains 
         /// an element that has the specified value; otherwise, minus 1.
         /// </returns>
-        public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, IEqualityComparer<TSource> comparer)
+        public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, IEqualityComparer<TSource>? comparer)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
             comparer ??= EqualityComparer<TSource>.Default;
 
             var index = 0;

@@ -15,7 +15,7 @@ namespace DotFluent.Linq
         /// <returns>true if the source sequence contains no elements; otherwise, false.</returns>
         public static bool None<TSource>(this IEnumerable<TSource> source)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             using var enumerator = source.GetEnumerator();
             return !enumerator.MoveNext();
@@ -30,8 +30,8 @@ namespace DotFluent.Linq
         /// <returns>true if no element in the source sequence passes the test in the specified predicate; otherwise false.</returns>
         public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
 
             foreach (var item in source)
             {

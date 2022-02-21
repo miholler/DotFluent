@@ -25,7 +25,7 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<bool> ContainsAsync<TSource>(this Task<Option<TSource>> source, TSource value, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
             
             return source.Then(x => x.Contains(value), cancellationToken);
         }
@@ -43,8 +43,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<bool> ContainsAsync<TSource>(this Task<Option<TSource>> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            valueFactory.ThrowIfNull(nameof(valueFactory));
+            source.ThrowIfNull();
+            valueFactory.ThrowIfNull();
 
             return source.Then(x => x.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
         }

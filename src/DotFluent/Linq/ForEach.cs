@@ -15,8 +15,8 @@ namespace DotFluent.Linq
         /// <param name="action">An action to perform on each element of the sequence.</param>
         public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             foreach (var item in source)
                 action(item);
@@ -30,8 +30,8 @@ namespace DotFluent.Linq
         /// <param name="action">An action to perform on each element of the sequence.</param>
         public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource, int> action)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var index = 0;
             foreach (var item in source)

@@ -26,11 +26,11 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<bool> ContainsAsync<TSource>(this Option<TSource> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
         {
-            valueFactory.ThrowIfNull(nameof(valueFactory));
+            valueFactory.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<bool>(cancellationToken)
-                : valueFactory()?.Then(x => source.Contains(x), cancellationToken);
+                : valueFactory()?.Then(x => source.Contains(x), cancellationToken) ?? throw new InvalidOperationException($"{nameof(valueFactory)} must not return null.");
         }
 
         #endregion

@@ -30,8 +30,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Then(this Task source, Action action, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<VoidResult>();
             source.ContinueWith(x =>
@@ -77,8 +77,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Then(this Task source, Func<Task> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task>();
             source.ContinueWith(x =>
@@ -125,8 +125,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
         public static Task<TResult> Then<TResult>(this Task source, Func<TResult> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<TResult>();
             source.ContinueWith(x =>
@@ -173,8 +173,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
         public static Task<TResult> Then<TResult>(this Task source, Func<Task<TResult>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task<TResult>>();
             source.ContinueWith(x =>
@@ -221,8 +221,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Then<TSource>(this Task<TSource> source, Action<TSource> action, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            action.ThrowIfNull(nameof(action));
+            source.ThrowIfNull();
+            action.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<VoidResult>();
             source.ContinueWith(x =>
@@ -270,8 +270,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task"/>.</returns>
         public static Task Then<TSource>(this Task<TSource> source, Func<TSource, Task> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task>();
             source.ContinueWith(x =>
@@ -320,8 +320,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
         public static Task<TResult> Then<TSource, TResult>(this Task<TSource> source, Func<TSource, TResult> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<TResult>();
             source.ContinueWith(x =>
@@ -370,8 +370,8 @@ namespace DotFluent.Tasks
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
         public static Task<TResult> Then<TSource, TResult>(this Task<TSource> source, Func<TSource, Task<TResult>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             var tcs = new TaskCompletionSource<Task<TResult>>();
             source.ContinueWith(x =>

@@ -1,4 +1,6 @@
-﻿namespace DotFluent
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DotFluent
 {
     public static partial class ObjectExtensions
     {
@@ -9,7 +11,7 @@
         /// </summary>
         /// <param name="source">The object to check for null.</param>
         /// <returns>true if the object is null; otherwise, false.</returns>
-        public static bool IsNull(this object source)
+        public static bool IsNull([NotNullWhen(false)]this object? source)
             => source == null;
 
         #endregion

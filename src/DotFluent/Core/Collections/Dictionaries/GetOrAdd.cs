@@ -22,7 +22,7 @@ namespace DotFluent
         /// the dictionary.
         /// </returns>
         public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue value)
-            => source.GetOrAdd(key, k => value);
+            => source.GetOrAdd(key, _ => value);
 
         /// <summary>
         /// Adds a key/value pair to a dictionary by using a specified function if the key does not already exist, 
@@ -40,8 +40,8 @@ namespace DotFluent
         /// </returns>
         public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, Func<TKey, TValue> valueFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            valueFactory.ThrowIfNull(nameof(valueFactory));
+            source.ThrowIfNull();
+            valueFactory.ThrowIfNull();
 
             if (!source.TryGetValue(key, out var value))
             {

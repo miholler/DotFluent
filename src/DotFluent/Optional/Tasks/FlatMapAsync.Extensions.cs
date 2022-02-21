@@ -25,8 +25,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TResult>> FlatMapAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Option<TResult>> mapper, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            mapper.ThrowIfNull(nameof(mapper));
+            source.ThrowIfNull();
+            mapper.ThrowIfNull();
 
             return source.Then(x => x.FlatMap(mapper), cancellationToken);
         }
@@ -47,8 +47,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TResult>> FlatMapAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<Option<TResult>>> mapper, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            mapper.ThrowIfNull(nameof(mapper));
+            source.ThrowIfNull();
+            mapper.ThrowIfNull();
 
             return source.Then(x => x.FlatMapAsync(mapper, cancellationToken), cancellationToken);
         }

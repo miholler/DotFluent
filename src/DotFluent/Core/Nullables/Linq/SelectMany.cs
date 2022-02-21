@@ -38,8 +38,8 @@ namespace DotFluent.Linq
         /// </returns>
         public static TResult? SelectMany<TSource, TNullable, TResult>(this TSource? source, Func<TSource, TNullable?> nullableSelector, Func<TSource, TNullable, TResult> resultSelector) where TSource : struct where TNullable : struct where TResult : struct
         {
-            nullableSelector.ThrowIfNull(nameof(nullableSelector));
-            resultSelector.ThrowIfNull(nameof(resultSelector));
+            nullableSelector.ThrowIfNull();
+            resultSelector.ThrowIfNull();
 
             return source.FlatMap(x => nullableSelector(x).Map(y => resultSelector(x, y)));
         }
