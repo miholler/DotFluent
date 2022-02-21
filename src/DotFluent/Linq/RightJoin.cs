@@ -70,7 +70,7 @@ namespace DotFluent.Linq
         /// <param name="resultSelector">A function to create a result element from two matching elements or from one element having no match.</param>
         /// <param name="comparer">The equality comparer to hash and compare keys.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a right outer join on two sequences.</returns>
-        public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource, TResult> resultSelector, IEqualityComparer<TKey> comparer)
+        public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource, TResult> resultSelector, IEqualityComparer<TKey>? comparer)
         {
             keySelector.ThrowIfNull();
 
@@ -146,7 +146,7 @@ namespace DotFluent.Linq
         /// <param name="resultSelector">A function to create a result element from two matching elements or from one element having no match.</param>
         /// <param name="comparer">The equality comparer to hash and compare keys.</param>
         /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a right outer join on two sequences.</returns>
-        public static IEnumerable<TResult> RightJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer)
+        public static IEnumerable<TResult> RightJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner, TResult> resultSelector, IEqualityComparer<TKey>? comparer)
         {
             outer.ThrowIfNull();
             inner.ThrowIfNull();
