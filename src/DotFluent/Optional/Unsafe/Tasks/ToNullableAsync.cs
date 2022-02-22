@@ -1,0 +1,28 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace DotFluent.Optional.Unsafe.Tasks
+{
+    public static partial class UnsafeOptionTask
+    {
+        #region Methods
+
+        /// <summary>
+        /// Asynchronously creates a nullable object from an option.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the value of source.</typeparam>
+        /// <param name="source">The option to create the nullable object from.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <returns>
+        /// A <see cref="Task{TResult}"/> representing the asynchronous 'to nullable' operation. The value of the TResult parameter contains
+        /// a <see cref="Nullable{TSource}"/> representing the value of source.
+        /// </returns>
+        public static Task<TSource?> ToNullableAsync<TSource>(this Option<TSource> source, CancellationToken cancellationToken = default) where TSource : struct
+            => cancellationToken.IsCancellationRequested
+                ? Task.FromCanceled<TSource?>(cancellationToken)
+                : Task.FromResult(source.ToNullable());
+
+        #endregion
+    }
+}

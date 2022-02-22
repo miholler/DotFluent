@@ -40,7 +40,7 @@ namespace DotFluent.Optional.Tasks
             cts.Cancel();
 
             await Task.FromResult(new int?())
-                .ToOptionAsync(cts.Token)
+                .Awaiting(x => x.ToOptionAsync(cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
         }
 
