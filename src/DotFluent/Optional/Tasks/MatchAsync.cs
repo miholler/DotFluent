@@ -47,7 +47,9 @@ namespace DotFluent.Optional.Tasks
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled(cancellationToken)
-                : source.Match(some, none);
+                : source.Match(x => 
+                    some(x) ?? throw new InvalidOperationException($"{nameof(some)} must not return null."),
+                    () => none() ?? throw new InvalidOperationException($"{nameof(none)} must not return null."));
         }
 
         /// <summary>
@@ -88,7 +90,9 @@ namespace DotFluent.Optional.Tasks
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<TResult>(cancellationToken)
-                : source.Match(some, none);
+                : source.Match(x =>
+                    some(x) ?? throw new InvalidOperationException($"{nameof(some)} must not return null."),
+                    () => none() ?? throw new InvalidOperationException($"{nameof(none)} must not return null."));
         }
 
         #endregion
