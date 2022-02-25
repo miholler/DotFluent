@@ -11,7 +11,7 @@ namespace DotFluent.Optional
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
     [Serializable]
-    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, ISerializable
+    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, ISerializable
     {
         #region Fields
 
@@ -303,15 +303,33 @@ namespace DotFluent.Optional
         /// <param name="other">The option to compare with the current option.</param>
         /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
         public int CompareTo(Option<T> other)
-            => IsNone && other.IsNone ? 0 : IsSome && other.IsNone ? 1 : IsNone && other.IsSome ? -1 : Comparer<T>.Default.Compare(_value, other._value);
+            => CompareTo(other, Comparer<T>.Default);
+
+        /// <summary>
+        /// Compares the specified option with the current option by using a specified comparer.
+        /// </summary>
+        /// <param name="other">The option to compare with the current option.</param>
+        /// <param name="comparer">The comparer to compare the represented values.</param>
+        /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
+        public int CompareTo(Option<T> other, IComparer<T>? comparer)
+            => IsNone && other.IsNone ? 0 : IsSome && other.IsNone ? 1 : IsNone && other.IsSome ? -1 : (comparer ?? Comparer<T>.Default).Compare(_value, other._value);
 
         /// <summary>
         /// Compares the specified object with the current option.
         /// </summary>
-        /// <param name="obj">The object to compare with the current option.</param>
+        /// <param name="other">The object to compare with the current option.</param>
         /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
-        public int CompareTo(object obj)
-            => obj is Option<T> option ? CompareTo(option) : 1;
+        public int CompareTo(object other)
+            => other is Option<T> option ? CompareTo(option) : 1;
+
+        /// <summary>
+        /// Compares the specified object with the current option by using a specified comparer.
+        /// </summary>
+        /// <param name="other">The object to compare with the current option.</param>
+        /// <param name="comparer">The comparer to compare the represented values.</param>
+        /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
+        public int CompareTo(object other, IComparer? comparer)
+            => other is Option<T> option ? CompareTo(option, comparer as IComparer<T>) : 1;
 
         /// <summary>
         /// Determines whether the specified option is equal to the current option.
