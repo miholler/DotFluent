@@ -27,7 +27,7 @@ namespace DotFluent.Tasks
         /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <returns>A continuation <see cref="Task"/>.</returns>
-        public static Task Finally(this Task source, Action action, TaskScheduler scheduler)
+        public static Task Finally(this Task source, Action action, TaskScheduler? scheduler)
         {
             source.ThrowIfNull();
             action.ThrowIfNull();
@@ -80,7 +80,7 @@ namespace DotFluent.Tasks
         /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-        public static Task<TSource> Finally<TSource>(this Task<TSource> source, Action action, TaskScheduler scheduler)
+        public static Task<TSource> Finally<TSource>(this Task<TSource> source, Action action, TaskScheduler? scheduler)
         {
             source.ThrowIfNull();
             action.ThrowIfNull();

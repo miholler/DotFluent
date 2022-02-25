@@ -352,7 +352,7 @@ namespace DotFluent.Optional
         /// </summary>
         /// <param name="value">The input value.</param>
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
-        public static implicit operator Option<T>(T value)
+        public static implicit operator Option<T>(T? value)
             => value.IsNotNull() ? Some(value) : None;
 
         /// <summary>

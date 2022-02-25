@@ -43,7 +43,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task"/>.</returns>
-        public static Task CatchWhen<TException>(this Task source, Func<TException, bool> predicate, Action<TException> action, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
+        public static Task CatchWhen<TException>(this Task source, Func<TException, bool> predicate, Action<TException> action, TaskScheduler? scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
             source.ThrowIfNull();
             predicate.ThrowIfNull();
@@ -113,7 +113,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-        public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, TSource> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
+        public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, TSource> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
             source.ThrowIfNull();
             predicate.ThrowIfNull();
@@ -182,7 +182,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-        public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, Task<TSource>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default) where TException : Exception
+        public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, Task<TSource>> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default) where TException : Exception
         {
             source.ThrowIfNull();
             predicate.ThrowIfNull();

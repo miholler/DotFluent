@@ -28,7 +28,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task"/>.</returns>
-        public static Task Then(this Task source, Action action, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task Then(this Task source, Action action, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             action.ThrowIfNull();
@@ -75,7 +75,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task"/>.</returns>
-        public static Task Then(this Task source, Func<Task> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task Then(this Task source, Func<Task> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             selector.ThrowIfNull();
@@ -123,7 +123,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
-        public static Task<TResult> Then<TResult>(this Task source, Func<TResult> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task<TResult> Then<TResult>(this Task source, Func<TResult> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             selector.ThrowIfNull();
@@ -171,7 +171,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
-        public static Task<TResult> Then<TResult>(this Task source, Func<Task<TResult>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task<TResult> Then<TResult>(this Task source, Func<Task<TResult>> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             selector.ThrowIfNull();
@@ -219,7 +219,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task"/>.</returns>
-        public static Task Then<TSource>(this Task<TSource> source, Action<TSource> action, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task Then<TSource>(this Task<TSource> source, Action<TSource> action, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             action.ThrowIfNull();
@@ -268,7 +268,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task"/>.</returns>
-        public static Task Then<TSource>(this Task<TSource> source, Func<TSource, Task> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task Then<TSource>(this Task<TSource> source, Func<TSource, Task> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             selector.ThrowIfNull();
@@ -318,7 +318,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
-        public static Task<TResult> Then<TSource, TResult>(this Task<TSource> source, Func<TSource, TResult> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task<TResult> Then<TSource, TResult>(this Task<TSource> source, Func<TSource, TResult> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             selector.ThrowIfNull();
@@ -368,7 +368,7 @@ namespace DotFluent.Tasks
         /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
         /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
         /// <returns>A continuation <see cref="Task{TResult}"/>.</returns>
-        public static Task<TResult> Then<TSource, TResult>(this Task<TSource> source, Func<TSource, Task<TResult>> selector, TaskScheduler scheduler, CancellationToken cancellationToken = default)
+        public static Task<TResult> Then<TSource, TResult>(this Task<TSource> source, Func<TSource, Task<TResult>> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             selector.ThrowIfNull();
