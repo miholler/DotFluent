@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotFluent.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -11,7 +12,7 @@ namespace DotFluent.Optional
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
     [Serializable]
-    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, ISerializable
+    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable, ISerializable
     {
         #region Fields
 
@@ -329,7 +330,14 @@ namespace DotFluent.Optional
         /// <param name="comparer">The comparer to compare the represented values.</param>
         /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
         public int CompareTo(object other, IComparer? comparer)
-            => other is Option<T> option ? CompareTo(option, comparer as IComparer<T>) : 1;
+        {
+            if (other is Option<T> option)
+            {
+                comparer ??= StructuralComparisons.StructuralComparer;
+                return CompareTo(option, Comparer<T>.Create((x, y) => comparer.Compare(x, y)));
+            }
+            return 1;
+        }
 
         /// <summary>
         /// Determines whether the specified option is equal to the current option.
@@ -337,15 +345,42 @@ namespace DotFluent.Optional
         /// <param name="other">The option to compare with the current option.</param>
         /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
         public bool Equals(Option<T> other)
-            => (IsNone && other.IsNone) || (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
+            => Equals(other, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Determines whether the specified option is equal to the current option
+        /// by using a specified equality comparer.
+        /// </summary>
+        /// <param name="other">The option to compare with the current option.</param>
+        /// <param name="comparer">The equality comparer to compare the represented values.</param>
+        /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
+        public bool Equals(Option<T> other, IEqualityComparer<T>? comparer)
+            => (IsNone && other.IsNone) || (IsSome && other.IsSome && (comparer ?? EqualityComparer<T>.Default).Equals(_value, other._value));
 
         /// <summary>
         /// Determines whether the specified object is equal to the current option.
         /// </summary>
-        /// <param name="obj">The object to compare with the current option.</param>
+        /// <param name="other">The object to compare with the current option.</param>
         /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
-        public override bool Equals(object obj)
-            => obj is Option<T> option && Equals(option);
+        public override bool Equals(object other)
+            => other is Option<T> option && Equals(option);
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current option
+        /// by using a specified equality comparer.
+        /// </summary>
+        /// <param name="other">The object to compare with the current option.</param>
+        /// <param name="comparer">The equality comparer to compare the represented values.</param>
+        /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
+        public bool Equals(object other, IEqualityComparer? comparer)
+        {
+            if (other is Option<T> option)
+            {
+                comparer ??= StructuralComparisons.StructuralEqualityComparer;
+                return Equals(option, GenericEqualityComparer<T>.Create((x, y) => comparer.Equals(x, y)));
+            }
+            return false;
+        }
 
         /// <summary>
         /// Returns a hash code for the current option.
@@ -353,6 +388,15 @@ namespace DotFluent.Optional
         /// <returns>A hash code for the current option.</returns>
         public override int GetHashCode()
             => IsSome ? _value?.GetHashCode() ?? 1 : 0;
+
+        /// <summary>
+        /// Returns a hash code for the current option
+        /// computed by a specified equality comparer.
+        /// </summary>
+        /// <param name="comparer">The equality comparer that computes the hash code of the current option.</param>
+        /// <returns>A hash code for the current option.</returns>
+        public int GetHashCode(IEqualityComparer? comparer)
+            => IsSome ? (comparer ?? StructuralComparisons.StructuralEqualityComparer).GetHashCode(_value) : 0;
 
         /// <summary>
         /// Returns a string that represents the current option.
