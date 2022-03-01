@@ -19,8 +19,8 @@ namespace DotFluent
         /// </returns>
         public static string Replace(this string source, char[] oldChars, char newChar)
         {
-            source.ThrowIfNull(nameof(source));
-            oldChars.ThrowIfNull(nameof(oldChars));
+            source.ThrowIfNull();
+            oldChars.ThrowIfNull();
 
             var builder = new StringBuilder(source);
             foreach (var oldChar in oldChars)
@@ -42,8 +42,8 @@ namespace DotFluent
         /// </returns>
         public static string Replace(this string source, string[] oldValues, string newValue)
         {
-            source.ThrowIfNull(nameof(source));
-            oldValues.ThrowIfNull(nameof(oldValues));
+            source.ThrowIfNull();
+            oldValues.ThrowIfNull();
 
             var builder = new StringBuilder(source);
             foreach (var oldValue in oldValues)

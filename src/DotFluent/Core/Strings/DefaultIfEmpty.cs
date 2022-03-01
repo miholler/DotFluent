@@ -19,7 +19,7 @@ namespace DotFluent
         /// The specified default value if the string is null, empty, or consists exclusively of white-space characters;
         /// otherwise, the string.
         /// </returns>
-        public static string DefaultIfEmpty(this string source, string defaultValue)
+        public static string DefaultIfEmpty(this string? source, string defaultValue)
             => source.DefaultIfEmpty(() => defaultValue);
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace DotFluent
         /// The default value created by the specified function if the string is null, empty, or consists exclusively of 
         /// white-space characters; otherwise, the string.
         /// </returns>
-        public static string DefaultIfEmpty(this string source, Func<string> defaultFactory)
+        public static string DefaultIfEmpty(this string? source, Func<string> defaultFactory)
         {
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            defaultFactory.ThrowIfNull();
 
             return source.IsNullOrWhiteSpace() ? defaultFactory() : source;
         }

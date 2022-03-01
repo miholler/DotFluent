@@ -36,8 +36,8 @@ namespace DotFluent.Linq
         /// </returns>
         public static TSource ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, int index, Func<TSource> defaultFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            source.ThrowIfNull();
+            defaultFactory.ThrowIfNull();
 
             if (index >= 0)
             {

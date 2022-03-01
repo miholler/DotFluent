@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace DotFluent
 {
@@ -13,7 +15,7 @@ namespace DotFluent
         /// <param name="source">The object to check for null.</param>
         /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
         /// <returns>The object if not null.</returns>
-        public static TSource ThrowIfNull<TSource>(this TSource source, string paramName = null)
+        public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, [CallerArgumentExpression("source")]string? paramName = null)
             => source ?? throw new ArgumentNullException(paramName);
 
         /// <summary>
@@ -23,7 +25,7 @@ namespace DotFluent
         /// <param name="source">The object to check for null.</param>
         /// <param name="factory">A function to create the <see cref="Exception"/>.</param>
         /// <returns>The object if not null.</returns>
-        public static TSource ThrowIfNull<TSource>(this TSource source, Func<Exception> factory)
+        public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, Func<Exception> factory)
             => source ?? throw factory();
 
         #endregion

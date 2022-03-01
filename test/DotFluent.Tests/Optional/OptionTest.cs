@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -268,70 +269,135 @@ namespace DotFluent.Optional
                 .ShouldBe(expectedResult);
 
         [TestMethod]
-        [DataRow(null, 1, -1)]
-        [DataRow(1, null, 1)]
-        [DataRow(null, null, 0)]
-        [DataRow(1, 1, 0)]
-        [DataRow(1, 2, -1)]
-        [DataRow(2, 1, 1)]
-        public void CompareTo(int? source, int? value, int expectedResult)
-            => source
-                .ToOption()
-                .CompareTo(value.ToOption())
-                .ShouldBe(expectedResult);
+        [DataRow(null, 1, -1, 0)]
+        [DataRow(null, 1, -1, 1)]
+        [DataRow(1, null, 1, 0)]
+        [DataRow(1, null, 1, 1)]
+        [DataRow(null, null, 0, 0)]
+        [DataRow(null, null, 0, 1)]
+        [DataRow(1, 1, 0, 0)]
+        [DataRow(1, 1, 0, 1)]
+        [DataRow(1, 2, -1, 0)]
+        [DataRow(1, 2, -1, 1)]
+        [DataRow(2, 1, 1, 0)]
+        [DataRow(2, 1, 1, 1)]
+        public void CompareTo(int? source, int? value, int expectedResult, int overload)
+        {
+            var option = source.ToOption();
+            var result = overload switch
+            {
+                1 => option.CompareTo(value.ToOption(), null),
+                _ => option.CompareTo(value.ToOption())
+            };
+
+            result.ShouldBe(expectedResult);
+        }
 
         [TestMethod]
-        [DataRow(null, 1, true, -1)]
-        [DataRow(1, null, true, 1)]
+        [DataRow(null, 1, true, -1, 0)]
+        [DataRow(null, 1, true, -1, 1)]
+        [DataRow(1, null, true, 1, 0)]
+        [DataRow(1, null, true, 1, 1)]
+        [DataRow(null, null, true, 0, 0)]
+        [DataRow(null, null, true, 0, 1)]
+        [DataRow(1, 1, true, 0, 0)]
+        [DataRow(1, 1, true, 0, 1)]
+        [DataRow(1, 2, true, -1, 0)]
+        [DataRow(1, 2, true, -1, 1)]
+        [DataRow(2, 1, true, 1, 0)]
+        [DataRow(2, 1, true, 1, 1)]
+        [DataRow(1, 1, false, 1, 0)]
+        [DataRow(1, 1, false, 1, 1)]
+        public void CompareToObject(int? source, int? value, bool isOption, int expectedResult, int overload)
+        {
+            var option = source.ToOption();
+            var result = overload switch
+            {
+                1 => option.CompareTo(isOption ? value.ToOption() : value, null),
+                _ => option.CompareTo(isOption ? value.ToOption() : value)
+            };
+
+            result.ShouldBe(expectedResult);
+        }
+
+        [TestMethod]
+        [DataRow(null, 1, false, 0)]
+        [DataRow(null, 1, false, 1)]
+        [DataRow(1, null, false, 0)]
+        [DataRow(1, null, false, 1)]
         [DataRow(null, null, true, 0)]
+        [DataRow(null, null, true, 1)]
         [DataRow(1, 1, true, 0)]
-        [DataRow(1, 2, true, -1)]
-        [DataRow(2, 1, true, 1)]
-        [DataRow(1, 1, false, 1)]
-        public void CompareToObject(int? source, int? value, bool isOption, int expectedResult)
-            => source
-                .ToOption()
-                .CompareTo(isOption ? value.ToOption() : value as object)
-                .ShouldBe(expectedResult);
+        [DataRow(1, 1, true, 1)]
+        [DataRow(1, 2, false, 0)]
+        [DataRow(1, 2, false, 1)]
+        [DataRow(2, 1, false, 0)]
+        [DataRow(2, 1, false, 1)]
+        public void Equals(int? source, int? value, bool expectedResult, int overload)
+        {
+            var option = source.ToOption();
+            var result = overload switch
+            {
+                1 => option.Equals(value.ToOption(), null),
+                _ => option.Equals(value.ToOption())
+            };
+
+            result.ShouldBe(expectedResult);
+        }
 
         [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, null, false)]
-        [DataRow(null, null, true)]
-        [DataRow(1, 1, true)]
-        [DataRow(1, 2, false)]
-        [DataRow(2, 1, false)]
-        public void Equals(int? source, int? value, bool expectedResult)
-            => source
-                .ToOption()
-                .Equals(value.ToOption())
-                .ShouldBe(expectedResult);
+        [DataRow(null, 1, true, false, 0)]
+        [DataRow(null, 1, true, false, 1)]
+        [DataRow(1, null, true, false, 0)]
+        [DataRow(1, null, true, false, 1)]
+        [DataRow(null, null, true, true, 0)]
+        [DataRow(null, null, true, true, 1)]
+        [DataRow(1, 1, true, true, 0)]
+        [DataRow(1, 1, true, true, 1)]
+        [DataRow(1, 2, true, false, 0)]
+        [DataRow(1, 2, true, false, 1)]
+        [DataRow(2, 1, true, false, 0)]
+        [DataRow(2, 1, true, false, 1)]
+        [DataRow(1, 1, false, false, 0)]
+        [DataRow(1, 1, false, false, 1)]
+        public void EqualsObject(int? source, int? value, bool isOption, bool expectedResult, int overload)
+        {
+            var option = source.ToOption();
+            var result = overload switch
+            {
+                1 => option.Equals(isOption ? value.ToOption() : value, null),
+                _ => option.Equals(isOption ? value.ToOption() : value)
+            };
+
+            result.ShouldBe(expectedResult);
+        }
 
         [TestMethod]
-        [DataRow(null, 1, true, false)]
-        [DataRow(1, null, true, false)]
-        [DataRow(null, null, true, true)]
-        [DataRow(1, 1, true, true)]
-        [DataRow(1, 2, true, false)]
-        [DataRow(2, 1, true, false)]
-        [DataRow(1, 1, false, false)]
-        public void EqualsObject(int? source, int? value, bool isOption, bool expectedResult)
-            => source
-                .ToOption()
-                .Equals(isOption ? value.ToOption() : value as object)
-                .ShouldBe(expectedResult);
-
-        [TestMethod]
-        [DataRow(1, true)]
-        [DataRow(null, true)]
-        [DataRow(null, false)]
-        public void GetHashCode(object source, bool isSome)
+        [DataRow(1, true, 0)]
+        [DataRow(1, true, 1)]
+        [DataRow(null, true, 0)]
+        [DataRow(null, true, 1)]
+        [DataRow(null, false, 0)]
+        [DataRow(null, false, 1)]
+        public void GetHashCode(object source, bool isSome, int overload)
         {
             var option = isSome ? Option<object>.Some(source) : Option<object>.None;
-            var result = option.Match(x => x?.GetHashCode() ?? 1, 0);
-            option
-                .GetHashCode()
-                .ShouldBe(result);
+            var expectedResult = -1;
+            var result = -2;
+
+            switch (overload)
+            {
+                case 1:
+                    expectedResult = option.Match(x => StructuralComparisons.StructuralEqualityComparer.GetHashCode(x), 0);
+                    result = option.GetHashCode(null);
+                    break;
+                default:
+                    expectedResult = option.Match(x => x?.GetHashCode() ?? 1, 0);
+                    result = option.GetHashCode();
+                    break;
+            }
+
+            result.ShouldBe(expectedResult);
         }
 
         [TestMethod]

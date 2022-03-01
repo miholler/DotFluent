@@ -24,6 +24,16 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
+        public async Task MapperReturningNullThrowsException()
+        {
+            var option = await OptionTask.Some(0);
+
+            await option
+                .Awaiting(x => x.FlatMapAsync(_ => default(Task<Option<int>>)))
+                .ShouldThrowAsync<InvalidOperationException>();
+        }
+
+        [TestMethod]
         [DataRow(null, new int[0])]
         [DataRow(1, new[] { 1 })]
         public async Task FlatMapAsync(int? source, IEnumerable<int> expectedResult)

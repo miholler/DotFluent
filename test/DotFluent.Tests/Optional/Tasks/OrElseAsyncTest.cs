@@ -24,6 +24,16 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
+        public async Task OtherFactoryReturningNullThrowsException()
+        {
+            var option = await OptionTask.None<int>();
+
+            await option
+                .Awaiting(x => x.OrElseAsync(() => null))
+                .ShouldThrowAsync<InvalidOperationException>();
+        }
+
+        [TestMethod]
         [DataRow(null, null, new int[0])]
         [DataRow(1, null, new[] { 1 })]
         [DataRow(null, 1, new[] { 1 })]

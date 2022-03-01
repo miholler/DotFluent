@@ -23,13 +23,13 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> OrElseAsync<TSource>(this Option<TSource> source, Func<Task<Option<TSource>>> otherFactory, CancellationToken cancellationToken = default)
         {
-            otherFactory.ThrowIfNull(nameof(otherFactory));
+            otherFactory.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<Option<TSource>>(cancellationToken)
                 : source.IsSome
                     ? Task.FromResult(source)
-                    : otherFactory();
+                    : otherFactory() ?? throw new InvalidOperationException($"{nameof(otherFactory)} must not return null.");
         }
 
         #endregion

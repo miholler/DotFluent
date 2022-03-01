@@ -15,9 +15,9 @@ namespace DotFluent.Optional
         /// The type argument of the optionType parameter, if the optionType parameter
         /// is a closed generic option type; otherwise, null.
         /// </returns>
-        public static Type GetUnderlyingType(Type optionType)
+        public static Type? GetUnderlyingType(Type optionType)
         {
-            optionType.ThrowIfNull(nameof(optionType));
+            optionType.ThrowIfNull();
             
             if (optionType.IsGenericType && !optionType.IsGenericTypeDefinition)
             {

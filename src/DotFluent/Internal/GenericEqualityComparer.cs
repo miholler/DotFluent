@@ -34,8 +34,8 @@ namespace DotFluent.Internal
         /// <param name="hashCodeProvider">A function to resolve a hash code for an object.</param>
         public GenericEqualityComparer(Func<T, T, bool> comparer, Func<T, int> hashCodeProvider)
         {
-            _comparer = comparer.ThrowIfNull(nameof(comparer));
-            _hashCodeProvider = hashCodeProvider.ThrowIfNull(nameof(hashCodeProvider));
+            _comparer = comparer.ThrowIfNull();
+            _hashCodeProvider = hashCodeProvider.ThrowIfNull();
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace DotFluent.Internal
         /// <param name="comparer">A function to compare objects.</param>
         /// <returns>A new <see cref="GenericEqualityComparer{T}"/>.</returns>
         public static GenericEqualityComparer<T> Create(Func<T, T, bool> comparer)
-            => new GenericEqualityComparer<T>(comparer);
+            => new (comparer);
 
         /// <summary>
         /// Creates an equality comparer by using specified compare functions
@@ -59,7 +59,7 @@ namespace DotFluent.Internal
         /// <param name="hashCodeProvider">A function to resolve a hash code for an object.</param>
         /// <returns>A new <see cref="GenericEqualityComparer{T}"/>.</returns>
         public static GenericEqualityComparer<T> Create(Func<T, T, bool> comparer, Func<T, int> hashCodeProvider)
-            => new GenericEqualityComparer<T>(comparer, hashCodeProvider);
+            => new (comparer, hashCodeProvider);
 
         /// <summary>
         /// Determines whether the specified objects are equal.

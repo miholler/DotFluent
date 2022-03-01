@@ -22,7 +22,7 @@ namespace DotFluent
         /// <returns>true if the value with key was equal to comparisonValue and was replaced with newValue; otherwise, false.</returns>
         public static bool TryUpdate<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue newValue, TValue comparisonValue)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             if (source.TryGetValue(key, out var value) && value.IsEqualTo(comparisonValue))
             {

@@ -16,8 +16,8 @@ namespace DotFluent.Optional.Unsafe
         /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <param name="source">The option to retrieve the value of.</param>
         /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the default value for the <typeparamref name="TSource"/> type.</returns>
-        public static TSource GetValueOrDefault<TSource>(this Option<TSource> source)
-            => source.GetValueOrDefault(() => default);
+        public static TSource? GetValueOrDefault<TSource>(this Option<TSource> source)
+            => source.GetValueOrDefault(() => default!);
 
         /// <summary>
         /// Retrieves the value of an option, or a specified default value.
@@ -26,7 +26,7 @@ namespace DotFluent.Optional.Unsafe
         /// <param name="source">The option to retrieve the value of.</param>
         /// <param name="defaultValue">The value to return if a value is missing.</param>
         /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the defaultValue parameter.</returns>
-        public static TSource GetValueOrDefault<TSource>(this Option<TSource> source, TSource defaultValue)
+        public static TSource? GetValueOrDefault<TSource>(this Option<TSource> source, TSource? defaultValue)
             => source.GetValueOrDefault(() => defaultValue);
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace DotFluent.Optional.Unsafe
         /// <param name="source">The option to retrieve the value of.</param>
         /// <param name="defaultFactory">A function to create a default value.</param>
         /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the default value created by the specified function.</returns>
-        public static TSource GetValueOrDefault<TSource>(this Option<TSource> source, Func<TSource> defaultFactory)
+        public static TSource? GetValueOrDefault<TSource>(this Option<TSource> source, Func<TSource?> defaultFactory)
         {
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            defaultFactory.ThrowIfNull();
 
             return source.Match(x => x, defaultFactory);
         }

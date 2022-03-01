@@ -14,7 +14,7 @@ namespace DotFluent.Linq
         /// <param name="source">The sequence of nested sequences to flatten.</param>
         /// <returns>An <see cref="IEnumerable{TSource}"/> containing the elements of all nested sequences of source.</returns>
         public static IEnumerable<TSource> Flatten<TSource>(this IEnumerable<IEnumerable<TSource>> source)
-            => FlattenIterator(source.ThrowIfNull(nameof(source)));
+            => FlattenIterator(source.ThrowIfNull());
 
         /// <summary>
         /// Flattens a sequence of one-to-many linked elements by using a specified function
@@ -26,8 +26,8 @@ namespace DotFluent.Linq
         /// <returns>An <see cref="IEnumerable{TSource}"/> containing the elements of source and all nested sequences.</returns>
         public static IEnumerable<TSource> Flatten<TSource>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TSource>> selector)
         {
-            source.ThrowIfNull(nameof(source));
-            selector.ThrowIfNull(nameof(selector));
+            source.ThrowIfNull();
+            selector.ThrowIfNull();
 
             return FlattenIterator(source, selector);
         }

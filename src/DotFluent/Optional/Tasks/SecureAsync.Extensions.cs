@@ -20,7 +20,7 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> SecureAsync<TSource>(this Task<Option<TSource>> source, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             return source.Then(x => x.Secure(), cancellationToken);
         }

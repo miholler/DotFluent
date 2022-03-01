@@ -30,7 +30,7 @@ namespace DotFluent.Optional.Tasks
 
             await option
                 .Awaiting(x => x.MapAsync(_ => default(Task<int>)))
-                .ShouldThrowAsync<NullReferenceException>();
+                .ShouldThrowAsync<InvalidOperationException>();
         }
 
         [TestMethod]

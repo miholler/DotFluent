@@ -51,6 +51,41 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
+        public async Task NoneReturningNullThrowsException()
+        {
+            var option = await OptionTask.None<int>();
+
+            await option
+                .Awaiting(x => x.MatchAsync(() => null))
+                .ShouldThrowAsync<InvalidOperationException>();
+            await option
+                .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, () => null))
+                .ShouldThrowAsync<InvalidOperationException>();
+            await option
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => null))
+                .ShouldThrowAsync<InvalidOperationException>();
+        }
+
+        [TestMethod]
+        public async Task SomeReturningNullThrowsException()
+        {
+            var option = await OptionTask.Some(0);
+
+            await option
+                .Awaiting(x => x.MatchAsync(_ => null))
+                .ShouldThrowAsync<InvalidOperationException>();
+            await option
+                .Awaiting(x => x.MatchAsync(_ => null, () => Task.CompletedTask))
+                .ShouldThrowAsync<InvalidOperationException>();
+            await option
+                .Awaiting(x => x.MatchAsync(_ => null, 0))
+                .ShouldThrowAsync<InvalidOperationException>();
+            await option
+                .Awaiting(x => x.MatchAsync(_ => null, () => Task.FromResult(0)))
+                .ShouldThrowAsync<InvalidOperationException>();
+        }
+
+        [TestMethod]
         [DataRow(null, 1, 1, 0)]
         [DataRow(1, 0, 0, 0)]
         [DataRow(null, 0, 0, 1)]

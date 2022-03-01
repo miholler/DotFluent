@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 using System;
 
 namespace DotFluent
@@ -12,8 +13,11 @@ namespace DotFluent
         public void ObjectNullThrowsException()
         {
             object obj = null;
+            Action action = () => obj.ThrowIfNull();
 
-            Assert.ThrowsException<ArgumentNullException>(() => obj.ThrowIfNull(nameof(obj)));
+            action
+                .ShouldThrow<ArgumentNullException>()
+                .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(obj)));
         }
 
         [TestMethod]
@@ -21,7 +25,9 @@ namespace DotFluent
         {
             object obj = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => obj.ThrowIfNull(() => new ArgumentNullException(nameof(obj))));
+            obj.Invoking(x => x.ThrowIfNull(() => new ArgumentNullException(nameof(obj))))
+               .ShouldThrow<ArgumentNullException>()
+               .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(obj)));
         }
 
         [TestMethod]
@@ -29,7 +35,8 @@ namespace DotFluent
         {
             var obj = new object();
 
-            Assert.AreSame(obj.ThrowIfNull(nameof(obj)), obj);
+            obj.ThrowIfNull()
+               .ShouldBe(obj);
         }
 
         [TestMethod]
@@ -37,7 +44,8 @@ namespace DotFluent
         {
             var obj = new object();
 
-            Assert.AreSame(obj.ThrowIfNull(() => new ArgumentNullException(nameof(obj))), obj);
+            obj.ThrowIfNull(() => new ArgumentNullException(nameof(obj)))
+               .ShouldBe(obj);
         }
 
         #endregion

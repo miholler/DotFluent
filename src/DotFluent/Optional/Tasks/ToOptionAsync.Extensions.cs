@@ -20,7 +20,7 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> ToOptionAsync<TSource>(this Task<TSource?> source, CancellationToken cancellationToken = default) where TSource : struct
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             return source.Then(x => x.ToOption(), cancellationToken);
         }

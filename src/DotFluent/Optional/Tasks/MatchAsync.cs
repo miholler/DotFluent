@@ -42,12 +42,14 @@ namespace DotFluent.Optional.Tasks
         /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
         public static Task MatchAsync<TSource>(this Option<TSource> source, Func<TSource, Task> some, Func<Task> none, CancellationToken cancellationToken = default)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled(cancellationToken)
-                : source.Match(some, none);
+                : source.Match(x => 
+                    some(x) ?? throw new InvalidOperationException($"{nameof(some)} must not return null."),
+                    () => none() ?? throw new InvalidOperationException($"{nameof(none)} must not return null."));
         }
 
         /// <summary>
@@ -83,12 +85,14 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<TResult> MatchAsync<TSource, TResult>(this Option<TSource> source, Func<TSource, Task<TResult>> some, Func<Task<TResult>> none, CancellationToken cancellationToken = default)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<TResult>(cancellationToken)
-                : source.Match(some, none);
+                : source.Match(x =>
+                    some(x) ?? throw new InvalidOperationException($"{nameof(some)} must not return null."),
+                    () => none() ?? throw new InvalidOperationException($"{nameof(none)} must not return null."));
         }
 
         #endregion

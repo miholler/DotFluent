@@ -20,7 +20,7 @@ namespace DotFluent
         /// <returns>true if the element was removed successfully; otherwise, false.</returns>
         public static bool TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, out TValue value)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             return source.TryGetValue(key, out value) && source.Remove(key);
         }

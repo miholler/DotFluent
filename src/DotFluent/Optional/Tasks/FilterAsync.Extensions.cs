@@ -23,8 +23,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> FilterAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
 
             return source.Then(x => x.Filter(predicate), cancellationToken);
         }
@@ -43,8 +43,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> FilterAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
 
             return source.Then(x => x.FilterAsync(predicate, cancellationToken), cancellationToken);
         }

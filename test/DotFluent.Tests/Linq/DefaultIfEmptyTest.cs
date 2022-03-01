@@ -28,8 +28,8 @@ namespace DotFluent.Linq
         }
 
         [TestMethod]
-        [DataRow(new int[0], new[] { 0 })]
-        [DataRow(new[] { 1, 2, 3 }, new[] { 1, 2, 3 })]
+        [DataRow(new int[0], new[] { 0 }, DisplayName = "Empty")]
+        [DataRow(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, DisplayName = "Not Empty")]
         public void DefaultIfEmpty(IEnumerable<int> source, IEnumerable<int> expectedResult)
             => Assert.IsTrue(source.DefaultIfEmpty(() => 0).SequenceEqual(expectedResult));
 

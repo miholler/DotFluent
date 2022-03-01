@@ -20,7 +20,7 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TSource>> FlattenAsync<TSource>(this Task<Option<Option<TSource>>> source, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             return source.Then(x => x.Flatten(), cancellationToken);
         }

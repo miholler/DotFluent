@@ -39,8 +39,8 @@ namespace DotFluent.Optional.Linq
         /// </returns>
         public static Option<TResult> SelectMany<TSource, TOption, TResult>(this Option<TSource> source, Func<TSource, Option<TOption>> optionSelector, Func<TSource, TOption, TResult> resultSelector)
         {
-            optionSelector.ThrowIfNull(nameof(optionSelector));
-            resultSelector.ThrowIfNull(nameof(resultSelector));
+            optionSelector.ThrowIfNull();
+            resultSelector.ThrowIfNull();
 
             return source.FlatMap(x => optionSelector(x).Map(y => resultSelector(x, y)));
         }
