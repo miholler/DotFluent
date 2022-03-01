@@ -25,8 +25,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TResult>> MapAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, TResult> mapper, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            mapper.ThrowIfNull(nameof(mapper));
+            source.ThrowIfNull();
+            mapper.ThrowIfNull();
 
             return source.Then(x => x.Map(mapper), cancellationToken);
         }
@@ -47,8 +47,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TResult>> MapAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<TResult>> mapper, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            mapper.ThrowIfNull(nameof(mapper));
+            source.ThrowIfNull();
+            mapper.ThrowIfNull();
 
             return source.Then(x => x.MapAsync(mapper, cancellationToken), cancellationToken);
         }

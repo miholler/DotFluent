@@ -17,7 +17,7 @@ namespace DotFluent
         /// <returns>true if the key/value pair was added to the dictionary successfully; false if the key already exists.</returns>
         public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue value)
         {
-            source.ThrowIfNull(nameof(source));
+            source.ThrowIfNull();
 
             if (!source.ContainsKey(key))
             {

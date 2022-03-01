@@ -1,4 +1,6 @@
-﻿namespace DotFluent
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DotFluent
 {
     public static partial class StringExtensions
     {
@@ -10,7 +12,7 @@
         /// </summary>
         /// <param name="source">The string to test.</param>
         /// <returns>true if the string is not null, nor empty and does not consist exclusively of white-space characters; otherwise, false.</returns>
-        public static bool IsNotNullNorWhiteSpace(this string source)
+        public static bool IsNotNullNorWhiteSpace([NotNullWhen(true)]this string? source)
             => !string.IsNullOrWhiteSpace(source);
 
         #endregion

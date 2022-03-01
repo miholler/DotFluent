@@ -72,7 +72,7 @@ namespace DotFluent.Linq
         /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
         public static IEnumerable<TResult> Join<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource, TResult> resultSelector, IEqualityComparer<TKey> comparer)
         {
-            keySelector.ThrowIfNull(nameof(keySelector));
+            keySelector.ThrowIfNull();
 
             return outer.Join(inner, keySelector, keySelector, resultSelector, comparer);
         }

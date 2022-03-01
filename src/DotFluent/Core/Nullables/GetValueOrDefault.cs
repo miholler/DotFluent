@@ -16,7 +16,7 @@ namespace DotFluent
         /// <returns>The value of the <see cref="Nullable{TSource}"/> object; otherwise, the default value created by the specified function.</returns>
         public static TSource GetValueOrDefault<TSource>(this TSource? source, Func<TSource> defaultFactory) where TSource : struct
         {
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            defaultFactory.ThrowIfNull();
 
             return source ?? defaultFactory();
         }

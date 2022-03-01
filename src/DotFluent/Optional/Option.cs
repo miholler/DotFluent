@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotFluent.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -11,7 +12,7 @@ namespace DotFluent.Optional
     /// </summary>
     /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
     [Serializable]
-    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, ISerializable
+    public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable, ISerializable
     {
         #region Fields
 
@@ -31,7 +32,7 @@ namespace DotFluent.Optional
         private Option(SerializationInfo info, StreamingContext context)
         {
             IsSome = (bool)info.GetValue(nameof(IsSome), typeof(bool));
-            _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T)) : default;
+            _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T)) : default!;
         }
 
         #endregion
@@ -73,7 +74,7 @@ namespace DotFluent.Optional
         /// <param name="value">The input value.</param>
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
         public static Option<T> Some(T value)
-            => new Option<T>(value);
+            => new (value);
 
         /// <summary>
         /// Performs a specified action if the current option is a 'None' value.
@@ -81,7 +82,7 @@ namespace DotFluent.Optional
         /// <param name="none">An action to perform if a value is missing.</param>
         public void Match(Action none)
         {
-            none.ThrowIfNull(nameof(none));
+            none.ThrowIfNull();
 
             if (IsNone)
                 none();
@@ -93,7 +94,7 @@ namespace DotFluent.Optional
         /// <param name="some">An action to perform if a value is present.</param>
         public void Match(Action<T> some)
         {
-            some.ThrowIfNull(nameof(some));
+            some.ThrowIfNull();
 
             if (IsSome)
                 some(_value);
@@ -107,8 +108,8 @@ namespace DotFluent.Optional
         /// <param name="none">An action to perform if a value is missing.</param>
         public void Match(Action<T> some, Action none)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             if (IsSome)
                 some(_value);
@@ -137,8 +138,8 @@ namespace DotFluent.Optional
         /// <returns>The result of the invoked function.</returns>
         public TResult Match<TResult>(Func<T, TResult> some, Func<TResult> none)
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return IsSome ? some(_value) : none();
         }
@@ -155,7 +156,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<TResult> Map<TResult>(Func<T, TResult> mapper)
         {
-            mapper.ThrowIfNull(nameof(mapper));
+            mapper.ThrowIfNull();
 
             return Match(x => Option.Some(mapper(x)), Option.None<TResult>);
         }
@@ -173,7 +174,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<TResult> FlatMap<TResult>(Func<T, Option<TResult>> mapper)
         {
-            mapper.ThrowIfNull(nameof(mapper));
+            mapper.ThrowIfNull();
 
             return Match(mapper, Option.None<TResult>);
         }
@@ -197,7 +198,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<T> OrElse(Func<Option<T>> otherFactory)
         {
-            otherFactory.ThrowIfNull(nameof(otherFactory));
+            otherFactory.ThrowIfNull();
 
             return IsSome ? this : otherFactory();
         }
@@ -213,7 +214,7 @@ namespace DotFluent.Optional
         /// </returns>
         public Option<T> Filter(Func<T, bool> predicate)
         {
-            predicate.ThrowIfNull(nameof(predicate));
+            predicate.ThrowIfNull();
             
             return IsSome && predicate(_value) ? this : None;
         }
@@ -259,7 +260,7 @@ namespace DotFluent.Optional
         /// <returns>true if the option contains a value that satisfies the condition; otherwise, false.</returns>
         public bool Exists(Func<T, bool> predicate)
         {
-            predicate.ThrowIfNull(nameof(predicate));
+            predicate.ThrowIfNull();
 
             return IsSome && predicate(_value);
         }
@@ -303,15 +304,40 @@ namespace DotFluent.Optional
         /// <param name="other">The option to compare with the current option.</param>
         /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
         public int CompareTo(Option<T> other)
-            => IsNone && other.IsNone ? 0 : IsSome && other.IsNone ? 1 : IsNone && other.IsSome ? -1 : Comparer<T>.Default.Compare(_value, other._value);
+            => CompareTo(other, Comparer<T>.Default);
+
+        /// <summary>
+        /// Compares the specified option with the current option by using a specified comparer.
+        /// </summary>
+        /// <param name="other">The option to compare with the current option.</param>
+        /// <param name="comparer">The comparer to compare the represented values.</param>
+        /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
+        public int CompareTo(Option<T> other, IComparer<T>? comparer)
+            => IsNone && other.IsNone ? 0 : IsSome && other.IsNone ? 1 : IsNone && other.IsSome ? -1 : (comparer ?? Comparer<T>.Default).Compare(_value, other._value);
 
         /// <summary>
         /// Compares the specified object with the current option.
         /// </summary>
-        /// <param name="obj">The object to compare with the current option.</param>
+        /// <param name="other">The object to compare with the current option.</param>
         /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
-        public int CompareTo(object obj)
-            => obj is Option<T> option ? CompareTo(option) : 1;
+        public int CompareTo(object other)
+            => other is Option<T> option ? CompareTo(option) : 1;
+
+        /// <summary>
+        /// Compares the specified object with the current option by using a specified comparer.
+        /// </summary>
+        /// <param name="other">The object to compare with the current option.</param>
+        /// <param name="comparer">The comparer to compare the represented values.</param>
+        /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
+        public int CompareTo(object other, IComparer? comparer)
+        {
+            if (other is Option<T> option)
+            {
+                comparer ??= StructuralComparisons.StructuralComparer;
+                return CompareTo(option, Comparer<T>.Create((x, y) => comparer.Compare(x, y)));
+            }
+            return 1;
+        }
 
         /// <summary>
         /// Determines whether the specified option is equal to the current option.
@@ -319,15 +345,42 @@ namespace DotFluent.Optional
         /// <param name="other">The option to compare with the current option.</param>
         /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
         public bool Equals(Option<T> other)
-            => (IsNone && other.IsNone) || (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
+            => Equals(other, EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Determines whether the specified option is equal to the current option
+        /// by using a specified equality comparer.
+        /// </summary>
+        /// <param name="other">The option to compare with the current option.</param>
+        /// <param name="comparer">The equality comparer to compare the represented values.</param>
+        /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
+        public bool Equals(Option<T> other, IEqualityComparer<T>? comparer)
+            => (IsNone && other.IsNone) || (IsSome && other.IsSome && (comparer ?? EqualityComparer<T>.Default).Equals(_value, other._value));
 
         /// <summary>
         /// Determines whether the specified object is equal to the current option.
         /// </summary>
-        /// <param name="obj">The object to compare with the current option.</param>
+        /// <param name="other">The object to compare with the current option.</param>
         /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
-        public override bool Equals(object obj)
-            => obj is Option<T> option && Equals(option);
+        public override bool Equals(object other)
+            => other is Option<T> option && Equals(option);
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current option
+        /// by using a specified equality comparer.
+        /// </summary>
+        /// <param name="other">The object to compare with the current option.</param>
+        /// <param name="comparer">The equality comparer to compare the represented values.</param>
+        /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
+        public bool Equals(object other, IEqualityComparer? comparer)
+        {
+            if (other is Option<T> option)
+            {
+                comparer ??= StructuralComparisons.StructuralEqualityComparer;
+                return Equals(option, GenericEqualityComparer<T>.Create((x, y) => comparer.Equals(x, y)));
+            }
+            return false;
+        }
 
         /// <summary>
         /// Returns a hash code for the current option.
@@ -335,6 +388,15 @@ namespace DotFluent.Optional
         /// <returns>A hash code for the current option.</returns>
         public override int GetHashCode()
             => IsSome ? _value?.GetHashCode() ?? 1 : 0;
+
+        /// <summary>
+        /// Returns a hash code for the current option
+        /// computed by a specified equality comparer.
+        /// </summary>
+        /// <param name="comparer">The equality comparer that computes the hash code of the current option.</param>
+        /// <returns>A hash code for the current option.</returns>
+        public int GetHashCode(IEqualityComparer? comparer)
+            => IsSome ? (comparer ?? StructuralComparisons.StructuralEqualityComparer).GetHashCode(_value) : 0;
 
         /// <summary>
         /// Returns a string that represents the current option.
@@ -352,7 +414,7 @@ namespace DotFluent.Optional
         /// </summary>
         /// <param name="value">The input value.</param>
         /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
-        public static implicit operator Option<T>(T value)
+        public static implicit operator Option<T>(T? value)
             => value.IsNotNull() ? Some(value) : None;
 
         /// <summary>

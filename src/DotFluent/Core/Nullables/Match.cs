@@ -14,7 +14,7 @@ namespace DotFluent
         /// <param name="none">An action to perform if a value is missing.</param>
         public static void Match<TSource>(this TSource? source, Action none) where TSource : struct
         {
-            none.ThrowIfNull(nameof(none));
+            none.ThrowIfNull();
 
             if (!source.HasValue)
                 none();
@@ -28,7 +28,7 @@ namespace DotFluent
         /// <param name="some">An action to perform if a value is present.</param>
         public static void Match<TSource>(this TSource? source, Action<TSource> some) where TSource : struct
         {
-            some.ThrowIfNull(nameof(some));
+            some.ThrowIfNull();
 
             if (source.HasValue)
                 some(source.Value);
@@ -43,8 +43,8 @@ namespace DotFluent
         /// <param name="none">An action to perform if a value is missing.</param>
         public static void Match<TSource>(this TSource? source, Action<TSource> some, Action none) where TSource : struct
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             if (source.HasValue)
                 some(source.Value);
@@ -76,8 +76,8 @@ namespace DotFluent
         /// <returns>The result of the invoked function.</returns>
         public static TResult Match<TSource, TResult>(this TSource? source, Func<TSource, TResult> some, Func<TResult> none) where TSource : struct
         {
-            some.ThrowIfNull(nameof(some));
-            none.ThrowIfNull(nameof(none));
+            some.ThrowIfNull();
+            none.ThrowIfNull();
 
             return source.HasValue ? some(source.Value) : none();
         }

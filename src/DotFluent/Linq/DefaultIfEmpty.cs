@@ -20,8 +20,8 @@ namespace DotFluent.Linq
         /// </returns>
         public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            source.ThrowIfNull();
+            defaultFactory.ThrowIfNull();
 
             return DefaultIfEmptyIterator(source, defaultFactory);
         }

@@ -36,7 +36,7 @@ namespace DotFluent.Linq
         /// <param name="source">The sequence of values to order.</param>
         /// <param name="comparer">A comparer to compare values.</param>
         /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted in descending order.</returns>
-        public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
             => source.OrderByDescending(x => x, comparer);
 
         #endregion

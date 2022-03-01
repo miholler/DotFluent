@@ -29,7 +29,7 @@ namespace DotFluent.Optional.Tasks
 
             await option
                 .Awaiting(x => x.ContainsAsync(() => null))
-                .ShouldThrowAsync<NullReferenceException>();
+                .ShouldThrowAsync<InvalidOperationException>();
         }
 
         [TestMethod]

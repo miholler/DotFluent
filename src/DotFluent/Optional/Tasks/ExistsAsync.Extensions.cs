@@ -22,8 +22,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<bool> ExistsAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
 
             return source.Then(x => x.Exists(predicate), cancellationToken);
         }
@@ -41,8 +41,8 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<bool> ExistsAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
 
             return source.Then(x => x.ExistsAsync(predicate, cancellationToken), cancellationToken);
         }

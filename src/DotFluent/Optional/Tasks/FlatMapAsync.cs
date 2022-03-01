@@ -24,11 +24,11 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<Option<TResult>> FlatMapAsync<TSource, TResult>(this Option<TSource> source, Func<TSource, Task<Option<TResult>>> mapper, CancellationToken cancellationToken = default)
         {
-            mapper.ThrowIfNull(nameof(mapper));
+            mapper.ThrowIfNull();
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<Option<TResult>>(cancellationToken)
-                : source.Match(mapper, None<TResult>);
+                : source.Match(x => mapper(x) ?? throw new InvalidOperationException($"{nameof(mapper)} must not return null."), None<TResult>);
         }
 
         #endregion

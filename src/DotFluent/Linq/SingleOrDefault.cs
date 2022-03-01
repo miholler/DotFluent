@@ -30,8 +30,8 @@ namespace DotFluent.Linq
         /// <returns>The default value created by the specified function if the source sequence is empty; otherwise the single element of the source sequence.</returns>
         public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            source.ThrowIfNull();
+            defaultFactory.ThrowIfNull();
 
             switch (source)
             {
@@ -84,9 +84,9 @@ namespace DotFluent.Linq
         /// </returns>
         public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TSource> defaultFactory)
         {
-            source.ThrowIfNull(nameof(source));
-            predicate.ThrowIfNull(nameof(predicate));
-            defaultFactory.ThrowIfNull(nameof(defaultFactory));
+            source.ThrowIfNull();
+            predicate.ThrowIfNull();
+            defaultFactory.ThrowIfNull();
 
             var count = 0L;
             var resultFactory = defaultFactory;

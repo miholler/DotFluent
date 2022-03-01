@@ -23,6 +23,16 @@ namespace DotFluent.Optional.Tasks
         }
 
         [TestMethod]
+        public async Task PredicateReturningNullThrowsException()
+        {
+            var option = await OptionTask.Some(0);
+
+            await option
+                .Awaiting(x => x.ExistsAsync(_ => null))
+                .ShouldThrowAsync<InvalidOperationException>();
+        }
+
+        [TestMethod]
         [DataRow(null, 1, false)]
         [DataRow(1, 2, false)]
         [DataRow(1, 1, true)]

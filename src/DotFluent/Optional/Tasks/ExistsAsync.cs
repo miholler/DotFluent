@@ -21,11 +21,11 @@ namespace DotFluent.Optional.Tasks
         /// </returns>
         public static Task<bool> ExistsAsync<TSource>(this Option<TSource> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
         {
-            predicate.ThrowIfNull(nameof(predicate));
+            predicate.ThrowIfNull();
             
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<bool>(cancellationToken)
-                : source.Match(predicate, () => Task.FromResult(false));
+                : source.Match(x => predicate(x) ?? throw new InvalidOperationException($"{nameof(predicate)} must not return null."), () => Task.FromResult(false));
         }
 
         #endregion
