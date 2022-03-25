@@ -15,6 +15,7 @@ namespace DotFluent
         /// <param name="source">The object to check for null.</param>
         /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
         /// <returns>The object if not null.</returns>
+        [return: NotNull]
         public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, [CallerArgumentExpression("source")]string? paramName = null)
             => source ?? throw new ArgumentNullException(paramName);
 
@@ -25,6 +26,7 @@ namespace DotFluent
         /// <param name="source">The object to check for null.</param>
         /// <param name="factory">A function to create the <see cref="Exception"/>.</param>
         /// <returns>The object if not null.</returns>
+        [return: NotNull]
         public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, Func<Exception> factory)
             => source ?? throw factory();
 
