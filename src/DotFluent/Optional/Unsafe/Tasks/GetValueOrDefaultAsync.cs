@@ -25,11 +25,11 @@ namespace DotFluent.Optional.Unsafe.Tasks
         /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
         /// the value of the <see cref="Option{TSource}"/>; otherwise, the default value created by the specified function.
         /// </returns>
-        public static Task<TSource?> GetValueOrDefaultAsync<TSource>(this Option<TSource> source, Func<Task<TSource?>> defaultFactory, CancellationToken cancellationToken = default)
+        public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Option<TSource> source, Func<Task<TSource>> defaultFactory, CancellationToken cancellationToken = default)
         {
             defaultFactory.ThrowIfNull();
 
-            return source.MatchAsync(x => Task.FromResult<TSource?>(x), defaultFactory, cancellationToken);
+            return source.MatchAsync(Task.FromResult, defaultFactory, cancellationToken);
         }
 
         #endregion
