@@ -13,7 +13,7 @@ namespace DotFluent.Optional.Unsafe
         /// <param name="source">The option to create the nullable object from.</param>
         /// <returns>A <see cref="Nullable{TSource}"/> representing the value of source.</returns>
         public static TSource? ToNullable<TSource>(this Option<TSource> source) where TSource : struct
-            => source.Match(x => new TSource?(x), () => new TSource?());
+            => source.Match(x => new TSource?(x), () => default);
 
         #endregion
     }

@@ -22,7 +22,7 @@ namespace DotFluent
         {
             mapper.ThrowIfNull();
 
-            return source.Match(x => mapper(x), () => new TResult?());
+            return source.Match(x => mapper(x), () => default(TResult?));
         }
 
         #endregion

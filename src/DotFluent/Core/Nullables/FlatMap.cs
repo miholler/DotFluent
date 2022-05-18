@@ -2,9 +2,6 @@
 
 namespace DotFluent
 {
-    /// <summary>
-    /// Provides extension methods for <see cref="Nullable{T}"/> objects.
-    /// </summary>
     public static partial class NullableExtensions
     {
         #region Methods
@@ -25,7 +22,7 @@ namespace DotFluent
         {
             mapper.ThrowIfNull();
 
-            return source.Match(mapper, () => new TResult?());
+            return source.Match(mapper, () => default);
         }
 
         #endregion
