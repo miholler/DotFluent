@@ -9,7 +9,7 @@ namespace DotFluent
         /// <summary>
         /// Determines wheter an object instance is not null.
         /// </summary>
-        /// <param name="source">The object to check for not null.</param>
+        /// <param name="source">The object to check for null.</param>
         /// <returns>true if the object is not null; otherwise, false.</returns>
         public static bool IsNotNull([NotNullWhen(true)]this object? source)
             => source != null;
