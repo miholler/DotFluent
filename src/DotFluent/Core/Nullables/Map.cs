@@ -12,7 +12,7 @@ namespace DotFluent
         /// </summary>
         /// <typeparam name="TSource">The type of the value of source.</typeparam>
         /// <typeparam name="TResult">The type of the value returned by mapper.</typeparam>
-        /// <param name="source">The nullable whose value is to be transformed.</param>
+        /// <param name="source">The nullable object whose value is to be transformed.</param>
         /// <param name="mapper">A transform function to apply to the value.</param>
         /// <returns>
         /// A <see cref="Nullable{TResult}"/> whose value is the result of invoking the transform function on the value of source; 
@@ -22,7 +22,7 @@ namespace DotFluent
         {
             mapper.ThrowIfNull();
 
-            return source.HasValue ? mapper(source.Value) : new TResult?();
+            return source.Match(x => mapper(x), () => new TResult?());
         }
 
         #endregion
