@@ -4,7 +4,7 @@ using Shouldly;
 namespace DotFluent
 {
     [TestClass]
-    public sealed class ContainsTest
+    public sealed class NullableContainsTest
     {
         #region Methods
 

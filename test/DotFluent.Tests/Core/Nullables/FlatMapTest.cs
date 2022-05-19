@@ -15,14 +15,18 @@ namespace DotFluent
             var source = new int?();
             Func<int, int?> mapper = null;
 
-            source.Invoking(x => x.FlatMap(mapper)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.FlatMap(mapper))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
         [DataRow(null, null)]
         [DataRow(1, 1)]
         public void FlatMap(int? source, int? expectedResult)
-            => source.FlatMap(x => new int?(x)).ShouldBe(expectedResult);
+            => source
+                .FlatMap(x => new int?(x))
+                .ShouldBe(expectedResult);
 
         #endregion
     }
