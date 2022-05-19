@@ -29,7 +29,7 @@ namespace DotFluent.Optional.Tasks
                 ? Task.FromCanceled<Option<TSource>>(cancellationToken)
                 : source.IsSome
                     ? Task.FromResult(source)
-                    : otherFactory() ?? throw new InvalidOperationException($"{nameof(otherFactory)} must not return null.");
+                    : otherFactory().ThrowIfNull(() => new InvalidOperationException($"{nameof(otherFactory)} must not return null."));
         }
 
         #endregion

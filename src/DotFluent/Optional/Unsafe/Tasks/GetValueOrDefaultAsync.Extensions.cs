@@ -22,7 +22,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
         /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
         /// the value of the <see cref="Option{TSource}"/>; otherwise, the default value for the <typeparamref name="TSource"/> type.
         /// </returns>
-        public static Task<TSource?> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, CancellationToken cancellationToken = default)
+        public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
 
@@ -40,7 +40,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
         /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
         /// the value of the <see cref="Option{TSource}"/>; otherwise, the defaultValue parameter.
         /// </returns>
-        public static Task<TSource?> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, TSource? defaultValue, CancellationToken cancellationToken = default)
+        public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, TSource defaultValue, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
 
@@ -59,7 +59,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
         /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
         /// the value of the <see cref="Option{TSource}"/>; otherwise, the default value created by the specified function.
         /// </returns>
-        public static Task<TSource?> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, Func<TSource?> defaultFactory, CancellationToken cancellationToken = default)
+        public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, Func<TSource> defaultFactory, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             defaultFactory.ThrowIfNull();
@@ -79,7 +79,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
         /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
         /// the value of the <see cref="Option{TSource}"/>; otherwise, the default value created by the specified function.
         /// </returns>
-        public static Task<TSource?> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, Func<Task<TSource?>> defaultFactory, CancellationToken cancellationToken = default)
+        public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, Func<Task<TSource>> defaultFactory, CancellationToken cancellationToken = default)
         {
             source.ThrowIfNull();
             defaultFactory.ThrowIfNull();

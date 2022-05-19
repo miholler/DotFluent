@@ -30,7 +30,9 @@ namespace DotFluent.Optional.Tasks
 
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<bool>(cancellationToken)
-                : valueFactory()?.Then(x => source.Contains(x), cancellationToken) ?? throw new InvalidOperationException($"{nameof(valueFactory)} must not return null.");
+                : valueFactory()
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
+                    .Then(x => source.Contains(x), cancellationToken);
         }
 
         #endregion

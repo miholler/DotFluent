@@ -25,7 +25,9 @@ namespace DotFluent.Optional.Tasks
             
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<bool>(cancellationToken)
-                : source.Match(x => predicate(x) ?? throw new InvalidOperationException($"{nameof(predicate)} must not return null."), () => Task.FromResult(false));
+                : source.Match(x => 
+                    predicate(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null.")),
+                    () => Task.FromResult(false));
         }
 
         #endregion
