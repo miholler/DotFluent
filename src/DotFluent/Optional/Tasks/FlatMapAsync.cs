@@ -29,7 +29,7 @@ namespace DotFluent.Optional.Tasks
             return cancellationToken.IsCancellationRequested
                 ? Task.FromCanceled<Option<TResult>>(cancellationToken)
                 : source.Match(x => 
-                    mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")), 
+                    mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")),
                     None<TResult>);
         }
 
