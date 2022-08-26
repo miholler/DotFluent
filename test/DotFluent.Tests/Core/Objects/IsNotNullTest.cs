@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 
 namespace DotFluent
 {
@@ -12,7 +13,9 @@ namespace DotFluent
         [DataRow("", true)]
         [DataRow(null, false)]
         public void IsNotNull(object obj, bool expectedResult)
-            => Assert.AreEqual(obj.IsNotNull(), expectedResult);
+            => obj
+                .IsNotNull()
+                .ShouldBe(expectedResult);
 
         #endregion
     }

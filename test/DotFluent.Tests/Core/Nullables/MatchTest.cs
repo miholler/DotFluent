@@ -16,9 +16,15 @@ namespace DotFluent
             Action none = null;
             Func<int?> noneFunc = null;
 
-            source.Invoking(x => x.Match(none)).ShouldThrow<ArgumentNullException>();
-            source.Invoking(x => x.Match(x => { x++; }, none)).ShouldThrow<ArgumentNullException>();
-            source.Invoking(x => x.Match(x => x++, noneFunc)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(none))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(x => { x++; }, none))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(x => x++, noneFunc))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -28,10 +34,18 @@ namespace DotFluent
             Action<int> some = null;
             Func<int, int> someFunc = null;
 
-            source.Invoking(x => x.Match(some)).ShouldThrow<ArgumentNullException>();
-            source.Invoking(x => x.Match(some, () => { })).ShouldThrow<ArgumentNullException>();
-            source.Invoking(x => x.Match(someFunc, 0)).ShouldThrow<ArgumentNullException>();
-            source.Invoking(x => x.Match(someFunc, () => 0)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(some))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(some, () => { }))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(someFunc, 0))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Match(someFunc, () => 0))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [TestMethod]

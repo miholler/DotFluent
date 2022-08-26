@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Shouldly;
 
 namespace DotFluent
 {
@@ -13,7 +14,7 @@ namespace DotFluent
             var a = 1;
             var b = 1;
 
-            Assert.IsTrue(a.IsEqualTo(b));
+            a.IsEqualTo(b).ShouldBeTrue();
         }
 
         [TestMethod]
@@ -22,7 +23,7 @@ namespace DotFluent
             var a = 1;
             var b = 2;
 
-            Assert.IsFalse(a.IsEqualTo(b));
+            a.IsEqualTo(b).ShouldBeFalse();
         }
 
         [TestMethod]
@@ -31,7 +32,7 @@ namespace DotFluent
             var a = new object();
             var b = a;
 
-            Assert.IsTrue(a.IsEqualTo(b, true));
+            a.IsEqualTo(b, true).ShouldBeTrue();
         }
 
         [TestMethod]
@@ -40,7 +41,7 @@ namespace DotFluent
             var a = new object();
             var b = new object();
 
-            Assert.IsFalse(a.IsEqualTo(b, true));
+            a.IsEqualTo(b, true).ShouldBeFalse();
         }
 
         #endregion
