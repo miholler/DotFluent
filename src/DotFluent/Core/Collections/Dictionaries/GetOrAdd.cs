@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DotFluent;
+﻿namespace DotFluent;
 
 public static partial class DictionaryExtensions
 {

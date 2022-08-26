@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 /// <summary>
 /// Provides extension methods for <see cref="Nullable{T}"/> objects.

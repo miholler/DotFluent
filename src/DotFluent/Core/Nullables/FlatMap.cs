@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotFluent;
+﻿namespace DotFluent;
 
 public static partial class NullableExtensions
 {

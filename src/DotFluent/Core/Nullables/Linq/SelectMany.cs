@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class NullableLinqExtensions
 {

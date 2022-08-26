@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DotFluent;
+﻿namespace DotFluent;
 
 /// <summary>
 /// Provides extension methods for <see cref="IDictionary{TKey, TValue}"/> objects.
