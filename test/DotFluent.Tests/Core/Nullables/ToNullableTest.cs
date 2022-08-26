@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableToNullableTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(1, 1)]
+        [Test]
+        [TestCase(1, 1)]
         public void ToNullable(int source, int? expectedResult)
             => source
                 .ToNullable()

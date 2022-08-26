@@ -1,17 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ObjectIsNotNullTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(1, true)]
-        [DataRow("", true)]
-        [DataRow(null, false)]
+        [Test]
+        [TestCase(1, true)]
+        [TestCase("", true)]
+        [TestCase(null, false)]
         public void IsNotNull(object obj, bool expectedResult)
             => obj
                 .IsNotNull()

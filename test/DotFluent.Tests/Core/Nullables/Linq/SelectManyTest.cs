@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableSelectManyTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SelectorNullThrowsException()
         {
             var source = new int?();
@@ -19,7 +19,7 @@ namespace DotFluent.Linq
             source.Invoking(x => x.SelectMany(selector, (x, y) => x + y)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void ResultSelectorNullThrowsException()
         {
             var source = new int?();
@@ -28,17 +28,17 @@ namespace DotFluent.Linq
             source.Invoking(x => x.SelectMany(x => x, resultSelector)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null)]
-        [DataRow(1, 1)]
+        [Test]
+        [TestCase(null, null)]
+        [TestCase(1, 1)]
         public void SelectMany(int? source, int? expectedResult)
             => source.SelectMany(x => new int?(x)).ShouldBe(expectedResult);
 
-        [TestMethod]
-        [DataRow(null, null, null)]
-        [DataRow(null, 0, null)]
-        [DataRow(1, null, null)]
-        [DataRow(1, 1, 2)]
+        [Test]
+        [TestCase(null, null, null)]
+        [TestCase(null, 0, null)]
+        [TestCase(1, null, null)]
+        [TestCase(1, 1, 2)]
         public void SelectManyWithResultSelector(int? source, int? selectorResult, int? expectedResult)
             => source.SelectMany(x => selectorResult, (x, y) => x + y).ShouldBe(expectedResult);
 

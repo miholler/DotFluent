@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent.Optional
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NoneTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void None()
             => Option.None<int>().ShouldBe(Option<int>.None);
 

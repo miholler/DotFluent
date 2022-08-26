@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class MatchAsyncTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task NoneNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -29,7 +29,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task SomeNullThrowsException()
         {
             var option = await OptionTask.Some(0);
@@ -50,7 +50,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task NoneReturningNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -66,7 +66,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<InvalidOperationException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task SomeReturningNullThrowsException()
         {
             var option = await OptionTask.Some(0);
@@ -85,17 +85,17 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<InvalidOperationException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, 1, 0)]
-        [DataRow(1, 0, 0, 0)]
-        [DataRow(null, 0, 0, 1)]
-        [DataRow(1, 1, 2, 1)]
-        [DataRow(1, 1, 2, 2)]
-        [DataRow(null, 1, 1, 2)]
-        [DataRow(1, 1, 2, 3)]
-        [DataRow(null, 1, 1, 3)]
-        [DataRow(1, 1, 2, 4)]
-        [DataRow(null, 1, 1, 4)]
+        [Test]
+        [TestCase(null, 1, 1, 0)]
+        [TestCase(1, 0, 0, 0)]
+        [TestCase(null, 0, 0, 1)]
+        [TestCase(1, 1, 2, 1)]
+        [TestCase(1, 1, 2, 2)]
+        [TestCase(null, 1, 1, 2)]
+        [TestCase(1, 1, 2, 3)]
+        [TestCase(null, 1, 1, 3)]
+        [TestCase(1, 1, 2, 4)]
+        [TestCase(null, 1, 1, 4)]
         public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
         {
             var result = 0;
@@ -138,7 +138,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task MatchAsyncCanceled()
         {
             var option = await OptionTask.None<int>();

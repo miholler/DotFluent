@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ObjectThrowIfNullTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void ObjectNullThrowsException()
         {
             object obj = null;
@@ -20,7 +20,7 @@ namespace DotFluent
                 .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(obj)));
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectNullThrowsFactoryException()
         {
             object obj = null;
@@ -30,7 +30,7 @@ namespace DotFluent
                .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(obj)));
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectNotNullReturnsObject()
         {
             var obj = new object();
@@ -39,7 +39,7 @@ namespace DotFluent
                .ShouldBe(obj);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectNotNullReturnsObjectWithFactory()
         {
             var obj = new object();

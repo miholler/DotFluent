@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ObjectIsEqualToTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void IsEqual()
         {
             var a = 1;
@@ -17,7 +17,7 @@ namespace DotFluent
             a.IsEqualTo(b).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IsNotEqual()
         {
             var a = 1;
@@ -26,7 +26,7 @@ namespace DotFluent
             a.IsEqualTo(b).ShouldBeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void IsReferenceEqual()
         {
             var a = new object();
@@ -35,7 +35,7 @@ namespace DotFluent
             a.IsEqualTo(b, true).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IsReferenceNotEqual()
         {
             var a = new object();

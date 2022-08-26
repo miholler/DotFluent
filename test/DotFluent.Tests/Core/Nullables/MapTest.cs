@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableMapTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void MapperNullThrowsException()
         {
             var source = new int?();
@@ -20,9 +20,9 @@ namespace DotFluent
                 .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null)]
-        [DataRow(1, 2)]
+        [Test]
+        [TestCase(null, null)]
+        [TestCase(1, 2)]
         public void Map(int? source, int? expectedResult)
             => source
                 .Map(x => ++x)

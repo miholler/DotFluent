@@ -1,19 +1,19 @@
 ﻿using DotFluent.Optional.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Unsafe.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ToNullableAsyncTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(null)]
+        [TestCase(1)]
         public async Task ToNullableAsync(int? source)
         {
             var result = await source
@@ -23,7 +23,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
             result.ShouldBe(source);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ToNullableAsyncCanceled()
         {
             var option = await OptionTask.None<int>();

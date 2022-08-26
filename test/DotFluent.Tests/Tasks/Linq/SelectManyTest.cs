@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
 
 namespace DotFluent.Tasks.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SelectManyTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<int> source = null;
@@ -23,7 +23,7 @@ namespace DotFluent.Tasks.Linq
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task SelectorNullThrowsException()
         {
             var source = Task.FromResult(0);
@@ -37,7 +37,7 @@ namespace DotFluent.Tasks.Linq
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ResultSelectorNullThrowsException()
         {
             var source = Task.FromResult(0);
@@ -48,7 +48,7 @@ namespace DotFluent.Tasks.Linq
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task SelectMany()
         {
             var result = await Task.FromResult(1).SelectMany(x => Task.FromResult(++x));
@@ -56,7 +56,7 @@ namespace DotFluent.Tasks.Linq
             result.ShouldBe(2);
         }
 
-        [TestMethod]
+        [Test]
         public async Task SelectManyWithResultSelector()
         {
             var result = await Task.FromResult(1).SelectMany(x => Task.FromResult(++x), (x, y) => x + y);

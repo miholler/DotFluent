@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class OrElseAsyncTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task OtherFactoryNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -23,7 +23,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task OtherFactoryReturningNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -33,11 +33,11 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<InvalidOperationException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null, new int[0])]
-        [DataRow(1, null, new[] { 1 })]
-        [DataRow(null, 1, new[] { 1 })]
-        [DataRow(1, 2, new[] { 1 })]
+        [Test]
+        [TestCase(null, null, new int[0])]
+        [TestCase(1, null, new[] { 1 })]
+        [TestCase(null, 1, new[] { 1 })]
+        [TestCase(1, 2, new[] { 1 })]
         public async Task OrElseAsync(int? source, int? other, IEnumerable<int> expectedResult)
         {
             var option = await source.ToOptionAsync();
@@ -46,7 +46,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task OrElseAsyncCanceled()
         {
             var option = await OptionTask.None<int>();

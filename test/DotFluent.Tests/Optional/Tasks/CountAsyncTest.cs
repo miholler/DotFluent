@@ -1,18 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class CountAsyncTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, 0)]
-        [DataRow(1, 1)]
+        [Test]
+        [TestCase(null, 0)]
+        [TestCase(1, 1)]
         public async Task CountAsync(int? source, int expectedResult)
         {
             var option = await source.ToOptionAsync();
@@ -21,7 +21,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task CountAsyncCanceled()
         {
             var option = await OptionTask.None<int>();

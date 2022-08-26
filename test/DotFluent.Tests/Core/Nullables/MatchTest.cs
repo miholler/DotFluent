@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableMatchTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void NoneNullThrowsException()
         {
             var source = new int?();
@@ -27,7 +27,7 @@ namespace DotFluent
                 .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void SomeNullThrowsException()
         {
             var source = new int?(0);
@@ -48,15 +48,15 @@ namespace DotFluent
                 .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, 1, 0)]
-        [DataRow(1, 1, 2, 1)]
-        [DataRow(1, 1, 2, 2)]
-        [DataRow(null, 1, 1, 2)]
-        [DataRow(1, 1, 2, 3)]
-        [DataRow(null, 1, 1, 3)]
-        [DataRow(1, 1, 2, 4)]
-        [DataRow(null, 1, 1, 4)]
+        [Test]
+        [TestCase(null, 1, 1, 0)]
+        [TestCase(1, 1, 2, 1)]
+        [TestCase(1, 1, 2, 2)]
+        [TestCase(null, 1, 1, 2)]
+        [TestCase(1, 1, 2, 3)]
+        [TestCase(null, 1, 1, 3)]
+        [TestCase(1, 1, 2, 4)]
+        [TestCase(null, 1, 1, 4)]
         public void Match(int? source, int value, int expectedResult, int overload)
         {
             var result = 0;

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class FlattenAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<Option<int>>> optionTask = null;
@@ -22,9 +22,9 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 1 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 1 })]
         public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult)
         {
             var result = await OptionTask.Some(await source.ToOptionAsync())
@@ -33,7 +33,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task FlattenAsyncCanceled()
         {
             using var cts = new CancellationTokenSource();

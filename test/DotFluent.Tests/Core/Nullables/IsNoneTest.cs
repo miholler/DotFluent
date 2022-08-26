@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableIsNoneTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, true)]
-        [DataRow(1, false)]
+        [Test]
+        [TestCase(null, true)]
+        [TestCase(1, false)]
         public void IsNone(int? source, bool expectedResult)
             => source
                 .IsNone()

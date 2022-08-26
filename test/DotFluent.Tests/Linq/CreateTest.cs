@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class CreateTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void CreateEmpty()
         {
             var source = Sequence.Create<int>();
@@ -17,7 +17,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(source.IsNotNull() && source.None());
         }
 
-        [TestMethod]
+        [Test]
         public void CreateWithArrayNull()
         {
             object[] elements = null;
@@ -26,7 +26,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(source.IsNotNull() && source.None());
         }
 
-        [TestMethod]
+        [Test]
         public void CreateWithElementNull()
         {
             var source = Sequence.Create(new object(), null, new object()).ToArray();
@@ -34,7 +34,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(source.IsNotNullNorEmpty() && source.Contains(null));
         }
 
-        [TestMethod]
+        [Test]
         public void Create()
         {
             var source = Sequence.Create(1, 2, 3).ToArray();

@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SomeTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task Some()
         {
             var result = await OptionTask.Some(1);

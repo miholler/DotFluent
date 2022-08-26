@@ -1,28 +1,27 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Runtime.Serialization;
 
 namespace DotFluent.Optional
 {
-    [TestClass]
+    [TestFixture]
     public sealed class OptionTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SomeValueReturnsValue()
             => Option<int>.Some(1).Value.ShouldBe(1);
 
-        [TestMethod]
+        [Test]
         public void NoneValueThrowsException()
             => Option<int>.None.Invoking(x => x.Value).ShouldThrow<InvalidOperationException>();
 
-        [TestMethod]
+        [Test]
         public void IsSome()
         {
             var option = Option<int>.Some(1);
@@ -31,7 +30,7 @@ namespace DotFluent.Optional
             option.IsNone.ShouldBeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void IsNone()
         {
             var option = Option<int>.None;
@@ -40,7 +39,7 @@ namespace DotFluent.Optional
             option.IsNone.ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void MatchNoneNullThrowsException()
         {
             var option = Option<int>.None;
@@ -52,7 +51,7 @@ namespace DotFluent.Optional
             option.Invoking(x => x.Match(x => x++, noneFunc)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void MatchSomeNullThrowsException()
         {
             var option = Option<int>.Some(0);
@@ -65,17 +64,17 @@ namespace DotFluent.Optional
             option.Invoking(x => x.Match(someFunc, () => 0)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, 1, 0)]
-        [DataRow(1, 0, 0, 0)]
-        [DataRow(null, 0, 0, 1)]
-        [DataRow(1, 1, 2, 1)]
-        [DataRow(1, 1, 2, 2)]
-        [DataRow(null, 1, 1, 2)]
-        [DataRow(1, 1, 2, 3)]
-        [DataRow(null, 1, 1, 3)]
-        [DataRow(1, 1, 2, 4)]
-        [DataRow(null, 1, 1, 4)]
+        [Test]
+        [TestCase(null, 1, 1, 0)]
+        [TestCase(1, 0, 0, 0)]
+        [TestCase(null, 0, 0, 1)]
+        [TestCase(1, 1, 2, 1)]
+        [TestCase(1, 1, 2, 2)]
+        [TestCase(null, 1, 1, 2)]
+        [TestCase(1, 1, 2, 3)]
+        [TestCase(null, 1, 1, 3)]
+        [TestCase(1, 1, 2, 4)]
+        [TestCase(null, 1, 1, 4)]
         public void Match(int? source, int value, int expectedResult, int overload)
         {
             var result = 0;
@@ -102,7 +101,7 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public void MapMapperNullThrowsException()
         {
             var option = Option<int>.None;
@@ -111,16 +110,16 @@ namespace DotFluent.Optional
             option.Invoking(x => x.Map(mapper)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 2 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 2 })]
         public void Map(int? source, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
                 .Map(x => ++x)
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
+        [Test]
         public void FlatMapMapperNullThrowsException()
         {
             var option = Option<int>.None;
@@ -129,16 +128,16 @@ namespace DotFluent.Optional
             option.Invoking(x => x.FlatMap(mapper)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 1 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 1 })]
         public void FlatMap(int? source, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
                 .FlatMap(x => Option<int>.Some(x))
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
+        [Test]
         public void OrElseOtherFactoryNullThrowsException()
         {
             var option = Option<int>.None;
@@ -147,15 +146,15 @@ namespace DotFluent.Optional
             option.Invoking(x => x.OrElse(otherFactory)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null, new int[0], 0)]
-        [DataRow(null, null, new int[0], 1)]
-        [DataRow(1, null, new[] { 1 }, 0)]
-        [DataRow(1, null, new[] { 1 }, 1)]
-        [DataRow(null, 1, new[] { 1 }, 0)]
-        [DataRow(null, 1, new[] { 1 }, 1)]
-        [DataRow(1, 2, new[] { 1 }, 0)]
-        [DataRow(1, 2, new[] { 1 }, 1)]
+        [Test]
+        [TestCase(null, null, new int[0], 0)]
+        [TestCase(null, null, new int[0], 1)]
+        [TestCase(1, null, new[] { 1 }, 0)]
+        [TestCase(1, null, new[] { 1 }, 1)]
+        [TestCase(null, 1, new[] { 1 }, 0)]
+        [TestCase(null, 1, new[] { 1 }, 1)]
+        [TestCase(1, 2, new[] { 1 }, 0)]
+        [TestCase(1, 2, new[] { 1 }, 1)]
         public void OrElse(int? source, int? other, IEnumerable<int> expectedResult, int overload)
         {
             var option = source.ToOption();
@@ -168,7 +167,7 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public void FilterPredicateNullThrowsException()
         {
             var option = Option<int>.None;
@@ -177,17 +176,17 @@ namespace DotFluent.Optional
             option.Invoking(x => x.Filter(predicate)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, new int[0])]
-        [DataRow(1, 2, new int[0])]
-        [DataRow(1, 1, new[] { 1 })]
+        [Test]
+        [TestCase(null, 1, new int[0])]
+        [TestCase(1, 2, new int[0])]
+        [TestCase(1, 1, new[] { 1 })]
         public void Filter(int? source, int value, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
                 .Filter(x => x == value)
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
+        [Test]
         public void Secure()
         {
             var option = Option<object>.Some(null);
@@ -195,26 +194,26 @@ namespace DotFluent.Optional
             option.Secure().ShouldBe(Option<object>.None);
         }
 
-        [TestMethod]
-        [DataRow(null, 0)]
-        [DataRow(1, 1)]
+        [Test]
+        [TestCase(null, 0)]
+        [TestCase(1, 1)]
         public void Count(int? source, int expectedResult)
             => source
                 .ToOption()
                 .Count()
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, 2, false)]
-        [DataRow(1, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, 2, false)]
+        [TestCase(1, 1, true)]
         public void Contains(int? source, int value, bool expectedResult)
             => source
                 .ToOption()
                 .Contains(value)
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
+        [Test]
         public void ExistsPredicateNullThrowsException()
         {
             var option = Option<int>.None;
@@ -223,19 +222,19 @@ namespace DotFluent.Optional
             option.Invoking(x => x.Exists(predicate)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, 2, false)]
-        [DataRow(1, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, 2, false)]
+        [TestCase(1, 1, true)]
         public void Exists(int? source, int value, bool expectedResult)
             => source
                 .ToOption()
                 .Exists(x => x == value)
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
-        [DataRow(null)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(null)]
+        [TestCase(1)]
         public void GetObjectData(int? source)
         {
             var option = source.ToOption();
@@ -249,9 +248,9 @@ namespace DotFluent.Optional
             option.ShouldBe(result);
         }
 
-        [TestMethod]
-        [DataRow(null, false)]
-        [DataRow(1, true)]
+        [Test]
+        [TestCase(null, false)]
+        [TestCase(1, true)]
         public void GetEnumerator(int? source, bool expectedResult)
             => source
                 .ToOption()
@@ -259,28 +258,28 @@ namespace DotFluent.Optional
                 .MoveNext()
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 1 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 1 })]
         public void AsEnumerable(int? source, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
                 .AsEnumerable()
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
-        [DataRow(null, 1, -1, 0)]
-        [DataRow(null, 1, -1, 1)]
-        [DataRow(1, null, 1, 0)]
-        [DataRow(1, null, 1, 1)]
-        [DataRow(null, null, 0, 0)]
-        [DataRow(null, null, 0, 1)]
-        [DataRow(1, 1, 0, 0)]
-        [DataRow(1, 1, 0, 1)]
-        [DataRow(1, 2, -1, 0)]
-        [DataRow(1, 2, -1, 1)]
-        [DataRow(2, 1, 1, 0)]
-        [DataRow(2, 1, 1, 1)]
+        [Test]
+        [TestCase(null, 1, -1, 0)]
+        [TestCase(null, 1, -1, 1)]
+        [TestCase(1, null, 1, 0)]
+        [TestCase(1, null, 1, 1)]
+        [TestCase(null, null, 0, 0)]
+        [TestCase(null, null, 0, 1)]
+        [TestCase(1, 1, 0, 0)]
+        [TestCase(1, 1, 0, 1)]
+        [TestCase(1, 2, -1, 0)]
+        [TestCase(1, 2, -1, 1)]
+        [TestCase(2, 1, 1, 0)]
+        [TestCase(2, 1, 1, 1)]
         public void CompareTo(int? source, int? value, int expectedResult, int overload)
         {
             var option = source.ToOption();
@@ -293,21 +292,21 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, true, -1, 0)]
-        [DataRow(null, 1, true, -1, 1)]
-        [DataRow(1, null, true, 1, 0)]
-        [DataRow(1, null, true, 1, 1)]
-        [DataRow(null, null, true, 0, 0)]
-        [DataRow(null, null, true, 0, 1)]
-        [DataRow(1, 1, true, 0, 0)]
-        [DataRow(1, 1, true, 0, 1)]
-        [DataRow(1, 2, true, -1, 0)]
-        [DataRow(1, 2, true, -1, 1)]
-        [DataRow(2, 1, true, 1, 0)]
-        [DataRow(2, 1, true, 1, 1)]
-        [DataRow(1, 1, false, 1, 0)]
-        [DataRow(1, 1, false, 1, 1)]
+        [Test]
+        [TestCase(null, 1, true, -1, 0)]
+        [TestCase(null, 1, true, -1, 1)]
+        [TestCase(1, null, true, 1, 0)]
+        [TestCase(1, null, true, 1, 1)]
+        [TestCase(null, null, true, 0, 0)]
+        [TestCase(null, null, true, 0, 1)]
+        [TestCase(1, 1, true, 0, 0)]
+        [TestCase(1, 1, true, 0, 1)]
+        [TestCase(1, 2, true, -1, 0)]
+        [TestCase(1, 2, true, -1, 1)]
+        [TestCase(2, 1, true, 1, 0)]
+        [TestCase(2, 1, true, 1, 1)]
+        [TestCase(1, 1, false, 1, 0)]
+        [TestCase(1, 1, false, 1, 1)]
         public void CompareToObject(int? source, int? value, bool isOption, int expectedResult, int overload)
         {
             var option = source.ToOption();
@@ -320,19 +319,19 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false, 0)]
-        [DataRow(null, 1, false, 1)]
-        [DataRow(1, null, false, 0)]
-        [DataRow(1, null, false, 1)]
-        [DataRow(null, null, true, 0)]
-        [DataRow(null, null, true, 1)]
-        [DataRow(1, 1, true, 0)]
-        [DataRow(1, 1, true, 1)]
-        [DataRow(1, 2, false, 0)]
-        [DataRow(1, 2, false, 1)]
-        [DataRow(2, 1, false, 0)]
-        [DataRow(2, 1, false, 1)]
+        [Test]
+        [TestCase(null, 1, false, 0)]
+        [TestCase(null, 1, false, 1)]
+        [TestCase(1, null, false, 0)]
+        [TestCase(1, null, false, 1)]
+        [TestCase(null, null, true, 0)]
+        [TestCase(null, null, true, 1)]
+        [TestCase(1, 1, true, 0)]
+        [TestCase(1, 1, true, 1)]
+        [TestCase(1, 2, false, 0)]
+        [TestCase(1, 2, false, 1)]
+        [TestCase(2, 1, false, 0)]
+        [TestCase(2, 1, false, 1)]
         public void Equals(int? source, int? value, bool expectedResult, int overload)
         {
             var option = source.ToOption();
@@ -345,21 +344,21 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, true, false, 0)]
-        [DataRow(null, 1, true, false, 1)]
-        [DataRow(1, null, true, false, 0)]
-        [DataRow(1, null, true, false, 1)]
-        [DataRow(null, null, true, true, 0)]
-        [DataRow(null, null, true, true, 1)]
-        [DataRow(1, 1, true, true, 0)]
-        [DataRow(1, 1, true, true, 1)]
-        [DataRow(1, 2, true, false, 0)]
-        [DataRow(1, 2, true, false, 1)]
-        [DataRow(2, 1, true, false, 0)]
-        [DataRow(2, 1, true, false, 1)]
-        [DataRow(1, 1, false, false, 0)]
-        [DataRow(1, 1, false, false, 1)]
+        [Test]
+        [TestCase(null, 1, true, false, 0)]
+        [TestCase(null, 1, true, false, 1)]
+        [TestCase(1, null, true, false, 0)]
+        [TestCase(1, null, true, false, 1)]
+        [TestCase(null, null, true, true, 0)]
+        [TestCase(null, null, true, true, 1)]
+        [TestCase(1, 1, true, true, 0)]
+        [TestCase(1, 1, true, true, 1)]
+        [TestCase(1, 2, true, false, 0)]
+        [TestCase(1, 2, true, false, 1)]
+        [TestCase(2, 1, true, false, 0)]
+        [TestCase(2, 1, true, false, 1)]
+        [TestCase(1, 1, false, false, 0)]
+        [TestCase(1, 1, false, false, 1)]
         public void EqualsObject(int? source, int? value, bool isOption, bool expectedResult, int overload)
         {
             var option = source.ToOption();
@@ -372,13 +371,13 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(1, true, 0)]
-        [DataRow(1, true, 1)]
-        [DataRow(null, true, 0)]
-        [DataRow(null, true, 1)]
-        [DataRow(null, false, 0)]
-        [DataRow(null, false, 1)]
+        [Test]
+        [TestCase(1, true, 0)]
+        [TestCase(1, true, 1)]
+        [TestCase(null, true, 0)]
+        [TestCase(null, true, 1)]
+        [TestCase(null, false, 0)]
+        [TestCase(null, false, 1)]
         public void GetHashCode(object source, bool isSome, int overload)
         {
             var option = isSome ? Option<object>.Some(source) : Option<object>.None;
@@ -400,10 +399,10 @@ namespace DotFluent.Optional
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(1, true)]
-        [DataRow(null, true)]
-        [DataRow(null, false)]
+        [Test]
+        [TestCase(1, true)]
+        [TestCase(null, true)]
+        [TestCase(null, false)]
         public void ToString(object source, bool isSome)
         {
             var option = isSome ? Option<object>.Some(source) : Option<object>.None;
@@ -413,9 +412,9 @@ namespace DotFluent.Optional
                 .ShouldBe(result);
         }
 
-        [TestMethod]
-        [DataRow(null)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(null)]
+        [TestCase(1)]
         public void OP_Implicit(object source)
         {
             Option<object> option = source;
@@ -424,126 +423,126 @@ namespace DotFluent.Optional
                 .ShouldBeTrue();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, new int[0])]
-        [DataRow(1, null, new int[0])]
-        [DataRow(null, null, new int[0])]
-        [DataRow(1, 1, new[] { 1 })]
-        [DataRow(1, 2, new int[0])]
-        [DataRow(2, 1, new int[0])]
+        [Test]
+        [TestCase(null, 1, new int[0])]
+        [TestCase(1, null, new int[0])]
+        [TestCase(null, null, new int[0])]
+        [TestCase(1, 1, new[] { 1 })]
+        [TestCase(1, 2, new int[0])]
+        [TestCase(2, 1, new int[0])]
         public void OP_BitwiseAnd(int? left, int? right, IEnumerable<int> expectedResult)
         {
             var option = left.ToOption() & right.ToOption();
             option.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, new[] { 1 })]
-        [DataRow(1, null, new[] { 1 })]
-        [DataRow(null, null, new int[0])]
-        [DataRow(1, 1, new[] { 1 })]
-        [DataRow(1, 2, new[] { 1 })]
-        [DataRow(2, 1, new[] { 2 })]
+        [Test]
+        [TestCase(null, 1, new[] { 1 })]
+        [TestCase(1, null, new[] { 1 })]
+        [TestCase(null, null, new int[0])]
+        [TestCase(1, 1, new[] { 1 })]
+        [TestCase(1, 2, new[] { 1 })]
+        [TestCase(2, 1, new[] { 2 })]
         public void OP_BitwiseOr(int? left, int? right, IEnumerable<int> expectedResult)
         {
             var option = left.ToOption() | right.ToOption();
             option.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, true)]
-        [DataRow(1, null, false)]
-        [DataRow(null, null, false)]
-        [DataRow(1, 1, false)]
-        [DataRow(1, 2, true)]
-        [DataRow(2, 1, false)]
+        [Test]
+        [TestCase(null, 1, true)]
+        [TestCase(1, null, false)]
+        [TestCase(null, null, false)]
+        [TestCase(1, 1, false)]
+        [TestCase(1, 2, true)]
+        [TestCase(2, 1, false)]
         public void OP_LessThan(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() < right.ToOption();
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, true)]
-        [DataRow(1, null, false)]
-        [DataRow(null, null, true)]
-        [DataRow(1, 1, true)]
-        [DataRow(1, 2, true)]
-        [DataRow(2, 1, false)]
+        [Test]
+        [TestCase(null, 1, true)]
+        [TestCase(1, null, false)]
+        [TestCase(null, null, true)]
+        [TestCase(1, 1, true)]
+        [TestCase(1, 2, true)]
+        [TestCase(2, 1, false)]
         public void OP_LessThanOrEqual(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() <= right.ToOption();
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, null, true)]
-        [DataRow(null, null, false)]
-        [DataRow(1, 1, false)]
-        [DataRow(1, 2, false)]
-        [DataRow(2, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, null, true)]
+        [TestCase(null, null, false)]
+        [TestCase(1, 1, false)]
+        [TestCase(1, 2, false)]
+        [TestCase(2, 1, true)]
         public void OP_GreaterThan(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() > right.ToOption();
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, null, true)]
-        [DataRow(null, null, true)]
-        [DataRow(1, 1, true)]
-        [DataRow(1, 2, false)]
-        [DataRow(2, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, null, true)]
+        [TestCase(null, null, true)]
+        [TestCase(1, 1, true)]
+        [TestCase(1, 2, false)]
+        [TestCase(2, 1, true)]
         public void OP_GreaterThanOrEqual(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() >= right.ToOption();
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, null, false)]
-        [DataRow(null, null, true)]
-        [DataRow(1, 1, true)]
-        [DataRow(1, 2, false)]
-        [DataRow(2, 1, false)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, null, false)]
+        [TestCase(null, null, true)]
+        [TestCase(1, 1, true)]
+        [TestCase(1, 2, false)]
+        [TestCase(2, 1, false)]
         public void OP_Equality(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() == right.ToOption();
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, true)]
-        [DataRow(1, null, true)]
-        [DataRow(null, null, false)]
-        [DataRow(1, 1, false)]
-        [DataRow(1, 2, true)]
-        [DataRow(2, 1, true)]
+        [Test]
+        [TestCase(null, 1, true)]
+        [TestCase(1, null, true)]
+        [TestCase(null, null, false)]
+        [TestCase(1, 1, false)]
+        [TestCase(1, 2, true)]
+        [TestCase(2, 1, true)]
         public void OP_Inequality(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() != right.ToOption();
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, false)]
-        [DataRow(1, true)]
+        [Test]
+        [TestCase(null, false)]
+        [TestCase(1, true)]
         public void OP_True(int? source, bool expectedResult)
         {
             var result = source.ToOption() ? true : false;
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, null, false)]
-        [DataRow(null, null, false)]
-        [DataRow(1, 1, true)]
-        [DataRow(1, 2, false)]
-        [DataRow(2, 1, false)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, null, false)]
+        [TestCase(null, null, false)]
+        [TestCase(1, 1, true)]
+        [TestCase(1, 2, false)]
+        [TestCase(2, 1, false)]
         public void OP_False(int? left, int? right, bool expectedResult)
         {
             var result = left.ToOption() && right.ToOption() ? true : false;

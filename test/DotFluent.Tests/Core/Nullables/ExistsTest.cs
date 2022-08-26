@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableExistsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void PredicateNullThrowsException()
         {
             var source = new int?();
@@ -20,10 +20,10 @@ namespace DotFluent
                 .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, 2, false)]
-        [DataRow(1, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, 2, false)]
+        [TestCase(1, 1, true)]
         public void Exists(int? source, int value, bool expectedResult)
             => source
                 .Exists(x => x == value)

@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class DictionaryGetOrAddTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IDictionary<int, int> source = null;
@@ -19,7 +19,7 @@ namespace DotFluent
             source.Invoking(x => x.GetOrAdd(1, k => 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void KeyNullThrowsException()
         {
             var source = new Dictionary<object, int>();
@@ -28,7 +28,7 @@ namespace DotFluent
             source.Invoking(x => x.GetOrAdd(null, k => 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void ValueFactoryNullThrowsException()
         {
             var source = new Dictionary<int, int>();
@@ -37,11 +37,11 @@ namespace DotFluent
             source.Invoking(x => x.GetOrAdd(1, valueFactory)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(1, 2, false, 0)]
-        [DataRow(1, 2, false, 1)]
-        [DataRow(1, 2, true, 0)]
-        [DataRow(1, 2, true, 1)]
+        [Test]
+        [TestCase(1, 2, false, 0)]
+        [TestCase(1, 2, false, 1)]
+        [TestCase(1, 2, true, 0)]
+        [TestCase(1, 2, true, 1)]
         public void GetOrAdd(int key, int value, bool isExisting, int overload)
         {
             var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>();

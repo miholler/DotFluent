@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ObjectMapTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void MapperNullThrowsException()
         {
             var obj = new object();
@@ -19,9 +19,9 @@ namespace DotFluent
                .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null)]
-        [DataRow("ABC", "ABC!")]
+        [Test]
+        [TestCase(null, null)]
+        [TestCase("ABC", "ABC!")]
         public void Map(string source, string expectedResult)
             => source
                 .Map(x => $"{x}!")

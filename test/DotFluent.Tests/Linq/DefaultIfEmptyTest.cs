@@ -1,35 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class DefaultIfEmptyTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<int> source = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.DefaultIfEmpty(() => 0).ToArray());
+            Assert.Throws<ArgumentNullException>(() => source.DefaultIfEmpty(() => 0).ToArray());
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultFactoryNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
             Func<int> defaultFactory = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.DefaultIfEmpty(defaultFactory).ToArray());
+            Assert.Throws<ArgumentNullException>(() => source.DefaultIfEmpty(defaultFactory).ToArray());
         }
 
-        [TestMethod]
-        [DataRow(new int[0], new[] { 0 }, DisplayName = "Empty")]
-        [DataRow(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, DisplayName = "Not Empty")]
+        [Test]
+        [TestCase(new int[0], new[] { 0 })]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 })]
         public void DefaultIfEmpty(IEnumerable<int> source, IEnumerable<int> expectedResult)
             => Assert.IsTrue(source.DefaultIfEmpty(() => 0).SequenceEqual(expectedResult));
 

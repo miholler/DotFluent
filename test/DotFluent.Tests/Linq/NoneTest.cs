@@ -1,41 +1,41 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NoneTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<int> source = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.None());
+            Assert.Throws<ArgumentNullException>(() => source.None());
         }
 
-        [TestMethod]
+        [Test]
         public void PredicateNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
             Func<int, bool> predicate = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.None(predicate));
+            Assert.Throws<ArgumentNullException>(() => source.None(predicate));
         }
 
-        [TestMethod]
-        [DataRow(new int[0], true)]
-        [DataRow(new[] { 1, 2, 3 }, false)]
+        [Test]
+        [TestCase(new int[0], true)]
+        [TestCase(new[] { 1, 2, 3 }, false)]
         public void SourceNoPredicate(IEnumerable<int> source, bool expectedResult)
             => Assert.AreEqual(source.None(), expectedResult);
 
-        [TestMethod]
-        [DataRow(new int[0], true)]
-        [DataRow(new[] { 1, 2, 3 }, false)]
-        [DataRow(new[] { 1, 3, 5 }, true)]
+        [Test]
+        [TestCase(new int[0], true)]
+        [TestCase(new[] { 1, 2, 3 }, false)]
+        [TestCase(new[] { 1, 3, 5 }, true)]
         public void SourceWithPredicate(IEnumerable<int> source, bool expectedResult)
             => Assert.AreEqual(source.None(x => x % 2 == 0), expectedResult);
 

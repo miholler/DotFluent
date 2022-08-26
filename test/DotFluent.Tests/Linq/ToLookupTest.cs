@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ToLookupTest
     {
         #region Fields
@@ -16,8 +16,8 @@ namespace DotFluent.Linq
 
         #region Methods
 
-        [ClassInitialize]
-        public static void Initialize(TestContext _)
+        [OneTimeSetUp]
+        public static void Initialize()
         {
             _persons.Add(new Person()
             {
@@ -39,58 +39,58 @@ namespace DotFluent.Linq
             });
         }
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<Person> source = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => source.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void KeySelectorNullThrowsException()
         {
             Func<Person, int> keySelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(keySelector, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(keySelector, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(keySelector, x => x.Name, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(keySelector, x => x.Name, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(keySelector, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(keySelector, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(keySelector, x => x.Name, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(keySelector, x => x.Name, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void ElementSelectorNullThrowsException()
         {
             Func<Person, string> elementSelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, elementSelector, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, elementSelector, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, elementSelector, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, elementSelector, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void ComparerNullThrowsException()
         {
             Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparer));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparer, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparer));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparer));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparer));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparer, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void HashCodeProviderNullThrowsException()
         {
             Func<int, int> hashCodeProvider = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, (x, y) => x == y, hashCodeProvider));
-            Assert.ThrowsException<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, hashCodeProvider));
         }
 
-        [TestMethod]
+        [Test]
         public void ToLookup()
         {
             var lookup = _persons.ToLookup(x => x.CountryId, (x, y) => x == y);
@@ -98,7 +98,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Any(y => y.Name == x.Name)));
         }
 
-        [TestMethod]
+        [Test]
         public void ToLookupWithHashCode()
         {
             var hash = GetHashCode();
@@ -107,7 +107,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Any(y => y.Name == x.Name)));
         }
 
-        [TestMethod]
+        [Test]
         public void ToLookupWithElementSelector()
         {
             var lookup = _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y);
@@ -115,7 +115,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(lookup.IsNotNullNorEmpty() && lookup.Count == 2 && _persons.All(x => lookup[x.CountryId].Contains(x.Name)));
         }
 
-        [TestMethod]
+        [Test]
         public void ToLookupWithElementSelectorAndHashCode()
         {
             var hash = GetHashCode();
