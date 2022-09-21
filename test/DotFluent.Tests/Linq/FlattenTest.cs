@@ -1,35 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class FlattenTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<IEnumerable<int>> source = null;
             IEnumerable<TreeItem> treeSource = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Flatten());
-            Assert.ThrowsException<ArgumentNullException>(() => treeSource.Flatten(x => x.Children));
+            Assert.Throws<ArgumentNullException>(() => source.Flatten());
+            Assert.Throws<ArgumentNullException>(() => treeSource.Flatten(x => x.Children));
         }
 
-        [TestMethod]
+        [Test]
         public void SelectorNullThrowsException()
         {
             var source = new List<TreeItem>();
             Func<TreeItem, IEnumerable<TreeItem>> selector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Flatten(selector));
+            Assert.Throws<ArgumentNullException>(() => source.Flatten(selector));
         }
 
-        [TestMethod]
+        [Test]
         public void Flatten()
         {
             var source = new List<int[]>();
@@ -41,7 +41,7 @@ namespace DotFluent.Linq
             Assert.IsTrue(source.Flatten().SequenceEqual(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }));
         }
 
-        [TestMethod]
+        [Test]
         public void FlattenWithSelector()
         {
             var source = new List<TreeItem>();

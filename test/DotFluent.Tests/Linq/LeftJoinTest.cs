@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class LeftJoinTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(new int[0], null)]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(new int[0], null)]
         public void OuterOrInnerNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
         {
             outer.Invoking(x => x.LeftJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i })).ShouldThrow<ArgumentNullException>();
@@ -26,7 +26,7 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void KeySelectorNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
@@ -39,7 +39,7 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void OuterKeySelectorNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
@@ -52,7 +52,7 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, keySelector, x => x, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void InnerKeySelectorNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
@@ -65,7 +65,7 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, x => x, keySelector, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void ResultSelectorNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
@@ -82,7 +82,7 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, x => x, x => x, resultSelector, EqualityComparer<int>.Default)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void ComparerNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
@@ -95,7 +95,7 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparer, x => x.GetHashCode())).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void HashCodeProviderNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
@@ -106,9 +106,9 @@ namespace DotFluent.Linq
             outer.Invoking(x => x.LeftJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeProvider)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
         public void LeftJoin(int overload)
         {
             var a = (Id: 1, Name: "A");
@@ -130,9 +130,9 @@ namespace DotFluent.Linq
                 (c, default));
         }
 
-        [TestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
         public void LeftJoinWithComparer(int overload)
         {
             var a = (Id: 1, Name: "A");
@@ -154,9 +154,9 @@ namespace DotFluent.Linq
                 (c, default));
         }
 
-        [TestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
         public void LeftJoinWithHashCode(int overload)
         {
             var a = (Id: 1, Name: "A");
@@ -179,9 +179,9 @@ namespace DotFluent.Linq
                 (c, default));
         }
 
-        [TestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
         public void LeftJoinWithEqualityComparer(int overload)
         {
             var a = (Id: 1, Name: "A");

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
 using System.Threading;
@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ToOptionAsyncTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, new object[] { new string[0] })]
-        [DataRow("ABC", new object[] { new[] { "ABC" } })]
+        [Test]
+        [TestCase(null, new string[0])]
+        [TestCase("ABC", new[] { "ABC" })]
         public async Task ReferenceTypeToOptionAsync(string source, IEnumerable<string> expectedResult)
         {
             var result = await source.ToOptionAsync();
@@ -21,9 +21,9 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 1 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 1 })]
         public async Task ValueTypeToOptionAsync(int? source, IEnumerable<int> expectedResult)
         {
             var result = await source.ToOptionAsync();
@@ -31,7 +31,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ToOptionAsyncCanceled()
         {
             using var cts = new CancellationTokenSource();

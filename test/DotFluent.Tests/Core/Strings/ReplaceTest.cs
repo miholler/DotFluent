@@ -1,55 +1,55 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class StringReplaceTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             string source = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Replace(Array.Empty<char>(), char.MinValue));
-            Assert.ThrowsException<ArgumentNullException>(() => source.Replace(Array.Empty<string>(), string.Empty));
+            Assert.Throws<ArgumentNullException>(() => source.Replace(Array.Empty<char>(), char.MinValue));
+            Assert.Throws<ArgumentNullException>(() => source.Replace(Array.Empty<string>(), string.Empty));
         }
 
-        [TestMethod]
+        [Test]
         public void OldCharsNullThrowsException()
         {
             var source = string.Empty;
             char[] oldChars = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Replace(oldChars, char.MinValue));
+            Assert.Throws<ArgumentNullException>(() => source.Replace(oldChars, char.MinValue));
         }
 
-        [TestMethod]
+        [Test]
         public void OldValuesNullThrowsException()
         {
             var source = string.Empty;
             string[] oldValues = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.Replace(oldValues, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => source.Replace(oldValues, string.Empty));
         }
 
-        [TestMethod]
-        [DataRow("ABC", new char[0], 'C', "ABC")]
-        [DataRow("ABC", new[] { 'A' }, 'C', "CBC")]
-        [DataRow("ABC", new[] { 'A', 'B' }, 'C', "CCC")]
-        [DataRow("ABC", new[] { 'a', 'b' }, 'C', "ABC")]
+        [Test]
+        [TestCase("ABC", new char[0], 'C', "ABC")]
+        [TestCase("ABC", new[] { 'A' }, 'C', "CBC")]
+        [TestCase("ABC", new[] { 'A', 'B' }, 'C', "CCC")]
+        [TestCase("ABC", new[] { 'a', 'b' }, 'C', "ABC")]
         public void Replace(string source, char[] oldChars, char newChar, string expectedResult)
             => Assert.AreEqual(source.Replace(oldChars, newChar), expectedResult);
 
-        [TestMethod]
-        [DataRow("ABC", new string[0], "C", "ABC")]
-        [DataRow("ABC", new[] { "A" }, null, "BC")]
-        [DataRow("ABC", new[] { "A" }, "C", "CBC")]
-        [DataRow("ABC", new[] { "A", "B" }, "C", "CCC")]
-        [DataRow("ABC", new[] { "a", "b" }, "C", "ABC")]
-        [DataRow("ABC", new[] { "AB", "C", }, "D", "DD")]
+        [Test]
+        [TestCase("ABC", new string[0], "C", "ABC")]
+        [TestCase("ABC", new[] { "A" }, null, "BC")]
+        [TestCase("ABC", new[] { "A" }, "C", "CBC")]
+        [TestCase("ABC", new[] { "A", "B" }, "C", "CCC")]
+        [TestCase("ABC", new[] { "a", "b" }, "C", "ABC")]
+        [TestCase("ABC", new[] { "AB", "C", }, "D", "DD")]
         public void ReplaceWithStrings(string source, string[] oldValues, string newValue, string expectedResult)
             => Assert.AreEqual(source.Replace(oldValues, newValue), expectedResult);
 

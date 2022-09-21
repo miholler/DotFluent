@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableOrElseTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void OtherFactoryNullThrowsException()
         {
             var source = new int?();
@@ -20,15 +20,15 @@ namespace DotFluent
                 .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null, null, 0)]
-        [DataRow(null, null, null, 1)]
-        [DataRow(1, null, 1, 0)]
-        [DataRow(1, null, 1, 1)]
-        [DataRow(null, 1, 1, 0)]
-        [DataRow(null, 1, 1, 1)]
-        [DataRow(1, 2, 1, 0)]
-        [DataRow(1, 2, 1, 1)]
+        [Test]
+        [TestCase(null, null, null, 0)]
+        [TestCase(null, null, null, 1)]
+        [TestCase(1, null, 1, 0)]
+        [TestCase(1, null, 1, 1)]
+        [TestCase(null, 1, 1, 0)]
+        [TestCase(null, 1, 1, 1)]
+        [TestCase(1, 2, 1, 0)]
+        [TestCase(1, 2, 1, 1)]
         public void OrElse(int? source, int? other, int? expectedResult, int overload)
         {
             var result = overload switch

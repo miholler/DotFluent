@@ -1,20 +1,17 @@
-﻿using System;
+﻿namespace DotFluent.Optional.Unsafe;
 
-namespace DotFluent.Optional.Unsafe
+public static partial class UnsafeOption
 {
-    public static partial class UnsafeOption
-    {
-        #region Methods
+    #region Methods
 
-        /// <summary>
-        /// Creates a nullable object from an option.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the value of source.</typeparam>
-        /// <param name="source">The option to create the nullable object from.</param>
-        /// <returns>A <see cref="Nullable{TSource}"/> representing the value of source.</returns>
-        public static TSource? ToNullable<TSource>(this Option<TSource> source) where TSource : struct
-            => source.Match(x => new TSource?(x), () => default);
+    /// <summary>
+    /// Creates a nullable object from an option.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <param name="source">The option to create the nullable object from.</param>
+    /// <returns>A <see cref="Nullable{TSource}"/> representing the value of source.</returns>
+    public static TSource? ToNullable<TSource>(this Option<TSource> source) where TSource : struct
+        => source.Match(x => new TSource?(x), () => default);
 
-        #endregion
-    }
+    #endregion
 }

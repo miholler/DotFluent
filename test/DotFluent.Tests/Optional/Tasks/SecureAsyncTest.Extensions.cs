@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SecureAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -21,7 +21,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task SecureAsync()
         {
             var optionTask = OptionTask.Some<object>(null);
@@ -30,7 +30,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(Option<object>.None);
         }
 
-        [TestMethod]
+        [Test]
         public async Task SecureAsyncCanceled()
         {
             var optionTask = OptionTask.None<int>();

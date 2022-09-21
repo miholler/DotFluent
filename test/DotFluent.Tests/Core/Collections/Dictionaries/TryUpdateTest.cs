@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class DictionaryTryUpdateTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IDictionary<int, int> source = null;
@@ -18,7 +18,7 @@ namespace DotFluent
             source.Invoking(x => x.TryUpdate(1, 2, 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void KeyNullThrowsException()
         {
             var source = new Dictionary<object, int>();
@@ -26,10 +26,10 @@ namespace DotFluent
             source.Invoking(x => x.TryUpdate(null, 2, 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(1, 2, 2, false, false)]
-        [DataRow(1, 2, 1, true, false)]
-        [DataRow(1, 2, 2, true, true)]
+        [Test]
+        [TestCase(1, 2, 2, false, false)]
+        [TestCase(1, 2, 1, true, false)]
+        [TestCase(1, 2, 2, true, true)]
         public void TryUpdate(int key, int value, int comparisonValue, bool isExisting, bool expectedResult)
         {
             var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>();

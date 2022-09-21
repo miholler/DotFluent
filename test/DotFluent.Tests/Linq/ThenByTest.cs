@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ThenByTest
     {
         #region Fields
@@ -16,8 +16,8 @@ namespace DotFluent.Linq
 
         #region Methods
 
-        [ClassInitialize]
-        public static void Initialize(TestContext _)
+        [OneTimeSetUp]
+        public static void Initialize()
         {
             _items.Add((2, false));
             _items.Add((3, false));
@@ -26,23 +26,23 @@ namespace DotFluent.Linq
             _items.Add((1, false));
         }
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<(int, bool)> items = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => items.OrderBy(x => x.Item1).ThenBy(x => x.Item2, (x, y) => 0));
+            Assert.Throws<ArgumentNullException>(() => items.OrderBy(x => x.Item1).ThenBy(x => x.Item2, (x, y) => 0));
         }
 
-        [TestMethod]
+        [Test]
         public void ComparisonNullThrowsException()
         {
             Comparison<bool> comparison = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _items.OrderBy(x => x.Order).ThenBy(x => x.IsActive, comparison));
+            Assert.Throws<ArgumentNullException>(() => _items.OrderBy(x => x.Order).ThenBy(x => x.IsActive, comparison));
         }
 
-        [TestMethod]
+        [Test]
         public void ThenBy()
         {
             var isEqual = _items

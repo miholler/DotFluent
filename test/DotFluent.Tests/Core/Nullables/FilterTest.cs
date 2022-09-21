@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableFilterTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void PredicateNullThrowsException()
         {
             var source = new int?();
@@ -20,10 +20,10 @@ namespace DotFluent
                 .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, null)]
-        [DataRow(1, 2, null)]
-        [DataRow(1, 1, 1)]
+        [Test]
+        [TestCase(null, 1, null)]
+        [TestCase(1, 2, null)]
+        [TestCase(1, 1, 1)]
         public void Filter(int? source, int value, int? expectedResult)
             => source
                 .Filter(x => x == value)

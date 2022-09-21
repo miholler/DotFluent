@@ -1,17 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableContainsTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, 2, false)]
-        [DataRow(1, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, 2, false)]
+        [TestCase(1, 1, true)]
         public void Contains(int? source, int value, bool expectedResult)
             => source
                 .Contains(value)

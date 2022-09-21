@@ -1,46 +1,47 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using Shouldly;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ObjectIsEqualToTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void IsEqual()
         {
             var a = 1;
             var b = 1;
 
-            Assert.IsTrue(a.IsEqualTo(b));
+            a.IsEqualTo(b).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IsNotEqual()
         {
             var a = 1;
             var b = 2;
 
-            Assert.IsFalse(a.IsEqualTo(b));
+            a.IsEqualTo(b).ShouldBeFalse();
         }
 
-        [TestMethod]
+        [Test]
         public void IsReferenceEqual()
         {
             var a = new object();
             var b = a;
 
-            Assert.IsTrue(a.IsEqualTo(b, true));
+            a.IsEqualTo(b, true).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void IsReferenceNotEqual()
         {
             var a = new object();
             var b = new object();
 
-            Assert.IsFalse(a.IsEqualTo(b, true));
+            a.IsEqualTo(b, true).ShouldBeFalse();
         }
 
         #endregion

@@ -1,35 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ForEachTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<int> source = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.ForEach(x => x++));
-            Assert.ThrowsException<ArgumentNullException>(() => source.ForEach((x, i) => x += i));
+            Assert.Throws<ArgumentNullException>(() => source.ForEach(x => x++));
+            Assert.Throws<ArgumentNullException>(() => source.ForEach((x, i) => x += i));
         }
 
-        [TestMethod]
+        [Test]
         public void ActionNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
             Action<int> action = null;
             Action<int, int> indexAction = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.ForEach(action));
-            Assert.ThrowsException<ArgumentNullException>(() => source.ForEach(indexAction));
+            Assert.Throws<ArgumentNullException>(() => source.ForEach(action));
+            Assert.Throws<ArgumentNullException>(() => source.ForEach(indexAction));
         }
 
-        [TestMethod]
+        [Test]
         public void Iteration()
         {
             var result = 0;
@@ -38,7 +38,7 @@ namespace DotFluent.Linq
             Assert.AreEqual(result, 10);
         }
 
-        [TestMethod]
+        [Test]
         public void IterationWithIndex()
         {
             var result = 0;

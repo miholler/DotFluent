@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class MapAsyncTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task MapperNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -23,7 +23,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task MapperReturningNullThrowsException()
         {
             var option = await OptionTask.Some(0);
@@ -33,9 +33,9 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<InvalidOperationException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 2 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 2 })]
         public async Task MapAsync(int? source, IEnumerable<int> expectedResult)
         {
             var option = await source.ToOptionAsync();
@@ -44,7 +44,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task MapAsyncCanceled()
         {
             var option = await OptionTask.None<int>();
@@ -56,7 +56,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<TaskCanceledException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task MapAsyncMappingCanceled()
         {
             var option = await OptionTask.Some(0);

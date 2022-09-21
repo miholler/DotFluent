@@ -1,19 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class StringIsNotNullNorEmptyTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, false)]
-        [DataRow("", false)]
-        [DataRow(" ", true)]
-        [DataRow("  ", true)]
-        [DataRow("ABC", true)]
-        [DataRow(" ABC ", true)]
+        [Test]
+        [TestCase(null, false)]
+        [TestCase("", false)]
+        [TestCase(" ", true)]
+        [TestCase("  ", true)]
+        [TestCase("ABC", true)]
+        [TestCase(" ABC ", true)]
         public void IsNotNullNorEmpty(string source, bool expectedResult)
             => Assert.AreEqual(source.IsNotNullNorEmpty(), expectedResult);
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class FilterAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -25,7 +25,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task PredicateNullThrowsException()
         {
             var optionTask = OptionTask.None<int>();
@@ -40,13 +40,13 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, new int[0], 0)]
-        [DataRow(null, 1, new int[0], 1)]
-        [DataRow(1, 2, new int[0], 0)]
-        [DataRow(1, 2, new int[0], 1)]
-        [DataRow(1, 1, new[] { 1 }, 0)]
-        [DataRow(1, 1, new[] { 1 }, 1)]
+        [Test]
+        [TestCase(null, 1, new int[0], 0)]
+        [TestCase(null, 1, new int[0], 1)]
+        [TestCase(1, 2, new int[0], 0)]
+        [TestCase(1, 2, new int[0], 1)]
+        [TestCase(1, 1, new[] { 1 }, 0)]
+        [TestCase(1, 1, new[] { 1 }, 1)]
         public async Task FilterAsync(int? source, int value, IEnumerable<int> expectedResult, int overload)
         {
             var optionTask = source.ToOptionAsync();
@@ -59,7 +59,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task FilterAsyncCanceled()
         {
             var optionTask = OptionTask.None<int>();

@@ -1,19 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class StringIsNullOrEmptyTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, true)]
-        [DataRow("", true)]
-        [DataRow(" ", false)]
-        [DataRow("  ", false)]
-        [DataRow("ABC", false)]
-        [DataRow(" ABC ", false)]
+        [Test]
+        [TestCase(null, true)]
+        [TestCase("", true)]
+        [TestCase(" ", false)]
+        [TestCase("  ", false)]
+        [TestCase("ABC", false)]
+        [TestCase(" ABC ", false)]
         public void IsNullOrEmpty(string source, bool expectedResult)
             => Assert.AreEqual(source.IsNullOrEmpty(), expectedResult);
 

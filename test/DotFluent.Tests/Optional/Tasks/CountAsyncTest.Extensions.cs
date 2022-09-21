@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class CountAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -21,9 +21,9 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 0)]
-        [DataRow(1, 1)]
+        [Test]
+        [TestCase(null, 0)]
+        [TestCase(1, 1)]
         public async Task CountAsync(int? source, int expectedResult)
         {
             var result = await source
@@ -33,7 +33,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task CountAsyncCanceled()
         {
             using var cts = new CancellationTokenSource();
