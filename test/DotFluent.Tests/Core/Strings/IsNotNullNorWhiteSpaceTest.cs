@@ -1,19 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class StringIsNotNullNorWhiteSpaceTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, false)]
-        [DataRow(" ", false)]
-        [DataRow("  ", false)]
-        [DataRow("", false)]
-        [DataRow("ABC", true)]
-        [DataRow(" ABC ", true)]
+        [Test]
+        [TestCase(null, false)]
+        [TestCase(" ", false)]
+        [TestCase("  ", false)]
+        [TestCase("", false)]
+        [TestCase("ABC", true)]
+        [TestCase(" ABC ", true)]
         public void IsNotNullNorWhiteSpace(string source, bool expectedResult)
             => Assert.AreEqual(source.IsNotNullNorWhiteSpace(), expectedResult);
 

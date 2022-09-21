@@ -1,24 +1,24 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class StringIsNotLikeTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow("ABC", "ABC", false)]
-        [DataRow("ABC", "abc", false)]
-        [DataRow("ABC", "CBA", true)]
-        [DataRow("", "", false)]
-        [DataRow("ABC", "", true)]
-        [DataRow("", "ABC", true)]
-        [DataRow("", null, true)]
-        [DataRow(null, "", true)]
-        [DataRow(null, "ABC", true)]
-        [DataRow("ABC", null, true)]
-        [DataRow(null, null, false)]
+        [Test]
+        [TestCase("ABC", "ABC", false)]
+        [TestCase("ABC", "abc", false)]
+        [TestCase("ABC", "CBA", true)]
+        [TestCase("", "", false)]
+        [TestCase("ABC", "", true)]
+        [TestCase("", "ABC", true)]
+        [TestCase("", null, true)]
+        [TestCase(null, "", true)]
+        [TestCase(null, "ABC", true)]
+        [TestCase("ABC", null, true)]
+        [TestCase(null, null, false)]
         public void IsNotLike(string source, string value, bool expectedResult)
             => Assert.AreEqual(source.IsNotLike(value), expectedResult);
 

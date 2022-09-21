@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
 
 namespace DotFluent.Tasks.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SelectTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<int> source = null;
@@ -20,7 +20,7 @@ namespace DotFluent.Tasks.Linq
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task SelectorNullThrowsException()
         {
             var source = Task.FromResult(1);
@@ -31,7 +31,7 @@ namespace DotFluent.Tasks.Linq
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task Select()
         {
             var result = await Task.FromResult(1).Select(x => ++x);

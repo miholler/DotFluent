@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent.Optional.Unsafe
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ToNullableTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null)]
-        [DataRow(1)]
+        [Test]
+        [TestCase(null)]
+        [TestCase(1)]
         public void ToNullable(int? source)
             => source
                 .ToOption()

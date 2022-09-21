@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ThenTest : TaskTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             Task<int> source = null;
@@ -34,7 +34,7 @@ namespace DotFluent.Tasks
             source.Awaiting(x => x.Then(x => Task.FromResult(++x), TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void ActionNullThrowsException()
         {
             var source = Task.FromResult(0);
@@ -47,7 +47,7 @@ namespace DotFluent.Tasks
             source.Awaiting(x => x.Then(genericAction, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void SelectorNullThrowsException()
         {
             var source = Task.FromResult(0);
@@ -72,7 +72,7 @@ namespace DotFluent.Tasks
             source.Awaiting(x => x.Then(genericTaskResultSelector, TaskScheduler.Current)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task Then()
         {
             var result = 1;
@@ -84,7 +84,7 @@ namespace DotFluent.Tasks
             result.ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -116,7 +116,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenFaulted()
         {
             Task.CompletedTask
@@ -132,7 +132,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithTaskSelector()
         {
             var result = 1;
@@ -152,7 +152,7 @@ namespace DotFluent.Tasks
             result.ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithTaskSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -208,7 +208,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithTaskSelectorFaulted()
         {
             Task.CompletedTask
@@ -232,7 +232,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithSelector()
         {
             var firstResult = await Task.CompletedTask
@@ -244,7 +244,7 @@ namespace DotFluent.Tasks
             firstResult.ShouldBe(secondResult);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -300,7 +300,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithSelectorFaulted()
         {
             Task.CompletedTask
@@ -324,7 +324,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithGenericTaskSelector()
         {
             var firstResult = await Task.CompletedTask
@@ -336,7 +336,7 @@ namespace DotFluent.Tasks
             firstResult.ShouldBe(secondResult);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithGenericTaskSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -392,7 +392,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithGenericTaskSelectorFaulted()
         {
             Task.CompletedTask
@@ -416,7 +416,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithGenericAction()
         {
             var result = 1;
@@ -430,7 +430,7 @@ namespace DotFluent.Tasks
             result.ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithGenericActionCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -464,7 +464,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithGenericActionFaulted()
         {
             Task.FromResult(0)
@@ -482,7 +482,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithTaskResultSelector()
         {
             var result = 1;
@@ -504,7 +504,7 @@ namespace DotFluent.Tasks
             result.ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithTaskResultSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -562,7 +562,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithTaskResultSelectorFaulted()
         {
             Task.FromResult(0)
@@ -588,7 +588,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithResultSelector()
         {
             var firstResult = await Task.FromResult(1)
@@ -600,7 +600,7 @@ namespace DotFluent.Tasks
             firstResult.ShouldBe(secondResult);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithResultSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -656,7 +656,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithResultSelectorFaulted()
         {
             Task.FromResult(0)
@@ -680,7 +680,7 @@ namespace DotFluent.Tasks
                 .ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ThenWithGenericTaskResultSelector()
         {
             var firstResult = await Task.FromResult(1)
@@ -692,7 +692,7 @@ namespace DotFluent.Tasks
             firstResult.ShouldBe(secondResult);
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithGenericTaskResultSelectorCanceled()
         {
             using (var cts = new CancellationTokenSource())
@@ -748,7 +748,7 @@ namespace DotFluent.Tasks
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ThenWithGenericTaskResultSelectorFaulted()
         {
             Task.FromResult(0)

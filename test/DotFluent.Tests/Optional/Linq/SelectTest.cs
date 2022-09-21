@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent.Optional.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SelectTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SelectorNullThrowsException()
         {
             var option = Option.None<int>();
@@ -19,9 +19,9 @@ namespace DotFluent.Optional.Linq
             option.Invoking(x => x.Select(selector)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 2 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 2 })]
         public void Select(int? source, IEnumerable<int> expectedResult)
             => source
                 .ToOption()

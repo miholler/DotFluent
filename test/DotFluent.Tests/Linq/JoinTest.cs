@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class JoinTest
     {
         #region Fields
@@ -17,8 +17,8 @@ namespace DotFluent.Linq
 
         #region Methods
 
-        [ClassInitialize]
-        public static void Initialize(TestContext _)
+        [OneTimeSetUp]
+        public static void Initialize()
         {
             _publishers.Add(new Publisher()
             {
@@ -49,97 +49,97 @@ namespace DotFluent.Linq
             });
         }
 
-        [TestMethod]
+        [Test]
         public void OuterNullThrowsException()
         {
             IEnumerable<Publisher> publishers = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }));
-            Assert.ThrowsException<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
-            Assert.ThrowsException<ArgumentNullException>(() => publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }));
+            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
+            Assert.Throws<ArgumentNullException>(() => publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void InnerNullThrowsException()
         {
             IEnumerable<Publisher> publishers = null;
             IEnumerable<Author> authors = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void KeySelectorNullThrowsException()
         {
             Func<Publisher, int> keySelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
         }
 
-        [TestMethod]
+        [Test]
         public void OuterKeySelectorNullThrowsException()
         {
             Func<Publisher, int> keySelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, keySelector, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, keySelector, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, keySelector, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, keySelector, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void InnerKeySelectorNullThrowsException()
         {
             Func<Author, int> keySelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, keySelector, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, keySelector, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, keySelector, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, keySelector, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void ResultSelectorNullThrowsException()
         {
             Func<Publisher, Publisher, object> resultSelector = null;
             Func<Publisher, Author, object> differentResultSelector = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, EqualityComparer<int>.Default));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, differentResultSelector, (x, y) => x == y));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, differentResultSelector, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, (x, y) => x == y, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, EqualityComparer<int>.Default));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, differentResultSelector, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, differentResultSelector, (x, y) => x == y, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void ComparerNullThrowsException()
         {
             Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, comparer));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, comparer, x => x.GetHashCode()));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, comparer));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, comparer));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, comparer));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, comparer, x => x.GetHashCode()));
         }
 
-        [TestMethod]
+        [Test]
         public void HashCodeProviderNullThrowsException()
         {
             Func<int, int> hashCodeProvider = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, hashCodeProvider));
-            Assert.ThrowsException<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, hashCodeProvider));
         }
 
-        [TestMethod]
+        [Test]
         public void Join()
         {
             var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }).ToArray();
@@ -149,7 +149,7 @@ namespace DotFluent.Linq
                 Assert.AreEqual(result.Left.Id, result.Right.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void JoinWithComparer()
         {
             var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y).ToArray();
@@ -159,7 +159,7 @@ namespace DotFluent.Linq
                 Assert.AreEqual(result.Left.Id, result.Right.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void JoinWithHashCode()
         {
             var hash = GetHashCode();
@@ -170,7 +170,7 @@ namespace DotFluent.Linq
                 Assert.AreEqual(result.Left.Id, result.Right.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void JoinWithEqualityComparer()
         {
             var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default).ToArray();
@@ -180,7 +180,7 @@ namespace DotFluent.Linq
                 Assert.AreEqual(result.Left.Id, result.Right.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void JoinWithDifferentSourcesAndComparer()
         {
             var results = _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y).ToArray();
@@ -190,7 +190,7 @@ namespace DotFluent.Linq
                 Assert.AreEqual(result.Publisher.Id, result.Author.PublisherId);
         }
 
-        [TestMethod]
+        [Test]
         public void JoinWithDifferentSourcesAndHashCode()
         {
             var hash = GetHashCode();

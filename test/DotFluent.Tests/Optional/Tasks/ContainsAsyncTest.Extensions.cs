@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ContainsAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -24,7 +24,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ValueFactoryNullThrowsException()
         {
             Func<Task<int>> valueFactory = null;
@@ -34,13 +34,13 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false, 0)]
-        [DataRow(null, 1, false, 1)]
-        [DataRow(1, 2, false, 0)]
-        [DataRow(1, 2, false, 1)]
-        [DataRow(1, 1, true, 0)]
-        [DataRow(1, 1, true, 1)]
+        [Test]
+        [TestCase(null, 1, false, 0)]
+        [TestCase(null, 1, false, 1)]
+        [TestCase(1, 2, false, 0)]
+        [TestCase(1, 2, false, 1)]
+        [TestCase(1, 1, true, 0)]
+        [TestCase(1, 1, true, 1)]
         public async Task ContainsAsync(int? source, int value, bool expectedResult, int overload)
         {
             var optionTask = source.ToOptionAsync();
@@ -53,7 +53,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ContainsAsyncCanceled()
         {
             var optionTask = OptionTask.None<int>();

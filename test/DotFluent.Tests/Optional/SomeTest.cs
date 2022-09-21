@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent.Optional
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SomeTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void Some()
             => Option.Some(1).ShouldBe(Option<int>.Some(1));
 

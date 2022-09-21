@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace DotFluent.Tasks
@@ -15,7 +14,7 @@ namespace DotFluent.Tasks
             => Task.FromException<TResult>(new NotImplementedException());
 
         protected static void ShouldNotBeCalled()
-            => throw new AssertFailedException("This action should not be called!");
+            => throw new InvalidOperationException("This action should not be called!");
 
         #endregion
     }

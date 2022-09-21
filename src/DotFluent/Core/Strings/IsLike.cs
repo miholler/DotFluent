@@ -1,20 +1,17 @@
-﻿using System;
+﻿namespace DotFluent;
 
-namespace DotFluent
+public static partial class StringExtensions
 {
-    public static partial class StringExtensions
-    {
-        #region Methods
+    #region Methods
 
-        /// <summary>
-        /// Determines whether two strings are considered equal regardless of their case.
-        /// </summary>
-        /// <param name="source">The first string to compare.</param>
-        /// <param name="value">The second string to compare.</param>
-        /// <returns>true if the strings are considered equal regardless of their case; otherwise, false.</returns>
-        public static bool IsLike(this string? source, string? value)
-            => string.Equals(source, value, StringComparison.OrdinalIgnoreCase);
+    /// <summary>
+    /// Determines whether two strings are considered equal regardless of their case.
+    /// </summary>
+    /// <param name="source">The first string to compare.</param>
+    /// <param name="value">The second string to compare.</param>
+    /// <returns>true if the strings are considered equal regardless of their case; otherwise, false.</returns>
+    public static bool IsLike(this string? source, string? value)
+        => string.Equals(source, value, StringComparison.OrdinalIgnoreCase);
 
-        #endregion
-    }
+    #endregion
 }

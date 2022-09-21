@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
 using System.Threading;
@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class FlattenAsyncTest
     {
         #region Methods
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 1 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 1 })]
         public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult)
         {
             var option = await OptionTask.Some(await source.ToOptionAsync());
@@ -22,7 +22,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task FlattenAsyncCanceled()
         {
             var option = await OptionTask.None<Option<int>>();

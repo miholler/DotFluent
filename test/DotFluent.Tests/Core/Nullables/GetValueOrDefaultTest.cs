@@ -1,28 +1,32 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableGetValueOrDefaultTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void DefaultFactoryNullThrowsException()
         {
             var source = new int?();
             Func<int> defaultFactory = null;
 
-            source.Invoking(x => x.GetValueOrDefault(defaultFactory)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.GetValueOrDefault(defaultFactory))
+                .ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, -1, -1)]
-        [DataRow(1, -1, 1)]
+        [Test]
+        [TestCase(null, -1, -1)]
+        [TestCase(1, -1, 1)]
         public void GetValueOrDefault(int? source, int defaultValue, int expectedResult)
-            => source.GetValueOrDefault(() => defaultValue).ShouldBe(expectedResult);
+            => source
+                .GetValueOrDefault(() => defaultValue)
+                .ShouldBe(expectedResult);
 
         #endregion
     }

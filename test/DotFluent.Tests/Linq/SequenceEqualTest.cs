@@ -1,48 +1,48 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SequenceEqualTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void FirstNullThrowsException()
         {
             IEnumerable<int> first = null;
             var second = new int[0];
 
-            Assert.ThrowsException<ArgumentNullException>(() => first.SequenceEqual(second, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => first.SequenceEqual(second, (x, y) => x == y));
         }
 
-        [TestMethod]
+        [Test]
         public void SecondNullThrowsException()
         {
             var first = new int[0];
             IEnumerable<int> second = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => first.SequenceEqual(second, (x, y) => x == y));
+            Assert.Throws<ArgumentNullException>(() => first.SequenceEqual(second, (x, y) => x == y));
         }
 
-        [TestMethod]
+        [Test]
         public void ComparerNullThrowsException()
         {
             var first = new int[0];
             var second = new int[0];
             Func<int, int, bool> comparer = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => first.SequenceEqual(second, comparer));
+            Assert.Throws<ArgumentNullException>(() => first.SequenceEqual(second, comparer));
         }
 
-        [TestMethod]
-        [DataRow(new int[0], new int[0], true)]
-        [DataRow(new int[0], new[] { 1, 2, 3 }, false)]
-        [DataRow(new[] { 1, 2, 3 }, new int[0], false)]
-        [DataRow(new[] { 1, 2, 3 }, new[] { 3, 2, 1 }, false)]
-        [DataRow(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
+        [Test]
+        [TestCase(new int[0], new int[0], true)]
+        [TestCase(new int[0], new[] { 1, 2, 3 }, false)]
+        [TestCase(new[] { 1, 2, 3 }, new int[0], false)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 3, 2, 1 }, false)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
         public void SequenceEqual(IEnumerable<int> first, IEnumerable<int> second, bool expectedResult)
             => Assert.AreEqual(first.SequenceEqual(second, (x, y) => x == y), expectedResult);
 

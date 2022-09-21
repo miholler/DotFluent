@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class OrElseAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -28,7 +28,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task OtherFactoryNullThrowsException()
         {
             var optionTask = OptionTask.None<int>();
@@ -43,19 +43,19 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null, new int[0], 0)]
-        [DataRow(null, null, new int[0], 1)]
-        [DataRow(null, null, new int[0], 2)]
-        [DataRow(1, null, new[] { 1 }, 0)]
-        [DataRow(1, null, new[] { 1 }, 1)]
-        [DataRow(1, null, new[] { 1 }, 2)]
-        [DataRow(null, 1, new[] { 1 }, 0)]
-        [DataRow(null, 1, new[] { 1 }, 1)]
-        [DataRow(null, 1, new[] { 1 }, 2)]
-        [DataRow(1, 2, new[] { 1 }, 0)]
-        [DataRow(1, 2, new[] { 1 }, 1)]
-        [DataRow(1, 2, new[] { 1 }, 2)]
+        [Test]
+        [TestCase(null, null, new int[0], 0)]
+        [TestCase(null, null, new int[0], 1)]
+        [TestCase(null, null, new int[0], 2)]
+        [TestCase(1, null, new[] { 1 }, 0)]
+        [TestCase(1, null, new[] { 1 }, 1)]
+        [TestCase(1, null, new[] { 1 }, 2)]
+        [TestCase(null, 1, new[] { 1 }, 0)]
+        [TestCase(null, 1, new[] { 1 }, 1)]
+        [TestCase(null, 1, new[] { 1 }, 2)]
+        [TestCase(1, 2, new[] { 1 }, 0)]
+        [TestCase(1, 2, new[] { 1 }, 1)]
+        [TestCase(1, 2, new[] { 1 }, 2)]
         public async Task OrElseAsync(int? source, int? other, IEnumerable<int> expectedResult, int overload)
         {
             var optionTask = source.ToOptionAsync();
@@ -69,7 +69,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task OrElseAsyncCanceled()
         {
             var optionTask = OptionTask.None<int>();

@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class DictionaryAddOrUpdateTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IDictionary<int, int> source = null;
@@ -19,7 +19,7 @@ namespace DotFluent
             source.Invoking(x => x.AddOrUpdate(1, k => 1, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void KeyNullThrowsException()
         {
             var source = new Dictionary<object, int>();
@@ -28,7 +28,7 @@ namespace DotFluent
             source.Invoking(x => x.AddOrUpdate(null, k => 1, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void AddValueFactoryNullThrowsException()
         {
             var source = new Dictionary<int, int>();
@@ -37,7 +37,7 @@ namespace DotFluent
             source.Invoking(x => x.AddOrUpdate(1, addValueFactory, (k, v) => 1)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void UpdateValueFactoryNullThrowsException()
         {
             var source = new Dictionary<int, int>();
@@ -47,11 +47,11 @@ namespace DotFluent
             source.Invoking(x => x.AddOrUpdate(1, k => 1, updateValueFactory)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(1, 2, false, 2, 0)]
-        [DataRow(1, 2, false, 2, 1)]
-        [DataRow(1, 2, true, 3, 0)]
-        [DataRow(1, 2, true, 3, 1)]
+        [Test]
+        [TestCase(1, 2, false, 2, 0)]
+        [TestCase(1, 2, false, 2, 1)]
+        [TestCase(1, 2, true, 3, 0)]
+        [TestCase(1, 2, true, 3, 1)]
         public void AddOrUpdate(int key, int value, bool isExisting, int expectedResult, int overload)
         {
             var source = isExisting ? new Dictionary<int, int>() { { key, value } } : new Dictionary<int, int>();

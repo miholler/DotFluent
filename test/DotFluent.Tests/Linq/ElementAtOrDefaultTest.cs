@@ -1,48 +1,48 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ElementAtOrDefaultTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SourceNullThrowsException()
         {
             IEnumerable<int> source = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.ElementAtOrDefault(0, 0));
-            Assert.ThrowsException<ArgumentNullException>(() => source.ElementAtOrDefault(0, () => 0));
+            Assert.Throws<ArgumentNullException>(() => source.ElementAtOrDefault(0, 0));
+            Assert.Throws<ArgumentNullException>(() => source.ElementAtOrDefault(0, () => 0));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultFactoryNullThrowsException()
         {
             var source = new[] { 1, 2, 3 };
             Func<int> defaultFactory = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.ElementAtOrDefault(0, defaultFactory));
+            Assert.Throws<ArgumentNullException>(() => source.ElementAtOrDefault(0, defaultFactory));
         }
 
-        [TestMethod]
-        [DataRow(new int[0], 0, 0)]
-        [DataRow(new[] { 1, 2, 3 }, 3, 0)]
-        [DataRow(new[] { 1, 2, 3 }, -3, 0)]
-        [DataRow(new[] { 1, 2, 3 }, 1, 2)]
+        [Test]
+        [TestCase(new int[0], 0, 0)]
+        [TestCase(new[] { 1, 2, 3 }, 3, 0)]
+        [TestCase(new[] { 1, 2, 3 }, -3, 0)]
+        [TestCase(new[] { 1, 2, 3 }, 1, 2)]
         public void ElementAtOrDefault(IEnumerable<int> source, int index, int expectedResult)
         {
             Assert.AreEqual(source.ElementAtOrDefault(index, 0), expectedResult);
             Assert.AreEqual(new HashSet<int>(source).ElementAtOrDefault(index, 0), expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(new int[0], 0, 0)]
-        [DataRow(new[] { 1, 2, 3 }, 3, 0)]
-        [DataRow(new[] { 1, 2, 3 }, -3, 0)]
-        [DataRow(new[] { 1, 2, 3 }, 1, 2)]
+        [Test]
+        [TestCase(new int[0], 0, 0)]
+        [TestCase(new[] { 1, 2, 3 }, 3, 0)]
+        [TestCase(new[] { 1, 2, 3 }, -3, 0)]
+        [TestCase(new[] { 1, 2, 3 }, 1, 2)]
         public void ElementAtOrDefaultWithFactory(IEnumerable<int> source, int index, int expectedResult)
         {
             Assert.AreEqual(source.ElementAtOrDefault(index, () => 0), expectedResult);

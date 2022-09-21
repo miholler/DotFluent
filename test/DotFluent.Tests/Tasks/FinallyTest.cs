@@ -1,41 +1,41 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotFluent.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class FinallyTest : TaskTest
     {
         #region Methods
 
-        [TestMethod]
-        public async Task SourceNullThrowsException()
+        [Test]
+        public void SourceNullThrowsException()
         {
             Task source = null;
             Task<int> genericSource = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Finally(() => { }));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Finally(() => { }, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => genericSource.Finally(() => { }));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => genericSource.Finally(() => { }, TaskScheduler.Current));
+            Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(() => { }));
+            Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(() => { }, TaskScheduler.Current));
+            Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(() => { }));
+            Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(() => { }, TaskScheduler.Current));
         }
 
-        [TestMethod]
-        public async Task ActionNullThrowsException()
+        [Test]
+        public void ActionNullThrowsException()
         {
             var source = Task.CompletedTask;
             var genericSource = Task.FromResult(0);
             Action action = null;
 
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Finally(action));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => source.Finally(action, TaskScheduler.Current));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => genericSource.Finally(action));
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => genericSource.Finally(action, TaskScheduler.Current));
+            Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(action));
+            Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(action, TaskScheduler.Current));
+            Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(action));
+            Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(action, TaskScheduler.Current));
         }
 
-        [TestMethod]
+        [Test]
         public async Task Finally()
         {
             var result = 1;
@@ -47,13 +47,13 @@ namespace DotFluent.Tasks
             Assert.AreEqual(result, 3);
         }
 
-        [TestMethod]
-        public async Task FinallyCanceled()
+        [Test]
+        public void FinallyCanceled()
         {
             var result = 1;
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
+                Assert.ThrowsAsync<TaskCanceledException>(() =>
                     Task.CompletedTask
                         .Then(() => cts.Cancel(), cts.Token)
                             .Then(ShouldNotBeCalled, cts.Token)
@@ -62,7 +62,7 @@ namespace DotFluent.Tasks
 
             using (var cts = new CancellationTokenSource())
             {
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
+                Assert.ThrowsAsync<TaskCanceledException>(() =>
                     Task.CompletedTask
                         .Then(() => cts.Cancel(), null, cts.Token)
                             .Then(ShouldNotBeCalled, null, cts.Token)
@@ -71,30 +71,30 @@ namespace DotFluent.Tasks
             Assert.AreEqual(result, 3);
         }
 
-        [TestMethod]
-        public async Task FinallyFaulted()
+        [Test]
+        public void FinallyFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() => 
+            Assert.ThrowsAsync<Exception>(() => 
                 Task.CompletedTask
                     .Finally(ThrowException));
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            Assert.ThrowsAsync<Exception>(() =>
                 Task.CompletedTask
                     .Finally(ThrowException, null));
 
             var result = 1;
-            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
+            Assert.ThrowsAsync<NotImplementedException>(() =>
                 GetFaultedTask()
                     .Finally(() => { result++; }));
 
-            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
+            Assert.ThrowsAsync<NotImplementedException>(() =>
                 GetFaultedTask()
                     .Finally(() => { result++; }, null));
 
             Assert.AreEqual(result, 3);
         }
 
-        [TestMethod]
+        [Test]
         public async Task FinallyWithGenericSource()
         {
             var result = 1;
@@ -106,12 +106,12 @@ namespace DotFluent.Tasks
             Assert.AreEqual(taskResult, 0);
         }
 
-        [TestMethod]
-        public async Task FinallyWithGenericSourceCanceled()
+        [Test]
+        public void FinallyWithGenericSourceCanceled()
         {
             var result = 1;
             using (var cts = new CancellationTokenSource())
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
+                Assert.ThrowsAsync<TaskCanceledException>(() =>
                     Task.FromResult(0)
                         .Then(() =>
                         {
@@ -126,7 +126,7 @@ namespace DotFluent.Tasks
                             .Finally(() => { result++; }));
 
             using (var cts = new CancellationTokenSource())
-                await Assert.ThrowsExceptionAsync<TaskCanceledException>(() =>
+                Assert.ThrowsAsync<TaskCanceledException>(() =>
                     Task.FromResult(0)
                         .Then(() =>
                         {
@@ -143,23 +143,23 @@ namespace DotFluent.Tasks
             Assert.AreEqual(result, 3);
         }
 
-        [TestMethod]
-        public async Task FinallyWithGenericSourceFaulted()
+        [Test]
+        public void FinallyWithGenericSourceFaulted()
         {
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            Assert.ThrowsAsync<Exception>(() =>
                 Task.FromResult(0)
                     .Finally(ThrowException));
 
-            await Assert.ThrowsExceptionAsync<Exception>(() =>
+            Assert.ThrowsAsync<Exception>(() =>
                 Task.FromResult(0)
                     .Finally(ThrowException, null));
 
             var result = 1;
-            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
+            Assert.ThrowsAsync<NotImplementedException>(() =>
                 GetFaultedTask<int>()
                     .Finally(() => { result++; }));
 
-            await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
+            Assert.ThrowsAsync<NotImplementedException>(() =>
                 GetFaultedTask<int>()
                     .Finally(() => { result++; }, null));
 

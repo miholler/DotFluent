@@ -1,5 +1,5 @@
 ﻿using DotFluent.Optional.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Unsafe.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class GetValueOrDefaultAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -31,7 +31,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task DefaultFactoryNullThrowsException()
         {
             var optionTask = OptionTask.None<int>();
@@ -46,9 +46,9 @@ namespace DotFluent.Optional.Unsafe.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 0)]
-        [DataRow(1, 1)]
+        [Test]
+        [TestCase(null, 0)]
+        [TestCase(1, 1)]
         public async Task GetValueOrDefaultAsync(int? source, int expectedResult)
         {
             var result = await source
@@ -58,13 +58,13 @@ namespace DotFluent.Optional.Unsafe.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
-        [DataRow(null, 1, 1, 0)]
-        [DataRow(1, 2, 1, 0)]
-        [DataRow(null, 1, 1, 1)]
-        [DataRow(1, 2, 1, 1)]
-        [DataRow(null, 1, 1, 2)]
-        [DataRow(1, 2, 1, 2)]
+        [Test]
+        [TestCase(null, 1, 1, 0)]
+        [TestCase(1, 2, 1, 0)]
+        [TestCase(null, 1, 1, 1)]
+        [TestCase(1, 2, 1, 1)]
+        [TestCase(null, 1, 1, 2)]
+        [TestCase(1, 2, 1, 2)]
         public async Task GetValueOrDefaultAsyncWithDefaultValue(int? source, int defaultValue, int expectedResult, int overload)
         {
             var optionTask = source.ToOptionAsync();
@@ -78,7 +78,7 @@ namespace DotFluent.Optional.Unsafe.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task GetValueOrDefaultAsyncCanceled()
         {
             var optionTask = OptionTask.None<int>();

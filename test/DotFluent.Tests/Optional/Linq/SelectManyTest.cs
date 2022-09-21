@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
 
 namespace DotFluent.Optional.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class SelectManyTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SelectorNullThrowsException()
         {
             var option = Option.None<int>();
@@ -19,7 +19,7 @@ namespace DotFluent.Optional.Linq
             option.Invoking(x => x.SelectMany(selector)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public void ResultSelectorNullThrowsException()
         {
             var option = Option.None<int>();
@@ -28,20 +28,20 @@ namespace DotFluent.Optional.Linq
             option.Invoking(x => x.SelectMany(y => Option.Some(y), resultSelector)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0])]
-        [DataRow(1, new[] { 1 })]
+        [Test]
+        [TestCase(null, new int[0])]
+        [TestCase(1, new[] { 1 })]
         public void SelectMany(int? source, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
                 .SelectMany(x => Option.Some(x))
                 .ShouldBe(expectedResult);
 
-        [TestMethod]
-        [DataRow(null, null, new int[0])]
-        [DataRow(null, 0, new int[0])]
-        [DataRow(1, null, new int[0])]
-        [DataRow(1, 1, new[] { 2 })]
+        [Test]
+        [TestCase(null, null, new int[0])]
+        [TestCase(null, 0, new int[0])]
+        [TestCase(1, null, new int[0])]
+        [TestCase(1, 1, new[] { 2 })]
         public void SelectManyWithResultSelector(int? source, int? selectorResult, IEnumerable<int> expectedResult)
             => source
                 .ToOption()

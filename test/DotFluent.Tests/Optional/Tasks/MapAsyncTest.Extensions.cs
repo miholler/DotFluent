@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class MapAsyncExtensionsTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task SourceNullThrowsException()
         {
             Task<Option<int>> optionTask = null;
@@ -25,7 +25,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task MapperNullThrowsException()
         {
             var optionTask = OptionTask.None<int>();
@@ -40,11 +40,11 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, new int[0], 0)]
-        [DataRow(null, new int[0], 1)]
-        [DataRow(1, new[] { 2 }, 0)]
-        [DataRow(1, new[] { 2 }, 1)]
+        [Test]
+        [TestCase(null, new int[0], 0)]
+        [TestCase(null, new int[0], 1)]
+        [TestCase(1, new[] { 2 }, 0)]
+        [TestCase(1, new[] { 2 }, 1)]
         public async Task MapAsync(int? source, IEnumerable<int> expectedResult, int overload)
         {
             var optionTask = source.ToOptionAsync();
@@ -57,7 +57,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task MapAsyncCaneled()
         {
             var optionTask = OptionTask.None<int>();

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks
 {
-    [TestClass]
+    [TestFixture]
     public sealed class ContainsAsyncTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public async Task ValueFactoryNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -22,7 +22,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ValueFactoryReturningNullThrowsException()
         {
             var option = await OptionTask.None<int>();
@@ -32,10 +32,10 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<InvalidOperationException>();
         }
 
-        [TestMethod]
-        [DataRow(null, 1, false)]
-        [DataRow(1, 2, false)]
-        [DataRow(1, 1, true)]
+        [Test]
+        [TestCase(null, 1, false)]
+        [TestCase(1, 2, false)]
+        [TestCase(1, 1, true)]
         public async Task ContainsAsync(int? source, int value, bool expectedResult)
         {
             var option = await source.ToOptionAsync();
@@ -44,7 +44,7 @@ namespace DotFluent.Optional.Tasks
             result.ShouldBe(expectedResult);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ContainsAsyncCanceled()
         {
             var option = await OptionTask.None<int>();
@@ -56,7 +56,7 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<TaskCanceledException>();
         }
 
-        [TestMethod]
+        [Test]
         public async Task ContainsAsyncValueFactoryCanceled()
         {
             var option = await OptionTask.None<int>();

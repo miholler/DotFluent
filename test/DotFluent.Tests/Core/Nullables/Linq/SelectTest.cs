@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent.Linq
 {
-    [TestClass]
+    [TestFixture]
     public sealed class NullableSelectTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void SelectorNullThrowsException()
         {
             var source = new int?();
@@ -18,9 +18,9 @@ namespace DotFluent.Linq
             source.Invoking(x => x.Select(selector)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(null, null)]
-        [DataRow(1, 2)]
+        [Test]
+        [TestCase(null, null)]
+        [TestCase(1, 2)]
         public void Select(int? source, int? expectedResult)
             => source.Select(x => ++x).ShouldBe(expectedResult);
 

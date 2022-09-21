@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 
 namespace DotFluent.Optional
 {
-    [TestClass]
+    [TestFixture]
     public sealed class GetUnderlyingTypeTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void OptionTypeNullThrowsException()
         {
             Type type = null;
@@ -17,12 +17,12 @@ namespace DotFluent.Optional
             type.Invoking(x => Option.GetUnderlyingType(x)).ShouldThrow<ArgumentNullException>();
         }
 
-        [TestMethod]
-        [DataRow(typeof(int), null)]
-        [DataRow(typeof(Nullable<>), null)]
-        [DataRow(typeof(int?), null)]
-        [DataRow(typeof(Option<>), null)]
-        [DataRow(typeof(Option<int>), typeof(int))]
+        [Test]
+        [TestCase(typeof(int), null)]
+        [TestCase(typeof(Nullable<>), null)]
+        [TestCase(typeof(int?), null)]
+        [TestCase(typeof(Option<>), null)]
+        [TestCase(typeof(Option<int>), typeof(int))]
         public void GetUnderlyingType(Type source, Type expectedResult)
             => Option.GetUnderlyingType(source).ShouldBe(expectedResult);
 

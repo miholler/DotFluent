@@ -1,35 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 
 namespace DotFluent
 {
-    [TestClass]
+    [TestFixture]
     public sealed class StringDefaultIfEmptyTest
     {
         #region Methods
 
-        [TestMethod]
+        [Test]
         public void DefaultFactoryNullThrowsException()
         {
             var source = string.Empty;
             Func<string> defaultFactory = null;
 
-            Assert.ThrowsException<ArgumentNullException>(() => source.DefaultIfEmpty(defaultFactory));
+            Assert.Throws<ArgumentNullException>(() => source.DefaultIfEmpty(defaultFactory));
         }
 
-        [TestMethod]
-        [DataRow(null, "DEF", "DEF")]
-        [DataRow("", "DEF", "DEF")]
-        [DataRow("   ", "DEF", "DEF")]
-        [DataRow("ABC", "DEF", "ABC")]
+        [Test]
+        [TestCase(null, "DEF", "DEF")]
+        [TestCase("", "DEF", "DEF")]
+        [TestCase("   ", "DEF", "DEF")]
+        [TestCase("ABC", "DEF", "ABC")]
         public void DefaultIfEmpty(string source, string defaultValue, string expectedResult)
             => Assert.AreEqual(source.DefaultIfEmpty(defaultValue), expectedResult);
 
-        [TestMethod]
-        [DataRow(null, "DEF", "DEF")]
-        [DataRow("", "DEF", "DEF")]
-        [DataRow("   ", "DEF", "DEF")]
-        [DataRow("ABC", "DEF", "ABC")]
+        [Test]
+        [TestCase(null, "DEF", "DEF")]
+        [TestCase("", "DEF", "DEF")]
+        [TestCase("   ", "DEF", "DEF")]
+        [TestCase("ABC", "DEF", "ABC")]
         public void DefaultIfEmptyWithFactory(string source, string defaultValue, string expectedResult)
             => Assert.AreEqual(source.DefaultIfEmpty(() => defaultValue), expectedResult);
 
