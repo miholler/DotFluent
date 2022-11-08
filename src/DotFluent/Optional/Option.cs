@@ -72,7 +72,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="value">The input value.</param>
     /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
     public static Option<T> Some(T value)
-        => new (value);
+        => new(value);
 
     /// <summary>
     /// Performs a specified action if the current option is a 'None' value.

@@ -19,7 +19,9 @@ public static partial class NullableExtensions
     {
         predicate.ThrowIfNull();
 
-        return source.IsSome() && predicate(source.Value) ? source : default;
+        return source.IsSome() && predicate(source.Value)
+            ? source
+            : default;
     }
 
     #endregion

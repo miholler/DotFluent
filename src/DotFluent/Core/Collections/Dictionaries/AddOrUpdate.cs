@@ -45,7 +45,9 @@ public static partial class DictionaryExtensions
         addValueFactory.ThrowIfNull();
         updateValueFactory.ThrowIfNull();
 
-        var value = source.TryGetValue(key, out var existing) ? updateValueFactory(key, existing) : addValueFactory(key);
+        var value = source.TryGetValue(key, out var existing)
+            ? updateValueFactory(key, existing)
+            : addValueFactory(key);
         source[key] = value;
         return value;
     }

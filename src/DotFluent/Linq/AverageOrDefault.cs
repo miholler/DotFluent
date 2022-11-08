@@ -52,7 +52,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -106,7 +106,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -153,7 +153,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -207,7 +207,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -254,7 +254,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => ToSingle(sum / count), defaultFactory);
     }
@@ -308,7 +308,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return sum.GetValueOrDefault() + value;
+                return sum.Match(x => x + value, value);
             })
             .Match(sum => ToSingle(sum / count), defaultFactory);
     }
@@ -355,7 +355,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -409,7 +409,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -456,7 +456,7 @@ public static partial class Sequence
             .Aggregate(default(decimal?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -510,7 +510,7 @@ public static partial class Sequence
             .Aggregate(default(decimal?), (sum, value) =>
             {
                 count++;
-                return checked(sum.GetValueOrDefault() + value);
+                return checked(sum.Match(x => x + value, value));
             })
             .Match(sum => sum / count, defaultFactory);
     }

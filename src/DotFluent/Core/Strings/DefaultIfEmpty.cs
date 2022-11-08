@@ -34,7 +34,9 @@ public static partial class StringExtensions
     {
         defaultFactory.ThrowIfNull();
 
-        return source.IsNullOrWhiteSpace() ? defaultFactory() : source;
+        return source.IsNullOrWhiteSpace()
+            ? defaultFactory()
+            : source;
     }
 
     #endregion
