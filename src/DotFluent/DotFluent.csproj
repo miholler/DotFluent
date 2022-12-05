@@ -6,7 +6,7 @@
 	<Nullable>enable</Nullable>
 	<LangVersion>latest</LangVersion>
 	<ImplicitUsings>enable</ImplicitUsings>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Provides a set of types and extension methods to chain method calls and increase code readability.</Description>
