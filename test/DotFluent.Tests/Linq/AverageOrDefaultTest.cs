@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,445 @@ namespace DotFluent.Linq
     public sealed class AverageOrDefaultTest
     {
         #region Methods
+
+        [Test]
+        public void SourceNullThrowsException()
+        {
+            IEnumerable<int> intSource = null;
+
+            intSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(0.0))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<int?> nullableIntSource = null;
+
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<long> longSource = null;
+
+            longSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(0.0))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<long?> nullableLongSource = null;
+
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<float> floatSource = null;
+
+            floatSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<float?> nullableFloatSource = null;
+
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<double> doubleSource = null;
+
+            doubleSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(0.0))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<double?> nullableDoubleSource = null;
+
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<decimal> decimalSource = null;
+
+            decimalSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+
+            IEnumerable<decimal?> nullableDecimalSource = null;
+
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault())
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(() => 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(y => y))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(y => y, 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(y => y, () => 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void SelectorNullThrowsException()
+        {
+            var intSource = Enumerable.Empty<int>();
+            Func<int, int> intSelector = null;
+
+            intSource
+                .Invoking(x => x.AverageOrDefault(intSelector))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(intSelector, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(intSelector, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableIntSource = Enumerable.Empty<int?>();
+            Func<int?, int?> nullableIntSelector = null;
+
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(nullableIntSelector))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(nullableIntSelector, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(nullableIntSelector, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            var longSource = Enumerable.Empty<long>();
+            Func<long, long> longSelector = null;
+
+            longSource
+                .Invoking(x => x.AverageOrDefault(longSelector))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(longSelector, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(longSelector, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableLongSource = Enumerable.Empty<long?>();
+            Func<long?, long?> nullableLongSelector = null;
+
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(nullableLongSelector))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(nullableLongSelector, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(nullableLongSelector, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            var floatSource = Enumerable.Empty<float>();
+            Func<float, float> floatSelector = null;
+
+            floatSource
+                .Invoking(x => x.AverageOrDefault(floatSelector))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(floatSelector, 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(floatSelector, () => 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableFloatSource = Enumerable.Empty<float?>();
+            Func<float?, float?> nullableFloatSelector = null;
+
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(nullableFloatSelector))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(nullableFloatSelector, 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(nullableFloatSelector, () => 0.0f))
+                .ShouldThrow<ArgumentNullException>();
+
+            var doubleSource = Enumerable.Empty<double>();
+            Func<double, double> doubleSelector = null;
+
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(doubleSelector))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(doubleSelector, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(doubleSelector, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableDoubleSource = Enumerable.Empty<double?>();
+            Func<double?, double?> nullableDoubleSelector = null;
+
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(nullableDoubleSelector))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(nullableDoubleSelector, 0.0))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(nullableDoubleSelector, () => 0.0))
+                .ShouldThrow<ArgumentNullException>();
+
+            var decimalSource = Enumerable.Empty<decimal>();
+            Func<decimal, decimal> decimalSelector = null;
+
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(decimalSelector))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(decimalSelector, 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(decimalSelector, () => 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableDecimalSource = Enumerable.Empty<decimal?>();
+            Func<decimal?, decimal?> nullableDecimalSelector = null;
+
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(nullableDecimalSelector))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(nullableDecimalSelector, 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(nullableDecimalSelector, () => 0.0m))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void DefaultFactoryNullThrowsException()
+        {
+            Func<float> floatFactory = null;
+            Func<float?> nullableFloatFactory = null;
+            Func<double> doubleFactory = null;
+            Func<double?> nullableDoubleFactory = null;
+            Func<decimal> decimalFactory = null;
+            Func<decimal?> nullableDecimalFactory = null;
+
+            var intSource = Enumerable.Empty<int>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(doubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+            intSource
+                .Invoking(x => x.AverageOrDefault(y => y, doubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableIntSource = Enumerable.Empty<int?>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(nullableDoubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+            nullableIntSource
+                .Invoking(x => x.AverageOrDefault(y => y, nullableDoubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var longSource = Enumerable.Empty<long>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(doubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+            longSource
+                .Invoking(x => x.AverageOrDefault(y => y, doubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableLongSource = Enumerable.Empty<long?>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(nullableDoubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+            nullableLongSource
+                .Invoking(x => x.AverageOrDefault(y => y, nullableDoubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var floatSource = Enumerable.Empty<float>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(floatFactory))
+                .ShouldThrow<ArgumentNullException>();
+            floatSource
+                .Invoking(x => x.AverageOrDefault(y => y, floatFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableFloatSource = Enumerable.Empty<float?>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(nullableFloatFactory))
+                .ShouldThrow<ArgumentNullException>();
+            nullableFloatSource
+                .Invoking(x => x.AverageOrDefault(y => y, nullableFloatFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var doubleSource = Enumerable.Empty<double>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(doubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+            doubleSource
+                .Invoking(x => x.AverageOrDefault(y => y, doubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableDoubleSource = Enumerable.Empty<double?>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(nullableDoubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDoubleSource
+                .Invoking(x => x.AverageOrDefault(y => y, nullableDoubleFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var decimalSource = Enumerable.Empty<decimal>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(decimalFactory))
+                .ShouldThrow<ArgumentNullException>();
+            decimalSource
+                .Invoking(x => x.AverageOrDefault(y => y, decimalFactory))
+                .ShouldThrow<ArgumentNullException>();
+
+            var nullableDecimalSource = Enumerable.Empty<decimal?>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(nullableDecimalFactory))
+                .ShouldThrow<ArgumentNullException>();
+            nullableDecimalSource
+                .Invoking(x => x.AverageOrDefault(y => y, nullableDecimalFactory))
+                .ShouldThrow<ArgumentNullException>();
+        }
 
         [Test]
         [TestCase(new int[0], 0.0, 0)]
