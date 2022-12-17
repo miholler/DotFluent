@@ -47,9 +47,9 @@ namespace DotFluent.Linq
         {
             var isEqual = _items
                 .OrderBy(x => x.Order)
-                .ThenByDescending(x => x.IsActive, (x, y) => x == y ? 0 : x == false ? 1 : -1)
+                .ThenByDescending(x => x.IsActive, Comparer<bool>.Default.Compare)
                 .Select(x => x.IsActive)
-                .SequenceEqual(new[] { false, true, false, true, false });
+                .SequenceEqual(new[] { true, false, true, false, false });
 
             Assert.IsTrue(isEqual);
         }

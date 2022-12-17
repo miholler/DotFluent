@@ -30,7 +30,7 @@ namespace DotFluent.Linq
         [TestCase(new int[0], new int[0])]
         [TestCase(new[] { 1, 3, 2 }, new[] { 3, 2, 1 })]
         public void OrderByDescending(IEnumerable<int> source, IEnumerable<int> expectedResult)
-            => Assert.IsTrue(source.OrderByDescending(x => x, (x, y) => x > y ? 1 : x == y ? 0 : -1).SequenceEqual(expectedResult));
+            => Assert.IsTrue(source.OrderByDescending(x => x, Comparer<int>.Default.Compare).SequenceEqual(expectedResult));
 
         #endregion
     }

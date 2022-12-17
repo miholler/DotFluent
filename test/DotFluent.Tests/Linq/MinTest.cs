@@ -78,13 +78,13 @@ namespace DotFluent.Linq
         [TestCase(new[] { 1, 2, 3 }, 1, 0)]
         [TestCase(new[] { 1, 2, 3 }, 1, 1)]
         [TestCase(new[] { 1, 3, 2 }, 1, 0)]
-        [TestCase(new[] { 1, 3, 3 }, 1, 1)]
+        [TestCase(new[] { 1, 3, 2 }, 1, 1)]
         public void ValueTypeMin(IEnumerable<int> source, int expectedResult, int overload)
         {
             var result = overload switch
             {
                 1 => source.Min(Comparer<int>.Default),
-                _ => source.Min((l, r) => l > r ? 1 : l < r ? -1 : 0)
+                _ => source.Min(Comparer<int>.Default.Compare)
             };
 
             result.ShouldBe(expectedResult);
