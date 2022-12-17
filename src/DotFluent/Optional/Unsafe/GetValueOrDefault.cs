@@ -14,7 +14,7 @@ public static partial class UnsafeOption
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
     /// <param name="source">The option to retrieve the value of.</param>
     /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the default value for the <typeparamref name="TSource"/> type.</returns>
-    public static TSource GetValueOrDefault<TSource>(this Option<TSource> source)
+    public static TSource? GetValueOrDefault<TSource>(this Option<TSource> source)
         => source.GetValueOrDefault(() => default!);
 
     /// <summary>

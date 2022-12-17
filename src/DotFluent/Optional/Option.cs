@@ -54,7 +54,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Gets whether the current option is a 'Some' value.
     /// </summary>
     /// <returns>true if the option is a 'Some' value; otherwise, false.</returns>
-    public bool IsSome { get; init; }
+    public bool IsSome { get; }
 
     /// <summary>
     /// Gets whether the current option is a 'None' value. 
