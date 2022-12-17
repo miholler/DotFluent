@@ -72,6 +72,17 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void ComparerNullDoesNotThrowException()
+        {
+            var source = Enumerable.Empty<object>();
+            var comparer = default(IComparer<object>);
+
+            source
+                .Invoking(x => x.MaxBy(y => y, comparer))
+                .ShouldNotThrow();
+        }
+
+        [Test]
         [TestCase(new string[0], null, 0)]
         [TestCase(new string[0], null, 1)]
         [TestCase(new string[0], null, 2)]
@@ -81,9 +92,6 @@ namespace DotFluent.Linq
         [TestCase(new[] { "A" }, "A", 0)]
         [TestCase(new[] { "A" }, "A", 1)]
         [TestCase(new[] { "A" }, "A", 2)]
-        [TestCase(new[] { "A", "B", "C" }, "C", 0)]
-        [TestCase(new[] { "A", "B", "C" }, "C", 1)]
-        [TestCase(new[] { "A", "B", "C" }, "C", 2)]
         [TestCase(new[] { "A", "C", "B" }, "C", 0)]
         [TestCase(new[] { "A", "C", "B" }, "C", 1)]
         [TestCase(new[] { "A", "C", "B" }, "C", 2)]
@@ -106,9 +114,6 @@ namespace DotFluent.Linq
         [TestCase(new[] { 1 }, 1, 0)]
         [TestCase(new[] { 1 }, 1, 1)]
         [TestCase(new[] { 1 }, 1, 2)]
-        [TestCase(new[] { 1, 2, 3 }, 3, 0)]
-        [TestCase(new[] { 1, 2, 3 }, 3, 1)]
-        [TestCase(new[] { 1, 2, 3 }, 3, 2)]
         [TestCase(new[] { 1, 3, 2 }, 3, 0)]
         [TestCase(new[] { 1, 3, 2 }, 3, 1)]
         [TestCase(new[] { 1, 3, 2 }, 3, 2)]

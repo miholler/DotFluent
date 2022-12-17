@@ -49,14 +49,23 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void ComparerNullDoesNotThrowException()
+        {
+            var source = Enumerable.Empty<object>();
+            var comparer = default(IComparer<object>);
+
+            source
+                .Invoking(x => x.Max(comparer))
+                .ShouldNotThrow();
+        }
+
+        [Test]
         [TestCase(new string[0], null, 0)]
         [TestCase(new string[0], null, 1)]
         [TestCase(new string[] { null, null, null }, null, 0)]
         [TestCase(new string[] { null, null, null }, null, 1)]
         [TestCase(new[] { "A" }, "A", 0)]
         [TestCase(new[] { "A" }, "A", 1)]
-        [TestCase(new[] { "A", "B", "C" }, "C", 0)]
-        [TestCase(new[] { "A", "B", "C" }, "C", 1)]
         [TestCase(new[] { "A", "C", "B" }, "C", 0)]
         [TestCase(new[] { "A", "C", "B" }, "C", 1)]
         [TestCase(new[] { null, "B", null }, "B", 0)]
@@ -75,8 +84,6 @@ namespace DotFluent.Linq
         [Test]
         [TestCase(new[] { 1 }, 1, 0)]
         [TestCase(new[] { 1 }, 1, 1)]
-        [TestCase(new[] { 1, 2, 3 }, 3, 0)]
-        [TestCase(new[] { 1, 2, 3 }, 3, 1)]
         [TestCase(new[] { 1, 3, 2 }, 3, 0)]
         [TestCase(new[] { 1, 3, 2 }, 3, 1)]
         public void ValueTypeMax(IEnumerable<int> source, int expectedResult, int overload)
