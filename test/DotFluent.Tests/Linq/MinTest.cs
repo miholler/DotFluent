@@ -49,16 +49,25 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void ComparerNullDoesNotThrowException()
+        {
+            var source = Enumerable.Empty<object>();
+            var comparer = default(IComparer<object>);
+
+            source
+                .Invoking(x => x.Min(comparer))
+                .ShouldNotThrow();
+        }
+
+        [Test]
         [TestCase(new string[0], null, 0)]
         [TestCase(new string[0], null, 1)]
         [TestCase(new string[] { null, null, null }, null, 0)]
         [TestCase(new string[] { null, null, null }, null, 1)]
         [TestCase(new[] { "A" }, "A", 0)]
         [TestCase(new[] { "A" }, "A", 1)]
-        [TestCase(new[] { "A", "B", "C" }, "A", 0)]
-        [TestCase(new[] { "A", "B", "C" }, "A", 1)]
-        [TestCase(new[] { "A", "C", "B" }, "A", 0)]
-        [TestCase(new[] { "A", "C", "B" }, "A", 1)]
+        [TestCase(new[] { "C", "A", "B" }, "A", 0)]
+        [TestCase(new[] { "C", "A", "B" }, "A", 1)]
         [TestCase(new[] { null, "B", null }, "B", 0)]
         [TestCase(new[] { null, "B", null }, "B", 1)]
         public void ReferenceTypeMin(IEnumerable<string> source, string expectedResult, int overload)
@@ -75,10 +84,8 @@ namespace DotFluent.Linq
         [Test]
         [TestCase(new[] { 1 }, 1, 0)]
         [TestCase(new[] { 1 }, 1, 1)]
-        [TestCase(new[] { 1, 2, 3 }, 1, 0)]
-        [TestCase(new[] { 1, 2, 3 }, 1, 1)]
-        [TestCase(new[] { 1, 3, 2 }, 1, 0)]
-        [TestCase(new[] { 1, 3, 2 }, 1, 1)]
+        [TestCase(new[] { 3, 1, 2 }, 1, 0)]
+        [TestCase(new[] { 3, 1, 2 }, 1, 1)]
         public void ValueTypeMin(IEnumerable<int> source, int expectedResult, int overload)
         {
             var result = overload switch

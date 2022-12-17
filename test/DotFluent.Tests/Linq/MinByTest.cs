@@ -72,6 +72,17 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void ComparerNullDoesNotThrowException()
+        {
+            var source = Enumerable.Empty<object>();
+            var comparer = default(IComparer<object>);
+
+            source
+                .Invoking(x => x.MinBy(y => y, comparer))
+                .ShouldNotThrow();
+        }
+
+        [Test]
         [TestCase(new string[0], null, 0)]
         [TestCase(new string[0], null, 1)]
         [TestCase(new string[0], null, 2)]
@@ -81,12 +92,9 @@ namespace DotFluent.Linq
         [TestCase(new[] { "A" }, "A", 0)]
         [TestCase(new[] { "A" }, "A", 1)]
         [TestCase(new[] { "A" }, "A", 2)]
-        [TestCase(new[] { "A", "B", "C" }, "A", 0)]
-        [TestCase(new[] { "A", "B", "C" }, "A", 1)]
-        [TestCase(new[] { "A", "B", "C" }, "A", 2)]
-        [TestCase(new[] { "A", "C", "B" }, "A", 0)]
-        [TestCase(new[] { "A", "C", "B" }, "A", 1)]
-        [TestCase(new[] { "A", "C", "B" }, "A", 2)]
+        [TestCase(new[] { "C", "A", "B" }, "A", 0)]
+        [TestCase(new[] { "C", "A", "B" }, "A", 1)]
+        [TestCase(new[] { "C", "A", "B" }, "A", 2)]
         [TestCase(new[] { null, "B", null }, "B", 0)]
         [TestCase(new[] { null, "B", null }, "B", 1)]
         [TestCase(new[] { null, "B", null }, "B", 2)]
@@ -106,12 +114,9 @@ namespace DotFluent.Linq
         [TestCase(new[] { 1 }, 1, 0)]
         [TestCase(new[] { 1 }, 1, 1)]
         [TestCase(new[] { 1 }, 1, 2)]
-        [TestCase(new[] { 1, 2, 3 }, 1, 0)]
-        [TestCase(new[] { 1, 2, 3 }, 1, 1)]
-        [TestCase(new[] { 1, 2, 3 }, 1, 2)]
-        [TestCase(new[] { 1, 3, 2 }, 1, 0)]
-        [TestCase(new[] { 1, 3, 2 }, 1, 1)]
-        [TestCase(new[] { 1, 3, 2 }, 1, 2)]
+        [TestCase(new[] { 3, 1, 2 }, 1, 0)]
+        [TestCase(new[] { 3, 1, 2 }, 1, 1)]
+        [TestCase(new[] { 3, 1, 2 }, 1, 2)]
         public void ValueTypeMinBy(IEnumerable<int> source, int expectedResult, int overload)
         {
             var result = overload switch
