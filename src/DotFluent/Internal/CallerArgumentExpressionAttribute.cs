@@ -2,6 +2,8 @@
 
 namespace System.Runtime.CompilerServices;
 
+#if NETSTANDARD
+
 /// <summary>
 /// Allows capturing of the expressions passed to a method.
 /// </summary>
@@ -24,3 +26,5 @@ internal sealed class CallerArgumentExpressionAttribute : Attribute
 
     #endregion
 }
+
+#endif

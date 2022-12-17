@@ -15,7 +15,9 @@ namespace DotFluent.Internal
         {
             Func<int, int, bool> comparer = null;
 
-            comparer.Invoking(x => GenericEqualityComparer<int>.Create(x)).ShouldThrow<ArgumentNullException>();
+            comparer
+                .Invoking(GenericEqualityComparer<int>.Create)
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
@@ -23,7 +25,9 @@ namespace DotFluent.Internal
         {
             Func<int, int> hashCodeProvider = null;
 
-            hashCodeProvider.Invoking(x => GenericEqualityComparer<int>.Create((l, r) => l == r, x)).ShouldThrow<ArgumentNullException>();
+            hashCodeProvider
+                .Invoking(x => GenericEqualityComparer<int>.Create((l, r) => l == r, x))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]

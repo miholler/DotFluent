@@ -1,5 +1,7 @@
 ﻿namespace System.Diagnostics.CodeAnalysis;
 
+#if NETSTANDARD
+
 /// <summary>
 /// Specifies that an output will not be null even if the corresponding type allows it. 
 /// Specifies that an input argument was not null when the call returns.
@@ -32,3 +34,5 @@ internal sealed class NotNullWhenAttribute : Attribute
 
     #endregion
 }
+
+#endif

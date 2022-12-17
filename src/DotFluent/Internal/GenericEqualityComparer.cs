@@ -46,7 +46,7 @@ public sealed class GenericEqualityComparer<T> : IEqualityComparer<T>
     /// <param name="comparer">A function to compare objects.</param>
     /// <returns>A new <see cref="GenericEqualityComparer{T}"/>.</returns>
     public static GenericEqualityComparer<T> Create(Func<T, T, bool> comparer)
-        => new (comparer);
+        => new(comparer);
 
     /// <summary>
     /// Creates an equality comparer by using specified compare functions
@@ -56,7 +56,7 @@ public sealed class GenericEqualityComparer<T> : IEqualityComparer<T>
     /// <param name="hashCodeProvider">A function to resolve a hash code for an object.</param>
     /// <returns>A new <see cref="GenericEqualityComparer{T}"/>.</returns>
     public static GenericEqualityComparer<T> Create(Func<T, T, bool> comparer, Func<T, int> hashCodeProvider)
-        => new (comparer, hashCodeProvider);
+        => new(comparer, hashCodeProvider);
 
     /// <summary>
     /// Determines whether the specified objects are equal.

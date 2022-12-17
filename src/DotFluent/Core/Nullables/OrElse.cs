@@ -33,7 +33,9 @@ public static partial class NullableExtensions
     {
         otherFactory.ThrowIfNull();
 
-        return source.IsSome() ? source : otherFactory();
+        return source.IsSome()
+            ? source
+            : otherFactory();
     }
 
     #endregion
