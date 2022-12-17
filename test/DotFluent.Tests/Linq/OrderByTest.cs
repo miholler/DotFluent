@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,17 @@ namespace DotFluent.Linq
             IEnumerable<int> source = null;
 
             Assert.Throws<ArgumentNullException>(() => source.OrderBy(x => x, (x, y) => 0));
+        }
+
+        [Test]
+        public void KeySelectorNullThrowsException()
+        {
+            var source = Enumerable.Empty<int>();
+            Func<int, int> keySelector = null;
+
+            source
+                .Invoking(x => x.OrderBy(keySelector, (x, y) => 0))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]

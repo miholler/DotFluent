@@ -31,6 +31,26 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void KeySelectorNullThrowsException()
+        {
+            var source = Enumerable.Empty<int>();
+            Func<int, int> keySelector = null;
+
+            source
+                .Invoking(x => x.DistinctBy(keySelector))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.DistinctBy(keySelector, (l, r) => l == r))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.DistinctBy(keySelector, (l, r) => l == r, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.DistinctBy(keySelector, EqualityComparer<int>.Default))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
         public void ComparerNullThrowsException()
         {
             var source = Enumerable.Empty<int>();

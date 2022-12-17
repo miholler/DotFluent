@@ -52,6 +52,27 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void KeySelectorNullThrowsException()
+        {
+            var first = Enumerable.Empty<int>();
+            var second = Enumerable.Empty<int>();
+            Func<int, int> keySelector = null;
+
+            first
+                .Invoking(x => x.IntersectBy(second, keySelector))
+                .ShouldThrow<ArgumentNullException>();
+            first
+                .Invoking(x => x.IntersectBy(second, keySelector, (l, r) => l == r))
+                .ShouldThrow<ArgumentNullException>();
+            first
+                .Invoking(x => x.IntersectBy(second, keySelector, (l, r) => l == r, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
+            first
+                .Invoking(x => x.IntersectBy(second, keySelector, EqualityComparer<int>.Default))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
         public void ComparerNullThrowsException()
         {
             var first = Enumerable.Empty<int>();
