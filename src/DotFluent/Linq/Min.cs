@@ -6,7 +6,7 @@ public static partial class Sequence
 
     /// <summary>
     /// Returns the minimum value in a generic sequence
-    /// using a specified function to compare values.
+    /// by using a specified function to compare values.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence of values to determine the minimum value of.</param>
@@ -19,7 +19,7 @@ public static partial class Sequence
 
     /// <summary>
     /// Returns the minimum value in a generic sequence
-    /// using a specified comparer.
+    /// by using a specified comparer.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence of values to determine the minimum value of.</param>

@@ -112,7 +112,7 @@ namespace DotFluent.Linq
         [TestCase(new[] { 1, 3, 2 }, 3, 0)]
         [TestCase(new[] { 1, 3, 2 }, 3, 1)]
         [TestCase(new[] { 1, 3, 2 }, 3, 2)]
-        public void ValueTypeMax(IEnumerable<int> source, int expectedResult, int overload)
+        public void ValueTypeMaxBy(IEnumerable<int> source, int expectedResult, int overload)
         {
             var result = overload switch
             {
