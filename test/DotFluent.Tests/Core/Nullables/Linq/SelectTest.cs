@@ -15,14 +15,21 @@ namespace DotFluent.Linq
             var source = new int?();
             Func<int, int> selector = null;
 
-            source.Invoking(x => x.Select(selector)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.Select(selector))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         [TestCase(null, null)]
-        [TestCase(1, 2)]
+        [TestCase(1, 1)]
         public void Select(int? source, int? expectedResult)
-            => source.Select(x => ++x).ShouldBe(expectedResult);
+        {
+            var result = from x in source
+                         select x;
+
+            result.ShouldBe(expectedResult);
+        }
 
         #endregion
     }

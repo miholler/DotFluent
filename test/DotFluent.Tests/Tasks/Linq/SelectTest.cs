@@ -16,14 +16,14 @@ namespace DotFluent.Tasks.Linq
             Task<int> source = null;
 
             await source
-                .Awaiting(x => x.Select(y => y++))
+                .Awaiting(x => x.Select(y => y))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [Test]
         public async Task SelectorNullThrowsException()
         {
-            var source = Task.FromResult(1);
+            var source = Task.FromResult(0);
             Func<int, int> selector = null;
 
             await source
@@ -34,9 +34,10 @@ namespace DotFluent.Tasks.Linq
         [Test]
         public async Task Select()
         {
-            var result = await Task.FromResult(1).Select(x => ++x);
+            var task = from x in Task.FromResult(1)
+                       select x;
 
-            result.ShouldBe(2);
+            (await task).ShouldBe(1);
         }
 
         #endregion

@@ -16,7 +16,12 @@ namespace DotFluent.Optional.Linq
             var option = Option.None<int>();
             Func<int, Option<int>> selector = null;
 
-            option.Invoking(x => x.SelectMany(selector)).ShouldThrow<ArgumentNullException>();
+            option
+                .Invoking(x => x.SelectMany(selector))
+                .ShouldThrow<ArgumentNullException>();
+            option
+                .Invoking(x => x.SelectMany(selector, (y, z) => y + z))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
@@ -25,7 +30,9 @@ namespace DotFluent.Optional.Linq
             var option = Option.None<int>();
             Func<int, int, int> resultSelector = null;
 
-            option.Invoking(x => x.SelectMany(y => Option.Some(y), resultSelector)).ShouldThrow<ArgumentNullException>();
+            option
+                .Invoking(x => x.SelectMany(Option.Some, resultSelector))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
@@ -34,19 +41,22 @@ namespace DotFluent.Optional.Linq
         public void SelectMany(int? source, IEnumerable<int> expectedResult)
             => source
                 .ToOption()
-                .SelectMany(x => Option.Some(x))
+                .SelectMany(Option.Some)
                 .ShouldBe(expectedResult);
 
         [Test]
         [TestCase(null, null, new int[0])]
-        [TestCase(null, 0, new int[0])]
+        [TestCase(null, 1, new int[0])]
         [TestCase(1, null, new int[0])]
         [TestCase(1, 1, new[] { 2 })]
         public void SelectManyWithResultSelector(int? source, int? selectorResult, IEnumerable<int> expectedResult)
-            => source
-                .ToOption()
-                .SelectMany(x => selectorResult.ToOption(), (x, y) => x + y)
-                .ShouldBe(expectedResult);
+        {
+            var result = from x in source.ToOption()
+                         from y in selectorResult.ToOption()
+                         select x + y;
+
+            result.ShouldBe(expectedResult);
+        }
 
         #endregion
     }
