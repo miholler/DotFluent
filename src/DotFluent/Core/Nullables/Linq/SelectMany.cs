@@ -39,7 +39,9 @@ public static partial class NullableLinqExtensions
         nullableSelector.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        return source.FlatMap(x => nullableSelector(x).Map(y => resultSelector(x, y)));
+        return source
+            .FlatMap(x => nullableSelector(x)
+                .Map(y => resultSelector(x, y)));
     }
 
     #endregion

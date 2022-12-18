@@ -12,9 +12,10 @@ public static partial class TaskLinqExtensions
     /// <typeparam name="TResult">The type of the return value of the task returned by selector.</typeparam>
     /// <param name="source">The task whose return value is to be transformed.</param>
     /// <param name="selector">A transform function to apply to the value.</param>
+    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A <see cref="Task{TResult}"/> whose return value is the flattened result of invoking the transform function on the return value of source.</returns>
-    public static Task<TResult> SelectMany<TSource, TResult>(this Task<TSource> source, Func<TSource, Task<TResult>> selector)
-        => source.Then(selector);
+    public static Task<TResult> SelectMany<TSource, TResult>(this Task<TSource> source, Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken = default)
+        => source.Then(selector, cancellationToken);
 
     /// <summary>
     /// Projects the return value of a task object into another task using a specified function,
@@ -26,16 +27,19 @@ public static partial class TaskLinqExtensions
     /// <param name="source">The task whose return value is to be transformed.</param>
     /// <param name="taskSelector">A transform function to apply to the value.</param>
     /// <param name="resultSelector">A transform function to apply to the intermediate value.</param>
+    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>
     /// A <see cref="Task{TNewResult}"/> whose return value is the result of invoking the transform function on the return value of source 
     /// and then mapping the return value of this <see cref="Task{TResult}"/> and it's corresponding source value to a result value. 
     /// </returns>
-    public static Task<TNewResult> SelectMany<TSource, TResult, TNewResult>(this Task<TSource> source, Func<TSource, Task<TResult>> taskSelector, Func<TSource, TResult, TNewResult> resultSelector)
+    public static Task<TNewResult> SelectMany<TSource, TResult, TNewResult>(this Task<TSource> source, Func<TSource, Task<TResult>> taskSelector, Func<TSource, TResult, TNewResult> resultSelector, CancellationToken cancellationToken = default)
     {
         taskSelector.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        return source.Then(x => taskSelector(x).Then(y => resultSelector(x, y)));
+        return source
+            .Then(x => taskSelector(x)
+                .Then(y => resultSelector(x, y), cancellationToken), cancellationToken);
     }
 
     #endregion
