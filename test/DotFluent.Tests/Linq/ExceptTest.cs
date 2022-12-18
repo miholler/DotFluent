@@ -31,24 +31,24 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void ComparerNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
-            var first = new int[0];
-            var second = new int[0];
-            Func<int, int, bool> comparer = null;
+            var first = Enumerable.Empty<int>();
+            var second = Enumerable.Empty<int>();
+            EqualityComparison<int> comparison = null;
 
-            Assert.Throws<ArgumentNullException>(() => first.Except(second, comparer));
-            Assert.Throws<ArgumentNullException>(() => first.Except(second, comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => first.Except(second, comparison));
+            Assert.Throws<ArgumentNullException>(() => first.Except(second, comparison, x => x.GetHashCode()));
         }
 
         [Test]
-        public void HashCodeProviderNullThrowsException()
+        public void HashCodeSelectorNullThrowsException()
         {
-            var first = new int[0];
-            var second = new int[0];
-            Func<int, int> hashCodeProvider = null;
+            var first = Enumerable.Empty<int>();
+            var second = Enumerable.Empty<int>();
+            Func<int, int> hashCodeSelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => first.Except(second, (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => first.Except(second, (x, y) => x == y, hashCodeSelector));
         }
 
         [Test]

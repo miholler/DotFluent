@@ -375,7 +375,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
         if (other is Option<T> option)
         {
             comparer ??= StructuralComparisons.StructuralEqualityComparer;
-            return Equals(option, GenericEqualityComparer<T>.Create((x, y) => comparer.Equals(x, y)));
+            return Equals(option, ComparisonEqualityComparer<T>.Create((x, y) => comparer.Equals(x, y)));
         }
         return false;
     }

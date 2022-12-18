@@ -51,27 +51,27 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void ComparerNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
             var source = Enumerable.Empty<int>();
-            Func<int, int, bool> comparer = null;
+            EqualityComparison<int> comparison = null;
 
             source
-                .Invoking(x => x.DistinctBy(y => y, comparer))
+                .Invoking(x => x.DistinctBy(y => y, comparison))
                 .ShouldThrow<ArgumentNullException>();
             source
-                .Invoking(x => x.DistinctBy(y => y, comparer, y => y.GetHashCode()))
+                .Invoking(x => x.DistinctBy(y => y, comparison, y => y.GetHashCode()))
                 .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
-        public void HashCodeProviderNullThrowsException()
+        public void HashCodeSelectorNullThrowsException()
         {
             var source = Enumerable.Empty<int>();
-            Func<int, int> hashCodeProvider = null;
+            Func<int, int> hashCodeSelector = null;
 
             source
-                .Invoking(x => x.DistinctBy(y => y, (l, r) => l == r, hashCodeProvider))
+                .Invoking(x => x.DistinctBy(y => y, (l, r) => l == r, hashCodeSelector))
                 .ShouldThrow<ArgumentNullException>();
         }
 

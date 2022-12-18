@@ -27,13 +27,13 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence in which to locate a value.</param>
     /// <param name="value">The value to locate in the sequence.</param>
-    /// <param name="comparer">A function to compare values.</param>
+    /// <param name="comparison">A function to compare values.</param>
     /// <returns>
     /// The zero-based index of the specified element if the source sequence contains 
     /// an element that has the specified value; otherwise, minus 1.
     /// </returns>
-    public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, Func<TSource, TSource, bool> comparer)
-        => source.IndexOf(value, GenericEqualityComparer<TSource>.Create(comparer));
+    public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, EqualityComparison<TSource> comparison)
+        => source.IndexOf(value, ComparisonEqualityComparer<TSource>.Create(comparison));
 
     /// <summary>
     /// Returns the zero-based index of a specified element in a sequence by
