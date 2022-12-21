@@ -92,7 +92,7 @@ public static partial class TaskExtensions
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
             {
-                var exception = x.Exception.InnerExceptions.OfType<TException>().FirstOrDefault();
+                var exception = x.Exception!.InnerExceptions.OfType<TException>().FirstOrDefault();
                 if (exception.IsNotNull())
                 {
                     try
@@ -249,7 +249,7 @@ public static partial class TaskExtensions
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
             {
-                var exception = x.Exception.InnerExceptions.OfType<TException>().FirstOrDefault();
+                var exception = x.Exception!.InnerExceptions.OfType<TException>().FirstOrDefault();
                 if (exception.IsNotNull())
                 {
                     try
@@ -307,7 +307,7 @@ public static partial class TaskExtensions
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
             {
-                var exception = x.Exception.InnerExceptions.OfType<TException>().FirstOrDefault();
+                var exception = x.Exception!.InnerExceptions.OfType<TException>().FirstOrDefault();
                 if (exception.IsNotNull())
                 {
                     try

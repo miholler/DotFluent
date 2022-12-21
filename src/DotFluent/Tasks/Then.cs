@@ -36,7 +36,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -83,7 +83,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -131,7 +131,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -179,7 +179,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -227,7 +227,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -276,7 +276,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -326,7 +326,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
@@ -376,7 +376,7 @@ public static partial class TaskExtensions
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
                 tcs.TrySetCanceled();
             else if (x.IsFaulted)
-                tcs.TrySetException(x.Exception.InnerExceptions);
+                tcs.TrySetException(x.Exception!.InnerExceptions);
             else
             {
                 try
