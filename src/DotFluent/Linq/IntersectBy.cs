@@ -15,10 +15,10 @@ public static partial class Sequence
     /// <param name="first">The sequence whose distinct elements that also appear in the second sequence will be returned.</param>
     /// <param name="second">The sequence whose distinct elements that also appear in the first sequence will be returned.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
-    /// <param name="comparer">A function to compare keys.</param>
+    /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
-    public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, Func<TKey, TKey, bool> comparer)
-        => first.IntersectBy(second, keySelector, GenericEqualityComparer<TKey>.Create(comparer));
+    public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison)
+        => first.IntersectBy(second, keySelector, ComparisonEqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Produces the set intersection of two sequences according to a specified key selector function
@@ -29,11 +29,11 @@ public static partial class Sequence
     /// <param name="first">The sequence whose distinct elements that also appear in the second sequence will be returned.</param>
     /// <param name="second">The sequence whose distinct elements that also appear in the first sequence will be returned.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
-    /// <param name="comparer">A function to compare keys.</param>
-    /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
+    /// <param name="comparison">A function to compare keys.</param>
+    /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
-    public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-        => first.IntersectBy(second, keySelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
+    public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
+        => first.IntersectBy(second, keySelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 
@@ -58,7 +58,7 @@ public static partial class Sequence
     /// <param name="first">The sequence whose distinct elements that also appear in the second sequence will be returned.</param>
     /// <param name="second">The sequence whose distinct elements that also appear in the first sequence will be returned.</param>
     /// <param name="keySelector">A function to extract the key for each element.</param>
-    /// <param name="comparer">The equality comparer to compare keys.</param>
+    /// <param name="comparer">The equality comparer to hash and compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
     public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
     {

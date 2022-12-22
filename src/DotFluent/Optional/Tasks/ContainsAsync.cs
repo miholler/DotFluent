@@ -29,7 +29,7 @@ public static partial class OptionTask
             ? Task.FromCanceled<bool>(cancellationToken)
             : valueFactory()
                 .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
-                .Then(x => source.Contains(x), cancellationToken);
+                .Then(source.Contains, cancellationToken);
     }
 
     #endregion

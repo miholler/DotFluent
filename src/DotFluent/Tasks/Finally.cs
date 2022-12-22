@@ -47,7 +47,7 @@ public static partial class TaskExtensions
                 if (exception.IsNotNull())
                     tcs.TrySetException(exception);
                 else if (x.IsFaulted)
-                    tcs.TrySetException(x.Exception.InnerExceptions);
+                    tcs.TrySetException(x.Exception!.InnerExceptions);
                 else if (x.IsCanceled)
                     tcs.TrySetCanceled();
                 else
@@ -100,7 +100,7 @@ public static partial class TaskExtensions
                 if (exception.IsNotNull())
                     tcs.TrySetException(exception);
                 else if (x.IsFaulted)
-                    tcs.TrySetException(x.Exception.InnerExceptions);
+                    tcs.TrySetException(x.Exception!.InnerExceptions);
                 else if (x.IsCanceled)
                     tcs.TrySetCanceled();
                 else

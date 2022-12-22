@@ -16,10 +16,10 @@ namespace DotFluent.Tasks.Linq
             Task<int> source = null;
 
             await source
-                .Awaiting(x => x.SelectMany(y => Task.FromResult(++y)))
+                .Awaiting(x => x.SelectMany(Task.FromResult))
                 .ShouldThrowAsync<ArgumentNullException>();
             await source
-                .Awaiting(x => x.SelectMany(y => Task.FromResult(++y), (y, z) => y + z))
+                .Awaiting(x => x.SelectMany(Task.FromResult, (y, z) => y + z))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
@@ -44,24 +44,28 @@ namespace DotFluent.Tasks.Linq
             Func<int, int, int> resultSelector = null;
 
             await source
-                .Awaiting(x => x.SelectMany(y => Task.FromResult(++y), resultSelector))
+                .Awaiting(x => x.SelectMany(Task.FromResult, resultSelector))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
 
         [Test]
         public async Task SelectMany()
         {
-            var result = await Task.FromResult(1).SelectMany(x => Task.FromResult(++x));
+            var result = await Task
+                .FromResult(1)
+                .SelectMany(Task.FromResult);
 
-            result.ShouldBe(2);
+            result.ShouldBe(1);
         }
 
         [Test]
         public async Task SelectManyWithResultSelector()
         {
-            var result = await Task.FromResult(1).SelectMany(x => Task.FromResult(++x), (x, y) => x + y);
+            var task = from x in Task.FromResult(1)
+                       from y in Task.FromResult(x)
+                       select x + y;
 
-            result.ShouldBe(3);
+            (await task).ShouldBe(2);
         }
 
         #endregion

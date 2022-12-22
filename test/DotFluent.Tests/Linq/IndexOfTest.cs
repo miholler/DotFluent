@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotFluent.Linq
 {
@@ -14,47 +16,53 @@ namespace DotFluent.Linq
         {
             IEnumerable<int> source = null;
 
-            Assert.Throws<ArgumentNullException>(() => source.IndexOf(0));
-            Assert.Throws<ArgumentNullException>(() => source.IndexOf(0, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => source.IndexOf(0, EqualityComparer<int>.Default));
+            source
+                .Invoking(x => x.IndexOf(0))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.IndexOf(0, (x, y) => x == y))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.IndexOf(0, EqualityComparer<int>.Default))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
-        public void ComparerFunctionNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
-            var source = new[] { 1, 2, 3 };
-            Func<int, int, bool> comparer = null;
+            var source = Enumerable.Empty<int>();
+            EqualityComparison<int> comparison = null;
 
-            Assert.Throws<ArgumentNullException>(() => source.IndexOf(0, comparer));
+            source
+                .Invoking(x => x.IndexOf(0, comparison))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
-        [TestCase(new int[0], 0, -1)]
-        [TestCase(new[] { 1, 2, 3 }, 2, 1)]
-        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1)]
-        public void IndexOf(IEnumerable<int> source, int value, int expectedResult)
-            => Assert.AreEqual(source.IndexOf(value), expectedResult);
+        [TestCase(new int[0], 0, -1, 0)]
+        [TestCase(new int[0], 0, -1, 1)]
+        [TestCase(new int[0], 0, -1, 2)]
+        [TestCase(new int[0], 0, -1, 3)]
+        [TestCase(new[] { 1, 2, 3 }, 2, 1, 0)]
+        [TestCase(new[] { 1, 2, 3 }, 2, 1, 1)]
+        [TestCase(new[] { 1, 2, 3 }, 2, 1, 2)]
+        [TestCase(new[] { 1, 2, 3 }, 2, 1, 3)]
+        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 0)]
+        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 1)]
+        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 2)]
+        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 3)]
+        public void IndexOf(IEnumerable<int> source, int value, int expectedResult, int overload)
+        {
+            var result = overload switch
+            {
+                1 => source.IndexOf(value, (x, y) => x == y),
+                2 => source.IndexOf(value, EqualityComparer<int>.Default),
+                3 => source.IndexOf(value, default(IEqualityComparer<int>)),
+                _ => source.IndexOf(value)
+            };
 
-        [Test]
-        [TestCase(new int[0], 0, -1)]
-        [TestCase(new[] { 1, 2, 3 }, 2, 1)]
-        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1)]
-        public void IndexOfWithComparerFunction(IEnumerable<int> source, int value, int expectedResult)
-            => Assert.AreEqual(source.IndexOf(value, (x, y) => x == y), expectedResult);
-
-        [Test]
-        [TestCase(new int[0], 0, -1)]
-        [TestCase(new[] { 1, 2, 3 }, 2, 1)]
-        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1)]
-        public void IndexOfWithComparer(IEnumerable<int> source, int value, int expectedResult)
-            => Assert.AreEqual(source.IndexOf(value, EqualityComparer<int>.Default), expectedResult);
-
-        [Test]
-        [TestCase(new int[0], 0, -1)]
-        [TestCase(new[] { 1, 2, 3 }, 2, 1)]
-        [TestCase(new[] { 1, 2, 3, 2 }, 2, 1)]
-        public void IndexOfWithNullComparer(IEnumerable<int> source, int value, int expectedResult)
-            => Assert.AreEqual(source.IndexOf(value, default(IEqualityComparer<int>)), expectedResult);
+            result.ShouldBe(expectedResult);
+        }
 
         #endregion
     }

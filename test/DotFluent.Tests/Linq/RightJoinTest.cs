@@ -83,27 +83,27 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void ComparerNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
             var inner = Enumerable.Empty<int>();
-            Func<int, int, bool> comparer = null;
+            EqualityComparison<int> comparison = null;
 
-            outer.Invoking(x => x.RightJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, comparer)).ShouldThrow<ArgumentNullException>();
-            outer.Invoking(x => x.RightJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, comparer, x => x.GetHashCode())).ShouldThrow<ArgumentNullException>();
-            outer.Invoking(x => x.RightJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparer)).ShouldThrow<ArgumentNullException>();
-            outer.Invoking(x => x.RightJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparer, x => x.GetHashCode())).ShouldThrow<ArgumentNullException>();
+            outer.Invoking(x => x.RightJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, comparison)).ShouldThrow<ArgumentNullException>();
+            outer.Invoking(x => x.RightJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, comparison, x => x.GetHashCode())).ShouldThrow<ArgumentNullException>();
+            outer.Invoking(x => x.RightJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparison)).ShouldThrow<ArgumentNullException>();
+            outer.Invoking(x => x.RightJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparison, x => x.GetHashCode())).ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
-        public void HashCodeProviderNullThrowsException()
+        public void HashCodeSelectorNullThrowsException()
         {
             var outer = Enumerable.Empty<int>();
             var inner = Enumerable.Empty<int>();
-            Func<int, int> hashCodeProvider = null;
+            Func<int, int> hashCodeSelector = null;
 
-            outer.Invoking(x => x.RightJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeProvider)).ShouldThrow<ArgumentNullException>();
-            outer.Invoking(x => x.RightJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeProvider)).ShouldThrow<ArgumentNullException>();
+            outer.Invoking(x => x.RightJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeSelector)).ShouldThrow<ArgumentNullException>();
+            outer.Invoking(x => x.RightJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeSelector)).ShouldThrow<ArgumentNullException>();
         }
 
         [Test]

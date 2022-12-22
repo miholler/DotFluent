@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotFluent.Linq
 {
@@ -28,13 +29,13 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void ComparerNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
-            var first = new int[0];
-            var second = new int[0];
-            Func<int, int, bool> comparer = null;
+            var first = Enumerable.Empty<int>();
+            var second = Enumerable.Empty<int>();
+            EqualityComparison<int> comparison = null;
 
-            Assert.Throws<ArgumentNullException>(() => first.SequenceEqual(second, comparer));
+            Assert.Throws<ArgumentNullException>(() => first.SequenceEqual(second, comparison));
         }
 
         [Test]

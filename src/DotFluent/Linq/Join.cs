@@ -32,10 +32,10 @@ public static partial class Sequence
     /// <param name="inner">The sequence to join to the first sequence.</param>
     /// <param name="keySelector">A function to extract the join key from each element of the sequences.</param>
     /// <param name="resultSelector">A function to create a result element from two matching elements.</param>
-    /// <param name="comparer">A function to compare keys.</param>
+    /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
-    public static IEnumerable<TResult> Join<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource, TResult> resultSelector, Func<TKey, TKey, bool> comparer)
-        => outer.Join(inner, keySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
+    public static IEnumerable<TResult> Join<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource, TResult> resultSelector, EqualityComparison<TKey> comparison)
+        => outer.Join(inner, keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified 
@@ -48,11 +48,11 @@ public static partial class Sequence
     /// <param name="inner">The sequence to join to the first sequence.</param>
     /// <param name="keySelector">A function to extract the join key from each element of the sequences.</param>
     /// <param name="resultSelector">A function to create a result element from two matching elements.</param>
-    /// <param name="comparer">A function to compare keys.</param>
-    /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
+    /// <param name="comparison">A function to compare keys.</param>
+    /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
-    public static IEnumerable<TResult> Join<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource, TResult> resultSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-        => outer.Join(inner, keySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
+    public static IEnumerable<TResult> Join<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
+        => outer.Join(inner, keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -87,10 +87,10 @@ public static partial class Sequence
     /// <param name="outerKeySelector">A function to extract the join key from each element of the first sequence.</param>
     /// <param name="innerKeySelector">A function to extract the join key from each element of the second sequence.</param>
     /// <param name="resultSelector">A function to create a result element from two matching elements.</param>
-    /// <param name="comparer">A function to compare keys.</param>
+    /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
-    public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, Func<TKey, TKey, bool> comparer)
-        => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
+    public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, EqualityComparison<TKey> comparison)
+        => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -105,11 +105,11 @@ public static partial class Sequence
     /// <param name="outerKeySelector">A function to extract the join key from each element of the first sequence.</param>
     /// <param name="innerKeySelector">A function to extract the join key from each element of the second sequence.</param>
     /// <param name="resultSelector">A function to create a result element from two matching elements.</param>
-    /// <param name="comparer">A function to compare keys.</param>
-    /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
+    /// <param name="comparison">A function to compare keys.</param>
+    /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
-    public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-        => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
+    public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
+        => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
     #endregion
 }

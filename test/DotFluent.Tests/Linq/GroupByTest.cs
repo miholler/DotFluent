@@ -96,29 +96,29 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void ComparerNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
-            Func<int, int, bool> comparer = null;
+            EqualityComparison<int> comparison = null;
 
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparer));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparer, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparer));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparer, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparer));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparer, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparer));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparison));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparison, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparison));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparison, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparison));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparison, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparison));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparison, x => x.GetHashCode()));
         }
 
         [Test]
-        public void HashCodeProviderNullThrowsException()
+        public void HashCodeSelectorNullThrowsException()
         {
-            Func<int, int> hashCodeProvider = null;
+            Func<int, int> hashCodeSelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (x, y) => x == y, hashCodeProvider));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (x, y) => x == y, hashCodeProvider));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, hashCodeProvider));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (x, y) => x == y, hashCodeSelector));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (x, y) => x == y, hashCodeSelector));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, hashCodeSelector));
+            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, hashCodeSelector));
         }
 
         [Test]

@@ -40,7 +40,9 @@ public static partial class OptionLinqExtensions
         optionSelector.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        return source.FlatMap(x => optionSelector(x).Map(y => resultSelector(x, y)));
+        return source
+            .FlatMap(x => optionSelector(x)
+                .Map(y => resultSelector(x, y)));
     }
 
     #endregion

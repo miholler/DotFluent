@@ -19,7 +19,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
     /// the value of the <see cref="Option{TSource}"/>; otherwise, the default value for the <typeparamref name="TSource"/> type.
     /// </returns>
-    public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, CancellationToken cancellationToken = default)
+    public static Task<TSource?> GetValueOrDefaultAsync<TSource>(this Task<Option<TSource>> source, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
 
