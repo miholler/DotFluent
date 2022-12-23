@@ -150,7 +150,7 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void JoinWithComparer()
+        public void JoinWithComparison()
         {
             var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y).ToArray();
             Assert.AreEqual(results.Length, 3);
@@ -181,7 +181,7 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void JoinWithDifferentSourcesAndComparer()
+        public void JoinWithDifferentSourcesAndComparison()
         {
             var results = _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y).ToArray();
             Assert.AreEqual(results.Length, 2);
