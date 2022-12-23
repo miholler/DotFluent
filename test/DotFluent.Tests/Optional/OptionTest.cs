@@ -391,7 +391,7 @@ namespace DotFluent.Optional
                     result = option.GetHashCode(null);
                     break;
                 default:
-                    expectedResult = option.Match(x => x?.GetHashCode() ?? 1, 0);
+                    expectedResult = option.Match(x => x?.GetHashCode() ?? 0, 0);
                     result = option.GetHashCode();
                     break;
             }

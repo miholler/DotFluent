@@ -77,7 +77,9 @@ public static partial class NullableExtensions
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.IsSome() ? some(source.Value) : none();
+        return source.IsSome()
+            ? some(source.Value)
+            : none();
     }
 
     #endregion

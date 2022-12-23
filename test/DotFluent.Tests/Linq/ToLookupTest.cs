@@ -71,23 +71,23 @@ namespace DotFluent.Linq
         }
 
         [Test]
-        public void ComparerNullThrowsException()
+        public void ComparisonNullThrowsException()
         {
-            Func<int, int, bool> comparer = null;
+            EqualityComparison<int> comparison = null;
 
-            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparer));
-            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparer, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparer));
-            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparer, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparison));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, comparison, x => x.GetHashCode()));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparison));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, comparison, x => x.GetHashCode()));
         }
 
         [Test]
-        public void HashCodeProviderNullThrowsException()
+        public void HashCodeSelectorNullThrowsException()
         {
-            Func<int, int> hashCodeProvider = null;
+            Func<int, int> hashCodeSelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, (x, y) => x == y, hashCodeProvider));
-            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, hashCodeProvider));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, (x, y) => x == y, hashCodeSelector));
+            Assert.Throws<ArgumentNullException>(() => _persons.ToLookup(x => x.CountryId, x => x.Name, (x, y) => x == y, hashCodeSelector));
         }
 
         [Test]

@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotFluent.Linq
 {
@@ -14,37 +16,48 @@ namespace DotFluent.Linq
         {
             IEnumerable<int> source = null;
 
-            Assert.Throws<ArgumentNullException>(() => source.ForEach(x => x++));
-            Assert.Throws<ArgumentNullException>(() => source.ForEach((x, i) => x += i));
+            source
+                .Invoking(x => x.ForEach(y => y++))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.ForEach((y, i) => y += i))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         public void ActionNullThrowsException()
         {
-            var source = new[] { 1, 2, 3 };
+            var source = Enumerable.Empty<int>();
             Action<int> action = null;
             Action<int, int> indexAction = null;
 
-            Assert.Throws<ArgumentNullException>(() => source.ForEach(action));
-            Assert.Throws<ArgumentNullException>(() => source.ForEach(indexAction));
+            source
+                .Invoking(x => x.ForEach(action))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.ForEach(indexAction))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
-        public void Iteration()
+        [TestCase(new int[0], 0, 0)]
+        [TestCase(new int[0], 0, 1)]
+        [TestCase(new[] { 1, 2, 3 }, 6, 0)]
+        [TestCase(new[] { 1, 2, 3 }, 9, 1)]
+        public void ForEach(IEnumerable<int> source, int expectedResult, int overload)
         {
             var result = 0;
-            new[] { 1, 2, 3, 4 }.ForEach(x => result += x);
+            switch (overload)
+            {
+                case 1:
+                    source.ForEach((x, i) => result += x + i);
+                    break;
+                default:
+                    source.ForEach(x => result += x);
+                    break;
+            }
 
-            Assert.AreEqual(result, 10);
-        }
-
-        [Test]
-        public void IterationWithIndex()
-        {
-            var result = 0;
-            new[] { 1, 2, 3, 4 }.ForEach((x, i) => result += x + i);
-
-            Assert.AreEqual(result, 16);
+            result.ShouldBe(expectedResult);
         }
 
         #endregion

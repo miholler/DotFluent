@@ -19,10 +19,10 @@ public static partial class Sequence
     /// <param name="outerKeySelector">A function to extract the join key from each element of the first sequence.</param>
     /// <param name="innerKeySelector">A function to extract the join key from each element of the second sequence.</param>
     /// <param name="resultSelector">A function to create a result element from an element from the first sequence and a collection of matching elements from the second sequence.</param>
-    /// <param name="comparer">A function to compare keys.</param>
+    /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that contains elements of type TResult that are obtained by performing a grouped join on two sequences.</returns>
-    public static IEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector, Func<TKey, TKey, bool> comparer)
-        => outer.GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer));
+    public static IEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector, EqualityComparison<TKey> comparison)
+        => outer.GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on key equality and groups the
@@ -37,11 +37,11 @@ public static partial class Sequence
     /// <param name="outerKeySelector">A function to extract the join key from each element of the first sequence.</param>
     /// <param name="innerKeySelector">A function to extract the join key from each element of the second sequence.</param>
     /// <param name="resultSelector">A function to create a result element from an element from the first sequence and a collection of matching elements from the second sequence.</param>
-    /// <param name="comparer">A function to compare keys.</param>
-    /// <param name="hashCodeProvider">A function to resolve a hash code for a key.</param>
+    /// <param name="comparison">A function to compare keys.</param>
+    /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that contains elements of type TResult that are obtained by performing a grouped join on two sequences.</returns>
-    public static IEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector, Func<TKey, TKey, bool> comparer, Func<TKey, int> hashCodeProvider)
-        => outer.GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector, GenericEqualityComparer<TKey>.Create(comparer, hashCodeProvider));
+    public static IEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
+        => outer.GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
     #endregion
 }

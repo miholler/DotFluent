@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,19 @@ namespace DotFluent.Linq
         }
 
         [Test]
+        public void KeySelectorNullThrowsException()
+        {
+            var source = Enumerable.Empty<(int, bool)>();
+            Func<(int, bool), bool> keySelector = null;
+
+            source
+                .Invoking(x => x
+                    .OrderBy(x => x.Item1)
+                    .ThenBy(keySelector, (x, y) => 0))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
         public void ComparisonNullThrowsException()
         {
             Comparison<bool> comparison = null;
@@ -47,9 +61,9 @@ namespace DotFluent.Linq
         {
             var isEqual = _items
                 .OrderBy(x => x.Order)
-                .ThenBy(x => x.IsActive, (x, y) => x == y ? 0 : x == false ? 1 : -1)
+                .ThenBy(x => x.IsActive, Comparer<bool>.Default.Compare)
                 .Select(x => x.IsActive)
-                .SequenceEqual(new[] { true, false, true, false, false });
+                .SequenceEqual(new[] { false, true, false, true, false });
 
             Assert.IsTrue(isEqual);
         }

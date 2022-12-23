@@ -12,10 +12,10 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of the input sequences.</typeparam>
     /// <param name="first">The sequence whose elements that are not also in second will be returned.</param>
     /// <param name="second">The sequence whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.</param>
-    /// <param name="comparer">A function to compare values.</param>
+    /// <param name="comparison">A function to compare values.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
-    public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
-        => first.Except(second, GenericEqualityComparer<TSource>.Create(comparer));
+    public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison)
+        => first.Except(second, ComparisonEqualityComparer<TSource>.Create(comparison));
 
     /// <summary>
     /// Produces the set difference of two sequences by using specified compare functions to compare values.
@@ -23,11 +23,11 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of the input sequences.</typeparam>
     /// <param name="first">The sequence whose elements that are not also in second will be returned.</param>
     /// <param name="second">The sequence whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.</param>
-    /// <param name="comparer">A function to compare values.</param>
-    /// <param name="hashCodeProvider">A function to resolve a hash code for a value.</param>
+    /// <param name="comparison">A function to compare values.</param>
+    /// <param name="hashCodeSelector">A function to resolve a hash code for a value.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
-    public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer, Func<TSource, int> hashCodeProvider)
-        => first.Except(second, GenericEqualityComparer<TSource>.Create(comparer, hashCodeProvider));
+    public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, Func<TSource, int> hashCodeSelector)
+        => first.Except(second, ComparisonEqualityComparer<TSource>.Create(comparison, hashCodeSelector));
 
     #endregion
 }

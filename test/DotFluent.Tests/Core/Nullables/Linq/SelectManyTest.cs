@@ -15,8 +15,12 @@ namespace DotFluent.Linq
             var source = new int?();
             Func<int, int?> selector = null;
 
-            source.Invoking(x => x.SelectMany(selector)).ShouldThrow<ArgumentNullException>();
-            source.Invoking(x => x.SelectMany(selector, (x, y) => x + y)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.SelectMany(selector))
+                .ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.SelectMany(selector, (y, z) => y + z))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
@@ -25,22 +29,32 @@ namespace DotFluent.Linq
             var source = new int?();
             Func<int, int, int> resultSelector = null;
 
-            source.Invoking(x => x.SelectMany(x => x, resultSelector)).ShouldThrow<ArgumentNullException>();
+            source
+                .Invoking(x => x.SelectMany(y => y, resultSelector))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         [TestCase(null, null)]
         [TestCase(1, 1)]
         public void SelectMany(int? source, int? expectedResult)
-            => source.SelectMany(x => new int?(x)).ShouldBe(expectedResult);
+            => source
+                .SelectMany(x => x.ToNullable())
+                .ShouldBe(expectedResult);
 
         [Test]
         [TestCase(null, null, null)]
-        [TestCase(null, 0, null)]
+        [TestCase(null, 1, null)]
         [TestCase(1, null, null)]
         [TestCase(1, 1, 2)]
         public void SelectManyWithResultSelector(int? source, int? selectorResult, int? expectedResult)
-            => source.SelectMany(x => selectorResult, (x, y) => x + y).ShouldBe(expectedResult);
+        {
+            var result = from x in source
+                         from y in selectorResult
+                         select x + y;
+
+            result.ShouldBe(expectedResult);
+        }
 
         #endregion
     }

@@ -1,7 +1,6 @@
 ﻿using DotFluent.Internal;
 using System.Collections;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace DotFluent.Optional;
 
@@ -26,11 +25,10 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
         IsSome = true;
     }
 
-    [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
     private Option(SerializationInfo info, StreamingContext context)
     {
-        IsSome = (bool)info.GetValue(nameof(IsSome), typeof(bool));
-        _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T)) : default!;
+        IsSome = info.GetBoolean(nameof(IsSome));
+        _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T))! : default!;
     }
 
     #endregion
@@ -54,7 +52,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Gets whether the current option is a 'Some' value.
     /// </summary>
     /// <returns>true if the option is a 'Some' value; otherwise, false.</returns>
-    public bool IsSome { get; init; }
+    public bool IsSome { get; }
 
     /// <summary>
     /// Gets whether the current option is a 'None' value. 
@@ -72,7 +70,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="value">The input value.</param>
     /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
     public static Option<T> Some(T value)
-        => new (value);
+        => new(value);
 
     /// <summary>
     /// Performs a specified action if the current option is a 'None' value.
@@ -268,7 +266,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="info">The storage object to populate with data.</param>
     /// <param name="context">The destination for this serialization.</param>
-    [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         info.AddValue(nameof(IsSome), IsSome);
@@ -311,14 +308,26 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="comparer">The comparer to compare the represented values.</param>
     /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
     public int CompareTo(Option<T> other, IComparer<T>? comparer)
-        => IsNone && other.IsNone ? 0 : IsSome && other.IsNone ? 1 : IsNone && other.IsSome ? -1 : (comparer ?? Comparer<T>.Default).Compare(_value, other._value);
+    {
+        if (IsNone && other.IsNone)
+            return 0;
+
+        if (IsSome && other.IsNone)
+            return 1;
+
+        if (IsNone && other.IsSome)
+            return -1;
+
+        comparer ??= Comparer<T>.Default;
+        return comparer.Compare(_value, other._value);
+    }
 
     /// <summary>
     /// Compares the specified object with the current option.
     /// </summary>
     /// <param name="other">The object to compare with the current option.</param>
     /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
-    public int CompareTo(object other)
+    public int CompareTo(object? other)
         => other is Option<T> option ? CompareTo(option) : 1;
 
     /// <summary>
@@ -327,7 +336,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="other">The object to compare with the current option.</param>
     /// <param name="comparer">The comparer to compare the represented values.</param>
     /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
-    public int CompareTo(object other, IComparer? comparer)
+    public int CompareTo(object? other, IComparer? comparer)
     {
         if (other is Option<T> option)
         {
@@ -360,7 +369,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="other">The object to compare with the current option.</param>
     /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
-    public override bool Equals(object other)
+    public override bool Equals(object? other)
         => other is Option<T> option && Equals(option);
 
     /// <summary>
@@ -370,12 +379,12 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="other">The object to compare with the current option.</param>
     /// <param name="comparer">The equality comparer to compare the represented values.</param>
     /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
-    public bool Equals(object other, IEqualityComparer? comparer)
+    public bool Equals(object? other, IEqualityComparer? comparer)
     {
         if (other is Option<T> option)
         {
             comparer ??= StructuralComparisons.StructuralEqualityComparer;
-            return Equals(option, GenericEqualityComparer<T>.Create((x, y) => comparer.Equals(x, y)));
+            return Equals(option, ComparisonEqualityComparer<T>.Create((x, y) => comparer.Equals(x, y)));
         }
         return false;
     }
@@ -385,7 +394,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <returns>A hash code for the current option.</returns>
     public override int GetHashCode()
-        => IsSome ? _value?.GetHashCode() ?? 1 : 0;
+        => IsSome && _value.IsNotNull() ? _value.GetHashCode() : 0;
 
     /// <summary>
     /// Returns a hash code for the current option
@@ -394,7 +403,13 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="comparer">The equality comparer that computes the hash code of the current option.</param>
     /// <returns>A hash code for the current option.</returns>
     public int GetHashCode(IEqualityComparer? comparer)
-        => IsSome ? (comparer ?? StructuralComparisons.StructuralEqualityComparer).GetHashCode(_value) : 0;
+    {
+        if (IsNone || _value.IsNull())
+            return 0;
+
+        comparer ??= StructuralComparisons.StructuralEqualityComparer;
+        return comparer.GetHashCode(_value);
+    }
 
     /// <summary>
     /// Returns a string that represents the current option.
