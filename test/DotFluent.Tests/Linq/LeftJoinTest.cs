@@ -133,7 +133,7 @@ namespace DotFluent.Linq
         [Test]
         [TestCase(0)]
         [TestCase(1)]
-        public void LeftJoinWithComparer(int overload)
+        public void LeftJoinWithComparison(int overload)
         {
             var a = (Id: 1, Name: "A");
             var b = (Id: 2, Name: "B");

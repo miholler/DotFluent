@@ -134,7 +134,7 @@ namespace DotFluent.Linq
         [Test]
         [TestCase(0)]
         [TestCase(1)]
-        public void FullJoinWithComparer(int overload)
+        public void FullJoinWithComparison(int overload)
         {
             var a = (Id: 1, Name: "A");
             var b = (Id: 2, Name: "B");

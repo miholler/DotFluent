@@ -124,8 +124,7 @@ namespace DotFluent.Linq
         [Test]
         public void GroupBy()
         {
-            static bool comparer(string x, string y) => x.IsEqualTo(y);
-            var results = _messages.GroupBy(x => x.Subject, comparer).ToArray();
+            var results = _messages.GroupBy(x => x.Subject, (x, y) => x.IsEqualTo(y)).ToArray();
             var group = results.LastOrDefault();
 
             Assert.AreEqual(results.Length, 3);
@@ -148,8 +147,7 @@ namespace DotFluent.Linq
         [Test]
         public void GroupByWithElementSelector()
         {
-            static bool comparer(string x, string y) => x.IsEqualTo(y);
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, comparer).ToArray();
+            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (x, y) => x.IsEqualTo(y)).ToArray();
             var group = results.LastOrDefault();
 
             Assert.AreEqual(results.Length, 3);
