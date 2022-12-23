@@ -1,22 +1,24 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 
-namespace DotFluent
+namespace DotFluent;
+
+[TestFixture]
+public sealed class StringIsNotNullNorEmptyTest
 {
-    [TestFixture]
-    public sealed class StringIsNotNullNorEmptyTest
-    {
-        #region Methods
+    #region Methods
 
-        [Test]
-        [TestCase(null, false)]
-        [TestCase("", false)]
-        [TestCase(" ", true)]
-        [TestCase("  ", true)]
-        [TestCase("ABC", true)]
-        [TestCase(" ABC ", true)]
-        public void IsNotNullNorEmpty(string source, bool expectedResult)
-            => Assert.AreEqual(source.IsNotNullNorEmpty(), expectedResult);
+    [Test]
+    [TestCase(null, false)]
+    [TestCase("", false)]
+    [TestCase(" ", true)]
+    [TestCase("  ", true)]
+    [TestCase("ABC", true)]
+    [TestCase(" ABC ", true)]
+    public void IsNotNullNorEmpty(string source, bool expectedResult)
+        => source
+            .IsNotNullNorEmpty()
+            .ShouldBe(expectedResult);
 
-        #endregion
-    }
+    #endregion
 }

@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace Shouldly
+namespace Shouldly;
+
+public static partial class ShouldlyExtensions
 {
-    public static partial class ShouldlyExtensions
-    {
-        #region Methods
+    #region Methods
 
-        public static Action Invoking<TSource>(this TSource source, Action<TSource> action)
-            => () => action(source);
+    public static Action Invoking<TSource>(this TSource source, Action<TSource> action)
+        => () => action(source);
 
-        public static Func<object> Invoking<TSource, TResult>(this TSource source, Func<TSource, TResult> selector)
-            => () => selector(source);
+    public static Func<object> Invoking<TSource, TResult>(this TSource source, Func<TSource, TResult> selector)
+        => () => selector(source);
 
-        #endregion
-    }
+    #endregion
 }
