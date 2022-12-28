@@ -1,47 +1,24 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Linq;
+using Shouldly;
+using System.Collections.Generic;
 
-namespace DotFluent.Linq
+namespace DotFluent.Linq;
+
+[TestFixture]
+public sealed class CreateTest
 {
-    [TestFixture]
-    public sealed class CreateTest
-    {
-        #region Methods
+    #region Methods
 
-        [Test]
-        public void CreateEmpty()
-        {
-            var source = Sequence.Create<int>();
+    [Test]
+    [TestCase(null, new string[0])]
+    [TestCase(new string[0], new string[0])]
+    [TestCase(new[] { "A", null, "B" }, new[] { "A", null, "B" })]
+    [TestCase(new[] { "A", "B", "C" }, new[] { "A", "B", "C" })]
 
-            Assert.IsTrue(source.IsNotNull() && source.None());
-        }
+    public void Create(string[] source, IEnumerable<string> expectedResult)
+        => Sequence
+            .Create(source)
+            .ShouldBe(expectedResult);
 
-        [Test]
-        public void CreateWithArrayNull()
-        {
-            object[] elements = null;
-            var source = Sequence.Create(elements);
-
-            Assert.IsTrue(source.IsNotNull() && source.None());
-        }
-
-        [Test]
-        public void CreateWithElementNull()
-        {
-            var source = Sequence.Create(new object(), null, new object()).ToArray();
-
-            Assert.IsTrue(source.IsNotNullNorEmpty() && source.Contains(null));
-        }
-
-        [Test]
-        public void Create()
-        {
-            var source = Sequence.Create(1, 2, 3).ToArray();
-
-            Assert.IsTrue(source.IsNotNullNorEmpty() && source.SequenceEqual(new[] { 1, 2, 3 }));
-        }
-
-        #endregion
-    }
+    #endregion
 }
