@@ -50,25 +50,21 @@ public sealed class DistinctTest
     }
 
     [Test]
-    [TestCase(new int[0], new int[0])]
-    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 })]
-    [TestCase(new[] { 1, 1, 2, 2, 3 }, new[] { 1, 2, 3 })]
-    public void Distinct(IEnumerable<int> source, IEnumerable<int> expectedResult)
-        => source
-            .Distinct((x, y) => x == y)
-            .ShouldBe(expectedResult);
-
-    [Test]
-    [TestCase(new int[0], new int[0])]
-    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 })]
-    [TestCase(new[] { 1, 1, 2, 2, 3 }, new[] { 1, 2, 3 })]
-    public void DistinctWithHashCode(IEnumerable<int> source, IEnumerable<int> expectedResult)
+    [TestCase(new int[0], new int[0], 0)]
+    [TestCase(new int[0], new int[0], 1)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, 0)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, 1)]
+    [TestCase(new[] { 1, 1, 2, 2, 3 }, new[] { 1, 2, 3 }, 0)]
+    [TestCase(new[] { 1, 1, 2, 2, 3 }, new[] { 1, 2, 3 }, 1)]
+    public void Distinct(IEnumerable<int> source, IEnumerable<int> expectedResult, int overload)
     {
-        var hash = GetHashCode();
+        var result = overload switch
+        {
+            1 => source.Distinct((x, y) => x == y, x => x.GetHashCode()),
+            _ => source.Distinct((x, y) => x == y)
+        };
 
-        source
-            .Distinct((x, y) => x == y, x => x.GetHashCode() ^ hash)
-            .ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 
     #endregion

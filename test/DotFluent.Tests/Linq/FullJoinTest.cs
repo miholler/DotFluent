@@ -17,28 +17,28 @@ public sealed class FullJoinTest
     public void OuterOrInnerNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
     {
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, x => x.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -53,10 +53,10 @@ public sealed class FullJoinTest
             .Invoking(x => x.FullJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
             .Invoking(x => x.FullJoin(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
@@ -71,16 +71,16 @@ public sealed class FullJoinTest
         Func<int, int> keySelector = null;
 
         outer
-            .Invoking(x => x.FullJoin(inner, keySelector, x => x, (o, i) => new { Outer = o, Inner = i }))
+            .Invoking(x => x.FullJoin(inner, keySelector, y => y, (o, i) => new { Outer = o, Inner = i }))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, keySelector, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, keySelector, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, keySelector, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, keySelector, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, keySelector, x => x, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
+            .Invoking(x => x.FullJoin(inner, keySelector, y => y, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -92,16 +92,16 @@ public sealed class FullJoinTest
         Func<int, int> keySelector = null;
 
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, keySelector, (o, i) => new { Outer = o, Inner = i }))
+            .Invoking(x => x.FullJoin(inner, y => y, keySelector, (o, i) => new { Outer = o, Inner = i }))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, keySelector, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, y => y, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, keySelector, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, keySelector, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
+            .Invoking(x => x.FullJoin(inner, y => y, keySelector, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -113,28 +113,28 @@ public sealed class FullJoinTest
         Func<int, int, int> resultSelector = null;
 
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, resultSelector))
+            .Invoking(x => x.FullJoin(inner, y => y, resultSelector))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, resultSelector, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, y => y, resultSelector, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, resultSelector, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, resultSelector, EqualityComparer<int>.Default))
+            .Invoking(x => x.FullJoin(inner, y => y, resultSelector, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, resultSelector))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, resultSelector))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, resultSelector, (x, y) => x == y))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, resultSelector, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, resultSelector, (x, y) => x == y, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, resultSelector, EqualityComparer<int>.Default))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, resultSelector, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -146,16 +146,16 @@ public sealed class FullJoinTest
         EqualityComparison<int> comparison = null;
 
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, comparison))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }, comparison))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, comparison, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }, comparison, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparison))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, comparison))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, comparison, x => x.GetHashCode()))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, comparison, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -167,16 +167,22 @@ public sealed class FullJoinTest
         Func<int, int> hashCodeSelector = null;
 
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeSelector))
+            .Invoking(x => x.FullJoin(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, hashCodeSelector))
             .ShouldThrow<ArgumentNullException>();
         outer
-            .Invoking(x => x.FullJoin(inner, x => x, x => x, (o, i) => new { Outer = o, Inner = i }, (x, y) => x == y, hashCodeSelector))
+            .Invoking(x => x.FullJoin(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, hashCodeSelector))
             .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
     [TestCase(0)]
     [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
     public void FullJoin(int overload)
     {
         var a = (Id: 1, Name: "A");
@@ -188,84 +194,14 @@ public sealed class FullJoinTest
 
         var result = overload switch
         {
-            1 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i)),
+            1 => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i), (x, y) => x == y),
+            2 => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode()),
+            3 => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default),
+            4 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i)),
+            5 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y),
+            6 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode()),    
+            7 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default),
             _ => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i))
-        };
-        result.ShouldBe(
-            (a, default),
-            (b, b),
-            (b, b),
-            (c, default),
-            (default, d));
-    }
-
-    [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void FullJoinWithComparison(int overload)
-    {
-        var a = (Id: 1, Name: "A");
-        var b = (Id: 2, Name: "B");
-        var c = (Id: 3, Name: "C");
-        var d = (Id: 4, Name: "D");
-        var outer = Sequence.Create(a, b, c);
-        var inner = Sequence.Create(b, b, d);
-
-        var result = overload switch
-        {
-            1 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y),
-            _ => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i), (x, y) => x == y)
-        };
-        result.ShouldBe(
-            (a, default),
-            (b, b),
-            (b, b),
-            (c, default),
-            (default, d));
-    }
-
-    [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void FullJoinWithHashCode(int overload)
-    {
-        var a = (Id: 1, Name: "A");
-        var b = (Id: 2, Name: "B");
-        var c = (Id: 3, Name: "C");
-        var d = (Id: 4, Name: "D");
-        var outer = Sequence.Create(a, b, c);
-        var inner = Sequence.Create(b, b, d);
-        var hash = GetHashCode();
-
-        var result = overload switch
-        {
-            1 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode() ^ hash),
-            _ => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode() ^ hash)
-        };
-        result.ShouldBe(
-            (a, default),
-            (b, b),
-            (b, b),
-            (c, default),
-            (default, d));
-    }
-
-    [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void FullJoinWithEqualityComparer(int overload)
-    {
-        var a = (Id: 1, Name: "A");
-        var b = (Id: 2, Name: "B");
-        var c = (Id: 3, Name: "C");
-        var d = (Id: 4, Name: "D");
-        var outer = Sequence.Create(a, b, c);
-        var inner = Sequence.Create(b, b, d);
-
-        var result = overload switch
-        {
-            1 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default),
-            _ => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default)
         };
         result.ShouldBe(
             (a, default),

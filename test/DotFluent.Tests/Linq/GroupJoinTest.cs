@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,175 +9,114 @@ namespace DotFluent.Linq
     [TestFixture]
     public sealed class GroupJoinTest
     {
-        #region Fields
-
-        private static readonly List<Artist> _artists = new List<Artist>();
-        private static readonly List<Album> _albums = new List<Album>();
-
-        #endregion
-
         #region Methods
 
-        [OneTimeSetUp]
-        public static void Initialize()
-        {
-            _artists.Add(new Artist()
-            {
-                Id = 1,
-                Name = "Artist One"
-            });
-            _artists.Add(new Artist()
-            {
-                Id = 2,
-                Name = "Artist Two"
-            });
-            _artists.Add(new Artist()
-            {
-                Id = 3,
-                Name = "Artist Three"
-            });
-
-            _albums.Add(new Album()
-            {
-                Id = 1,
-                ArtistId = 1,
-                Name = "Album One"
-            });
-            _albums.Add(new Album()
-            {
-                Id = 2,
-                ArtistId = 2,
-                Name = "Album Two"
-            });
-            _albums.Add(new Album()
-            {
-                Id = 3,
-                ArtistId = 2,
-                Name = "Album Three"
-            });
-        }
-
         [Test]
-        public void OuterNullThrowsException()
+        [TestCase(null, new int[0])]
+        [TestCase(new int[0], null)]
+        public void OuterOrInnerNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
         {
-            IEnumerable<Artist> artists = null;
-
-            Assert.Throws<ArgumentNullException>(() => artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void InnerNullThrowsException()
-        {
-            IEnumerable<Album> albums = null;
-
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z))
+                .ShouldThrow<ArgumentNullException>();
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         public void OuterKeySelectorNullThrowsException()
         {
-            Func<Artist, int> keySelector = null;
+            var outer = Enumerable.Empty<int>();
+            var inner = Enumerable.Empty<int>();
+            Func<int, int> keySelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, keySelector, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, keySelector, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
+            outer
+                .Invoking(x => x.GroupJoin(inner, keySelector, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z))
+                .ShouldThrow<ArgumentNullException>();
+            outer
+                .Invoking(x => x.GroupJoin(inner, keySelector, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         public void InnerKeySelectorNullThrowsException()
         {
-            Func<Album, int> keySelector = null;
+            var outer = Enumerable.Empty<int>();
+            var inner = Enumerable.Empty<int>();
+            Func<int, int> keySelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, keySelector, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, keySelector, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode()));
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, keySelector, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z))
+                .ShouldThrow<ArgumentNullException>();
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, keySelector, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         public void ResultSelectorNullThrowsException()
         {
-            Func<Artist, IEnumerable<Album>, object> resultSelector = null;
+            var outer = Enumerable.Empty<int>();
+            var inner = Enumerable.Empty<int>();
+            Func<int, IEnumerable<int>, IEnumerable<int>> resultSelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, resultSelector, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, resultSelector, (x, y) => x == y, x => x.GetHashCode()));
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, resultSelector, (y, z) => y == z))
+                .ShouldThrow<ArgumentNullException>();
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         public void ComparisonNullThrowsException()
         {
+            var outer = Enumerable.Empty<int>();
+            var inner = Enumerable.Empty<int>();
             EqualityComparison<int> comparison = null;
 
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, comparison));
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, comparison, x => x.GetHashCode()));
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, comparison))
+                .ShouldThrow<ArgumentNullException>();
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, comparison, y => y.GetHashCode()))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
         public void HashCodeSelectorNullThrowsException()
         {
+            var outer = Enumerable.Empty<int>();
+            var inner = Enumerable.Empty<int>();
             Func<int, int> hashCodeSelector = null;
 
-            Assert.Throws<ArgumentNullException>(() => _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, hashCodeSelector));
+            outer
+                .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, hashCodeSelector))
+                .ShouldThrow<ArgumentNullException>();
         }
 
         [Test]
-        public void GroupJoin()
+        [TestCase(0)]
+        [TestCase(1)]
+        public void GroupJoin(int overload)
         {
-            var groups = _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y).ToArray();
-            Assert.AreEqual(groups.Length, 3);
+            var a = (Id: 1, Name: "A");
+            var b = (Id: 2, Name: "B");
+            var c = (Id: 3, Name: "C");
+            var d = (Id: 4, Name: "D");
+            var outer = Sequence.Create(a, b, c);
+            var inner = Sequence.Create(b, b, d);
 
-            var albumCounts = new[] { 1, 2, 0 };
-            for (var i = 0; i < groups.Length; i++)
+            var result = overload switch
             {
-                var group = groups[i];
-                var count = group.Albums.Count();
-                Assert.IsTrue(count == albumCounts[i]);
-                Assert.IsTrue(group.Albums.All(x => x.ArtistId == group.Artist.Id));
-            }
-        }
-
-        [Test]
-        public void GroupJoinWithHashCode()
-        {
-            var hash = GetHashCode();
-            var groups = _artists.GroupJoin(_albums, x => x.Id, x => x.ArtistId, (a, ie) => new { Artist = a, Albums = ie }, (x, y) => x == y, x => x.GetHashCode() ^ hash).ToArray();
-            Assert.AreEqual(groups.Length, 3);
-
-            var albumCounts = new[] { 1, 2, 0 };
-            for (var i = 0; i < groups.Length; i++)
-            {
-                var group = groups[i];
-                var count = group.Albums.Count();
-                Assert.AreEqual(count, albumCounts[i]);
-                Assert.IsTrue(group.Albums.All(x => x.ArtistId == group.Artist.Id));
-            }
-        }
-
-        #endregion
-
-        #region Nested Classes
-
-        private sealed class Artist
-        {
-            #region Properties
-
-            public int Id { get; set; }
-
-            public string Name { get; set; }
-
-            #endregion
-        }
-
-        private sealed class Album
-        {
-            #region Properties
-
-            public int Id { get; set; }
-
-            public int ArtistId { get; set; }
-
-            public string Name { get; set; }
-
-            #endregion
+                1 => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y, x => x.GetHashCode()),
+                _ => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y)
+            };
+            result.ShouldBe(
+                (a, default),
+                (b, 2),
+                (c, default));
         }
 
         #endregion

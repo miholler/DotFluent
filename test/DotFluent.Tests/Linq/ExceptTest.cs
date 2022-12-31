@@ -52,25 +52,21 @@ public sealed class ExceptTest
     }
 
     [Test]
-    [TestCase(new int[0], new int[0], new int[0])]
-    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0])]
-    [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 })]
-    public void Except(IEnumerable<int> first, IEnumerable<int> second, IEnumerable<int> expectedResult)
-        => first
-            .Except(second, (x, y) => x == y)
-            .ShouldBe(expectedResult);
-
-    [Test]
-    [TestCase(new int[0], new int[0], new int[0])]
-    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0])]
-    [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 })]
-    public void ExceptWithHashCode(IEnumerable<int> first, IEnumerable<int> second, IEnumerable<int> expectedResult)
+    [TestCase(new int[0], new int[0], new int[0], 0)]
+    [TestCase(new int[0], new int[0], new int[0], 1)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0], 0)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0], 1)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 }, 0)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 }, 1)]
+    public void Except(IEnumerable<int> first, IEnumerable<int> second, IEnumerable<int> expectedResult, int overload)
     {
-        var hash = GetHashCode();
+        var result = overload switch
+        {
+            1 => first.Except(second, (x, y) => x == y, x => x.GetHashCode()),
+            _ => first.Except(second, (x, y) => x == y)
+        };
 
-        first
-            .Except(second, (x, y) => x == y, x => x.GetHashCode() ^ hash)
-            .ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 
     #endregion
