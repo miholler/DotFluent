@@ -20,10 +20,10 @@ public sealed class DistinctByTest
             .Invoking(x => x.DistinctBy(y => y))
             .ShouldThrow<ArgumentNullException>();
         source
-            .Invoking(x => x.DistinctBy(y => y, (l, r) => l == r))
+            .Invoking(x => x.DistinctBy(y => y, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         source
-            .Invoking(x => x.DistinctBy(y => y, (l, r) => l == r, y => y.GetHashCode()))
+            .Invoking(x => x.DistinctBy(y => y, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         source
             .Invoking(x => x.DistinctBy(y => y, EqualityComparer<int>.Default))
@@ -40,10 +40,10 @@ public sealed class DistinctByTest
             .Invoking(x => x.DistinctBy(keySelector))
             .ShouldThrow<ArgumentNullException>();
         source
-            .Invoking(x => x.DistinctBy(keySelector, (l, r) => l == r))
+            .Invoking(x => x.DistinctBy(keySelector, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         source
-            .Invoking(x => x.DistinctBy(keySelector, (l, r) => l == r, y => y.GetHashCode()))
+            .Invoking(x => x.DistinctBy(keySelector, (y, z) => y == z, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
         source
             .Invoking(x => x.DistinctBy(keySelector, EqualityComparer<int>.Default))
@@ -71,7 +71,7 @@ public sealed class DistinctByTest
         Func<int, int> hashCodeSelector = null;
 
         source
-            .Invoking(x => x.DistinctBy(y => y, (l, r) => l == r, hashCodeSelector))
+            .Invoking(x => x.DistinctBy(y => y, (y, z) => y == z, hashCodeSelector))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -92,10 +92,10 @@ public sealed class DistinctByTest
     {
         var result = overload switch
         {
-            1 => source.DistinctBy(y => y, (l, r) => l == r),
-            2 => source.DistinctBy(y => y, (l, r) => l == r, y => y.GetHashCode()),
-            3 => source.DistinctBy(y => y, EqualityComparer<int>.Default),
-            _ => source.DistinctBy(y => y)
+            1 => source.DistinctBy(x => x, (x, y) => x == y),
+            2 => source.DistinctBy(x => x, (x, y) => x == y, x => x.GetHashCode()),
+            3 => source.DistinctBy(x => x, EqualityComparer<int>.Default),
+            _ => source.DistinctBy(x => x)
         };
 
         result.ShouldBe(expectedResult);
