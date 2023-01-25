@@ -62,17 +62,13 @@ public sealed class FlattenTest
             .ShouldBe(new[] { 1, 2, 3, 4, 5, 6 });
 
     #endregion
+}
 
-    #region Nested Classes
+file sealed record TreeItem(int Id)
+{
+    #region Properties
 
-    private sealed record TreeItem(int Id)
-    {
-        #region Properties
-
-        public IEnumerable<TreeItem> Children { get; set; }
-
-        #endregion
-    }
+    public IEnumerable<TreeItem> Children { get; set; }
 
     #endregion
 }

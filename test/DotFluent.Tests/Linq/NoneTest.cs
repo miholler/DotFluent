@@ -1,44 +1,55 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace DotFluent.Linq
+namespace DotFluent.Linq;
+
+[TestFixture]
+public sealed class NoneTest
 {
-    [TestFixture]
-    public sealed class NoneTest
+    #region Methods
+
+    [Test]
+    public void SourceNullThrowsException()
     {
-        #region Methods
+        IEnumerable<int> source = null;
 
-        [Test]
-        public void SourceNullThrowsException()
-        {
-            IEnumerable<int> source = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.None());
-        }
-
-        [Test]
-        public void PredicateNullThrowsException()
-        {
-            var source = new[] { 1, 2, 3 };
-            Func<int, bool> predicate = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.None(predicate));
-        }
-
-        [Test]
-        [TestCase(new int[0], true)]
-        [TestCase(new[] { 1, 2, 3 }, false)]
-        public void SourceNoPredicate(IEnumerable<int> source, bool expectedResult)
-            => Assert.AreEqual(source.None(), expectedResult);
-
-        [Test]
-        [TestCase(new int[0], true)]
-        [TestCase(new[] { 1, 2, 3 }, false)]
-        [TestCase(new[] { 1, 3, 5 }, true)]
-        public void SourceWithPredicate(IEnumerable<int> source, bool expectedResult)
-            => Assert.AreEqual(source.None(x => x % 2 == 0), expectedResult);
-
-        #endregion
+        source
+            .Invoking(x => x.None())
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.None(y => y == 0))
+            .ShouldThrow<ArgumentNullException>();
     }
+
+    [Test]
+    public void PredicateNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int, bool> predicate = null;
+
+        source
+            .Invoking(x => x.None(predicate))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(new int[0], true, 0)]
+    [TestCase(new int[0], true, 1)]
+    [TestCase(new[] { 1, 2, 3 }, false, 0)]
+    [TestCase(new[] { 1, 2, 3 }, false, 1)]
+    public void None(IEnumerable<int> source, bool expectedResult, int overload)
+    {
+        var result = overload switch
+        {
+            1 => source.None(x => x % 2 == 0),
+            _ => source.None()
+        };
+
+        result.ShouldBe(expectedResult);
+    }
+
+    #endregion
 }

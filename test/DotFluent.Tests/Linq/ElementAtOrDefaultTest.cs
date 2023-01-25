@@ -57,7 +57,7 @@ public sealed class ElementAtOrDefaultTest
     {
         source = collectionType switch
         {
-            0 => source
+            1 => source
                 .ToImmutableHashSet()
                 .AsEnumerable(),
             _ => source

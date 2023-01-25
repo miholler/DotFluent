@@ -12,31 +12,10 @@ public sealed class IntersectByTest
     #region Methods
 
     [Test]
-    public void FirstNullThrowsException()
+    [TestCase(null, new int[0])]
+    [TestCase(new int[0], null)]
+    public void FirstOrSecondNullThrowsException(IEnumerable<int> first, IEnumerable<int> second)
     {
-        IEnumerable<int> first = null;
-        var second = Enumerable.Empty<int>();
-
-        first
-            .Invoking(x => x.IntersectBy(second, y => y))
-            .ShouldThrow<ArgumentNullException>();
-        first
-            .Invoking(x => x.IntersectBy(second, y => y, (y, z) => y == z))
-            .ShouldThrow<ArgumentNullException>();
-        first
-            .Invoking(x => x.IntersectBy(second, y => y, (y, z) => y == z, y => y.GetHashCode()))
-            .ShouldThrow<ArgumentNullException>();
-        first
-            .Invoking(x => x.IntersectBy(second, y => y, EqualityComparer<int>.Default))
-            .ShouldThrow<ArgumentNullException>();
-    }
-
-    [Test]
-    public void SecondNullThrowsException()
-    {
-        var first = Enumerable.Empty<int>();
-        IEnumerable<int> second = null;
-
         first
             .Invoking(x => x.IntersectBy(second, y => y))
             .ShouldThrow<ArgumentNullException>();
