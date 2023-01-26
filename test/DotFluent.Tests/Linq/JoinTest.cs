@@ -1,234 +1,184 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotFluent.Linq
+namespace DotFluent.Linq;
+
+[TestFixture]
+public sealed class JoinTest
 {
-    [TestFixture]
-    public sealed class JoinTest
+    #region Methods
+
+    [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(new int[0], null)]
+    public void OuterOrInnerNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
     {
-        #region Fields
-
-        private static readonly List<Publisher> _publishers = new List<Publisher>();
-        private static readonly List<Author> _authors = new List<Author>();
-
-        #endregion
-
-        #region Methods
-
-        [OneTimeSetUp]
-        public static void Initialize()
-        {
-            _publishers.Add(new Publisher()
-            {
-                Id = 1,
-                Name = "Publisher One"
-            });
-            _publishers.Add(new Publisher()
-            {
-                Id = 2,
-                Name = "Publisher Two"
-            });
-            _publishers.Add(new Publisher()
-            {
-                Id = 3,
-                Name = "Publisher Three"
-            });
-            _authors.Add(new Author()
-            {
-                Id = 1,
-                PublisherId = 1,
-                Name = "Author One"
-            });
-            _authors.Add(new Author()
-            {
-                Id = 2,
-                PublisherId = 2,
-                Name = "Author Two"
-            });
-        }
-
-        [Test]
-        public void OuterNullThrowsException()
-        {
-            IEnumerable<Publisher> publishers = null;
-
-            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }));
-            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
-            Assert.Throws<ArgumentNullException>(() => publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void InnerNullThrowsException()
-        {
-            IEnumerable<Publisher> publishers = null;
-            IEnumerable<Author> authors = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void KeySelectorNullThrowsException()
-        {
-            Func<Publisher, int> keySelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, keySelector, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default));
-        }
-
-        [Test]
-        public void OuterKeySelectorNullThrowsException()
-        {
-            Func<Publisher, int> keySelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, keySelector, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, keySelector, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void InnerKeySelectorNullThrowsException()
-        {
-            Func<Author, int> keySelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, keySelector, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, keySelector, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void ResultSelectorNullThrowsException()
-        {
-            Func<Publisher, Publisher, object> resultSelector = null;
-            Func<Publisher, Author, object> differentResultSelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, resultSelector, EqualityComparer<int>.Default));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, differentResultSelector, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, differentResultSelector, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void ComparisonNullThrowsException()
-        {
-            EqualityComparison<int> comparison = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, comparison));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, comparison, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, comparison));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, comparison, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void HashCodeSelectorNullThrowsException()
-        {
-            Func<int, int> hashCodeSelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, hashCodeSelector));
-            Assert.Throws<ArgumentNullException>(() => _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, hashCodeSelector));
-        }
-
-        [Test]
-        public void Join()
-        {
-            var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }).ToArray();
-            Assert.AreEqual(results.Length, 3);
-
-            foreach (var result in results)
-                Assert.AreEqual(result.Left.Id, result.Right.Id);
-        }
-
-        [Test]
-        public void JoinWithComparison()
-        {
-            var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y).ToArray();
-            Assert.AreEqual(results.Length, 3);
-
-            foreach (var result in results)
-                Assert.AreEqual(result.Left.Id, result.Right.Id);
-        }
-
-        [Test]
-        public void JoinWithHashCode()
-        {
-            var hash = GetHashCode();
-            var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, (x, y) => x == y, x => x.GetHashCode() ^ hash).ToArray();
-            Assert.AreEqual(results.Length, 3);
-
-            foreach (var result in results)
-                Assert.AreEqual(result.Left.Id, result.Right.Id);
-        }
-
-        [Test]
-        public void JoinWithEqualityComparer()
-        {
-            var results = _publishers.Join(_publishers, x => x.Id, (l, r) => new { Left = l, Right = r }, EqualityComparer<int>.Default).ToArray();
-            Assert.AreEqual(results.Length, 3);
-
-            foreach (var result in results)
-                Assert.AreEqual(result.Left.Id, result.Right.Id);
-        }
-
-        [Test]
-        public void JoinWithDifferentSourcesAndComparison()
-        {
-            var results = _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y).ToArray();
-            Assert.AreEqual(results.Length, 2);
-
-            foreach (var result in results)
-                Assert.AreEqual(result.Publisher.Id, result.Author.PublisherId);
-        }
-
-        [Test]
-        public void JoinWithDifferentSourcesAndHashCode()
-        {
-            var hash = GetHashCode();
-            var results = _publishers.Join(_authors, x => x.Id, x => x.PublisherId, (p, a) => new { Publisher = p, Author = a }, (x, y) => x == y, x => x.GetHashCode() ^ hash).ToArray();
-            Assert.AreEqual(results.Length, 2);
-
-            foreach (var result in results)
-                Assert.AreEqual(result.Publisher.Id, result.Author.PublisherId);
-        }
-
-        #endregion
-
-        #region Nested Classes
-
-        private sealed class Publisher
-        {
-            #region Properties
-
-            public int Id { get; set; }
-
-            public string Name { get; set; }
-
-            #endregion
-        }
-
-        private sealed class Author
-        {
-            #region Properties
-
-            public int Id { get; set; }
-
-            public int PublisherId { get; set; }
-
-            public string Name { get; set; }
-
-            #endregion
-        }
-
-        #endregion
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
     }
+
+    [Test]
+    public void KeySelectorNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        Func<int, int> keySelector = null;
+
+        outer
+            .Invoking(x => x.Join(inner, keySelector, (o, i) => new { Outer = o, Inner = i }))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, keySelector, (o, i) => new { Outer = o, Inner = i }, EqualityComparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void OuterKeySelectorNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        Func<int, int> keySelector = null;
+
+        outer
+            .Invoking(x => x.Join(inner, keySelector, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, keySelector, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void InnerKeySelectorNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        Func<int, int> keySelector = null;
+
+        outer
+            .Invoking(x => x.Join(inner, y => y, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, keySelector, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void ResultSelectorNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        Func<int, int, int> resultSelector = null;
+
+        outer
+            .Invoking(x => x.Join(inner, y => y, resultSelector))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, resultSelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, resultSelector, EqualityComparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, resultSelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void ComparisonNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        EqualityComparison<int> comparison = null;
+
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, comparison))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, comparison))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void HashCodeSelectorNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        Func<int, int> hashCodeSelector = null;
+
+        outer
+            .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.Join(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    public void Join(int overload)
+    {
+        var a = (Id: 1, Name: "A");
+        var b = (Id: 2, Name: "B");
+        var c = (Id: 3, Name: "C");
+        var d = (Id: 4, Name: "D");
+        var outer = Sequence.Create(a, b, c);
+        var inner = Sequence.Create(b, b, d);
+
+        var result = overload switch
+        {
+            1 => outer.Join(inner, x => x.Id, (o, i) => (o, i), (x, y) => x == y),
+            2 => outer.Join(inner, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode()),
+            3 => outer.Join(inner, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default),
+            4 => outer.Join(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y),
+            5 => outer.Join(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode()),
+            _ => outer.Join(inner, x => x.Id, (o, i) => (o, i))
+        };
+        result.ShouldBe(
+            (b, b),
+            (b, b));
+    }
+
+    #endregion
 }

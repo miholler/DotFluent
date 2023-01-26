@@ -1,38 +1,44 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 
-namespace DotFluent
+namespace DotFluent;
+
+[TestFixture]
+public sealed class StringDefaultIfEmptyTest
 {
-    [TestFixture]
-    public sealed class StringDefaultIfEmptyTest
+    #region Methods
+
+    [Test]
+    public void DefaultFactoryNullThrowsException()
     {
-        #region Methods
+        var source = string.Empty;
+        Func<string> defaultFactory = null;
 
-        [Test]
-        public void DefaultFactoryNullThrowsException()
-        {
-            var source = string.Empty;
-            Func<string> defaultFactory = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.DefaultIfEmpty(defaultFactory));
-        }
-
-        [Test]
-        [TestCase(null, "DEF", "DEF")]
-        [TestCase("", "DEF", "DEF")]
-        [TestCase("   ", "DEF", "DEF")]
-        [TestCase("ABC", "DEF", "ABC")]
-        public void DefaultIfEmpty(string source, string defaultValue, string expectedResult)
-            => Assert.AreEqual(source.DefaultIfEmpty(defaultValue), expectedResult);
-
-        [Test]
-        [TestCase(null, "DEF", "DEF")]
-        [TestCase("", "DEF", "DEF")]
-        [TestCase("   ", "DEF", "DEF")]
-        [TestCase("ABC", "DEF", "ABC")]
-        public void DefaultIfEmptyWithFactory(string source, string defaultValue, string expectedResult)
-            => Assert.AreEqual(source.DefaultIfEmpty(() => defaultValue), expectedResult);
-
-        #endregion
+        source
+            .Invoking(x => x.DefaultIfEmpty(defaultFactory))
+            .ShouldThrow<ArgumentNullException>();
     }
+
+    [Test]
+    [TestCase(null, "DEF", "DEF", 0)]
+    [TestCase(null, "DEF", "DEF", 1)]
+    [TestCase("", "DEF", "DEF", 0)]
+    [TestCase("", "DEF", "DEF", 1)]
+    [TestCase("   ", "DEF", "DEF", 0)]
+    [TestCase("   ", "DEF", "DEF", 1)]
+    [TestCase("ABC", "DEF", "ABC", 0)]
+    [TestCase("ABC", "DEF", "ABC", 1)]
+    public void DefaultIfEmpty(string source, string defaultValue, string expectedResult, int overload)
+    {
+        var result = overload switch
+        {
+            1 => source.DefaultIfEmpty(() => defaultValue),
+            _ => source.DefaultIfEmpty(defaultValue)
+        };
+
+        result.ShouldBe(expectedResult);
+    }
+
+    #endregion
 }

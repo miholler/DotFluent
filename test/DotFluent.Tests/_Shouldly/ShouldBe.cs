@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace Shouldly
+namespace Shouldly;
+
+public static partial class ShouldlyExtensions
 {
-    public static partial class ShouldlyExtensions
-    {
-        #region Methods
+    #region Methods
 
-        public static void ShouldBe<TSource>(this IEnumerable<TSource> source, params TSource[] expected)
-            => source.ShouldBe(expected, false);
+    public static void ShouldBe<TSource>(this IEnumerable<TSource> source, params TSource[] expected)
+        => source.ShouldBe(expected, false);
 
-        #endregion
-    }
+    #endregion
 }

@@ -1,92 +1,135 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
-namespace DotFluent.Linq
+namespace DotFluent.Linq;
+
+[TestFixture]
+public sealed class SingleOrDefaultTest
 {
-    [TestFixture]
-    public sealed class SingleOrDefaultTest
+    #region Methods
+
+    [Test]
+    public void SourceNullThrowsException()
     {
-        #region Methods
+        IEnumerable<int> source = null;
 
-        [Test]
-        public void SourceNullThrowsException()
-        {
-            IEnumerable<int> source = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(0));
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(() => 0));
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(x => x == 0, 0));
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(x => x == 0, () => 0));
-        }
-
-        [Test]
-        public void DefaultFactoryNullThrowsExceotion()
-        {
-            var source = new[] { 1, 2, 3 };
-            Func<int> defaultFactory = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(defaultFactory));
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(x => x == 0, defaultFactory));
-        }
-
-        [Test]
-        public void PredicateNullThrowsException()
-        {
-            var source = new[] { 1, 2, 3 };
-            Func<int, bool> predicate = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(predicate, 0));
-            Assert.Throws<ArgumentNullException>(() => source.SingleOrDefault(predicate, () => 0));
-        }
-
-        [Test]
-        public void MultipleElementsThrowsException()
-        {
-            var source = new[] { 1, 2, 3, 4 };
-            var sourceSet = new HashSet<int>(source);
-
-            Assert.Throws<InvalidOperationException>(() => source.SingleOrDefault(0));
-            Assert.Throws<InvalidOperationException>(() => source.SingleOrDefault(() => 0));
-            Assert.Throws<InvalidOperationException>(() => source.SingleOrDefault(x => x % 2 == 0, 0));
-            Assert.Throws<InvalidOperationException>(() => source.SingleOrDefault(x => x % 2 == 0, () => 0));
-            Assert.Throws<InvalidOperationException>(() => sourceSet.SingleOrDefault(0));
-            Assert.Throws<InvalidOperationException>(() => sourceSet.SingleOrDefault(() => 0));
-        }
-
-        [Test]
-        [TestCase(new int[0], 0)]
-        [TestCase(new[] { 1 }, 1)]
-        public void SingleOrDefault(IEnumerable<int> source, int expectedResult)
-        {
-            Assert.AreEqual(source.SingleOrDefault(0), expectedResult);
-            Assert.AreEqual(new HashSet<int>(source).SingleOrDefault(0), expectedResult);
-        }
-
-        [Test]
-        [TestCase(new int[0], 0)]
-        [TestCase(new[] { 1 }, 1)]
-        public void SingleOrDefaultWithFactory(IEnumerable<int> source, int expectedResult)
-        {
-            Assert.AreEqual(source.SingleOrDefault(() => 0), expectedResult);
-            Assert.AreEqual(new HashSet<int>(source).SingleOrDefault(() => 0), expectedResult);
-        }
-
-        [Test]
-        [TestCase(new int[0], 0)]
-        [TestCase(new[] { 1, 3, 5 }, 0)]
-        [TestCase(new[] { 1, 2, 3 }, 2)]
-        public void SingleOrDefaultWithPredicate(IEnumerable<int> source, int expectedResult)
-            => Assert.AreEqual(source.SingleOrDefault(x => x % 2 == 0, 0), expectedResult);
-
-        [Test]
-        [TestCase(new int[0], 0)]
-        [TestCase(new[] { 1, 3, 5 }, 0)]
-        [TestCase(new[] { 1, 2, 3 }, 2)]
-        public void SingleOrDefaultWithPredicateAndFactory(IEnumerable<int> source, int expectedResult)
-            => Assert.AreEqual(source.SingleOrDefault(x => x % 2 == 0, () => 0), expectedResult);
-
-        #endregion
+        source
+            .Invoking(x => x.SingleOrDefault(0))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.SingleOrDefault(() => 0))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.SingleOrDefault(y => y == 0, 0))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.SingleOrDefault(y => y == 0, () => 0))
+            .ShouldThrow<ArgumentNullException>();
     }
+
+    [Test]
+    public void DefaultFactoryNullThrowsExceotion()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int> defaultFactory = null;
+
+        source
+            .Invoking(x => x.SingleOrDefault(defaultFactory))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.SingleOrDefault(y => y == 0, defaultFactory))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void PredicateNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int, bool> predicate = null;
+
+        source
+            .Invoking(x => x.SingleOrDefault(predicate, 0))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.SingleOrDefault(predicate, () => 0))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(new[] { 1, 2, 3, 4 }, 0)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 1)]
+    public void MultipleElementsThrowsException(IEnumerable<int> source, int collectionType)
+    {
+        source = collectionType switch
+        {
+            1 => source
+                .ToImmutableHashSet()
+                .AsEnumerable(),
+            _ => source
+                .ToImmutableArray()
+                .AsEnumerable()
+        };
+
+        source
+            .Invoking(x => x.SingleOrDefault(0))
+            .ShouldThrow<InvalidOperationException>();
+        source
+            .Invoking(x => x.SingleOrDefault(() => 0))
+            .ShouldThrow<InvalidOperationException>();
+        source
+            .Invoking(x => x.SingleOrDefault(y => y % 2 == 0, 0))
+            .ShouldThrow<InvalidOperationException>();
+        source
+            .Invoking(x => x.SingleOrDefault(x => x % 2 == 0, () => 0))
+            .ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    [TestCase(new int[0], 0, 0, 0)]
+    [TestCase(new int[0], 0, 1, 0)]
+    [TestCase(new int[0], 0, 0, 1)]
+    [TestCase(new int[0], 0, 1, 1)]
+    [TestCase(new int[0], 0, 0, 2)]
+    [TestCase(new int[0], 0, 1, 2)]
+    [TestCase(new int[0], 0, 0, 3)]
+    [TestCase(new int[0], 0, 1, 3)]
+    [TestCase(new[] { 1 }, 1, 0, 0)]
+    [TestCase(new[] { 1 }, 1, 1, 0)]
+    [TestCase(new[] { 1 }, 1, 0, 1)]
+    [TestCase(new[] { 1 }, 1, 1, 1)]
+    [TestCase(new[] { 1, 3, 5 }, 0, 0, 2)]
+    [TestCase(new[] { 1, 3, 5 }, 0, 0, 2)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 0, 2)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 2)]
+    [TestCase(new[] { 1, 3, 5 }, 0, 0, 3)]
+    [TestCase(new[] { 1, 3, 5 }, 0, 0, 3)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 0, 3)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 3)]
+    public void SingleOrDefault(IEnumerable<int> source, int expectedResult, int collectionType, int overload)
+    {
+        source = collectionType switch
+        {
+            1 => source
+                .ToImmutableHashSet()
+                .AsEnumerable(),
+            _ => source
+                .ToImmutableArray()
+                .AsEnumerable()
+        };
+        var result = overload switch
+        {
+            1 => source.SingleOrDefault(() => 0),
+            2 => source.SingleOrDefault(x => x % 2 == 0, 0),
+            3 => source.SingleOrDefault(x => x % 2 == 0, () => 0),
+            _ => source.SingleOrDefault(0)
+        };
+
+        result.ShouldBe(expectedResult);
+    }
+
+    #endregion
 }

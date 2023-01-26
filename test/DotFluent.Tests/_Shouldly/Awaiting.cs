@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Shouldly
+namespace Shouldly;
+
+[ShouldlyMethods]
+public static partial class ShouldlyExtensions
 {
-    [ShouldlyMethods]
-    public static partial class ShouldlyExtensions
-    {
-        #region Methods
+    #region Methods
 
-        public static Func<Task> Awaiting<TSource>(this TSource source, Func<TSource, Task> selector)
-            => () => selector(source);
+    public static Func<Task> Awaiting<TSource>(this TSource source, Func<TSource, Task> selector)
+        => () => selector(source);
 
-        public static Func<Task> Awaiting<TSource, TResult>(this TSource source, Func<TSource, Task<TResult>> selector)
-            => () => selector(source);
+    public static Func<Task> Awaiting<TSource, TResult>(this TSource source, Func<TSource, Task<TResult>> selector)
+        => () => selector(source);
 
-        #endregion
-    }
+    #endregion
 }

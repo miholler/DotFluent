@@ -1,235 +1,202 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotFluent.Linq
+namespace DotFluent.Linq;
+
+[TestFixture]
+public sealed class GroupByTest
 {
-    [TestFixture]
-    public sealed class GroupByTest
+    #region Methods
+
+    [Test]
+    public void SourceNullThrowsException()
     {
-        #region Fields
+        IEnumerable<int> source = null;
 
-        private static readonly List<Message> _messages = new List<Message>();
-
-        #endregion
-
-        #region Methods
-
-        [OneTimeSetUp]
-        public static void Initialize()
-        {
-            _messages.Add(new Message()
-            {
-                Id = 1,
-                Subject = "Message 1",
-                Body = "Hello world!"
-            });
-            _messages.Add(new Message()
-            {
-                Id = 2,
-                Subject = "Message 2",
-                Body = "Hello from world!"
-            });
-            _messages.Add(new Message()
-            {
-                Id = 3,
-                Subject = "Message 3",
-                Body = "Hello"
-            });
-            _messages.Add(new Message()
-            {
-                Id = 4,
-                Subject = "Message 3",
-                Body = "World!"
-            });
-        }
-
-        [Test]
-        public void SourceNullThrowsException()
-        {
-            IEnumerable<Message> source = null;
-
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, x => x.Body, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, x => x.Body, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => source.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void KeySelectorNullThrowsException()
-        {
-            Func<Message, int> keySelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, x => x.Body, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, x => x.Body, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(keySelector, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void ElementSelectorNullThrowsException()
-        {
-            Func<Message, string> elementSelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, elementSelector, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, elementSelector, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, elementSelector, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, elementSelector, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void ResultSelectorNullThrowsException()
-        {
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (Func<int, IEnumerable<Message>, Message>)null, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (Func<int, IEnumerable<Message>, Message>)null, (x, y) => x == y, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (Func<int, IEnumerable<string>, string>)null, (x, y) => x == y));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (Func<int, IEnumerable<string>, string>)null, (x, y) => x == y, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void ComparisonNullThrowsException()
-        {
-            EqualityComparison<int> comparison = null;
-
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparison));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, comparison, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparison));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, comparison, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparison));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), comparison, x => x.GetHashCode()));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparison));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), comparison, x => x.GetHashCode()));
-        }
-
-        [Test]
-        public void HashCodeSelectorNullThrowsException()
-        {
-            Func<int, int> hashCodeSelector = null;
-
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (x, y) => x == y, hashCodeSelector));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (x, y) => x == y, hashCodeSelector));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, hashCodeSelector));
-            Assert.Throws<ArgumentNullException>(() => _messages.GroupBy(x => x.Id, x => x.Body, (k, ie) => ie.FirstOrDefault(), (x, y) => x == y, hashCodeSelector));
-        }
-
-        [Test]
-        public void GroupBy()
-        {
-            var results = _messages.GroupBy(x => x.Subject, (x, y) => x.IsEqualTo(y)).ToArray();
-            var group = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsNotNull(group);
-            Assert.AreEqual(group.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithHashCode()
-        {
-            var hash = GetHashCode();
-            var results = _messages.GroupBy(x => x.Subject, (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
-            var group = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsNotNull(group);
-            Assert.AreEqual(group.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithElementSelector()
-        {
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (x, y) => x.IsEqualTo(y)).ToArray();
-            var group = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsNotNull(group);
-            Assert.AreEqual(group.Aggregate((x, y) => $"{x} {y}"), "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithElementSelectorAndHashCode()
-        {
-            var hash = GetHashCode();
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
-            var group = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsNotNull(group);
-            Assert.AreEqual(group.Aggregate((x, y) => $"{x} {y}"), "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithResultSelector()
-        {
-            var results = _messages.GroupBy(x => x.Subject, (k, ie) => ie.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y)).ToArray();
-            var body = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullNorEmpty());
-            Assert.AreEqual(body, "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithResultSelectorAndHashCode()
-        {
-            var hash = GetHashCode();
-            var results = _messages.GroupBy(x => x.Subject, (k, ie) => ie.Select(x => x.Body).Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
-            var body = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullNorEmpty());
-            Assert.AreEqual(body, "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithElementAndResultSelector()
-        {
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => ie.Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y)).ToArray();
-            var body = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullNorEmpty());
-            Assert.AreEqual(body, "Hello World!");
-        }
-
-        [Test]
-        public void GroupByWithElementAndResultSelectorAndHashCode()
-        {
-            var hash = GetHashCode();
-            var results = _messages.GroupBy(x => x.Subject, x => x.Body, (k, ie) => ie.Aggregate((x, y) => $"{x} {y}"), (x, y) => x.IsEqualTo(y), x => x.GetHashCode() ^ hash).ToArray();
-            var body = results.LastOrDefault();
-
-            Assert.AreEqual(results.Length, 3);
-            Assert.IsTrue(body.IsNotNullNorEmpty());
-            Assert.AreEqual(body, "Hello World!");
-        }
-
-        #endregion
-
-        #region Nested Classes
-
-        private sealed class Message
-        {
-            #region Properties
-
-            public int Id { get; set; }
-
-            public string Subject { get; set; }
-
-            public string Body { get; set; }
-
-            #endregion
-        }
-
-        #endregion
+        source
+            .Invoking(x => x.GroupBy(y => y, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
     }
+
+    [Test]
+    public void KeySelectorNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int, int> keySelector = null;
+
+        source
+            .Invoking(x => x.GroupBy(keySelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, y => y, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, y => y, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(keySelector, y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void ElementSelectorNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int, int> elementSelector = null;
+
+        source
+            .Invoking(x => x.GroupBy(y => y, elementSelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, elementSelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, elementSelector, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, elementSelector, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void ResultSelectorNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int, IEnumerable<int>, int> resultSelector = null;
+
+        source
+            .Invoking(x => x.GroupBy(y => y, resultSelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, resultSelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void ComparisonNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        EqualityComparison<int> comparison = null;
+
+        source
+            .Invoking(x => x.GroupBy(y => y, comparison))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, comparison))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, (k, ie) => ie.FirstOrDefault(), comparison))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, (k, ie) => ie.FirstOrDefault(), comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (k, ie) => ie.FirstOrDefault(), comparison))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (k, ie) => ie.FirstOrDefault(), comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void HashCodeSelectorNullThrowsException()
+    {
+        var source = Enumerable.Empty<int>();
+        Func<int, int> hashCodeSelector = null;
+
+        source
+            .Invoking(x => x.GroupBy(y => y, (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.GroupBy(y => y, y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    public void GroupBy(int overload)
+    {
+        var a = (Id: 1, Name: "A");
+        var b = (Id: 2, Name: "B");
+        var c = (Id: 3, Name: "C");
+        var source = Sequence.Create(a, b, c, a);
+
+        var result = overload switch
+        {
+            1 => source.GroupBy(x => x.Id, (x, y) => x == y, x => x.GetHashCode()),
+            2 => source.GroupBy(x => x.Id, x => x, (x, y) => x == y),
+            3 => source.GroupBy(x => x.Id, x => x, (x, y) => x == y, x => x.GetHashCode()),
+            4 => source.GroupBy(x => x.Id, (k, ie) => ie, (x, y) => x == y),
+            5 => source.GroupBy(x => x.Id, (k, ie) => ie, (x, y) => x == y, x => x.GetHashCode()),
+            6 => source.GroupBy(x => x.Id, x => x, (k, ie) => ie, (x, y) => x == y),
+            7 => source.GroupBy(x => x.Id, x => x, (k, ie) => ie, (x, y) => x == y, x => x.GetHashCode()),
+            _ => source.GroupBy(x => x.Id, (x, y) => x == y)
+        };
+        result
+            .Select(x => x.AsEnumerable())
+            .ShouldBe(Sequence.Create(a, a), Sequence.Create(b), Sequence.Create(c));
+    }
+
+    #endregion
 }
