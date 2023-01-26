@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Michael Holler</Authors>
-    <Version>3.5.0</Version>
+    <Version>3.5.1</Version>
 	<Nullable>enable</Nullable>
 	<LangVersion>latest</LangVersion>
 	<ImplicitUsings>enable</ImplicitUsings>
