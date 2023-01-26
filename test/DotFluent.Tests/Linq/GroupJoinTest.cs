@@ -17,10 +17,43 @@ public sealed class GroupJoinTest
     public void OuterOrInnerNullThrowsException(IEnumerable<int> outer, IEnumerable<int> inner)
     {
         outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, EqualityComparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
+        outer
             .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         outer
             .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+    }
+
+    [Test]
+    public void KeySelectorNullThrowsException()
+    {
+        var outer = Enumerable.Empty<int>();
+        var inner = Enumerable.Empty<int>();
+        Func<int, int> keySelector = null;
+
+        outer
+            .Invoking(x => x.GroupJoin(inner, keySelector, (o, ie) => new { Outer = o, Inners = ie }))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, keySelector, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, keySelector, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, keySelector, (o, ie) => new { Outer = o, Inners = ie }, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -59,8 +92,20 @@ public sealed class GroupJoinTest
     {
         var outer = Enumerable.Empty<int>();
         var inner = Enumerable.Empty<int>();
-        Func<int, IEnumerable<int>, IEnumerable<int>> resultSelector = null;
+        Func<int, IEnumerable<int>, int> resultSelector = null;
 
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, resultSelector))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, resultSelector, (y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, resultSelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, resultSelector, EqualityComparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
         outer
             .Invoking(x => x.GroupJoin(inner, y => y, y => y, resultSelector, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
@@ -77,6 +122,12 @@ public sealed class GroupJoinTest
         EqualityComparison<int> comparison = null;
 
         outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, comparison))
+            .ShouldThrow<ArgumentNullException>();
+        outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        outer
             .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, comparison))
             .ShouldThrow<ArgumentNullException>();
         outer
@@ -92,6 +143,9 @@ public sealed class GroupJoinTest
         Func<int, int> hashCodeSelector = null;
 
         outer
+            .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+        outer
             .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, hashCodeSelector))
             .ShouldThrow<ArgumentNullException>();
     }
@@ -99,6 +153,10 @@ public sealed class GroupJoinTest
     [Test]
     [TestCase(0)]
     [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
     public void GroupJoin(int overload)
     {
         var a = (Id: 1, Name: "A");
@@ -110,8 +168,12 @@ public sealed class GroupJoinTest
 
         var result = overload switch
         {
-            1 => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y, x => x.GetHashCode()),
-            _ => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y)
+            1 => outer.GroupJoin(inner, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y),
+            2 => outer.GroupJoin(inner, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y, x => x.GetHashCode()),
+            3 => outer.GroupJoin(inner, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), EqualityComparer<int>.Default),
+            4 => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y),
+            5 => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y, x => x.GetHashCode()),
+            _ => outer.GroupJoin(inner, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)))
         };
         result.ShouldBe(
             (a, default),
