@@ -30,7 +30,7 @@ internal sealed class NotNullWhenAttribute : Attribute
     /// <summary>
     /// Gets the return value condition.
     /// </summary>
-    public bool ReturnValue { get; private set; }
+    public bool ReturnValue { get; }
 
     #endregion
 }

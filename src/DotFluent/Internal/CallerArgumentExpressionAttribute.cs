@@ -22,7 +22,7 @@ internal sealed class CallerArgumentExpressionAttribute : Attribute
     /// <summary>
     /// Gets the target parameter name of the CallerArgumentExpression.
     /// </summary>
-    public string ParameterName { get; private set; }
+    public string ParameterName { get; }
 
     #endregion
 }
