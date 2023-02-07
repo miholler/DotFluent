@@ -269,51 +269,45 @@ namespace DotFluent.Optional
 
         [Test]
         [TestCase(null, 1, -1, 0)]
-        [TestCase(null, 1, -1, 1)]
+        [TestCase(null, 1, 1, 1)]
+        [TestCase(null, 1, -1, 2)]
+        [TestCase(null, 1, 1, 3)]
+        [TestCase(null, 1, -1, 4)]
         [TestCase(1, null, 1, 0)]
         [TestCase(1, null, 1, 1)]
+        [TestCase(1, null, 1, 2)]
+        [TestCase(1, null, 1, 3)]
+        [TestCase(1, null, 1, 4)]
         [TestCase(null, null, 0, 0)]
-        [TestCase(null, null, 0, 1)]
+        [TestCase(null, null, 1, 1)]
+        [TestCase(null, null, 0, 2)]
+        [TestCase(null, null, 1, 3)]
+        [TestCase(null, null, 0, 4)]
         [TestCase(1, 1, 0, 0)]
-        [TestCase(1, 1, 0, 1)]
+        [TestCase(1, 1, 1, 1)]
+        [TestCase(1, 1, 0, 2)]
+        [TestCase(1, 1, 1, 3)]
+        [TestCase(1, 1, 0, 4)]
         [TestCase(1, 2, -1, 0)]
-        [TestCase(1, 2, -1, 1)]
+        [TestCase(1, 2, 1, 1)]
+        [TestCase(1, 2, -1, 2)]
+        [TestCase(1, 2, 1, 3)]
+        [TestCase(1, 2, -1, 4)]
         [TestCase(2, 1, 1, 0)]
         [TestCase(2, 1, 1, 1)]
+        [TestCase(2, 1, 1, 2)]
+        [TestCase(2, 1, 1, 3)]
+        [TestCase(2, 1, 1, 4)]
         public void CompareTo(int? source, int? value, int expectedResult, int overload)
         {
             var option = source.ToOption();
             var result = overload switch
             {
-                1 => option.CompareTo(value.ToOption(), null),
+                1 => Comparer<object>.Default.Compare(option, value),
+                2 => Comparer<object>.Default.Compare(option, value.ToOption()),
+                3 => StructuralComparisons.StructuralComparer.Compare(option, value),
+                4 => StructuralComparisons.StructuralComparer.Compare(option, value.ToOption()),
                 _ => option.CompareTo(value.ToOption())
-            };
-
-            result.ShouldBe(expectedResult);
-        }
-
-        [Test]
-        [TestCase(null, 1, true, -1, 0)]
-        [TestCase(null, 1, true, -1, 1)]
-        [TestCase(1, null, true, 1, 0)]
-        [TestCase(1, null, true, 1, 1)]
-        [TestCase(null, null, true, 0, 0)]
-        [TestCase(null, null, true, 0, 1)]
-        [TestCase(1, 1, true, 0, 0)]
-        [TestCase(1, 1, true, 0, 1)]
-        [TestCase(1, 2, true, -1, 0)]
-        [TestCase(1, 2, true, -1, 1)]
-        [TestCase(2, 1, true, 1, 0)]
-        [TestCase(2, 1, true, 1, 1)]
-        [TestCase(1, 1, false, 1, 0)]
-        [TestCase(1, 1, false, 1, 1)]
-        public void CompareToObject(int? source, int? value, bool isOption, int expectedResult, int overload)
-        {
-            var option = source.ToOption();
-            var result = overload switch
-            {
-                1 => option.CompareTo(isOption ? value.ToOption() : value, null),
-                _ => option.CompareTo(isOption ? value.ToOption() : value)
             };
 
             result.ShouldBe(expectedResult);
@@ -322,22 +316,43 @@ namespace DotFluent.Optional
         [Test]
         [TestCase(null, 1, false, 0)]
         [TestCase(null, 1, false, 1)]
+        [TestCase(null, 1, false, 2)]
+        [TestCase(null, 1, false, 3)]
+        [TestCase(null, 1, false, 4)]
         [TestCase(1, null, false, 0)]
         [TestCase(1, null, false, 1)]
+        [TestCase(1, null, false, 2)]
+        [TestCase(1, null, false, 3)]
+        [TestCase(1, null, false, 4)]
         [TestCase(null, null, true, 0)]
-        [TestCase(null, null, true, 1)]
+        [TestCase(null, null, false, 1)]
+        [TestCase(null, null, true, 2)]
+        [TestCase(null, null, false, 3)]
+        [TestCase(null, null, true, 4)]
         [TestCase(1, 1, true, 0)]
-        [TestCase(1, 1, true, 1)]
+        [TestCase(1, 1, false, 1)]
+        [TestCase(1, 1, true, 2)]
+        [TestCase(1, 1, false, 3)]
+        [TestCase(1, 1, true, 4)]
         [TestCase(1, 2, false, 0)]
         [TestCase(1, 2, false, 1)]
+        [TestCase(1, 2, false, 2)]
+        [TestCase(1, 2, false, 3)]
+        [TestCase(1, 2, false, 4)]
         [TestCase(2, 1, false, 0)]
         [TestCase(2, 1, false, 1)]
+        [TestCase(2, 1, false, 2)]
+        [TestCase(2, 1, false, 3)]
+        [TestCase(2, 1, false, 4)]
         public void Equals(int? source, int? value, bool expectedResult, int overload)
         {
             var option = source.ToOption();
             var result = overload switch
             {
-                1 => option.Equals(value.ToOption(), null),
+                1 => EqualityComparer<object>.Default.Equals(option, value),
+                2 => EqualityComparer<object>.Default.Equals(option, value.ToOption()),
+                3 => StructuralComparisons.StructuralEqualityComparer.Equals(option, value),
+                4 => StructuralComparisons.StructuralEqualityComparer.Equals(option, value.ToOption()),
                 _ => option.Equals(value.ToOption())
             };
 
@@ -345,56 +360,19 @@ namespace DotFluent.Optional
         }
 
         [Test]
-        [TestCase(null, 1, true, false, 0)]
-        [TestCase(null, 1, true, false, 1)]
-        [TestCase(1, null, true, false, 0)]
-        [TestCase(1, null, true, false, 1)]
-        [TestCase(null, null, true, true, 0)]
-        [TestCase(null, null, true, true, 1)]
-        [TestCase(1, 1, true, true, 0)]
-        [TestCase(1, 1, true, true, 1)]
-        [TestCase(1, 2, true, false, 0)]
-        [TestCase(1, 2, true, false, 1)]
-        [TestCase(2, 1, true, false, 0)]
-        [TestCase(2, 1, true, false, 1)]
-        [TestCase(1, 1, false, false, 0)]
-        [TestCase(1, 1, false, false, 1)]
-        public void EqualsObject(int? source, int? value, bool isOption, bool expectedResult, int overload)
+        [TestCase(1, 0)]
+        [TestCase(1, 1)]
+        [TestCase(null, 0)]
+        [TestCase(null, 1)]
+        public void GetHashCode(object source, int overload)
         {
             var option = source.ToOption();
             var result = overload switch
             {
-                1 => option.Equals(isOption ? value.ToOption() : value, null),
-                _ => option.Equals(isOption ? value.ToOption() : value)
+                1 => StructuralComparisons.StructuralEqualityComparer.GetHashCode(option),
+                _ => option.GetHashCode()
             };
-
-            result.ShouldBe(expectedResult);
-        }
-
-        [Test]
-        [TestCase(1, true, 0)]
-        [TestCase(1, true, 1)]
-        [TestCase(null, true, 0)]
-        [TestCase(null, true, 1)]
-        [TestCase(null, false, 0)]
-        [TestCase(null, false, 1)]
-        public void GetHashCode(object source, bool isSome, int overload)
-        {
-            var option = isSome ? Option<object>.Some(source) : Option<object>.None;
-            var expectedResult = -1;
-            var result = -2;
-
-            switch (overload)
-            {
-                case 1:
-                    expectedResult = option.Match(x => StructuralComparisons.StructuralEqualityComparer.GetHashCode(x), 0);
-                    result = option.GetHashCode(null);
-                    break;
-                default:
-                    expectedResult = option.Match(x => x?.GetHashCode() ?? 0, 0);
-                    result = option.GetHashCode();
-                    break;
-            }
+            var expectedResult = option.Match(x => x.GetHashCode(), 0);
 
             result.ShouldBe(expectedResult);
         }
