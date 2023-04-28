@@ -1,17 +1,16 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 
-namespace DotFluent.Optional
+namespace DotFluent.Optional;
+
+[TestFixture]
+public sealed class NoneTest
 {
-    [TestFixture]
-    public sealed class NoneTest
-    {
-        #region Methods
+    #region Methods
 
-        [Test]
-        public void None()
-            => Option.None<int>().ShouldBe(Option<int>.None);
+    [Test]
+    public void None()
+        => Option.None<int>().ShouldBe(Option<int>.None);
 
-        #endregion
-    }
+    #endregion
 }

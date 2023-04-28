@@ -1,17 +1,16 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 
-namespace DotFluent.Optional
+namespace DotFluent.Optional;
+
+[TestFixture]
+public sealed class SomeTest
 {
-    [TestFixture]
-    public sealed class SomeTest
-    {
-        #region Methods
+    #region Methods
 
-        [Test]
-        public void Some()
-            => Option.Some(1).ShouldBe(Option<int>.Some(1));
+    [Test]
+    public void Some()
+        => Option.Some(1).ShouldBe(Option<int>.Some(1));
 
-        #endregion
-    }
+    #endregion
 }

@@ -2,21 +2,20 @@
 using Shouldly;
 using System.Collections.Generic;
 
-namespace DotFluent.Optional
+namespace DotFluent.Optional;
+
+[TestFixture]
+public sealed class FlattenTest
 {
-    [TestFixture]
-    public sealed class FlattenTest
-    {
-        #region Methods
+    #region Methods
 
-        [Test]
-        [TestCase(null, new int[0])]
-        [TestCase(1, new[] { 1 })]
-        public void Flatten(int? source, IEnumerable<int> expectedResult)
-            => Option.Some(source.ToOption())
-                .Flatten()
-                .ShouldBe(expectedResult);
+    [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(1, new[] { 1 })]
+    public void Flatten(int? source, IEnumerable<int> expectedResult)
+        => Option.Some(source.ToOption())
+            .Flatten()
+            .ShouldBe(expectedResult);
 
-        #endregion
-    }
+    #endregion
 }
