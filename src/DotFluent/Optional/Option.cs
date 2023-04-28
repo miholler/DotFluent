@@ -394,7 +394,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <returns>A string that represents the current option.</returns>
     public override string ToString()
-        => IsSome ? $"Some({_value?.ToString() ?? "null"})" : "None";
+        => Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
 
     #endregion
 

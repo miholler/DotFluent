@@ -15,7 +15,7 @@ public static partial class ObjectExtensions
     /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
     /// <returns>The object if not null.</returns>
     [return: NotNull]
-    public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, [CallerArgumentExpression("source")]string? paramName = null)
+    public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, [CallerArgumentExpression(nameof(source))]string? paramName = null)
         => source ?? throw new ArgumentNullException(paramName);
 
     /// <summary>
