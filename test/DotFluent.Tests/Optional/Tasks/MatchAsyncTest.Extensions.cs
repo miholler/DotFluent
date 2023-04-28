@@ -44,6 +44,12 @@ namespace DotFluent.Optional.Tasks
                 .Awaiting(x => x.MatchAsync(_ => 0, () => 0))
                 .ShouldThrowAsync<ArgumentNullException>();
             await optionTask
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => 0))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await optionTask
+                .Awaiting(x => x.MatchAsync(_ => 0, () => Task.FromResult(0)))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await optionTask
                 .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => Task.FromResult(0)))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
@@ -71,6 +77,12 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<ArgumentNullException>();
             await optionTask
                 .Awaiting(x => x.MatchAsync(_ => 0, noneValue))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await optionTask
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), noneValue))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await optionTask
+                .Awaiting(x => x.MatchAsync(_ => 0, taskNoneValue))
                 .ShouldThrowAsync<ArgumentNullException>();
             await optionTask
                 .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), taskNoneValue))
@@ -108,6 +120,12 @@ namespace DotFluent.Optional.Tasks
                 .Awaiting(x => x.MatchAsync(someValue, () => 0))
                 .ShouldThrowAsync<ArgumentNullException>();
             await optionTask
+                .Awaiting(x => x.MatchAsync(taskSomeValue, () => 0))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await optionTask
+                .Awaiting(x => x.MatchAsync(someValue, () => Task.FromResult(0)))
+                .ShouldThrowAsync<ArgumentNullException>();
+            await optionTask
                 .Awaiting(x => x.MatchAsync(taskSomeValue, () => Task.FromResult(0)))
                 .ShouldThrowAsync<ArgumentNullException>();
         }
@@ -133,6 +151,10 @@ namespace DotFluent.Optional.Tasks
         [TestCase(1, 1, 2, 8)]
         [TestCase(null, 1, 1, 9)]
         [TestCase(1, 1, 2, 9)]
+        [TestCase(null, 1, 1, 10)]
+        [TestCase(1, 1, 2, 10)]
+        [TestCase(null, 1, 1, 11)]
+        [TestCase(1, 1, 2, 11)]
         public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
         {
             var result = 0;
@@ -181,6 +203,12 @@ namespace DotFluent.Optional.Tasks
                     result = await optionTask.MatchAsync(x => x + value, () => value);
                     break;
                 case 9:
+                    result = await optionTask.MatchAsync(x => Task.FromResult(x + value), () => value);
+                    break;
+                case 10:
+                    result = await optionTask.MatchAsync(x => x + value, () => Task.FromResult(value));
+                    break;
+                case 11:
                     result = await optionTask.MatchAsync(x => Task.FromResult(x + value), () => Task.FromResult(value));
                     break;
                 default:
@@ -223,6 +251,12 @@ namespace DotFluent.Optional.Tasks
                 .ShouldThrowAsync<TaskCanceledException>();
             await optionTask
                 .Awaiting(x => x.MatchAsync(_ => 0, () => 0, cts.Token))
+                .ShouldThrowAsync<TaskCanceledException>();
+            await optionTask
+                .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => 0, cts.Token))
+                .ShouldThrowAsync<TaskCanceledException>();
+            await optionTask
+                .Awaiting(x => x.MatchAsync(_ => 0, () => Task.FromResult(0), cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
             await optionTask
                 .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => Task.FromResult(0), cts.Token))

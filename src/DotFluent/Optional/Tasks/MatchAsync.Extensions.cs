@@ -189,6 +189,52 @@ public static partial class OptionTaskExtensions
     /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
     /// the result of the invoked function.
     /// </returns>
+    public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<TResult>> some, Func<TResult> none, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        some.ThrowIfNull();
+        none.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether an option
+    /// is a 'Some' or a 'None' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the result value.</typeparam>
+    /// <param name="source">The task returning the option to check for having a value.</param>
+    /// <param name="some">A function to invoke if a value is present.</param>
+    /// <param name="none">A function to invoke if a value is missing.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
+    /// the result of the invoked function.
+    /// </returns>
+    public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, TResult> some, Func<Task<TResult>> none, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        some.ThrowIfNull();
+        none.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether an option
+    /// is a 'Some' or a 'None' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the result value.</typeparam>
+    /// <param name="source">The task returning the option to check for having a value.</param>
+    /// <param name="some">A function to invoke if a value is present.</param>
+    /// <param name="none">A function to invoke if a value is missing.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
+    /// the result of the invoked function.
+    /// </returns>
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<TResult>> some, Func<Task<TResult>> none, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
