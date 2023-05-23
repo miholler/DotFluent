@@ -378,7 +378,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <returns>A hash code for the current option.</returns>
     public override int GetHashCode()
-        => IsSome && _value.IsNotNull() ? _value.GetHashCode() : 0;
+        => Match(x => x?.GetHashCode() ?? 1, 0);
 
     /// <summary>
     /// Returns a hash code for the current option
@@ -387,7 +387,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="comparer">The equality comparer that computes the hash code of the current option.</param>
     /// <returns>A hash code for the current option.</returns>
     int IStructuralEquatable.GetHashCode(IEqualityComparer comparer)
-        => IsSome && _value.IsNotNull() ? comparer.GetHashCode(_value) : 0;
+        => Match(x => x.IsNotNull() ? comparer.GetHashCode(x) : 1, 0);
 
     /// <summary>
     /// Returns a string that represents the current option.
