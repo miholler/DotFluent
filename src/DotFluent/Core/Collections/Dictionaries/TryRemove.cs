@@ -1,4 +1,6 @@
-﻿namespace DotFluent;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DotFluent;
 
 public static partial class DictionaryExtensions
 {
@@ -16,7 +18,7 @@ public static partial class DictionaryExtensions
     /// or the default value of the TValue type if the key does not exist.
     /// </param>
     /// <returns>true if the element was removed successfully; otherwise, false.</returns>
-    public static bool TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, out TValue? value)
+    public static bool TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, [MaybeNullWhen(false)]out TValue value)
     {
         source.ThrowIfNull();
 
