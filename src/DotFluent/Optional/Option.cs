@@ -28,7 +28,9 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     private Option(SerializationInfo info, StreamingContext context)
     {
         IsSome = info.GetBoolean(nameof(IsSome));
-        _value = IsSome ? (T)info.GetValue(nameof(Value), typeof(T))! : default!;
+        _value = IsSome
+            ? (T)info.GetValue(nameof(_value), typeof(T))!
+            : default!;
     }
 
     #endregion
@@ -212,7 +214,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         predicate.ThrowIfNull();
         
-        return IsSome && predicate(_value) ? this : None;
+        return IsSome && !predicate(_value) ? None : this;
     }
 
     /// <summary>
@@ -270,7 +272,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         info.AddValue(nameof(IsSome), IsSome);
         if (IsSome)
-            info.AddValue(nameof(Value), _value);
+            info.AddValue(nameof(_value), _value);
     }
 
     /// <summary>
@@ -415,7 +417,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="right">The second option to compare.</param>
     /// <returns>An <see cref="Option{T}"/> representing the result of the logical AND operation.</returns>
     public static Option<T> operator &(Option<T> left, Option<T> right)
-        => left.Equals(right) ? left : None;
+        => left.Filter(right.Contains);
 
     /// <summary>
     /// Performs a logical OR operation on two specified options.
@@ -424,7 +426,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="right">The second option to compare.</param>
     /// <returns>An <see cref="Option{T}"/> representing the result of the logical OR operation.</returns>
     public static Option<T> operator |(Option<T> left, Option<T> right)
-        => left.IsSome ? left : right;
+        => left.OrElse(right);
 
     /// <summary>
     /// Determines whether a specified option is less than another specified option.
