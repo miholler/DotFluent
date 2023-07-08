@@ -30,7 +30,7 @@ internal sealed class ComparisonEqualityComparer<T> : EqualityComparer<T>
     public override bool Equals(T? x, T? y)
         => _comparison(x!, y!);
 
-    public override int GetHashCode(T obj)
+    public override int GetHashCode([DisallowNull]T obj)
         => _hashCodeSelector(obj);
 
     #endregion

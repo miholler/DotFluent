@@ -3,28 +3,12 @@
 #if NETSTANDARD
 
 /// <summary>
-/// Specifies that when a method returns <see cref="ReturnValue"/>, the parameter may be null
-/// even if the corresponding type disallows it.
+/// Specifies that null is disallowed as an input even if the corresponding type allows it.
 /// </summary>
 [ExcludeFromCodeCoverage]
-[AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
-internal sealed class MaybeNullWhenAttribute : Attribute
-{
-    //Ctor
-    public MaybeNullWhenAttribute(bool returnValue)
-    {
-        ReturnValue = returnValue;
-    }
-
-    #region Properties
-
-    /// <summary>
-    /// Gets the return value condition.
-    /// </summary>
-    public bool ReturnValue { get; }
-
-    #endregion
-}
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
+internal sealed class DisallowNullAttribute : Attribute
+{ }
 
 /// <summary>
 /// Specifies that an output will not be null even if the corresponding type allows it. 
@@ -45,6 +29,30 @@ internal sealed class NotNullWhenAttribute : Attribute
 {
     //Ctor
     public NotNullWhenAttribute(bool returnValue)
+    {
+        ReturnValue = returnValue;
+    }
+
+    #region Properties
+
+    /// <summary>
+    /// Gets the return value condition.
+    /// </summary>
+    public bool ReturnValue { get; }
+
+    #endregion
+}
+
+/// <summary>
+/// Specifies that when a method returns <see cref="ReturnValue"/>, the parameter may be null
+/// even if the corresponding type disallows it.
+/// </summary>
+[ExcludeFromCodeCoverage]
+[AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
+internal sealed class MaybeNullWhenAttribute : Attribute
+{
+    //Ctor
+    public MaybeNullWhenAttribute(bool returnValue)
     {
         ReturnValue = returnValue;
     }
