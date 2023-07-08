@@ -510,7 +510,9 @@ public sealed class OptionTest
     [TestCase(1, true)]
     public void OP_True(int? source, bool expectedResult)
     {
-        var result = source.ToOption() ? true : false;
+        var result = source.ToOption()
+            ? true
+            : false;
         result.ShouldBe(expectedResult);
     }
 
@@ -523,7 +525,9 @@ public sealed class OptionTest
     [TestCase(2, 1, false)]
     public void OP_False(int? left, int? right, bool expectedResult)
     {
-        var result = left.ToOption() && right.ToOption() ? true : false;
+        var result = left.ToOption() && right.ToOption()
+            ? true
+            : false;
         result.ShouldBe(expectedResult);
     }
 

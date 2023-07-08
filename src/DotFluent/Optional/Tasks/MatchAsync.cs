@@ -60,7 +60,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
-    /// the result of the invoked function if a value is present; otherwise the specified alternative value.
+    /// the result of the invoked function if a value is present; otherwise, the specified alternative value.
     /// </returns>
     public static Task<TResult> MatchAsync<TSource, TResult>(this Option<TSource> source, Func<TSource, Task<TResult>> some, TResult none, CancellationToken cancellationToken = default)
         => source.MatchAsync(some, () => Task.FromResult(none), cancellationToken);

@@ -14,7 +14,8 @@ public sealed class GetUnderlyingTypeTest
     {
         Type type = null;
 
-        type.Invoking(x => Option.GetUnderlyingType(x)).ShouldThrow<ArgumentNullException>();
+        type.Invoking(Option.GetUnderlyingType)
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -24,7 +25,9 @@ public sealed class GetUnderlyingTypeTest
     [TestCase(typeof(Option<>), null)]
     [TestCase(typeof(Option<int>), typeof(int))]
     public void GetUnderlyingType(Type source, Type expectedResult)
-        => Option.GetUnderlyingType(source).ShouldBe(expectedResult);
+        => Option
+            .GetUnderlyingType(source)
+            .ShouldBe(expectedResult);
 
     #endregion
 }

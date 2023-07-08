@@ -122,7 +122,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <typeparam name="TResult">The type of the result value.</typeparam>
     /// <param name="some">A function to invoke if a value is present.</param>
     /// <param name="none">The value to return if a value is missing.</param>
-    /// <returns>The result of the invoked function if a value is present; otherwise the specified alternative value.</returns>
+    /// <returns>The result of the invoked function if a value is present; otherwise, the specified alternative value.</returns>
     public TResult Match<TResult>(Func<T, TResult> some, TResult none)
         => Match(some, () => none);
 
@@ -433,7 +433,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is less than the right option; otherwise false.</returns>
+    /// <returns>true if the left option is less than the right option; otherwise, false.</returns>
     public static bool operator <(Option<T> left, Option<T> right)
         => left.CompareTo(right) < 0;
 
@@ -442,7 +442,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is less than or equal to the right option; otherwise false.</returns>
+    /// <returns>true if the left option is less than or equal to the right option; otherwise, false.</returns>
     public static bool operator <=(Option<T> left, Option<T> right)
         => left.CompareTo(right) <= 0;
 
@@ -451,7 +451,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is greater than the right option; otherwise false.</returns>
+    /// <returns>true if the left option is greater than the right option; otherwise, false.</returns>
     public static bool operator >(Option<T> left, Option<T> right)
         => left.CompareTo(right) > 0;
 
@@ -460,7 +460,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is greater than or equal to the right option; otherwise false.</returns>
+    /// <returns>true if the left option is greater than or equal to the right option; otherwise, false.</returns>
     public static bool operator >=(Option<T> left, Option<T> right)
         => left.CompareTo(right) >= 0;
 
@@ -469,7 +469,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the specified options are equal; otherwise false.</returns>
+    /// <returns>true if the specified options are equal; otherwise, false.</returns>
     public static bool operator ==(Option<T> left, Option<T> right)
         => left.Equals(right);
 
@@ -478,7 +478,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the specified options are not equal; otherwise false.</returns>
+    /// <returns>true if the specified options are not equal; otherwise, false.</returns>
     public static bool operator !=(Option<T> left, Option<T> right)
         => !left.Equals(right);
 

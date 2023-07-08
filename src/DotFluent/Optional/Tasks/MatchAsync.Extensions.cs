@@ -120,7 +120,7 @@ public static partial class OptionTaskExtensions
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
-    /// the result of the invoked function if a value is present; otherwise the specified alternative value.
+    /// the result of the invoked function if a value is present; otherwise, the specified alternative value.
     /// </returns>
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, TResult> some, TResult none, CancellationToken cancellationToken = default)
     {
@@ -142,7 +142,7 @@ public static partial class OptionTaskExtensions
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
-    /// the result of the invoked function if a value is present; otherwise the specified alternative value.
+    /// the result of the invoked function if a value is present; otherwise, the specified alternative value.
     /// </returns>
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<TResult>> some, TResult none, CancellationToken cancellationToken = default)
     {
