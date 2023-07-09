@@ -3,14 +3,6 @@
 #if NETSTANDARD
 
 /// <summary>
-/// Specifies that null is disallowed as an input even if the corresponding type allows it.
-/// </summary>
-[ExcludeFromCodeCoverage]
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
-internal sealed class DisallowNullAttribute : Attribute
-{ }
-
-/// <summary>
 /// Specifies that an output will not be null even if the corresponding type allows it. 
 /// Specifies that an input argument was not null when the call returns.
 /// </summary>
