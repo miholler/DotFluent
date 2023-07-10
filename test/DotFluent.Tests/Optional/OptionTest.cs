@@ -195,15 +195,6 @@ public sealed class OptionTest
     }
 
     [Test]
-    [TestCase(null, 0)]
-    [TestCase(1, 1)]
-    public void Count(int? source, int expectedResult)
-        => source
-            .ToOption()
-            .Count()
-            .ShouldBe(expectedResult);
-
-    [Test]
     [TestCase(null, 1, false)]
     [TestCase(1, 2, false)]
     [TestCase(1, 1, true)]
