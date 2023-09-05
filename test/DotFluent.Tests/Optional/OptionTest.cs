@@ -15,11 +15,17 @@ public sealed class OptionTest
 
     [Test]
     public void SomeValueReturnsValue()
-        => Option<int>.Some(1).Value.ShouldBe(1);
+        => Option<int>
+            .Some(1)
+            .Value
+            .ShouldBe(1);
 
     [Test]
     public void NoneValueThrowsException()
-        => Option<int>.None.Invoking(x => x.Value).ShouldThrow<InvalidOperationException>();
+        => Option<int>
+            .None
+            .Invoking(x => x.Value)
+            .ShouldThrow<InvalidOperationException>();
 
     [Test]
     public void IsSome()
@@ -46,9 +52,15 @@ public sealed class OptionTest
         Action none = null;
         Func<int> noneFunc = null;
 
-        option.Invoking(x => x.Match(none)).ShouldThrow<ArgumentNullException>();
-        option.Invoking(x => x.Match(x => { x++; }, none)).ShouldThrow<ArgumentNullException>();
-        option.Invoking(x => x.Match(x => x++, noneFunc)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(none))
+            .ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(x => { x++; }, none))
+            .ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(x => x++, noneFunc))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -58,10 +70,18 @@ public sealed class OptionTest
         Action<int> some = null;
         Func<int, int> someFunc = null;
 
-        option.Invoking(x => x.Match(some)).ShouldThrow<ArgumentNullException>();
-        option.Invoking(x => x.Match(some, () => { })).ShouldThrow<ArgumentNullException>();
-        option.Invoking(x => x.Match(someFunc, 0)).ShouldThrow<ArgumentNullException>();
-        option.Invoking(x => x.Match(someFunc, () => 0)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(some))
+            .ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(some, () => { }))
+            .ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(someFunc, 0))
+            .ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Match(someFunc, () => 0))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -107,7 +127,9 @@ public sealed class OptionTest
         var option = Option<int>.None;
         Func<int, int> mapper = null;
 
-        option.Invoking(x => x.Map(mapper)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Map(mapper))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -125,7 +147,9 @@ public sealed class OptionTest
         var option = Option<int>.None;
         Func<int, Option<int>> mapper = null;
 
-        option.Invoking(x => x.FlatMap(mapper)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.FlatMap(mapper))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -134,7 +158,7 @@ public sealed class OptionTest
     public void FlatMap(int? source, IEnumerable<int> expectedResult)
         => source
             .ToOption()
-            .FlatMap(x => Option<int>.Some(x))
+            .FlatMap(Option<int>.Some)
             .ShouldBe(expectedResult);
 
     [Test]
@@ -143,7 +167,9 @@ public sealed class OptionTest
         var option = Option<int>.None;
         Func<Option<int>> otherFactory = null;
 
-        option.Invoking(x => x.OrElse(otherFactory)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.OrElse(otherFactory))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -173,7 +199,9 @@ public sealed class OptionTest
         var option = Option<int>.None;
         Func<int, bool> predicate = null;
 
-        option.Invoking(x => x.Filter(predicate)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Filter(predicate))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -191,7 +219,9 @@ public sealed class OptionTest
     {
         var option = Option<object>.Some(null);
 
-        option.Secure().ShouldBe(Option<object>.None);
+        option
+            .Secure()
+            .ShouldBe(Option<object>.None);
     }
 
     [Test]
@@ -210,7 +240,9 @@ public sealed class OptionTest
         var option = Option<int>.None;
         Func<int, bool> predicate = null;
 
-        option.Invoking(x => x.Exists(predicate)).ShouldThrow<ArgumentNullException>();
+        option
+            .Invoking(x => x.Exists(predicate))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -375,10 +407,11 @@ public sealed class OptionTest
     public void ToString(object source, bool isSome)
     {
         var option = isSome ? Option<object>.Some(source) : Option<object>.None;
-        var result = option.Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
+        var expectedResult = option.Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
+
         option
             .ToString()
-            .ShouldBe(result);
+            .ShouldBe(expectedResult);
     }
 
     [Test]
@@ -387,8 +420,9 @@ public sealed class OptionTest
     public void OP_Implicit(object source)
     {
         Option<object> option = source;
+
         option
-            .Match(x => x.Equals(source), () => source.IsNull())
+            .Match(x => x.Equals(source), source.IsNull)
             .ShouldBeTrue();
     }
 
@@ -402,6 +436,7 @@ public sealed class OptionTest
     public void OP_BitwiseAnd(int? left, int? right, IEnumerable<int> expectedResult)
     {
         var option = left.ToOption() & right.ToOption();
+
         option.ShouldBe(expectedResult);
     }
 
@@ -415,6 +450,7 @@ public sealed class OptionTest
     public void OP_BitwiseOr(int? left, int? right, IEnumerable<int> expectedResult)
     {
         var option = left.ToOption() | right.ToOption();
+
         option.ShouldBe(expectedResult);
     }
 
@@ -428,6 +464,7 @@ public sealed class OptionTest
     public void OP_LessThan(int? left, int? right, bool expectedResult)
     {
         var result = left.ToOption() < right.ToOption();
+
         result.ShouldBe(expectedResult);
     }
 
@@ -441,6 +478,7 @@ public sealed class OptionTest
     public void OP_LessThanOrEqual(int? left, int? right, bool expectedResult)
     {
         var result = left.ToOption() <= right.ToOption();
+
         result.ShouldBe(expectedResult);
     }
 
@@ -454,6 +492,7 @@ public sealed class OptionTest
     public void OP_GreaterThan(int? left, int? right, bool expectedResult)
     {
         var result = left.ToOption() > right.ToOption();
+
         result.ShouldBe(expectedResult);
     }
 
@@ -467,6 +506,7 @@ public sealed class OptionTest
     public void OP_GreaterThanOrEqual(int? left, int? right, bool expectedResult)
     {
         var result = left.ToOption() >= right.ToOption();
+
         result.ShouldBe(expectedResult);
     }
 
@@ -480,6 +520,7 @@ public sealed class OptionTest
     public void OP_Equality(int? left, int? right, bool expectedResult)
     {
         var result = left.ToOption() == right.ToOption();
+
         result.ShouldBe(expectedResult);
     }
 
@@ -493,6 +534,7 @@ public sealed class OptionTest
     public void OP_Inequality(int? left, int? right, bool expectedResult)
     {
         var result = left.ToOption() != right.ToOption();
+
         result.ShouldBe(expectedResult);
     }
 
@@ -504,6 +546,7 @@ public sealed class OptionTest
         var result = source.ToOption()
             ? true
             : false;
+
         result.ShouldBe(expectedResult);
     }
 
@@ -519,6 +562,7 @@ public sealed class OptionTest
         var result = left.ToOption() && right.ToOption()
             ? true
             : false;
+
         result.ShouldBe(expectedResult);
     }
 
