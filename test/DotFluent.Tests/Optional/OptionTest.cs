@@ -383,19 +383,23 @@ public sealed class OptionTest
     }
 
     [Test]
-    [TestCase(1, 0)]
-    [TestCase(1, 1)]
-    [TestCase(null, 0)]
-    [TestCase(null, 1)]
-    public void GetHashCode(object source, int overload)
+    [TestCase(1, true, 0)]
+    [TestCase(1, true, 1)]
+    [TestCase(null, true, 0)]
+    [TestCase(null, true, 1)]
+    [TestCase(null, false, 0)]
+    [TestCase(null, false, 1)]
+    public void GetHashCode(object source, bool isSome, int overload)
     {
-        var option = source.ToOption();
+        var option = isSome
+            ? Option<object>.Some(source)
+            : Option<object>.None;
         var result = overload switch
         {
             1 => StructuralComparisons.StructuralEqualityComparer.GetHashCode(option),
             _ => option.GetHashCode()
         };
-        var expectedResult = option.Match(x => x.GetHashCode(), 0);
+        var expectedResult = option.Match(x => x?.GetHashCode() ?? 1, 0);
 
         result.ShouldBe(expectedResult);
     }
@@ -406,7 +410,9 @@ public sealed class OptionTest
     [TestCase(null, false)]
     public void ToString(object source, bool isSome)
     {
-        var option = isSome ? Option<object>.Some(source) : Option<object>.None;
+        var option = isSome
+            ? Option<object>.Some(source)
+            : Option<object>.None;
         var expectedResult = option.Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
 
         option

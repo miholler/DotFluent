@@ -10,7 +10,9 @@ public sealed class NoneTest
 
     [Test]
     public void None()
-        => Option.None<int>().ShouldBe(Option<int>.None);
+        => Option
+            .None<int>()
+            .ShouldBe(Option<int>.None);
 
     #endregion
 }

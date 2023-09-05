@@ -14,7 +14,7 @@ public sealed class ResultTest
     [Test]
     public void IsOk()
     {
-        var result = Result<Success>.Ok(new());
+        var result = Result<int>.Ok(1);
 
         result.IsOk.ShouldBeTrue();
         result.IsError.ShouldBeFalse();
@@ -23,7 +23,7 @@ public sealed class ResultTest
     [Test]
     public void IsError()
     {
-        var result = Result<Success>.Error(new());
+        var result = Result<int>.Error(new());
 
         result.IsOk.ShouldBeFalse();
         result.IsError.ShouldBeTrue();
@@ -32,9 +32,9 @@ public sealed class ResultTest
     [Test]
     public void MatchOkNullThrowsException()
     {
-        var result = Result<Success>.Ok(new());
-        Action<Success> ok = null;
-        Func<Success, int> okFunc = null;
+        var result = Result<int>.Ok(0);
+        Action<int> ok = null;
+        Func<int, int> okFunc = null;
 
         result
             .Invoking(x => x.Match(ok, _ => { }))
@@ -47,7 +47,7 @@ public sealed class ResultTest
     [Test]
     public void MatchErrorNullThrowsException()
     {
-        var result = Result<Success>.Error(new());
+        var result = Result<int>.Error(new());
         Action<Exception> error = null;
         Func<Exception, int> errorFunc = null;
 
@@ -83,8 +83,8 @@ public sealed class ResultTest
     [Test]
     public void MapMapperNullThrowsException()
     {
-        var result = Result<Success>.Ok(new());
-        Func<Success, Success> mapper = null;
+        var result = Result<int>.Ok(0);
+        Func<int, int> mapper = null;
 
         result
             .Invoking(x => x.Map(mapper))
@@ -103,7 +103,7 @@ public sealed class ResultTest
     [Test]
     public void MapErrorMapperNullThrowsException()
     {
-        var result = Result<Success>.Error(new());
+        var result = Result<int>.Error(new());
         Func<Exception, Exception> mapper = null;
 
         result
@@ -124,8 +124,8 @@ public sealed class ResultTest
     [Test]
     public void FlatMapMapperNullThrowsException()
     {
-        var result = Result<Success>.Ok(new());
-        Func<Success, Result<Success>> mapper = null;
+        var result = Result<int>.Ok(0);
+        Func<int, Result<int>> mapper = null;
 
         result
             .Invoking(x => x.FlatMap(mapper))
@@ -144,8 +144,8 @@ public sealed class ResultTest
     [Test]
     public void OrElseOtherFactoryNullThrowsException()
     {
-        var result = Result<Success>.Ok(new());
-        Func<Result<Success>> otherFactory = null;
+        var result = Result<int>.Ok(0);
+        Func<Result<int>> otherFactory = null;
 
         result
             .Invoking(x => x.OrElse(otherFactory))
@@ -186,8 +186,8 @@ public sealed class ResultTest
     [Test]
     public void ExistsPredicateNullThrowsException()
     {
-        var result = Result<Success>.Ok(new());
-        Func<Success, bool> predicate = null;
+        var result = Result<int>.Ok(0);
+        Func<int, bool> predicate = null;
 
         result
             .Invoking(x => x.Exists(predicate))
@@ -316,13 +316,15 @@ public sealed class ResultTest
     }
 
     [Test]
-    [TestCase(1, 0)]
-    [TestCase(1, 1)]
-    [TestCase(null, 0)]
-    [TestCase(null, 1)]
-    public void GetHashCode(object source, int overload)
+    [TestCase(1, true, 0)]
+    [TestCase(1, true, 1)]
+    [TestCase(null, true, 0)]
+    [TestCase(null, true, 1)]
+    [TestCase(null, false, 0)]
+    [TestCase(null, false, 1)]
+    public void GetHashCode(object source, bool isOk, int overload)
     {
-        var result = source.IsNotNull()
+        var result = isOk
             ? Result<object>.Ok(source)
             : Result<object>.Error(new());
         var currentResult = overload switch
@@ -330,7 +332,7 @@ public sealed class ResultTest
             1 => StructuralComparisons.StructuralEqualityComparer.GetHashCode(result),
             _ => result.GetHashCode()
         };
-        var expectedResult = result.Match(x => x.GetHashCode(), x => x.GetHashCode());
+        var expectedResult = result.Match(x => x?.GetHashCode() ?? 1, x => x.GetHashCode());
 
         currentResult.ShouldBe(expectedResult);
     }
@@ -366,7 +368,7 @@ public sealed class ResultTest
     [Test]
     public void OP_Implicit_Exception()
     {
-        Result<Success> result = new Exception();
+        Result<int> result = new Exception();
 
         result.IsOk.ShouldBeFalse();
         result.IsError.ShouldBeTrue();
@@ -459,5 +461,3 @@ public sealed class ResultTest
 
     #endregion
 }
-
-file readonly record struct Success;

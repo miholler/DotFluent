@@ -10,7 +10,9 @@ public sealed class SomeTest
 
     [Test]
     public void Some()
-        => Option.Some(1).ShouldBe(Option<int>.Some(1));
+        => Option
+            .Some(1)
+            .ShouldBe(Option<int>.Some(1));
 
     #endregion
 }
