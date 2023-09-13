@@ -47,3 +47,51 @@ public static partial class OptionLinqExtensions
 
     #endregion
 }
+
+public static partial class ResultLinqExtensions
+{
+    #region Methods
+
+    /// <summary>
+    /// Projects the success value of a result into another result using a specified function
+    /// and flattens the result, or returns an 'Error' result based on whether the instance
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the success value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the success value of the result returned by selector.</typeparam>
+    /// <param name="source">The result whose success value is to be transformed.</param>
+    /// <param name="selector">A transform function to apply to the value.</param>
+    /// <returns>
+    /// A <see cref="Result{TResult}"/> whose success value is the flattened result of invoking the transform
+    /// function on the success value of source; otherwise, an 'Error' <see cref="Result{TResult}"/>.
+    /// </returns>
+    public static Result<TResult> SelectMany<TSource, TResult>(this Result<TSource> source, Func<TSource, Result<TResult>> selector)
+        => source.FlatMap(selector);
+
+    /// <summary>
+    /// Projects the success value of a result into another result using a specified function,
+    /// flattens the result, and invokes a specified result selector function, or returns
+    /// an 'Error' result based on whether the instance is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the success value of source.</typeparam>
+    /// <typeparam name="TInterim">The type of the success value of the result returned by interimSelector.</typeparam>
+    /// <typeparam name="TResult">The type of the success value of the result returned by resultSelector.</typeparam>
+    /// <param name="source">The result whose success value is to be transformed.</param>
+    /// <param name="interimSelector">A transform function to apply to the value.</param>
+    /// <param name="resultSelector">A transform function to apply to the intermediate value.</param>
+    /// <returns>
+    /// An <see cref="Result{TResult}"/> whose success value is the result of invoking the transform function on the success value of source and then mapping 
+    /// the success value of this <see cref="Result{TInterim}"/> and it's corresponding source value to a result value; otherwise, an 'Error' <see cref="Result{TResult}"/>.
+    /// </returns>
+    public static Result<TResult> SelectMany<TSource, TInterim, TResult>(this Result<TSource> source, Func<TSource, Result<TInterim>> interimSelector, Func<TSource, TInterim, TResult> resultSelector)
+    {
+        interimSelector.ThrowIfNull();
+        resultSelector.ThrowIfNull();
+
+        return source
+            .FlatMap(x => interimSelector(x)
+                .Map(y => resultSelector(x, y)));
+    }
+
+    #endregion
+}

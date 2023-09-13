@@ -52,12 +52,11 @@ public sealed class ResultSelectTest
     }
 
     [Test]
-    [TestCase(null, new int[0])]
     [TestCase(1, new[] { 1 })]
+    [TestCase(null, new int[0])]
     public void Select(int? source, IEnumerable<int> expectedResult)
     {
-        var result = source.Match(Result.Ok, () => Result.Error<int>(new()));
-        var currentResult = from x in result
+        var currentResult = from x in source.Match(Result.Ok, () => Result.Error<int>(new()))
                             select x;
 
         currentResult.ShouldBe(expectedResult);
