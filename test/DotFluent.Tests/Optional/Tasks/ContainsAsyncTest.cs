@@ -25,7 +25,7 @@ public sealed class OptionContainsAsyncTest
     [Test]
     public async Task ValueFactoryReturningNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = await OptionTask.Some(0);
 
         await option
             .Awaiting(x => x.ContainsAsync(() => null))
@@ -93,7 +93,7 @@ public sealed class ResultContainsAsyncTest
     [Test]
     public async Task ValueFactoryReturningNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = await ResultTask.Ok(0);
 
         await result
             .Awaiting(x => x.ContainsAsync(() => null))

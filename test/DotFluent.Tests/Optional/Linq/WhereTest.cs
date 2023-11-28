@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DotFluent.Optional.Linq;
 
 [TestFixture]
-public sealed class WhereTest
+public sealed class OptionWhereTest
 {
     #region Methods
 
