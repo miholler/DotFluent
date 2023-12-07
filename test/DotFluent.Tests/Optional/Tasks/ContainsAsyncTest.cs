@@ -59,7 +59,7 @@ public sealed class OptionContainsAsyncTest
     [Test]
     public async Task ContainsAsyncValueFactoryCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = await OptionTask.Some(0);
         using var cts = new CancellationTokenSource();
 
         await option
@@ -127,7 +127,7 @@ public sealed class ResultContainsAsyncTest
     [Test]
     public async Task ContainsAsyncValueFactoryCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = await ResultTask.Ok(0);
         using var cts = new CancellationTokenSource();
 
         await result
