@@ -4,7 +4,7 @@ using Shouldly;
 namespace DotFluent.Optional;
 
 [TestFixture]
-public sealed class ErrorTest
+public sealed class ResultErrorTest
 {
     #region Methods
 

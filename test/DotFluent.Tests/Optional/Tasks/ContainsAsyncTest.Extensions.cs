@@ -29,7 +29,8 @@ public sealed class OptionContainsAsyncExtensionsTest
     {
         Func<Task<int>> valueFactory = null;
 
-        await OptionTask.None<int>()
+        await OptionTask
+            .None<int>()
             .Awaiting(x => x.ContainsAsync(valueFactory))
             .ShouldThrowAsync<ArgumentNullException>();
     }
@@ -94,7 +95,8 @@ public sealed class ResultContainsAsyncExtensionsTest
     {
         Func<Task<int>> valueFactory = null;
 
-        await ResultTask.Error<int>(new())
+        await ResultTask
+            .Error<int>(new())
             .Awaiting(x => x.ContainsAsync(valueFactory))
             .ShouldThrowAsync<ArgumentNullException>();
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class FlattenAsyncTest
+public sealed class OptionFlattenAsyncTest
 {
     #region Methods
 
@@ -30,6 +30,37 @@ public sealed class FlattenAsyncTest
         cts.Cancel();
 
         await option
+            .Awaiting(x => x.FlattenAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+    }
+
+    #endregion
+}
+
+[TestFixture]
+public sealed class ResultFlattenAsyncTest
+{
+    #region Methods
+
+    [Test]
+    [TestCase(1, new[] { 1 })]
+    [TestCase(null, new int[0])]
+    public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult)
+    {
+        var result = await ResultTask.Ok(await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new())));
+        var currentResult = await result.FlattenAsync();
+
+        currentResult.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    public async Task FlattenAsyncCanceled()
+    {
+        var result = await ResultTask.Error<Result<int>>(new());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await result
             .Awaiting(x => x.FlattenAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
