@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class FilterAsyncTest
+public sealed class OptionFilterAsyncTest
 {
     #region Methods
 

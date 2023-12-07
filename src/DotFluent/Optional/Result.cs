@@ -139,7 +139,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// and flattens the result, or returns an 'Error' result based on whether the current result is an
     /// 'Ok' or an 'Error' value.
     /// </summary>
-    /// <typeparam name="TResult">The type of the value of the result returned by mapper.</typeparam>
+    /// <typeparam name="TResult">The type of the success value of the result returned by mapper.</typeparam>
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <returns>
     /// A <see cref="Result{TResult}"/> whose success value is the flattened result of invoking the transform
