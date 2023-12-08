@@ -52,3 +52,54 @@ public static partial class OptionTaskExtensions
 
     #endregion
 }
+
+public static partial class ResultTaskExtensions
+{
+    #region Methods
+
+    /// <summary>
+    /// Asynchronously projects the success value of a result into a new form using a specified function,
+    /// or returns an 'Error' result based on whether the result is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the success value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the value returned by mapper.</typeparam>
+    /// <param name="source">The task returning the result whose success value is to be transformed.</param>
+    /// <param name="mapper">A transform function to apply to the value.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous map operation. The value of the TResult parameter contains
+    /// a <see cref="Result{TResult}"/> whose success value is the result of invoking the transform function on the success value of source;
+    /// otherwise, an 'Error' <see cref="Result{TResult}"/>.
+    /// </returns>
+    public static Task<Result<TResult>> MapAsync<TSource, TResult>(this Task<Result<TSource>> source, Func<TSource, TResult> mapper, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        mapper.ThrowIfNull();
+
+        return source.Then(x => x.Map(mapper), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously projects the success value of a result into a new form using a specified function,
+    /// or returns an 'Error' result based on whether the result is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the success value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the value returned by mapper.</typeparam>
+    /// <param name="source">The task returning the result whose success value is to be transformed.</param>
+    /// <param name="mapper">A transform function to apply to the value.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous map operation. The value of the TResult parameter contains
+    /// a <see cref="Result{TResult}"/> whose success value is the result of invoking the transform function on the success value of source;
+    /// otherwise, an 'Error' <see cref="Result{TResult}"/>.
+    /// </returns>
+    public static Task<Result<TResult>> MapAsync<TSource, TResult>(this Task<Result<TSource>> source, Func<TSource, Task<TResult>> mapper, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        mapper.ThrowIfNull();
+
+        return source.Then(x => x.MapAsync(mapper, cancellationToken), cancellationToken);
+    }
+
+    #endregion
+}

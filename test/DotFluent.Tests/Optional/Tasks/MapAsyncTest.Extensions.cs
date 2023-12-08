@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class MapAsyncExtensionsTest
+public sealed class OptionMapAsyncExtensionsTest
 {
     #region Methods
 
@@ -68,6 +68,74 @@ public sealed class MapAsyncExtensionsTest
             .Awaiting(x => x.MapAsync(_ => 0, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await optionTask
+            .Awaiting(x => x.MapAsync(_ => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+    }
+
+    #endregion
+}
+
+[TestFixture]
+public sealed class ResultMapAsyncExtensionsTest
+{
+    #region Methods
+
+    [Test]
+    public async Task SourceNullThrowsException()
+    {
+        Task<Result<int>> resultTask = null;
+
+        await resultTask
+            .Awaiting(x => x.MapAsync(_ => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await resultTask
+            .Awaiting(x => x.MapAsync(_ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task MapperNullThrowsException()
+    {
+        var resultTask = ResultTask.Error<int>(new());
+        Func<int, int> mapper = null;
+        Func<int, Task<int>> taskMapper = null;
+
+        await resultTask
+            .Awaiting(x => x.MapAsync(mapper))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await resultTask
+            .Awaiting(x => x.MapAsync(taskMapper))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(1, new[] { 2 }, 0)]
+    [TestCase(1, new[] { 2 }, 1)]
+    [TestCase(null, new int[0], 0)]
+    [TestCase(null, new int[0], 1)]
+    public async Task MapAsync(int? source, IEnumerable<int> expectedResult, int overload)
+    {
+        var resultTask = source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
+        var currentResult = overload switch
+        {
+            1 => await resultTask.MapAsync(x => Task.FromResult(++x)),
+            _ => await resultTask.MapAsync(x => ++x)
+        };
+
+        currentResult.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    public async Task MapAsyncCaneled()
+    {
+        var resultTask = ResultTask.Error<int>(new());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await resultTask
+            .Awaiting(x => x.MapAsync(_ => 0, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await resultTask
             .Awaiting(x => x.MapAsync(_ => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
