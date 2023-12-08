@@ -72,7 +72,7 @@ namespace DotFluent.Tasks
             await GetFaultedTask()
                 .Catch(() => { secondResult++; }, null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace DotFluent.Tasks
                 .Catch<ArgumentNullException>(x => ShouldNotBeCalled(), null)
                 .Catch<NotImplementedException>(x => { result++; }, null);
 
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace DotFluent.Tasks
             var secondResult = await GetFaultedTask<int>()
                 .Catch(() => 1, null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace DotFluent.Tasks
                 }, null)
                 .Catch<int, NotImplementedException>(x => 1, null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]
@@ -410,7 +410,7 @@ namespace DotFluent.Tasks
             var secondResult = await GetFaultedTask<int>()
                 .Catch(() => Task.FromResult(1), null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]
@@ -513,7 +513,7 @@ namespace DotFluent.Tasks
                 }, null)
                 .Catch<int, NotImplementedException>(x => Task.FromResult(1), null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]
