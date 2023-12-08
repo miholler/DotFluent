@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class SecureAsyncTest
+public sealed class OptionSecureAsyncTest
 {
     #region Methods
 

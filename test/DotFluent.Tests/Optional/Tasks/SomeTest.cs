@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class SomeTest
+public sealed class OptionSomeTest
 {
     #region Methods
 

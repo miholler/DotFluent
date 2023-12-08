@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class SecureAsyncExtensionsTest
+public sealed class OptionSecureAsyncExtensionsTest
 {
     #region Methods
 
