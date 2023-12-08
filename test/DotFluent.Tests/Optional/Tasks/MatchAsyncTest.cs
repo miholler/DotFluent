@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class MatchAsyncTest
+public sealed class OptionMatchAsyncTest
 {
     #region Methods
 
@@ -39,7 +39,7 @@ public sealed class MatchAsyncTest
     [Test]
     public async Task SomeNullThrowsException()
     {
-        var option = await OptionTask.Some(0);
+        var option = await OptionTask.None<int>();
         Func<int, int> someValue = null;
         Func<int, Task> taskSome = null;
         Func<int, Task<int>> taskSomeValue = null;
@@ -195,6 +195,195 @@ public sealed class MatchAsyncTest
             .ShouldThrowAsync<TaskCanceledException>();
         await option
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+    }
+
+    #endregion
+}
+
+[TestFixture]
+public sealed class ResultMatchAsyncTest
+{
+    #region Methods
+
+    [Test]
+    public async Task OkNullThrowsException()
+    {
+        var result = await ResultTask.Error<int>(new());
+        Action<int> ok = null;
+        Func<int, int> okValue = null;
+        Func<int, Task> taskOk = null;
+        Func<int, Task<int>> taskOkValue = null;
+
+        await result
+            .Awaiting(x => x.MatchAsync(taskOk, _ => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(ok, _ => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(taskOk, _ => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(taskOkValue, _ => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(okValue, _ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(taskOkValue, _ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task ErrorNullThrowsException()
+    {
+        var result = await ResultTask.Error<int>(new());
+        Action<Exception> error = null;
+        Func<Exception, int> errorValue = null;
+        Func<Exception, Task> taskError = null;
+        Func<Exception, Task<int>> taskErrorValue = null;
+
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, error))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => { }, taskError))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, taskError))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), errorValue))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(y => y, taskErrorValue))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), taskErrorValue))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task OkReturningNullThrowsException()
+    {
+        var result = await ResultTask.Ok(0);
+
+        await result
+            .Awaiting(x => x.MatchAsync(_ => default, _ => { }))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => default(Task), _ => Task.CompletedTask))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => default, _ => 0))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => default(Task<int>), _ => Task.FromResult(0)))
+            .ShouldThrowAsync<InvalidOperationException>();
+    }
+
+    [Test]
+    public async Task ErrorReturningNullThrowsException()
+    {
+        var result = await ResultTask.Error<int>(new());
+
+        await result
+            .Awaiting(x => x.MatchAsync(_ => { }, _ => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, _ => default(Task)))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => 0, _ => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => default(Task<int>)))
+            .ShouldThrowAsync<InvalidOperationException>();
+    }
+
+    [Test]
+    [TestCase(1, 1, 2, 0)]
+    [TestCase(null, 0, 0, 0)]
+    [TestCase(1, 1, 2, 1)]
+    [TestCase(null, 0, 0, 1)]
+    [TestCase(1, 1, 2, 2)]
+    [TestCase(null, 0, 0, 2)]
+    [TestCase(1, 1, 2, 3)]
+    [TestCase(null, 0, 0, 3)]
+    [TestCase(1, 1, 2, 4)]
+    [TestCase(null, 0, 0, 4)]
+    [TestCase(1, 1, 2, 5)]
+    [TestCase(null, 0, 0, 5)]
+    public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
+    {
+        var currentResult = 0;
+        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new() { HResult = value }));
+
+        switch (overload)
+        {
+            case 1:
+                await result.MatchAsync(x => { currentResult = x + value; }, x =>
+                {
+                    currentResult = x.HResult;
+                    return Task.CompletedTask;
+                });
+                break;
+            case 2:
+                await result.MatchAsync(x =>
+                {
+                    currentResult = x + value;
+                    return Task.CompletedTask;
+                }, x =>
+                {
+                    currentResult = x.HResult;
+                    return Task.CompletedTask;
+                });
+                break;
+            case 3:
+                currentResult = await result.MatchAsync(x => Task.FromResult(x + value), x => x.HResult);
+                break;
+            case 4:
+                currentResult = await result.MatchAsync(x => x + value, x => Task.FromResult(x.HResult));
+                break;
+            case 5:
+                currentResult = await result.MatchAsync(x => Task.FromResult(x + value), x => Task.FromResult(x.HResult));
+                break;
+            default:
+                await result.MatchAsync(x =>
+                {
+                    currentResult = x + value;
+                    return Task.CompletedTask;
+                }, x => currentResult = x.HResult);
+                break;
+        }
+        currentResult.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    public async Task MatchAsyncCanceled()
+    {
+        var result = await ResultTask.Error<int>(new());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, _ => { }, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => { }, _ => Task.CompletedTask, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, _ => Task.CompletedTask, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => 0, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => 0, _ => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

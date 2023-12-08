@@ -40,10 +40,10 @@ public sealed class ResultMapErrorAsyncExtensionsTest
     }
 
     [Test]
-    [TestCase(1, new[] { 2 }, 0)]
-    [TestCase(1, new[] { 2 }, 1)]
-    [TestCase(null, new int[0], 0)]
-    [TestCase(null, new int[0], 1)]
+    [TestCase(1, 0)]
+    [TestCase(1, 1)]
+    [TestCase(null, 0)]
+    [TestCase(null, 1)]
     public async Task MapErrorAsync(int? source, int overload)
     {
         var resultTask = source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
