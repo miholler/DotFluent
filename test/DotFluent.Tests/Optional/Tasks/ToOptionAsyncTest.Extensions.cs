@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class ToOptionAsyncExtensionsTest
+public sealed class OptionToOptionAsyncExtensionsTest
 {
     #region Methods
 
@@ -17,11 +17,15 @@ public sealed class ToOptionAsyncExtensionsTest
     {
         Task<string> nullableTask = null;
         Task<int?> nullableValueTask = null;
+        Task<Result<int>> nullableResultTask = null;
 
         await nullableTask
             .Awaiting(x => x.ToOptionAsync())
             .ShouldThrowAsync<ArgumentNullException>();
         await nullableValueTask
+            .Awaiting(x => x.ToOptionAsync())
+            .ShouldThrowAsync<ArgumentNullException>();
+        await nullableResultTask
             .Awaiting(x => x.ToOptionAsync())
             .ShouldThrowAsync<ArgumentNullException>();
     }
@@ -49,6 +53,18 @@ public sealed class ToOptionAsyncExtensionsTest
     }
 
     [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(1, new[] { 1 })]
+    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    {
+        var result = await source
+            .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+            .ToOptionAsync();
+
+        result.ShouldBe(expectedResult);
+    }
+
+    [Test]
     public async Task ToOptionAsyncCanceled()
     {
         using var cts = new CancellationTokenSource();
@@ -58,6 +74,9 @@ public sealed class ToOptionAsyncExtensionsTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await Task.FromResult(new int?())
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await ResultTask.Error<int>(new())
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

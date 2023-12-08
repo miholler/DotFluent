@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
-public sealed class ToOptionAsyncTest
+public sealed class OptionToOptionAsyncTest
 {
     #region Methods
 
@@ -32,6 +32,18 @@ public sealed class ToOptionAsyncTest
     }
 
     [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(1, new[] { 1 })]
+    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    {
+        var result = await source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
+            .ToOptionAsync();
+
+        result.ShouldBe(expectedResult);
+    }
+
+    [Test]
     public async Task ToOptionAsyncCanceled()
     {
         using var cts = new CancellationTokenSource();
@@ -41,6 +53,9 @@ public sealed class ToOptionAsyncTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await new int?()
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await Result.Error<int>(new())
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

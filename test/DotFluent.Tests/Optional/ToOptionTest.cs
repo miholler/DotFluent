@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DotFluent.Optional;
 
 [TestFixture]
-public sealed class ToOptionTest
+public sealed class OptionToOptionTest
 {
     #region Methods
 
@@ -22,6 +22,15 @@ public sealed class ToOptionTest
     [TestCase(1, new[] { 1 })]
     public void ValueTypeToOption(int? source, IEnumerable<int> expectedResult)
         => source
+            .ToOption()
+            .ShouldBe(expectedResult);
+
+    [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(1, new[] { 1 })]
+    public void ResultToOption(int? source, IEnumerable<int> expectedResult)
+        => source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
             .ToOption()
             .ShouldBe(expectedResult);
 

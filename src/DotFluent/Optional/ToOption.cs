@@ -22,5 +22,14 @@ public static partial class Option
     public static Option<TSource> ToOption<TSource>(this TSource? source) where TSource : struct
         => source.Match(Some, None<TSource>);
 
+    /// <summary>
+    /// Creates an option from a result value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the success value of source.</typeparam>
+    /// <param name="source">The result value to create an option from.</param>
+    /// <returns>An <see cref="Option{TSource}"/> representing the success value of source.</returns>
+    public static Option<TSource> ToOption<TSource>(this Result<TSource> source)
+        => source.Match(Some, _ => None<TSource>());
+
     #endregion
 }
