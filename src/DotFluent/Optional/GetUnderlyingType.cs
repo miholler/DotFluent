@@ -27,3 +27,31 @@ public static partial class Option
 
     #endregion
 }
+
+public static partial class Result
+{
+    #region Methods
+
+    /// <summary>
+    /// Returns the underlying type argument of the specified result type.
+    /// </summary>
+    /// <param name="resultType">The type that describes a closed generic result type.</param>
+    /// <returns>
+    /// The type argument of the resultType parameter, if the resultType parameter
+    /// is a closed generic result type; otherwise, null.
+    /// </returns>
+    public static Type? GetUnderlyingType(Type resultType)
+    {
+        resultType.ThrowIfNull();
+
+        if (resultType.IsGenericType && !resultType.IsGenericTypeDefinition)
+        {
+            var genericType = resultType.GetGenericTypeDefinition();
+            if (typeof(Result<>).IsAssignableFrom(genericType))
+                return resultType.GetGenericArguments().FirstOrDefault();
+        }
+        return null;
+    }
+
+    #endregion
+}
