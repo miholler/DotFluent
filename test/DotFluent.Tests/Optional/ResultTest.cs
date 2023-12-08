@@ -112,14 +112,14 @@ public sealed class ResultTest
     }
 
     [Test]
-    [TestCase(1, true)]
-    [TestCase(null, true)]
-    public void MapError(int? source, bool expectedResult)
+    [TestCase(1)]
+    [TestCase(null)]
+    public void MapError(int? source)
         => source
             .Match(Result<int>.Ok, Result<int>.Error(new()))
             .MapError(x => new AggregateException(x))
             .Match(x => x == source, x => x is AggregateException)
-            .ShouldBe(expectedResult);
+            .ShouldBeTrue();
 
     [Test]
     public void FlatMapMapperNullThrowsException()
