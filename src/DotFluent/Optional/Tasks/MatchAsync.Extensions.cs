@@ -264,6 +264,8 @@ public static partial class ResultTaskExtensions
     public static Task MatchAsync<TSource>(this Task<Result<TSource>> source, Action<TSource> ok, Action<Exception> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.Match(ok, error), cancellationToken);
     }
@@ -281,6 +283,8 @@ public static partial class ResultTaskExtensions
     public static Task MatchAsync<TSource>(this Task<Result<TSource>> source, Func<TSource, Task> ok, Action<Exception> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
@@ -298,6 +302,8 @@ public static partial class ResultTaskExtensions
     public static Task MatchAsync<TSource>(this Task<Result<TSource>> source, Action<TSource> ok, Func<Exception, Task> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
@@ -315,6 +321,8 @@ public static partial class ResultTaskExtensions
     public static Task MatchAsync<TSource>(this Task<Result<TSource>> source, Func<TSource, Task> ok, Func<Exception, Task> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
@@ -336,6 +344,8 @@ public static partial class ResultTaskExtensions
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Result<TSource>> source, Func<TSource, TResult> ok, Func<Exception, TResult> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.Match(ok, error), cancellationToken);
     }
@@ -357,6 +367,8 @@ public static partial class ResultTaskExtensions
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Result<TSource>> source, Func<TSource, Task<TResult>> ok, Func<Exception, TResult> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
@@ -378,6 +390,8 @@ public static partial class ResultTaskExtensions
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Result<TSource>> source, Func<TSource, TResult> ok, Func<Exception, Task<TResult>> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
@@ -399,6 +413,8 @@ public static partial class ResultTaskExtensions
     public static Task<TResult> MatchAsync<TSource, TResult>(this Task<Result<TSource>> source, Func<TSource, Task<TResult>> ok, Func<Exception, Task<TResult>> error, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
 
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }

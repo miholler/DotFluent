@@ -385,6 +385,10 @@ public sealed class ResultMatchAsyncExtensionsTest
     [TestCase(null, 0, 0, 4)]
     [TestCase(1, 1, 2, 5)]
     [TestCase(null, 0, 0, 5)]
+    [TestCase(1, 1, 2, 6)]
+    [TestCase(null, 0, 0, 6)]
+    [TestCase(1, 1, 2, 7)]
+    [TestCase(null, 0, 0, 7)]
     public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
     {
         var currentResult = 0;
