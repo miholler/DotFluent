@@ -9,20 +9,14 @@ namespace System.Runtime.CompilerServices;
 /// </summary>
 [ExcludeFromCodeCoverage]
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-internal sealed class CallerArgumentExpressionAttribute : Attribute
+internal sealed class CallerArgumentExpressionAttribute(string parameterName) : Attribute
 {
-    //Ctor
-    public CallerArgumentExpressionAttribute(string parameterName)
-    {
-        ParameterName = parameterName;
-    }
-
     #region Properties
 
     /// <summary>
     /// Gets the target parameter name of the CallerArgumentExpression.
     /// </summary>
-    public string ParameterName { get; }
+    public string ParameterName { get; } = parameterName;
 
     #endregion
 }

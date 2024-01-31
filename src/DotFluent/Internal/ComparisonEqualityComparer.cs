@@ -3,21 +3,14 @@
 namespace DotFluent.Internal;
 
 [ExcludeFromCodeCoverage]
-internal sealed class ComparisonEqualityComparer<T> : EqualityComparer<T>
+internal sealed class ComparisonEqualityComparer<T>(EqualityComparison<T> comparison, Func<T, int> hashCodeSelector) : EqualityComparer<T>
 {
     #region Fields
 
-    private readonly EqualityComparison<T> _comparison;
-    private readonly Func<T, int> _hashCodeSelector;
+    private readonly EqualityComparison<T> _comparison = comparison.ThrowIfNull();
+    private readonly Func<T, int> _hashCodeSelector = hashCodeSelector.ThrowIfNull();
 
     #endregion
-
-    //Ctor
-    private ComparisonEqualityComparer(EqualityComparison<T> comparison, Func<T, int> hashCodeSelector)
-    {
-        _comparison = comparison.ThrowIfNull();
-        _hashCodeSelector = hashCodeSelector.ThrowIfNull();
-    }
 
     #region Methods
 
