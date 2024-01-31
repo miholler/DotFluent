@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Unsafe.Tasks;
 
 [TestFixture]
-public sealed class ToNullableAsyncExtensionsTest
+public sealed class OptionToNullableAsyncExtensionsTest
 {
     #region Methods
 
@@ -42,6 +42,48 @@ public sealed class ToNullableAsyncExtensionsTest
         cts.Cancel();
 
         await optionTask
+            .Awaiting(x => x.ToNullableAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+    }
+
+    #endregion
+}
+
+[TestFixture]
+public sealed class ResultToNullableAsyncExtensionsTest
+{
+    #region Methods
+
+    [Test]
+    public async Task SourceNullThrowsException()
+    {
+        Task<Result<int>> resultTask = null;
+
+        await resultTask
+            .Awaiting(x => x.ToNullableAsync())
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(1)]
+    [TestCase(null)]
+    public async Task ToNullableAsync(int? source)
+    {
+        var currentResult = await source
+            .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+            .ToNullableAsync();
+
+        currentResult.ShouldBe(source);
+    }
+
+    [Test]
+    public async Task ToNullableAsyncCanceled()
+    {
+        var resultTask = ResultTask.Error<int>(new());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await resultTask
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

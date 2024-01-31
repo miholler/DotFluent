@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Optional.Unsafe.Tasks;
 
 [TestFixture]
-public sealed class ToNullableAsyncTest
+public sealed class OptionToNullableAsyncTest
 {
     #region Methods
 
@@ -31,6 +31,38 @@ public sealed class ToNullableAsyncTest
         cts.Cancel();
 
         await option
+            .Awaiting(x => x.ToNullableAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+    }
+
+    #endregion
+}
+
+[TestFixture]
+public sealed class ResultToNullableAsyncTest
+{
+    #region Methods
+
+    [Test]
+    [TestCase(1)]
+    [TestCase(null)]
+    public async Task ToNullableAsync(int? source)
+    {
+        var currentResult = await source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
+            .ToNullableAsync();
+
+        currentResult.ShouldBe(source);
+    }
+
+    [Test]
+    public async Task ToNullableAsyncCanceled()
+    {
+        var result = await ResultTask.Error<int>(new());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await result
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
