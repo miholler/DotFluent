@@ -44,7 +44,7 @@ namespace DotFluent.Tasks
                 .Finally(() => { result++; })
                     .Finally(() => { result++; }, null);
 
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace DotFluent.Tasks
                             .Then(ShouldNotBeCalled, null, cts.Token)
                             .Finally(() => { result++; }, null));
             }
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace DotFluent.Tasks
                 GetFaultedTask()
                     .Finally(() => { result++; }, null));
 
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         [Test]
@@ -102,8 +102,8 @@ namespace DotFluent.Tasks
                 .Finally(() => { result++; })
                     .Finally(() => { result++; }, null);
 
-            Assert.AreEqual(result, 3);
-            Assert.AreEqual(taskResult, 0);
+            Assert.That(result, Is.EqualTo(3));
+            Assert.That(taskResult, Is.EqualTo(0));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace DotFluent.Tasks
                             }, null, cts.Token)
                             .Finally(() => { result++; }, null));
 
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace DotFluent.Tasks
                 GetFaultedTask<int>()
                     .Finally(() => { result++; }, null));
 
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         private static void ThrowException()

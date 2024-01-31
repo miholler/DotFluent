@@ -24,7 +24,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence whose elements to apply the predicate to.</param>
     /// <param name="predicate">A function to test each element for a condition.</param>
-    /// <returns>true if no element in the source sequence passes the test in the specified predicate; otherwise false.</returns>
+    /// <returns>true if no element in the source sequence passes the test in the specified predicate; otherwise, false.</returns>
     public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
         source.ThrowIfNull();

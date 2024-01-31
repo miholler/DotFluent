@@ -75,7 +75,7 @@ namespace DotFluent.Tasks
                 .CatchWhen<NotImplementedException>(x => false, x => ShouldNotBeCalled(), null)
                 .CatchWhen<NotImplementedException>(x => true, x => { result++; }, null);
 
-            Assert.AreEqual(result, 3);
+            Assert.That(result, Is.EqualTo(3));
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace DotFluent.Tasks
                 }, null)
                 .CatchWhen<int, NotImplementedException>(x => true, x => 1, null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace DotFluent.Tasks
                 }, null)
                 .CatchWhen<int, NotImplementedException>(x => true, x => Task.FromResult(1), null);
 
-            Assert.AreEqual(firstResult, secondResult);
+            Assert.That(firstResult, Is.EqualTo(secondResult));
         }
 
         [Test]

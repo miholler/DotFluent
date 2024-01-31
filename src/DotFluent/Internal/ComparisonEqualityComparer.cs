@@ -28,7 +28,7 @@ internal sealed class ComparisonEqualityComparer<T> : EqualityComparer<T>
         => new(comparison, hashCodeSelector);
 
     public override bool Equals(T? x, T? y)
-        => _comparison(x, y);
+        => _comparison(x!, y!);
 
     public override int GetHashCode(T obj)
         => _hashCodeSelector(obj);

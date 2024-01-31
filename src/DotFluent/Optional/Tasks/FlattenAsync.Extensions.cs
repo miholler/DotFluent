@@ -25,3 +25,27 @@ public static partial class OptionTaskExtensions
 
     #endregion
 }
+
+public static partial class ResultTaskExtensions
+{
+    #region Methods
+
+    /// <summary>
+    /// Asynchronously flattens a result with a nested result into one result.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the success value of the nested result.</typeparam>
+    /// <param name="source">The task returning the result with a nested result to flatten.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous flatten operation. The value of the TResult parameter contains
+    /// a <see cref="Result{TResult}"/> representing the flattened result.
+    /// </returns>
+    public static Task<Result<TSource>> FlattenAsync<TSource>(this Task<Result<Result<TSource>>> source, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+
+        return source.Then(x => x.Flatten(), cancellationToken);
+    }
+
+    #endregion
+}

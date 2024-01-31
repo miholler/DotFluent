@@ -59,7 +59,7 @@ public static partial class NullableExtensions
     /// <param name="source">The nullable object to check for having a value.</param>
     /// <param name="some">A function to invoke if a value is present.</param>
     /// <param name="none">The value to return if a value is missing.</param>
-    /// <returns>The result of the invoked function if a value is present; otherwise the specified alternative value.</returns>
+    /// <returns>The result of the invoked function if a value is present; otherwise, the specified alternative value.</returns>
     public static TResult Match<TSource, TResult>(this TSource? source, Func<TSource, TResult> some, TResult none) where TSource : struct
         => source.Match(some, () => none);
 
