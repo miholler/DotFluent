@@ -1,7 +1,0 @@
-﻿namespace DotFluent.Tasks.Internal;
-
-/// <summary>
-/// Represents a <see cref="void"/> result for 
-/// a <see cref="Task{TResult}"/> object.
-/// </summary>
-public readonly record struct VoidResult;

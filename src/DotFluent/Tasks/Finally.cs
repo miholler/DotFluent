@@ -1,6 +1,4 @@
-﻿using DotFluent.Tasks.Internal;
-
-namespace DotFluent.Tasks;
+﻿namespace DotFluent.Tasks;
 
 public static partial class TaskExtensions
 {
@@ -30,7 +28,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<VoidResult>();
+        var tcs = new TaskCompletionSource();
         source.ContinueWith(x =>
         {
             var exception = default(Exception);
@@ -51,7 +49,7 @@ public static partial class TaskExtensions
                 else if (x.IsCanceled)
                     tcs.TrySetCanceled();
                 else
-                    tcs.TrySetResult(default);
+                    tcs.TrySetResult();
             }
         }, scheduler ?? TaskScheduler.Current);
         return tcs.Task;
