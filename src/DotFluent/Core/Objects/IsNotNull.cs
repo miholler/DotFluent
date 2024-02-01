@@ -12,7 +12,7 @@ public static partial class ObjectExtensions
     /// <param name="source">The object to check for null.</param>
     /// <returns>true if the object is not null; otherwise, false.</returns>
     public static bool IsNotNull([NotNullWhen(true)]this object? source)
-        => source != null;
+        => source is not null;
 
     #endregion
 }

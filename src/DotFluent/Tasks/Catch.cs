@@ -1,6 +1,4 @@
-﻿using DotFluent.Tasks.Internal;
-
-namespace DotFluent.Tasks;
+﻿namespace DotFluent.Tasks;
 
 /// <summary>
 /// Provides extension methods for <see cref="Task"/> objects.
@@ -34,7 +32,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<VoidResult>();
+        var tcs = new TaskCompletionSource();
         source.ContinueWith(x =>
         {
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
@@ -44,7 +42,7 @@ public static partial class TaskExtensions
                 try
                 {
                     action();
-                    tcs.TrySetResult(default);
+                    tcs.TrySetResult();
                 }
                 catch (Exception ex)
                 {
@@ -52,7 +50,7 @@ public static partial class TaskExtensions
                 }
             }
             else
-                tcs.TrySetResult(default);
+                tcs.TrySetResult();
         }, scheduler ?? TaskScheduler.Current);
         return tcs.Task;
     }
@@ -85,7 +83,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<VoidResult>();
+        var tcs = new TaskCompletionSource();
         source.ContinueWith(x =>
         {
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
@@ -98,7 +96,7 @@ public static partial class TaskExtensions
                     try
                     {
                         action(exception);
-                        tcs.TrySetResult(default);
+                        tcs.TrySetResult();
                     }
                     catch (Exception ex)
                     {
@@ -109,7 +107,7 @@ public static partial class TaskExtensions
                     tcs.TrySetException(x.Exception.InnerExceptions);
             }
             else
-                tcs.TrySetResult(default);
+                tcs.TrySetResult();
         }, scheduler ?? TaskScheduler.Current);
         return tcs.Task;
     }

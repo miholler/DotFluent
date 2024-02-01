@@ -12,40 +12,30 @@ public sealed class ObjectThrowIfNullTest
     [Test]
     public void ObjectNullThrowsException()
     {
-        object obj = null;
-        Action action = () => obj.ThrowIfNull();
+        object source = null;
+        Action action = () => source.ThrowIfNull();
+        Action factoryAction = () => source.ThrowIfNull(() => new ArgumentNullException(nameof(source)));
 
-        action
-            .ShouldThrow<ArgumentNullException>()
-            .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(obj)));
+        action.ShouldThrow<ArgumentNullException>()
+              .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(source)));
+        factoryAction
+              .ShouldThrow<ArgumentNullException>()
+              .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(source)));
     }
 
     [Test]
-    public void ObjectNullThrowsFactoryException()
+    [TestCase(0)]
+    [TestCase(1)]
+    public void ObjectNotNullReturnsObject(int overload)
     {
-        object obj = null;
+        var source = new object();
+        var result = overload switch
+        {
+            1 => source.ThrowIfNull(() => new ArgumentNullException(nameof(source))),
+            _ => source.ThrowIfNull()
+        };
 
-        obj.Invoking(x => x.ThrowIfNull(() => new ArgumentNullException(nameof(obj))))
-           .ShouldThrow<ArgumentNullException>()
-           .ShouldSatisfyAllConditions(x => x.ParamName.ShouldBe(nameof(obj)));
-    }
-
-    [Test]
-    public void ObjectNotNullReturnsObject()
-    {
-        var obj = new object();
-
-        obj.ThrowIfNull()
-           .ShouldBe(obj);
-    }
-
-    [Test]
-    public void ObjectNotNullReturnsObjectWithFactory()
-    {
-        var obj = new object();
-
-        obj.ThrowIfNull(() => new ArgumentNullException(nameof(obj)))
-           .ShouldBe(obj);
+        result.ShouldBe(source);
     }
 
     #endregion

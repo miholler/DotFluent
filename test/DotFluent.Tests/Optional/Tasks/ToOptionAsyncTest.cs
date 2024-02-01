@@ -4,47 +4,61 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DotFluent.Optional.Tasks
+namespace DotFluent.Optional.Tasks;
+
+[TestFixture]
+public sealed class OptionToOptionAsyncTest
 {
-    [TestFixture]
-    public sealed class ToOptionAsyncTest
+    #region Methods
+
+    [Test]
+    [TestCase(null, new string[0])]
+    [TestCase("ABC", new[] { "ABC" })]
+    public async Task ReferenceTypeToOptionAsync(string source, IEnumerable<string> expectedResult)
     {
-        #region Methods
+        var result = await source.ToOptionAsync();
 
-        [Test]
-        [TestCase(null, new string[0])]
-        [TestCase("ABC", new[] { "ABC" })]
-        public async Task ReferenceTypeToOptionAsync(string source, IEnumerable<string> expectedResult)
-        {
-            var result = await source.ToOptionAsync();
-
-            result.ShouldBe(expectedResult);
-        }
-
-        [Test]
-        [TestCase(null, new int[0])]
-        [TestCase(1, new[] { 1 })]
-        public async Task ValueTypeToOptionAsync(int? source, IEnumerable<int> expectedResult)
-        {
-            var result = await source.ToOptionAsync();
-
-            result.ShouldBe(expectedResult);
-        }
-
-        [Test]
-        public async Task ToOptionAsyncCanceled()
-        {
-            using var cts = new CancellationTokenSource();
-            cts.Cancel();
-
-            await string.Empty
-                .Awaiting(x => x.ToOptionAsync(cts.Token))
-                .ShouldThrowAsync<TaskCanceledException>();
-            await new int?()
-                .Awaiting(x => x.ToOptionAsync(cts.Token))
-                .ShouldThrowAsync<TaskCanceledException>();
-        }
-
-        #endregion
+        result.ShouldBe(expectedResult);
     }
+
+    [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(1, new[] { 1 })]
+    public async Task ValueTypeToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    {
+        var result = await source.ToOptionAsync();
+
+        result.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    [TestCase(null, new int[0])]
+    [TestCase(1, new[] { 1 })]
+    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    {
+        var result = await source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
+            .ToOptionAsync();
+
+        result.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    public async Task ToOptionAsyncCanceled()
+    {
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await string.Empty
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await new int?()
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await Result.Error<int>(new())
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+    }
+
+    #endregion
 }

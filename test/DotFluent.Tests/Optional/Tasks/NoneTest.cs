@@ -2,21 +2,20 @@
 using Shouldly;
 using System.Threading.Tasks;
 
-namespace DotFluent.Optional.Tasks
+namespace DotFluent.Optional.Tasks;
+
+[TestFixture]
+public sealed class OptionNoneTest
 {
-    [TestFixture]
-    public sealed class NoneTest
+    #region Methods
+
+    [Test]
+    public async Task None()
     {
-        #region Methods
+        var result = await OptionTask.None<int>();
 
-        [Test]
-        public async Task None()
-        {
-            var result = await OptionTask.None<int>();
-
-            result.ShouldBe(Option<int>.None);
-        }
-
-        #endregion
+        result.ShouldBe(Option<int>.None);
     }
+
+    #endregion
 }

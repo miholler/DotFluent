@@ -1,5 +1,7 @@
 ﻿namespace DotFluent;
 
+#if NETSTANDARD
+
 public static partial class DictionaryExtensions
 {
     #region Methods
@@ -27,3 +29,5 @@ public static partial class DictionaryExtensions
 
     #endregion
 }
+
+#endif
