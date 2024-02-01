@@ -8,8 +8,7 @@
 /// </summary>
 [ExcludeFromCodeCoverage]
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, Inherited = false)]
-internal sealed class NotNullAttribute : Attribute
-{ }
+internal sealed class NotNullAttribute : Attribute;
 
 /// <summary>
 /// Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null 
@@ -17,20 +16,14 @@ internal sealed class NotNullAttribute : Attribute
 /// </summary>
 [ExcludeFromCodeCoverage]
 [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
-internal sealed class NotNullWhenAttribute : Attribute
+internal sealed class NotNullWhenAttribute(bool returnValue) : Attribute
 {
-    //Ctor
-    public NotNullWhenAttribute(bool returnValue)
-    {
-        ReturnValue = returnValue;
-    }
-
     #region Properties
 
     /// <summary>
     /// Gets the return value condition.
     /// </summary>
-    public bool ReturnValue { get; }
+    public bool ReturnValue { get; } = returnValue;
 
     #endregion
 }
@@ -41,20 +34,14 @@ internal sealed class NotNullWhenAttribute : Attribute
 /// </summary>
 [ExcludeFromCodeCoverage]
 [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
-internal sealed class MaybeNullWhenAttribute : Attribute
+internal sealed class MaybeNullWhenAttribute(bool returnValue) : Attribute
 {
-    //Ctor
-    public MaybeNullWhenAttribute(bool returnValue)
-    {
-        ReturnValue = returnValue;
-    }
-
     #region Properties
 
     /// <summary>
     /// Gets the return value condition.
     /// </summary>
-    public bool ReturnValue { get; }
+    public bool ReturnValue { get; } = returnValue;
 
     #endregion
 }

@@ -13,7 +13,7 @@ public static partial class ObjectExtensions
     /// <typeparam name="TSource">The type of the object.</typeparam>
     /// <param name="source">The object to check for null.</param>
     /// <param name="paramName">The parameter name to use when throwing the <see cref="ArgumentNullException"/>.</param>
-    /// <returns>The object if not null.</returns>
+    /// <returns>The <typeparamref name="TSource"/> if not null.</returns>
     [return: NotNull]
     public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, [CallerArgumentExpression(nameof(source))]string? paramName = null)
         => source ?? throw new ArgumentNullException(paramName);
@@ -24,7 +24,7 @@ public static partial class ObjectExtensions
     /// <typeparam name="TSource">The type of the object.</typeparam>
     /// <param name="source">The object to check for null.</param>
     /// <param name="factory">A function to create the <see cref="Exception"/>.</param>
-    /// <returns>The object if not null.</returns>
+    /// <returns>The <typeparamref name="TSource"/> if not null.</returns>
     [return: NotNull]
     public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, Func<Exception> factory)
         => source ?? throw factory();
