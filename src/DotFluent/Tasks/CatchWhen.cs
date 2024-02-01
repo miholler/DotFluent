@@ -1,6 +1,4 @@
-﻿using DotFluent.Tasks.Internal;
-
-namespace DotFluent.Tasks;
+﻿namespace DotFluent.Tasks;
 
 public static partial class TaskExtensions
 {
@@ -45,7 +43,7 @@ public static partial class TaskExtensions
         predicate.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<VoidResult>();
+        var tcs = new TaskCompletionSource();
         source.ContinueWith(x =>
         {
             if (x.IsCanceled || cancellationToken.IsCancellationRequested)
@@ -58,7 +56,7 @@ public static partial class TaskExtensions
                     try
                     {
                         action(exception);
-                        tcs.TrySetResult(default);
+                        tcs.TrySetResult();
                     }
                     catch (Exception ex)
                     {
@@ -69,7 +67,7 @@ public static partial class TaskExtensions
                     tcs.TrySetException(x.Exception.InnerExceptions);
             }
             else
-                tcs.TrySetResult(default);
+                tcs.TrySetResult();
         }, scheduler ?? TaskScheduler.Current);
         return tcs.Task;
     }
