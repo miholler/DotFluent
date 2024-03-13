@@ -203,12 +203,12 @@ public sealed class FullJoinTest
             7 => outer.FullJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default),
             _ => outer.FullJoin(inner, x => x.Id, (o, i) => (o, i))
         };
-        result.ShouldBe(
+        result.ShouldBe([
             (a, default),
             (b, b),
             (b, b),
             (c, default),
-            (default, d));
+            (default, d)]);
     }
 
     #endregion

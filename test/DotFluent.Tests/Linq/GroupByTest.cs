@@ -195,7 +195,10 @@ public sealed class GroupByTest
         };
         result
             .Select(x => x.AsEnumerable())
-            .ShouldBe(Sequence.Create(a, a), Sequence.Create(b), Sequence.Create(c));
+            .ShouldBe([
+                Sequence.Create(a, a),
+                Sequence.Create(b),
+                Sequence.Create(c)]);
     }
 
     #endregion

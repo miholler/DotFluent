@@ -15,6 +15,8 @@ public sealed class ToDictionaryTest
     public void SourceNullThrowsException()
     {
         IEnumerable<int> source = null;
+        IEnumerable<KeyValuePair<int, int>> pairSource = null;
+        IEnumerable<ValueTuple<int, int>> tupleSource = null;
 
         source
             .Invoking(x => x.ToDictionary(y => y, (y, z) => y == z))
@@ -27,6 +29,30 @@ public sealed class ToDictionaryTest
             .ShouldThrow<ArgumentNullException>();
         source
             .Invoking(x => x.ToDictionary(y => y, y => y, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary())
+            .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary((y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary((y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary(EqualityComparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary())
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary((y, z) => y == z))
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary((y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary(EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -68,6 +94,8 @@ public sealed class ToDictionaryTest
     public void ComparisonNullThrowsException()
     {
         var source = Enumerable.Empty<int>();
+        var pairSource = Enumerable.Empty<KeyValuePair<int, int>>();
+        var tupleSource = Enumerable.Empty<ValueTuple<int, int>>();
         EqualityComparison<int> comparison = null;
 
         source
@@ -82,12 +110,26 @@ public sealed class ToDictionaryTest
         source
             .Invoking(x => x.ToDictionary(y => y, y => y, comparison, y => y.GetHashCode()))
             .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary(comparison))
+            .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary(comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary(comparison))
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary(comparison, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
     public void HashCodeSelectorNullThrowsException()
     {
         var source = Enumerable.Empty<int>();
+        var pairSource = Enumerable.Empty<KeyValuePair<int, int>>();
+        var tupleSource = Enumerable.Empty<ValueTuple<int, int>>();
         Func<int, int> hashCodeSelector = null;
 
         source
@@ -96,6 +138,12 @@ public sealed class ToDictionaryTest
         source
             .Invoking(x => x.ToDictionary(y => y, y => y, (y, z) => y == z, hashCodeSelector))
             .ShouldThrow<ArgumentNullException>();
+        pairSource
+            .Invoking(x => x.ToDictionary((y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
+        tupleSource
+            .Invoking(x => x.ToDictionary((y, z) => y == z, hashCodeSelector))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -103,6 +151,14 @@ public sealed class ToDictionaryTest
     [TestCase(1)]
     [TestCase(2)]
     [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    [TestCase(11)]
     public void ToDictionary(int overload)
     {
         var a = (Id: 1, Name: "A");
@@ -115,12 +171,22 @@ public sealed class ToDictionaryTest
             1 => source.ToDictionary(x => x.Id, (x, y) => x == y, x => x.GetHashCode()),
             2 => source.ToDictionary(x => x.Id, x => x, (x, y) => x == y),
             3 => source.ToDictionary(x => x.Id, x => x, (x, y) => x == y, x => x.GetHashCode()),
+            4 => source.Select(x => new KeyValuePair<int, (int Id, string Name)>(x.Id, x)).ToDictionary(),
+            5 => source.Select(x => new KeyValuePair<int, (int Id, string Name)>(x.Id, x)).ToDictionary((x, y) => x == y),
+            6 => source.Select(x => new KeyValuePair<int, (int Id, string Name)>(x.Id, x)).ToDictionary((x, y) => x == y, x => x.GetHashCode()),
+            7 => source.Select(x => new KeyValuePair<int, (int Id, string Name)>(x.Id, x)).ToDictionary(EqualityComparer<int>.Default),
+            8 => source.Select(x => (x.Id, x)).ToDictionary(),
+            9 => source.Select(x => (x.Id, x)).ToDictionary((x, y) => x == y),
+            10 => source.Select(x => (x.Id, x)).ToDictionary((x, y) => x == y, x => x.GetHashCode()),
+            11 => source.Select(x => (x.Id, x)).ToDictionary(EqualityComparer<int>.Default),
             _ => source.ToDictionary(x => x.Id, (x, y) => x == y)
         };
-        result.ShouldBe(
-            new KeyValuePair<int, (int Id, string Name)>(a.Id, a),
-            new KeyValuePair<int, (int Id, string Name)>(b.Id, b),
-            new KeyValuePair<int, (int Id, string Name)>(c.Id, c));
+        result.ShouldBe(new Dictionary<int, (int Id, string Name)>()
+        {
+            { a.Id, a },
+            { b.Id, b },
+            { c.Id, c }
+        });
     }
 
     #endregion
