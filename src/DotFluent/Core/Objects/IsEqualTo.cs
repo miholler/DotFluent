@@ -1,14 +1,11 @@
 ﻿namespace DotFluent;
 
-/// <summary>
-/// Provides extension methods for all objects.
-/// </summary>
 public static partial class ObjectExtensions
 {
     #region Methods
 
     /// <summary>
-    /// Determines whether two object instances are considered equal.
+    /// Determines whether two objects are considered equal.
     /// </summary>
     /// <param name="source">The first object to compare.</param>
     /// <param name="value">The second object to compare.</param>
