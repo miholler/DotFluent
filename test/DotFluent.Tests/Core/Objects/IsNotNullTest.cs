@@ -12,8 +12,8 @@ public sealed class ObjectIsNotNullTest
     [TestCase(1, true)]
     [TestCase("", true)]
     [TestCase(null, false)]
-    public void IsNotNull(object obj, bool expectedResult)
-        => obj
+    public void IsNotNull(object source, bool expectedResult)
+        => source
             .IsNotNull()
             .ShouldBe(expectedResult);
 
