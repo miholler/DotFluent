@@ -5,7 +5,7 @@ using System;
 namespace DotFluent;
 
 [TestFixture]
-public sealed class IsNotTest
+public sealed class ObjectIsNotTest
 {
     #region Methods
 
