@@ -5,7 +5,7 @@ public static partial class ObjectExtensions
     #region Methods
 
     /// <summary>
-    /// Determines whether two object instances are not considered equal.
+    /// Determines whether two objects are not considered equal.
     /// </summary>
     /// <param name="source">The first object to compare.</param>
     /// <param name="value">The second object to compare.</param>
