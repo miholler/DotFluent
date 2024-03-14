@@ -12,7 +12,7 @@ public static partial class Sequence
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-    /// <param name="source">The sequence to create the lookup from.</param>
+    /// <param name="source">The sequence to create a lookup from.</param>
     /// <param name="keySelector">A function to extract a key from each element.</param>
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="ILookup{TKey, TSource}"/> that contains keys and values.</returns>
@@ -25,7 +25,7 @@ public static partial class Sequence
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
-    /// <param name="source">The sequence to create the lookup from.</param>
+    /// <param name="source">The sequence to create a lookup from.</param>
     /// <param name="keySelector">A function to extract a key from each element.</param>
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
@@ -41,7 +41,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
     /// <typeparam name="TElement">The type of the value returned by elementSelector.</typeparam>
-    /// <param name="source">The sequence to create the lookup from.</param>
+    /// <param name="source">The sequence to create a lookup from.</param>
     /// <param name="keySelector">A function to extract a key from each element.</param>
     /// <param name="elementSelector">A transform function to produce a result element value from each element.</param>
     /// <param name="comparison">A function to compare keys.</param>
@@ -57,7 +57,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TKey">The type of the key returned by keySelector.</typeparam>
     /// <typeparam name="TElement">The type of the value returned by elementSelector.</typeparam>
-    /// <param name="source">The sequence to create the lookup from.</param>
+    /// <param name="source">The sequence to create a lookup from.</param>
     /// <param name="keySelector">A function to extract a key from each element.</param>
     /// <param name="elementSelector">A transform function to produce a result element value from each element.</param>
     /// <param name="comparison">A function to compare keys.</param>

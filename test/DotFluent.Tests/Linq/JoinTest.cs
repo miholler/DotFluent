@@ -175,9 +175,9 @@ public sealed class JoinTest
             5 => outer.Join(inner, x => x.Id, x => x.Id, (o, i) => (o, i), (x, y) => x == y, x => x.GetHashCode()),
             _ => outer.Join(inner, x => x.Id, (o, i) => (o, i))
         };
-        result.ShouldBe(
+        result.ShouldBe([
             (b, b),
-            (b, b));
+            (b, b)]);
     }
 
     #endregion

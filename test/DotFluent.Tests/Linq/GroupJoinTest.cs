@@ -175,10 +175,10 @@ public sealed class GroupJoinTest
             5 => outer.GroupJoin(inner, x => x.Id, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)), (x, y) => x == y, x => x.GetHashCode()),
             _ => outer.GroupJoin(inner, x => x.Id, (o, ie) => (o, ie.Count(x => x.Id == o.Id)))
         };
-        result.ShouldBe(
+        result.ShouldBe([
             (a, default),
             (b, 2),
-            (c, default));
+            (c, default)]);
     }
 
     #endregion
