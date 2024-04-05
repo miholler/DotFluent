@@ -31,5 +31,15 @@ public static partial class Option
     public static Option<TSource> ToOption<TSource>(this Result<TSource> source)
         => source.Match(Some, _ => None<TSource>());
 
+    /// <summary>
+    /// Creates an option from a result value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The result value to create an option from.</param>
+    /// <returns>An <see cref="Option{TValue}"/> representing the success value of source.</returns>
+    public static Option<TValue> ToOption<TValue, TError>(this Result<TValue, TError> source)
+        => source.Match(Some, _ => None<TValue>());
+
     #endregion
 }
