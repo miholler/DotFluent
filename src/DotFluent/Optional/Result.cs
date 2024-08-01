@@ -419,13 +419,13 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     {
         _value = value;
         _error = default!;
-        IsOk = true;
     }
 
     private Result(TError error)
     {
         _value = default!;
         _error = error;
+        IsOk = false;
     }
 
     #endregion
@@ -436,7 +436,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// Gets whether the current result is an 'Ok' value.
     /// </summary>
     /// <returns>true if the result is an 'Ok' value; otherwise, false.</returns>
-    public bool IsOk { get; }
+    public bool IsOk { get; } = true;
 
     /// <summary>
     /// Gets whether the current result is an 'Error' value.
