@@ -10,11 +10,21 @@ public sealed class ResultErrorTest
     #region Methods
 
     [Test]
-    public async Task Error()
+    [TestCase(0)]
+    [TestCase(1)]
+    public async Task Error(int overload)
     {
-        var result = await ResultTask.Error<int>(new());
-
-        result.ShouldBe(Result<int>.Error(new()));
+        switch (overload)
+        {
+            case 1:
+                var result2 = await ResultTask.Error<int, int>(0);
+                result2.ShouldBe(Result<int, int>.Error(0));
+                break;
+            default:
+                var result = await ResultTask.Error<int>(new());
+                result.ShouldBe(Result<int>.Error(new()));
+                break;
+        }
     }
 
     #endregion
