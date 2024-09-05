@@ -27,6 +27,48 @@ public static partial class OptionTask
         => source.MatchAsync(some, () => Task.CompletedTask, cancellationToken);
 
     /// <summary>
+    /// Asynchronously invokes a specified delegate based on whether an option
+    /// is a 'Some' or a 'None' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <param name="source">The option to check for having a value.</param>
+    /// <param name="some">A function to invoke if a value is present.</param>
+    /// <param name="none">An action to perform if a value is missing.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TSource>(this Option<TSource> source, Func<TSource, Task> some, Action none, CancellationToken cancellationToken = default)
+    {
+        none.ThrowIfNull();
+
+        return source.MatchAsync(some, () =>
+        {
+            none();
+            return Task.CompletedTask;
+        }, cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified delegate based on whether an option
+    /// is a 'Some' or a 'None' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <param name="source">The option to check for having a value.</param>
+    /// <param name="some">An action to perform if a value is present.</param>
+    /// <param name="none">A function to invoke if a value is missing.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TSource>(this Option<TSource> source, Action<TSource> some, Func<Task> none, CancellationToken cancellationToken = default)
+    {
+        some.ThrowIfNull();
+
+        return source.MatchAsync(x =>
+        {
+            some(x);
+            return Task.CompletedTask;
+        }, none, cancellationToken);
+    }
+
+    /// <summary>
     /// Asynchronously invokes a specified function based on whether an option
     /// is a 'Some' or a 'None' value.
     /// </summary>
