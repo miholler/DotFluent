@@ -32,6 +32,12 @@ public sealed class OptionMatchAsyncExtensionsTest
             .Awaiting(x => x.MatchAsync(_ => { }, () => { }))
             .ShouldThrowAsync<ArgumentNullException>();
         await optionTask
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await optionTask
+            .Awaiting(x => x.MatchAsync(_ => { }, () => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await optionTask
             .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, () => Task.CompletedTask))
             .ShouldThrowAsync<ArgumentNullException>();
         await optionTask
@@ -73,6 +79,12 @@ public sealed class OptionMatchAsyncExtensionsTest
             .Awaiting(x => x.MatchAsync(_ => { }, none))
             .ShouldThrowAsync<ArgumentNullException>();
         await optionTask
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, none))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await optionTask
+            .Awaiting(x => x.MatchAsync(_ => { }, taskNone))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await optionTask
             .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, taskNone))
             .ShouldThrowAsync<ArgumentNullException>();
         await optionTask
@@ -106,6 +118,12 @@ public sealed class OptionMatchAsyncExtensionsTest
             .ShouldThrowAsync<ArgumentNullException>();
         await optionTask
             .Awaiting(x => x.MatchAsync(some, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await optionTask
+            .Awaiting(x => x.MatchAsync(taskSome, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await optionTask
+            .Awaiting(x => x.MatchAsync(some, () => Task.CompletedTask))
             .ShouldThrowAsync<ArgumentNullException>();
         await optionTask
             .Awaiting(x => x.MatchAsync(taskSome, () => Task.CompletedTask))
@@ -155,6 +173,10 @@ public sealed class OptionMatchAsyncExtensionsTest
     [TestCase(1, 1, 2, 10)]
     [TestCase(null, 1, 1, 11)]
     [TestCase(1, 1, 2, 11)]
+    [TestCase(null, 1, 1, 12)]
+    [TestCase(1, 1, 2, 12)]
+    [TestCase(null, 1, 1, 13)]
+    [TestCase(1, 1, 2, 13)]
     public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
     {
         var result = 0;
@@ -190,25 +212,45 @@ public sealed class OptionMatchAsyncExtensionsTest
                 }, () =>
                 {
                     result = value;
-                    return Task.CompletedTask;
                 });
                 break;
             case 6:
-                result = await optionTask.MatchAsync(x => x + value, value);
+                await optionTask.MatchAsync(x =>
+                {
+                    result = x + value;
+                }, () =>
+                {
+                    result = value;
+                    return Task.CompletedTask;
+                });
                 break;
             case 7:
-                result = await optionTask.MatchAsync(x => Task.FromResult(x + value), value);
+                await optionTask.MatchAsync(x =>
+                {
+                    result = x + value;
+                    return Task.CompletedTask;
+                }, () =>
+                {
+                    result = value;
+                    return Task.CompletedTask;
+                });
                 break;
             case 8:
-                result = await optionTask.MatchAsync(x => x + value, () => value);
+                result = await optionTask.MatchAsync(x => x + value, value);
                 break;
             case 9:
-                result = await optionTask.MatchAsync(x => Task.FromResult(x + value), () => value);
+                result = await optionTask.MatchAsync(x => Task.FromResult(x + value), value);
                 break;
             case 10:
-                result = await optionTask.MatchAsync(x => x + value, () => Task.FromResult(value));
+                result = await optionTask.MatchAsync(x => x + value, () => value);
                 break;
             case 11:
+                result = await optionTask.MatchAsync(x => Task.FromResult(x + value), () => value);
+                break;
+            case 12:
+                result = await optionTask.MatchAsync(x => x + value, () => Task.FromResult(value));
+                break;
+            case 13:
                 result = await optionTask.MatchAsync(x => Task.FromResult(x + value), () => Task.FromResult(value));
                 break;
             default:
@@ -239,6 +281,12 @@ public sealed class OptionMatchAsyncExtensionsTest
             .ShouldThrowAsync<TaskCanceledException>();
         await optionTask
             .Awaiting(x => x.MatchAsync(_ => { }, () => { }, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await optionTask
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, () => { }, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await optionTask
+            .Awaiting(x => x.MatchAsync(_ => { }, () => Task.CompletedTask, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await optionTask
             .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, () => Task.CompletedTask, cts.Token))

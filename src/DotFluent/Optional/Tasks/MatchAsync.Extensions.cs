@@ -90,6 +90,44 @@ public static partial class OptionTaskExtensions
     }
 
     /// <summary>
+    /// Asynchronously invokes a specified delegate based on whether an option
+    /// is a 'Some' or a 'None' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <param name="source">The task returning the option to check for having a value.</param>
+    /// <param name="some">A function to invoke if a value is present.</param>
+    /// <param name="none">An action to perform if a value is missing.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, Task> some, Action none, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        some.ThrowIfNull();
+        none.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified delegate based on whether an option
+    /// is a 'Some' or a 'None' value.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the value of source.</typeparam>
+    /// <param name="source">The task returning the option to check for having a value.</param>
+    /// <param name="some">An action to perform if a value is present.</param>
+    /// <param name="none">A function to invoke if a value is missing.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TSource>(this Task<Option<TSource>> source, Action<TSource> some, Func<Task> none, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        some.ThrowIfNull();
+        none.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
     /// Asynchronously invokes a specified function based on whether an option
     /// is a 'Some' or a 'None' value.
     /// </summary>
