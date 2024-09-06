@@ -37,7 +37,8 @@ public static partial class OptionTask
 
 /// <summary>
 /// Provides a set of static methods for working with 
-/// <see cref="Result{T}"/> instances asynchronously.
+/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> 
+/// instances asynchronously.
 /// </summary>
 public static partial class ResultTask
 {
@@ -55,6 +56,29 @@ public static partial class ResultTask
     /// true if the result contains the specified value; otherwise, false.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Result<TSource> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
+    {
+        valueFactory.ThrowIfNull();
+
+        return cancellationToken.IsCancellationRequested
+            ? Task.FromCanceled<bool>(cancellationToken)
+            : valueFactory()
+                .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
+                .Then(source.Contains, cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously determines whether a result contains a value created by a specified function.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The result in which to locate a value.</param>
+    /// <param name="valueFactory">A function to create the value to locate in the result.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
+    /// true if the result contains the specified value; otherwise, false.
+    /// </returns>
+    public static Task<bool> ContainsAsync<TValue, TError>(this Result<TValue, TError> source, Func<Task<TValue>> valueFactory, CancellationToken cancellationToken = default)
     {
         valueFactory.ThrowIfNull();
 

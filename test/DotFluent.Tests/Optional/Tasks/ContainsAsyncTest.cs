@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DotFluent.Tasks;
+using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -83,9 +84,13 @@ public sealed class ResultContainsAsyncTest
     public async Task ValueFactoryNullThrowsException()
     {
         var result = await ResultTask.Error<int>(new());
+        var result2 = await ResultTask.Error<int, int>(0);
         Func<Task<int>> valueFactory = null;
 
         await result
+            .Awaiting(x => x.ContainsAsync(valueFactory))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
             .Awaiting(x => x.ContainsAsync(valueFactory))
             .ShouldThrowAsync<ArgumentNullException>();
     }
@@ -94,20 +99,34 @@ public sealed class ResultContainsAsyncTest
     public async Task ValueFactoryReturningNullThrowsException()
     {
         var result = await ResultTask.Ok(0);
+        var result2 = await ResultTask.Ok<int, int>(0);
 
         await result
-            .Awaiting(x => x.ContainsAsync(() => null))
+            .Awaiting(x => x.ContainsAsync(() => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.ContainsAsync(() => default))
             .ShouldThrowAsync<InvalidOperationException>();
     }
 
     [Test]
-    [TestCase(1, 1, true)]
-    [TestCase(1, 2, false)]
-    [TestCase(null, 1, false)]
-    public async Task ContainsAsync(int? source, int value, bool expectedResult)
+    [TestCase(1, 1, true, 0)]
+    [TestCase(1, 1, true, 1)]
+    [TestCase(1, 2, false, 0)]
+    [TestCase(1, 2, false, 1)]
+    [TestCase(null, 1, false, 0)]
+    [TestCase(null, 1, false, 1)]
+    public async Task ContainsAsync(int? source, int value, bool expectedResult, int overload)
     {
-        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
-        var currentResult = await result.ContainsAsync(() => Task.FromResult(value));
+        var currentResult = overload switch
+        {
+            1 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .Then(x => x.ContainsAsync(() => Task.FromResult(value))),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .Then(x => x.ContainsAsync(() => Task.FromResult(value)))
+        };
 
         currentResult.ShouldBe(expectedResult);
     }
@@ -116,10 +135,14 @@ public sealed class ResultContainsAsyncTest
     public async Task ContainsAsyncCanceled()
     {
         var result = await ResultTask.Error<int>(new());
+        var result2 = await ResultTask.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
         await result
+            .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
             .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
@@ -128,15 +151,24 @@ public sealed class ResultContainsAsyncTest
     public async Task ContainsAsyncValueFactoryCanceled()
     {
         var result = await ResultTask.Ok(0);
-        using var cts = new CancellationTokenSource();
+        var result2 = await ResultTask.Ok<int, int>(0);
+        using (var cts = new CancellationTokenSource())
+            await result
+                .Awaiting(x => x.ContainsAsync(() =>
+                {
+                    cts.Cancel();
+                    return Task.FromResult(0);
+                }, cts.Token))
+                .ShouldThrowAsync<TaskCanceledException>();
 
-        await result
-            .Awaiting(x => x.ContainsAsync(() =>
-            {
-                cts.Cancel();
-                return Task.FromResult(0);
-            }, cts.Token))
-            .ShouldThrowAsync<TaskCanceledException>();
+        using (var cts = new CancellationTokenSource())
+            await result2
+                .Awaiting(x => x.ContainsAsync(() =>
+                {
+                    cts.Cancel();
+                    return Task.FromResult(0);
+                }, cts.Token))
+                .ShouldThrowAsync<TaskCanceledException>();
     }
 
     #endregion
