@@ -27,8 +27,8 @@ public static partial class OptionTask
         => source.MatchAsync(some, () => Task.CompletedTask, cancellationToken);
 
     /// <summary>
-    /// Asynchronously invokes a specified delegate based on whether an option
-    /// is a 'Some' or a 'None' value.
+    /// Asynchronously invokes a specified function or performs a specified action
+    /// based on whether an option is a 'Some' or a 'None' value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
     /// <param name="source">The option to check for having a value.</param>
@@ -48,8 +48,8 @@ public static partial class OptionTask
     }
 
     /// <summary>
-    /// Asynchronously invokes a specified delegate based on whether an option
-    /// is a 'Some' or a 'None' value.
+    /// Asynchronously performs a specified action or invokes a specified function
+    /// based on whether an option is a 'Some' or a 'None' value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
     /// <param name="source">The option to check for having a value.</param>
