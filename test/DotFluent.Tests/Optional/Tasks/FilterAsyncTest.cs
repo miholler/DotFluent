@@ -15,7 +15,7 @@ public sealed class OptionFilterAsyncTest
     [Test]
     public async Task PredicateNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Func<int, Task<bool>> predicate = null;
 
         await option
@@ -26,7 +26,7 @@ public sealed class OptionFilterAsyncTest
     [Test]
     public async Task PredicateReturningNullThrowsException()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
 
         await option
             .Awaiting(x => x.FilterAsync(_ => null))
@@ -39,8 +39,9 @@ public sealed class OptionFilterAsyncTest
     [TestCase(1, 1, new[] { 1 })]
     public async Task FilterAsync(int? source, int value, IEnumerable<int> expectedResult)
     {
-        var option = await source.ToOptionAsync();
-        var result = await option.FilterAsync(x => Task.FromResult(x == value));
+        var result = await source
+            .ToOption()
+            .FilterAsync(x => Task.FromResult(x == value));
 
         result.ShouldBe(expectedResult);
     }
@@ -48,7 +49,7 @@ public sealed class OptionFilterAsyncTest
     [Test]
     public async Task FilterAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -60,7 +61,7 @@ public sealed class OptionFilterAsyncTest
     [Test]
     public async Task FilterAsyncPredicateCanceled()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
         using var cts = new CancellationTokenSource();
 
         await option

@@ -14,7 +14,7 @@ public sealed class OptionExistsAsyncTest
     [Test]
     public async Task PredicateNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Func<int, Task<bool>> predicate = null;
 
         await option
@@ -25,7 +25,7 @@ public sealed class OptionExistsAsyncTest
     [Test]
     public async Task PredicateReturningNullThrowsException()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
 
         await option
             .Awaiting(x => x.ExistsAsync(_ => null))
@@ -38,8 +38,9 @@ public sealed class OptionExistsAsyncTest
     [TestCase(1, 1, true)]
     public async Task ExistsAsync(int? source, int value, bool expectedResult)
     {
-        var option = await source.ToOptionAsync();
-        var result = await option.ExistsAsync(x => Task.FromResult(x == value));
+        var result = await source
+            .ToOption()
+            .ExistsAsync(x => Task.FromResult(x == value));
 
         result.ShouldBe(expectedResult);
     }
@@ -47,7 +48,7 @@ public sealed class OptionExistsAsyncTest
     [Test]
     public async Task ExistsAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -67,8 +68,8 @@ public sealed class ResultExistsAsyncTest
     [Test]
     public async Task PredicateNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
-        var result2 = await ResultTask.Error<int, int>(0);
+        var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         Func<int, Task<bool>> predicate = null;
 
         await result
@@ -82,8 +83,8 @@ public sealed class ResultExistsAsyncTest
     [Test]
     public async Task PredicateReturningNullThrowsException()
     {
-        var result = await ResultTask.Ok(0);
-        var result2 = await ResultTask.Ok<int, int>(0);
+        var result = Result.Ok(0);
+        var result2 = Result.Ok<int, int>(0);
 
         await result
             .Awaiting(x => x.ExistsAsync(_ => default))
@@ -105,10 +106,10 @@ public sealed class ResultExistsAsyncTest
         var currentResult = overload switch
         {
             1 => await source
-                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
                 .ExistsAsync(x => Task.FromResult(x == value)),
             _ => await source
-                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .Match(Result.Ok, () => Result.Error<int>(new()))
                 .ExistsAsync(x => Task.FromResult(x == value))
         };
 
@@ -118,8 +119,8 @@ public sealed class ResultExistsAsyncTest
     [Test]
     public async Task ExistsAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
-        var result2 = await ResultTask.Error<int, int>(0);
+        var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

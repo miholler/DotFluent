@@ -13,8 +13,9 @@ public sealed class OptionSecureAsyncTest
     [Test]
     public async Task SecureAsync()
     {
-        var option = await OptionTask.Some<object>(null);
-        var result = await option.SecureAsync();
+        var result = await Option
+            .Some<object>(null)
+            .SecureAsync();
 
         result.ShouldBe(Option<object>.None);
     }
@@ -22,7 +23,7 @@ public sealed class OptionSecureAsyncTest
     [Test]
     public async Task SecureAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

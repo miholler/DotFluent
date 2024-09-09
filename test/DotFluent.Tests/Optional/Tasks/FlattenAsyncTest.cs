@@ -17,8 +17,9 @@ public sealed class OptionFlattenAsyncTest
     [TestCase(1, new[] { 1 })]
     public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var option = await OptionTask.Some(source.ToOption());
-        var result = await option.FlattenAsync();
+        var result = await Option
+            .Some(source.ToOption())
+            .FlattenAsync();
 
         result.ShouldBe(expectedResult);
     }
@@ -26,7 +27,7 @@ public sealed class OptionFlattenAsyncTest
     [Test]
     public async Task FlattenAsyncCanceled()
     {
-        var option = await OptionTask.None<Option<int>>();
+        var option = Option.None<Option<int>>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -52,16 +53,14 @@ public sealed class ResultFlattenAsyncTest
     {
         var currentResult = overload switch
         {
-            1 => await ResultTask
+            1 => await Result
                 .Ok<Result<int, int>, int>(source.Match(Result.Ok<int, int>, () => Result.Error<int, int>(0)))
-                .Then(x => x
-                    .FlattenAsync()
-                    .Then(y => y.AsEnumerable())),
-            _ => await ResultTask
+                .FlattenAsync()
+                .Then(y => y.AsEnumerable()),
+            _ => await Result
                 .Ok(source.Match(Result.Ok, () => Result.Error<int>(new())))
-                .Then(x => x
-                    .FlattenAsync()
-                    .Then(y => y.AsEnumerable()))
+                .FlattenAsync()
+                .Then(y => y.AsEnumerable())
         };
 
         currentResult.ShouldBe(expectedResult);
@@ -70,8 +69,8 @@ public sealed class ResultFlattenAsyncTest
     [Test]
     public async Task FlattenAsyncCanceled()
     {
-        var result = await ResultTask.Error<Result<int>>(new());
-        var result2 = await ResultTask.Error<Result<int, int>, int>(0);
+        var result = Result.Error<Result<int>>(new());
+        var result2 = Result.Error<Result<int, int>, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

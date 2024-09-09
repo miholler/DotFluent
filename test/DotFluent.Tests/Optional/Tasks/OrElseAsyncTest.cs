@@ -15,7 +15,7 @@ public sealed class OptionOrElseAsyncTest
     [Test]
     public async Task OtherFactoryNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Func<Task<Option<int>>> otherFactory = null;
 
         await option
@@ -26,7 +26,7 @@ public sealed class OptionOrElseAsyncTest
     [Test]
     public async Task OtherFactoryReturningNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
 
         await option
             .Awaiting(x => x.OrElseAsync(() => default))
@@ -40,8 +40,9 @@ public sealed class OptionOrElseAsyncTest
     [TestCase(1, 2, new[] { 1 })]
     public async Task OrElseAsync(int? source, int? other, IEnumerable<int> expectedResult)
     {
-        var option = await source.ToOptionAsync();
-        var result = await option.OrElseAsync(() => other.ToOptionAsync());
+        var result = await source
+            .ToOption()
+            .OrElseAsync(() => other.ToOptionAsync());
 
         result.ShouldBe(expectedResult);
     }
@@ -49,7 +50,7 @@ public sealed class OptionOrElseAsyncTest
     [Test]
     public async Task OrElseAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -69,7 +70,7 @@ public sealed class ResultOrElseAsyncTest
     [Test]
     public async Task OtherFactoryNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         Func<Task<Result<int>>> otherFactory = null;
 
         await result
@@ -80,7 +81,7 @@ public sealed class ResultOrElseAsyncTest
     [Test]
     public async Task OtherFactoryReturningNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
 
         await result
             .Awaiting(x => x.OrElseAsync(() => default))
@@ -94,8 +95,9 @@ public sealed class ResultOrElseAsyncTest
     [TestCase(null, null, new int[0])]
     public async Task OrElseAsync(int? source, int? other, IEnumerable<int> expectedResult)
     {
-        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
-        var currentResult = await result.OrElseAsync(() => other.Match(ResultTask.Ok, () => ResultTask.Error<int>(new())));
+        var currentResult = await source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
+            .OrElseAsync(() => other.Match(ResultTask.Ok, () => ResultTask.Error<int>(new())));
 
         currentResult.ShouldBe(expectedResult);
     }
@@ -103,7 +105,7 @@ public sealed class ResultOrElseAsyncTest
     [Test]
     public async Task OrElseAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

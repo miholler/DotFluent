@@ -16,7 +16,7 @@ public sealed class OptionFlatMapAsyncTest
     [Test]
     public async Task MapperNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Func<int, Task<Option<int>>> mapper = null;
 
         await option
@@ -27,7 +27,7 @@ public sealed class OptionFlatMapAsyncTest
     [Test]
     public async Task MapperReturningNullThrowsException()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
 
         await option
             .Awaiting(x => x.FlatMapAsync(_ => default(Task<Option<int>>)))
@@ -39,8 +39,9 @@ public sealed class OptionFlatMapAsyncTest
     [TestCase(1, new[] { 1 })]
     public async Task FlatMapAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var option = await source.ToOptionAsync();
-        var result = await option.FlatMapAsync(OptionTask.Some);
+        var result = await source
+            .ToOption()
+            .FlatMapAsync(OptionTask.Some);
 
         result.ShouldBe(expectedResult);
     }
@@ -48,7 +49,7 @@ public sealed class OptionFlatMapAsyncTest
     [Test]
     public async Task FlatMapAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -68,8 +69,8 @@ public sealed class ResultFlatMapAsyncTest
     [Test]
     public async Task MapperNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
-        var result2 = await ResultTask.Error<int, int>(0);
+        var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         Func<int, Task<Result<int>>> mapper = null;
         Func<int, Task<Result<int, int>>> mapper2 = null;
 
@@ -84,8 +85,8 @@ public sealed class ResultFlatMapAsyncTest
     [Test]
     public async Task MapperReturningNullThrowsException()
     {
-        var result = await ResultTask.Ok(0);
-        var result2 = await ResultTask.Ok<int, int>(0);
+        var result = Result.Ok(0);
+        var result2 = Result.Ok<int, int>(0);
 
         await result
             .Awaiting(x => x.FlatMapAsync(_ => default(Task<Result<int>>)))
@@ -105,15 +106,13 @@ public sealed class ResultFlatMapAsyncTest
         var currentResult = overload switch
         {
             1 => await source
-                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
-                .Then(x => x
-                    .FlatMapAsync(ResultTask.Ok<int, int>)
-                    .Then(y => y.AsEnumerable())),
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .FlatMapAsync(ResultTask.Ok<int, int>)
+                .Then(y => y.AsEnumerable()),
             _ => await source
-                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
-                .Then(x => x
-                    .FlatMapAsync(ResultTask.Ok)
-                    .Then(y => y.AsEnumerable()))
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .FlatMapAsync(ResultTask.Ok)
+                .Then(y => y.AsEnumerable())
         };
 
         currentResult.ShouldBe(expectedResult);
@@ -122,8 +121,8 @@ public sealed class ResultFlatMapAsyncTest
     [Test]
     public async Task FlatMapAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
-        var result2 = await ResultTask.Error<int, int>(0);
+        var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

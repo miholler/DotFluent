@@ -35,7 +35,8 @@ public sealed class OptionToOptionAsyncExtensionsTest
     [TestCase("ABC", new[] { "ABC" })]
     public async Task ReferenceTypeToOptionAsync(string source, IEnumerable<string> expectedResult)
     {
-        var result = await Task.FromResult(source)
+        var result = await Task
+            .FromResult(source)
             .ToOptionAsync();
 
         result.ShouldBe(expectedResult);
@@ -46,7 +47,8 @@ public sealed class OptionToOptionAsyncExtensionsTest
     [TestCase(1, new[] { 1 })]
     public async Task ValueTypeToOptionAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var result = await Task.FromResult(source)
+        var result = await Task
+            .FromResult(source)
             .ToOptionAsync();
 
         result.ShouldBe(expectedResult);

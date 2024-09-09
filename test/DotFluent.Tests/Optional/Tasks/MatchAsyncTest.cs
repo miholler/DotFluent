@@ -14,7 +14,7 @@ public sealed class OptionMatchAsyncTest
     [Test]
     public async Task NoneNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Action none = null;
         Func<int> noneValue = null;
         Func<Task> taskNone = null;
@@ -46,7 +46,7 @@ public sealed class OptionMatchAsyncTest
     [Test]
     public async Task SomeNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Action<int> some = null;
         Func<int, int> someValue = null;
         Func<int, Task> taskSome = null;
@@ -81,7 +81,7 @@ public sealed class OptionMatchAsyncTest
     [Test]
     public async Task NoneReturningNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
 
         await option
             .Awaiting(x => x.MatchAsync(() => default))
@@ -103,7 +103,7 @@ public sealed class OptionMatchAsyncTest
     [Test]
     public async Task SomeReturningNullThrowsException()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
 
         await option
             .Awaiting(x => x.MatchAsync(_ => default))
@@ -147,7 +147,7 @@ public sealed class OptionMatchAsyncTest
     public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
     {
         var result = 0;
-        var option = await source.ToOptionAsync();
+        var option = source.ToOption();
 
         switch (overload)
         {
@@ -215,7 +215,7 @@ public sealed class OptionMatchAsyncTest
     [Test]
     public async Task MatchAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -259,7 +259,7 @@ public sealed class ResultMatchAsyncTest
     [Test]
     public async Task OkNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         Action<int> ok = null;
         Func<int, int> okValue = null;
         Func<int, Task> taskOk = null;
@@ -288,7 +288,7 @@ public sealed class ResultMatchAsyncTest
     [Test]
     public async Task ErrorNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         Action<Exception> error = null;
         Func<Exception, int> errorValue = null;
         Func<Exception, Task> taskError = null;
@@ -317,7 +317,7 @@ public sealed class ResultMatchAsyncTest
     [Test]
     public async Task OkReturningNullThrowsException()
     {
-        var result = await ResultTask.Ok(0);
+        var result = Result.Ok(0);
 
         await result
             .Awaiting(x => x.MatchAsync(_ => default, _ => { }))
@@ -336,7 +336,7 @@ public sealed class ResultMatchAsyncTest
     [Test]
     public async Task ErrorReturningNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
 
         await result
             .Awaiting(x => x.MatchAsync(_ => { }, _ => default))
@@ -368,7 +368,7 @@ public sealed class ResultMatchAsyncTest
     public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
     {
         var currentResult = 0;
-        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new() { HResult = value }));
+        var result = source.Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }));
 
         switch (overload)
         {
@@ -413,7 +413,7 @@ public sealed class ResultMatchAsyncTest
     [Test]
     public async Task MatchAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

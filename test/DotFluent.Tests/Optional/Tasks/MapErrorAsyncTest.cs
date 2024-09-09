@@ -14,7 +14,7 @@ public sealed class ResultMapErrorAsyncTest
     [Test]
     public async Task MapperNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         Func<Exception, Task<Exception>> mapper = null;
 
         await result
@@ -25,10 +25,10 @@ public sealed class ResultMapErrorAsyncTest
     [Test]
     public async Task MapperReturningNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
 
         await result
-            .Awaiting(x => x.MapErrorAsync(_ => default(Task<Exception>)))
+            .Awaiting(x => x.MapErrorAsync(_ => default))
             .ShouldThrowAsync<InvalidOperationException>();
     }
 
@@ -37,8 +37,8 @@ public sealed class ResultMapErrorAsyncTest
     [TestCase(null)]
     public async Task MapErrorAsync(int? source)
     {
-        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
-        var currentResult = await result
+        var currentResult = await source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
             .MapErrorAsync(x => Task.FromResult<Exception>(new AggregateException(x)))
             .MatchAsync(x => x == source, x => x is AggregateException);
 
@@ -48,7 +48,7 @@ public sealed class ResultMapErrorAsyncTest
     [Test]
     public async Task MapErrorAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -60,7 +60,7 @@ public sealed class ResultMapErrorAsyncTest
     [Test]
     public async Task MapErrorAsyncMappingCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         using var cts = new CancellationTokenSource();
 
         await result

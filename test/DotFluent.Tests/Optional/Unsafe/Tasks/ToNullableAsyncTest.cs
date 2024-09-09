@@ -1,5 +1,4 @@
-﻿using DotFluent.Optional.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ public sealed class OptionToNullableAsyncTest
     [Test]
     public async Task ToNullableAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -58,7 +57,7 @@ public sealed class ResultToNullableAsyncTest
     [Test]
     public async Task ToNullableAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

@@ -15,7 +15,7 @@ public sealed class OptionMapAsyncTest
     [Test]
     public async Task MapperNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Func<int, Task<int>> mapper = null;
 
         await option
@@ -26,7 +26,7 @@ public sealed class OptionMapAsyncTest
     [Test]
     public async Task MapperReturningNullThrowsException()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
 
         await option
             .Awaiting(x => x.MapAsync(_ => default(Task<int>)))
@@ -38,8 +38,9 @@ public sealed class OptionMapAsyncTest
     [TestCase(1, new[] { 2 })]
     public async Task MapAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var option = await source.ToOptionAsync();
-        var result = await option.MapAsync(x => Task.FromResult(++x));
+        var result = await source
+            .ToOption()
+            .MapAsync(x => Task.FromResult(++x));
 
         result.ShouldBe(expectedResult);
     }
@@ -47,7 +48,7 @@ public sealed class OptionMapAsyncTest
     [Test]
     public async Task MapAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -59,7 +60,7 @@ public sealed class OptionMapAsyncTest
     [Test]
     public async Task MapAsyncMappingCanceled()
     {
-        var option = await OptionTask.Some(0);
+        var option = Option.Some(0);
         using var cts = new CancellationTokenSource();
 
         await option
@@ -82,7 +83,7 @@ public sealed class ResultMapAsyncTest
     [Test]
     public async Task MapperNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         Func<int, Task<int>> mapper = null;
 
         await result
@@ -93,7 +94,7 @@ public sealed class ResultMapAsyncTest
     [Test]
     public async Task MapperReturningNullThrowsException()
     {
-        var result = await ResultTask.Ok(0);
+        var result = Result.Ok(0);
 
         await result
             .Awaiting(x => x.MapAsync(_ => default(Task<int>)))
@@ -105,8 +106,9 @@ public sealed class ResultMapAsyncTest
     [TestCase(null, new int[0])]
     public async Task MapAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
-        var currentResult = await result.MapAsync(x => Task.FromResult(++x));
+        var currentResult = await source
+            .Match(Result.Ok, () => Result.Error<int>(new()))
+            .MapAsync(x => Task.FromResult(++x));
 
         currentResult.ShouldBe(expectedResult);
     }
@@ -114,7 +116,7 @@ public sealed class ResultMapAsyncTest
     [Test]
     public async Task MapAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -126,7 +128,7 @@ public sealed class ResultMapAsyncTest
     [Test]
     public async Task MapAsyncMappingCanceled()
     {
-        var result = await ResultTask.Ok(0);
+        var result = Result.Ok(0);
         using var cts = new CancellationTokenSource();
 
         await result
