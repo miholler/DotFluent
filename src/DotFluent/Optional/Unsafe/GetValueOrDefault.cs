@@ -12,7 +12,7 @@ public static partial class UnsafeOption
     /// Retrieves the value of an option, or the type parameter's default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The option to retrieve the value from.</param>
+    /// <param name="source">The option to retrieve the value of.</param>
     /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the default value for the <typeparamref name="TSource"/> type.</returns>
     public static TSource? GetValueOrDefault<TSource>(this Option<TSource> source)
         => source.GetValueOrDefault(() => default!);
@@ -21,7 +21,7 @@ public static partial class UnsafeOption
     /// Retrieves the value of an option, or a specified default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The option to retrieve the value from.</param>
+    /// <param name="source">The option to retrieve the value of.</param>
     /// <param name="defaultValue">The value to return if a value is missing.</param>
     /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the defaultValue parameter.</returns>
     public static TSource GetValueOrDefault<TSource>(this Option<TSource> source, TSource defaultValue)
@@ -32,7 +32,7 @@ public static partial class UnsafeOption
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The option to retrieve the value from.</param>
+    /// <param name="source">The option to retrieve the value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <returns>The value of the <see cref="Option{TSource}"/>; otherwise, the default value created by the specified function.</returns>
     public static TSource GetValueOrDefault<TSource>(this Option<TSource> source, Func<TSource> defaultFactory)
@@ -57,7 +57,7 @@ public static partial class UnsafeResult
     /// Retrieves the success value of a result, or the type parameter's default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value from.</param>
+    /// <param name="source">The result to retrieve the success value of.</param>
     /// <returns>The success value of the <see cref="Result{TSource}"/>; otherwise, the default value for the <typeparamref name="TSource"/> type.</returns>
     public static TSource? GetValueOrDefault<TSource>(this Result<TSource> source)
         => source.GetValueOrDefault(() => default!);
@@ -66,7 +66,7 @@ public static partial class UnsafeResult
     /// Retrieves the success value of a result, or a specified default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value from.</param>
+    /// <param name="source">The result to retrieve the success value of.</param>
     /// <param name="defaultValue">The value to return if an error value is present.</param>
     /// <returns>The success value of the <see cref="Result{TSource}"/>; otherwise, the defaultValue parameter.</returns>
     public static TSource GetValueOrDefault<TSource>(this Result<TSource> source, TSource defaultValue)
@@ -77,7 +77,7 @@ public static partial class UnsafeResult
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value from.</param>
+    /// <param name="source">The result to retrieve the success value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <returns>The success value of the <see cref="Result{TSource}"/>; otherwise, the default value created by the specified function.</returns>
     public static TSource GetValueOrDefault<TSource>(this Result<TSource> source, Func<TSource> defaultFactory)
@@ -92,7 +92,7 @@ public static partial class UnsafeResult
     /// </summary>
     /// <typeparam name="TValue">The type of the success value of source.</typeparam>
     /// <typeparam name="TError">The type of the error value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value from.</param>
+    /// <param name="source">The result to retrieve the success value of.</param>
     /// <returns>The success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value for the <typeparamref name="TValue"/> type.</returns>
     public static TValue? GetValueOrDefault<TValue, TError>(this Result<TValue, TError> source)
         => source.GetValueOrDefault(() => default!);
@@ -102,7 +102,7 @@ public static partial class UnsafeResult
     /// </summary>
     /// <typeparam name="TValue">The type of the success value of source.</typeparam>
     /// <typeparam name="TError">The type of the error value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value from.</param>
+    /// <param name="source">The result to retrieve the success value of.</param>
     /// <param name="defaultValue">The value to return if an error value is present.</param>
     /// <returns>The success value of the <see cref="Result{TValue, TError}"/>; otherwise, the defaultValue parameter.</returns>
     public static TValue GetValueOrDefault<TValue, TError>(this Result<TValue, TError> source, TValue defaultValue)
@@ -114,7 +114,7 @@ public static partial class UnsafeResult
     /// </summary>
     /// <typeparam name="TValue">The type of the success value of source.</typeparam>
     /// <typeparam name="TError">The type of the error value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value from.</param>
+    /// <param name="source">The result to retrieve the success value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <returns>The success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value created by the specified function.</returns>
     public static TValue GetValueOrDefault<TValue, TError>(this Result<TValue, TError> source, Func<TValue> defaultFactory)
