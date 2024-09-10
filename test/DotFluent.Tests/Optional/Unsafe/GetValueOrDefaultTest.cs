@@ -58,34 +58,62 @@ public sealed class ResultGetValueOrDefaultTest
     public void DefaultFactoryNullThrowsExcption()
     {
         var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         Func<int> defaultFactory = null;
 
         result
             .Invoking(x => x.GetValueOrDefault(defaultFactory))
             .ShouldThrow<ArgumentNullException>();
+        result2
+            .Invoking(x => x.GetValueOrDefault(defaultFactory))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
-    [TestCase(1, 1)]
-    [TestCase(null, 0)]
-    public void GetValueOrDefault(int? source, int expectedResult)
-        => source
-            .Match(Result.Ok, () => Result.Error<int>(new()))
-            .GetValueOrDefault()
-            .ShouldBe(expectedResult);
+    [TestCase(1, 1, 0)]
+    [TestCase(1, 1, 1)]
+    [TestCase(null, 0, 0)]
+    [TestCase(null, 0, 1)]
+    public void GetValueOrDefault(int? source, int expectedResult, int overload)
+    {
+        var currentResult = overload switch
+        {
+            1 => source
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .GetValueOrDefault(),
+            _ => source
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .GetValueOrDefault()
+        };
+
+        currentResult.ShouldBe(expectedResult);
+    }
 
     [Test]
     [TestCase(1, 2, 1, 0)]
     [TestCase(null, 1, 1, 0)]
     [TestCase(1, 2, 1, 1)]
     [TestCase(null, 1, 1, 1)]
+    [TestCase(1, 2, 1, 2)]
+    [TestCase(null, 1, 1, 2)]
+    [TestCase(1, 2, 1, 3)]
+    [TestCase(null, 1, 1, 3)]
     public void GetValueOrDefaultWithDefaultValue(int? source, int defaultValue, int expectedResult, int overload)
     {
-        var result = source.Match(Result.Ok, () => Result.Error<int>(new()));
         var currentResult = overload switch
         {
-            1 => result.GetValueOrDefault(() => defaultValue),
-            _ => result.GetValueOrDefault(defaultValue)
+            1 => source
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .GetValueOrDefault(() => defaultValue),
+            2 => source
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .GetValueOrDefault(defaultValue),
+            3 => source
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .GetValueOrDefault(() => defaultValue),
+            _ => source
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .GetValueOrDefault(defaultValue)
         };
 
         currentResult.ShouldBe(expectedResult);
