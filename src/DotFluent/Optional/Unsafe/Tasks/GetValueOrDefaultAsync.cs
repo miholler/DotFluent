@@ -15,7 +15,7 @@ public static partial class UnsafeOptionTask
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The option to retrieve the value of.</param>
+    /// <param name="source">The option to retrieve the value from.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -34,7 +34,8 @@ public static partial class UnsafeOptionTask
 
 /// <summary>
 /// Provides a set of static methods for working with 
-/// <see cref="Result{T}"/> instances asynchronously.
+/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/>
+/// instances asynchronously.
 /// </summary>
 public static partial class UnsafeResultTask
 {
@@ -45,7 +46,7 @@ public static partial class UnsafeResultTask
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The result to retrieve the success value of.</param>
+    /// <param name="source">The result to retrieve the success value from.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>

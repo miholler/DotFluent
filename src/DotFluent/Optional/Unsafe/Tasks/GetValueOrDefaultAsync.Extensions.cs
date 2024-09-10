@@ -13,7 +13,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// Asynchronously retrieves the value of an option, or the type parameter's default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value of.</param>
+    /// <param name="source">The task returning the option to retrieve the value from.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
@@ -30,7 +30,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// Asynchronously retrieves the value of an option, or a specified default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value of.</param>
+    /// <param name="source">The task returning the option to retrieve the value from.</param>
     /// <param name="defaultValue">The value to return if a value is missing.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -49,7 +49,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value of.</param>
+    /// <param name="source">The task returning the option to retrieve the value from.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -69,7 +69,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value of.</param>
+    /// <param name="source">The task returning the option to retrieve the value from.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -98,7 +98,7 @@ public static partial class UnsafeResultTaskExtensions
     /// Asynchronously retrieves the success value of a result, or the type parameter's default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="source">The task returning the result to retrieve the success value from.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
@@ -115,7 +115,7 @@ public static partial class UnsafeResultTaskExtensions
     /// Asynchronously retrieves the success value of a result, or a specified default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="source">The task returning the result to retrieve the success value from.</param>
     /// <param name="defaultValue">The value to return if an error value is present.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -134,7 +134,7 @@ public static partial class UnsafeResultTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="source">The task returning the result to retrieve the success value from.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -154,7 +154,7 @@ public static partial class UnsafeResultTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="source">The task returning the result to retrieve the success value from.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
