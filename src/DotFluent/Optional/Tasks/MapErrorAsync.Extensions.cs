@@ -15,7 +15,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous map error operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'map error' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TSource}"/> whose error value is the result of invoking the transform function on the error value of source;
     /// otherwise, an 'Ok' <see cref="Result{TSource}"/>.
     /// </returns>
@@ -36,7 +36,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous map error operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'map error' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TSource}"/> whose error value is the result of invoking the transform function on the error value of source;
     /// otherwise, an 'Ok' <see cref="Result{TSource}"/>.
     /// </returns>
@@ -59,7 +59,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous map error operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'map error' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TValue, TResult}"/> whose error value is the result of invoking the transform function on the error value of source;
     /// otherwise, an 'Ok' <see cref="Result{TValue, TResult}"/>.
     /// </returns>
@@ -82,7 +82,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous map error operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'map error' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TValue, TResult}"/> whose error value is the result of invoking the transform function on the error value of source;
     /// otherwise, an 'Ok' <see cref="Result{TValue, TResult}"/>.
     /// </returns>

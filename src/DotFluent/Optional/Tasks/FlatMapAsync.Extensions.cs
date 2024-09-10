@@ -16,7 +16,7 @@ public static partial class OptionTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous flat map operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'flat map' operation. The value of the TResult parameter contains
     /// an <see cref="Option{TResult}"/> whose value is the flattened result of invoking the transform function on the source value;
     /// otherwise, an empty <see cref="Option{TResult}"/>.
     /// </returns>
@@ -38,7 +38,7 @@ public static partial class OptionTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous flat map operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'flat map' operation. The value of the TResult parameter contains
     /// an <see cref="Option{TResult}"/> whose value is the flattened result of invoking the transform function on the source value;
     /// otherwise, an empty <see cref="Option{TResult}"/>.
     /// </returns>
@@ -67,7 +67,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous flat map operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'flat map' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TResult}"/> whose success value is the flattened result of invoking the transform function on the success value of source;
     /// otherwise, an 'Error' <see cref="Result{TResult}"/>.
     /// </returns>
@@ -89,7 +89,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous flat map operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'flat map' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TResult}"/> whose success value is the flattened result of invoking the transform function on the success value of source;
     /// otherwise, an 'Error' <see cref="Result{TResult}"/>.
     /// </returns>
@@ -112,7 +112,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous flat map operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'flat map' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TResult, TError}"/> whose success value is the flattened result of invoking the transform function on the success value of source;
     /// otherwise, an 'Error' <see cref="Result{TResult, TError}"/>.
     /// </returns>
@@ -135,7 +135,7 @@ public static partial class ResultTaskExtensions
     /// <param name="mapper">A transform function to apply to the value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous flat map operation. The value of the TResult parameter contains
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'flat map' operation. The value of the TResult parameter contains
     /// a <see cref="Result{TResult, TError}"/> whose success value is the flattened result of invoking the transform function on the success value of source;
     /// otherwise, an 'Error' <see cref="Result{TResult, TError}"/>.
     /// </returns>
