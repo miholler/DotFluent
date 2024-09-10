@@ -13,7 +13,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// Asynchronously retrieves the value of an option, or the type parameter's default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value from.</param>
+    /// <param name="source">The task returning the option to retrieve the value of.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
@@ -30,7 +30,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// Asynchronously retrieves the value of an option, or a specified default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value from.</param>
+    /// <param name="source">The task returning the option to retrieve the value of.</param>
     /// <param name="defaultValue">The value to return if a value is missing.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -49,7 +49,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value from.</param>
+    /// <param name="source">The task returning the option to retrieve the value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -69,7 +69,7 @@ public static partial class UnsafeOptionTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
-    /// <param name="source">The task returning the option to retrieve the value from.</param>
+    /// <param name="source">The task returning the option to retrieve the value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -98,7 +98,7 @@ public static partial class UnsafeResultTaskExtensions
     /// Asynchronously retrieves the success value of a result, or the type parameter's default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value from.</param>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
@@ -115,7 +115,7 @@ public static partial class UnsafeResultTaskExtensions
     /// Asynchronously retrieves the success value of a result, or a specified default value.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value from.</param>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
     /// <param name="defaultValue">The value to return if an error value is present.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -134,7 +134,7 @@ public static partial class UnsafeResultTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value from.</param>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -154,7 +154,7 @@ public static partial class UnsafeResultTaskExtensions
     /// specified function.
     /// </summary>
     /// <typeparam name="TSource">The type of the success value of source.</typeparam>
-    /// <param name="source">The task returning the result to retrieve the success value from.</param>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -162,6 +162,85 @@ public static partial class UnsafeResultTaskExtensions
     /// the success value of the <see cref="Result{TSource}"/>; otherwise, the default value created by the specified function.
     /// </returns>
     public static Task<TSource> GetValueOrDefaultAsync<TSource>(this Task<Result<TSource>> source, Func<Task<TSource>> defaultFactory, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        defaultFactory.ThrowIfNull();
+
+        return source.Then(x => x.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves the success value of a result, or the type parameter's default value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
+    /// the success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value for the <typeparamref name="TValue"/> type.
+    /// </returns>
+    public static Task<TValue?> GetValueOrDefaultAsync<TValue, TError>(this Task<Result<TValue, TError>> source, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+
+        return source.Then(x => x.GetValueOrDefault(), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves the success value of a result, or a specified default value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="defaultValue">The value to return if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
+    /// the success value of the <see cref="Result{TValue, TError}"/>; otherwise, the defaultValue parameter.
+    /// </returns>
+    public static Task<TValue> GetValueOrDefaultAsync<TValue, TError>(this Task<Result<TValue, TError>> source, TValue defaultValue, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+
+        return source.Then(x => x.GetValueOrDefault(defaultValue), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves the success value of a result, or a default value created by a
+    /// specified function.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="defaultFactory">A function to create a default value.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
+    /// the success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value created by the specified function.
+    /// </returns>
+    public static Task<TValue> GetValueOrDefaultAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<TValue> defaultFactory, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        defaultFactory.ThrowIfNull();
+
+        return source.Then(x => x.GetValueOrDefault(defaultFactory), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves the success value of a result, or a default value created by a
+    /// specified function.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to retrieve the success value of.</param>
+    /// <param name="defaultFactory">A function to create a default value.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous get operation. The value of the TResult parameter contains
+    /// the success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value created by the specified function.
+    /// </returns>
+    public static Task<TValue> GetValueOrDefaultAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<Task<TValue>> defaultFactory, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
