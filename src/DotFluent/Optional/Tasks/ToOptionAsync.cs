@@ -49,5 +49,21 @@ public static partial class OptionTask
             ? Task.FromCanceled<Option<TSource>>(cancellationToken)
             : Task.FromResult(source.ToOption());
 
+    /// <summary>
+    /// Asynchronously creates an option from a result value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The result value to create an option from.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous 'to option' operation. The value of the TResult parameter contains
+    /// an <see cref="Option{TValue}"/> representing the success value of source.
+    /// </returns>
+    public static Task<Option<TValue>> ToOptionAsync<TValue, TError>(this Result<TValue, TError> source, CancellationToken cancellationToken = default)
+        => cancellationToken.IsCancellationRequested
+            ? Task.FromCanceled<Option<TValue>>(cancellationToken)
+            : Task.FromResult(source.ToOption());
+
     #endregion
 }

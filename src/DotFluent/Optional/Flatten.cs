@@ -33,5 +33,15 @@ public static partial class Result
     public static Result<TSource> Flatten<TSource>(this Result<Result<TSource>> source)
         => source.FlatMap(x => x);
 
+    /// <summary>
+    /// Flattens a result with a nested result into one result.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of the nested result.</typeparam>
+    /// <typeparam name="TError">The type of the error value of the nested result.</typeparam>
+    /// <param name="source">The result with a nested result to flatten.</param>
+    /// <returns>A <see cref="Result{TValue, TError}"/> representing the flattened result.</returns>
+    public static Result<TValue, TError> Flatten<TValue, TError>(this Result<Result<TValue, TError>, TError> source)
+        => source.FlatMap(x => x);
+
     #endregion
 }

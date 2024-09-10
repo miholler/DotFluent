@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DotFluent.Tasks;
+using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,7 @@ public sealed class ResultOrElseAsyncExtensionsTest
     public async Task SourceNullThrowsException()
     {
         Task<Result<int>> resultTask = null;
+        Task<Result<int, int>> result2Task = null;
 
         await resultTask
             .Awaiting(x => x.OrElseAsync(Result.Error<int>(new())))
@@ -109,14 +111,26 @@ public sealed class ResultOrElseAsyncExtensionsTest
         await resultTask
             .Awaiting(x => x.OrElseAsync(() => ResultTask.Error<int>(new())))
             .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(Result.Error<int, int>(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(() => Result.Error<int, int>(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(() => ResultTask.Error<int, int>(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
     public async Task OtherFactoryNullThrowsException()
     {
         var resultTask = ResultTask.Error<int>(new());
+        var result2Task = ResultTask.Error<int, int>(0);
         Func<Result<int>> otherFactory = null;
+        Func<Result<int, int>> otherFactory2 = null;
         Func<Task<Result<int>>> taskOtherFactory = null;
+        Func<Task<Result<int, int>>> taskOtherFactory2 = null;
 
         await resultTask
             .Awaiting(x => x.OrElseAsync(otherFactory))
@@ -124,29 +138,64 @@ public sealed class ResultOrElseAsyncExtensionsTest
         await resultTask
             .Awaiting(x => x.OrElseAsync(taskOtherFactory))
             .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(otherFactory2))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(taskOtherFactory2))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
     [TestCase(1, 2, new[] { 1 }, 0)]
     [TestCase(1, 2, new[] { 1 }, 1)]
     [TestCase(1, 2, new[] { 1 }, 2)]
+    [TestCase(1, 2, new[] { 1 }, 3)]
+    [TestCase(1, 2, new[] { 1 }, 4)]
+    [TestCase(1, 2, new[] { 1 }, 5)]
     [TestCase(1, null, new[] { 1 }, 0)]
     [TestCase(1, null, new[] { 1 }, 1)]
     [TestCase(1, null, new[] { 1 }, 2)]
+    [TestCase(1, null, new[] { 1 }, 3)]
+    [TestCase(1, null, new[] { 1 }, 4)]
+    [TestCase(1, null, new[] { 1 }, 5)]
     [TestCase(null, 1, new[] { 1 }, 0)]
     [TestCase(null, 1, new[] { 1 }, 1)]
     [TestCase(null, 1, new[] { 1 }, 2)]
+    [TestCase(null, 1, new[] { 1 }, 3)]
+    [TestCase(null, 1, new[] { 1 }, 4)]
+    [TestCase(null, 1, new[] { 1 }, 5)]
     [TestCase(null, null, new int[0], 0)]
     [TestCase(null, null, new int[0], 1)]
     [TestCase(null, null, new int[0], 2)]
+    [TestCase(null, null, new int[0], 3)]
+    [TestCase(null, null, new int[0], 4)]
+    [TestCase(null, null, new int[0], 5)]
     public async Task OrElseAsync(int? source, int? other, IEnumerable<int> expectedResult, int overload)
     {
-        var resultTask = source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
         var currentResult = overload switch
         {
-            1 => await resultTask.OrElseAsync(() => other.Match(Result.Ok, () => Result.Error<int>(new()))),
-            2 => await resultTask.OrElseAsync(() => other.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))),
-            _ => await resultTask.OrElseAsync(other.Match(Result.Ok, () => Result.Error<int>(new())))
+            1 => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .OrElseAsync(() => other.Match(Result.Ok, () => Result.Error<int>(new())))
+                .Then(x => x.AsEnumerable()),
+            2 => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .OrElseAsync(() => other.Match(ResultTask.Ok, () => ResultTask.Error<int>(new())))
+                .Then(x => x.AsEnumerable()),
+            3 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .OrElseAsync(other.Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))),
+            4 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .OrElseAsync(() => other.Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))),
+            5 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .OrElseAsync(() => other.Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .OrElseAsync(other.Match(Result.Ok, () => Result.Error<int>(new())))
+                .Then(x => x.AsEnumerable())
         };
 
         currentResult.ShouldBe(expectedResult);
@@ -156,6 +205,7 @@ public sealed class ResultOrElseAsyncExtensionsTest
     public async Task OrElseAsyncCanceled()
     {
         var resultTask = ResultTask.Error<int>(new());
+        var result2Task = ResultTask.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -167,6 +217,15 @@ public sealed class ResultOrElseAsyncExtensionsTest
             .ShouldThrowAsync<TaskCanceledException>();
         await resultTask
             .Awaiting(x => x.OrElseAsync(() => ResultTask.Error<int>(new()), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(Result.Error<int, int>(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(() => Result.Error<int, int>(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
+            .Awaiting(x => x.OrElseAsync(() => ResultTask.Error<int, int>(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

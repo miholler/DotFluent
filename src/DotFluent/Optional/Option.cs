@@ -390,7 +390,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <summary>
     /// Implicitly converts a value into an option.
     /// </summary>
-    /// <param name="value">The input value.</param>
+    /// <param name="value">The value to convert.</param>
     /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
     public static implicit operator Option<T>(T? value)
         => value.IsNotNull() ? Some(value) : None;

@@ -81,11 +81,18 @@ public sealed class ResultContainsAsyncExtensionsTest
     public async Task SourceNullThrowsException()
     {
         Task<Result<int>> resultTask = null;
+        Task<Result<int, int>> result2Task = null;
 
         await resultTask
             .Awaiting(x => x.ContainsAsync(0))
             .ShouldThrowAsync<ArgumentNullException>();
         await resultTask
+            .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.ContainsAsync(0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
             .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
@@ -99,22 +106,41 @@ public sealed class ResultContainsAsyncExtensionsTest
             .Error<int>(new())
             .Awaiting(x => x.ContainsAsync(valueFactory))
             .ShouldThrowAsync<ArgumentNullException>();
+        await ResultTask
+            .Error<int, int>(0)
+            .Awaiting(x => x.ContainsAsync(valueFactory))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
     [TestCase(1, 1, true, 0)]
     [TestCase(1, 1, true, 1)]
+    [TestCase(1, 1, true, 2)]
+    [TestCase(1, 1, true, 3)]
     [TestCase(1, 2, false, 0)]
     [TestCase(1, 2, false, 1)]
+    [TestCase(1, 2, false, 2)]
+    [TestCase(1, 2, false, 3)]
     [TestCase(null, 1, false, 0)]
     [TestCase(null, 1, false, 1)]
+    [TestCase(null, 1, false, 2)]
+    [TestCase(null, 1, false, 3)]
     public async Task ContainsAsync(int? source, int value, bool expectedResult, int overload)
     {
-        var resultTask = source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
         var currentResult = overload switch
         {
-            1 => await resultTask.ContainsAsync(() => Task.FromResult(value)),
-            _ => await resultTask.ContainsAsync(value)
+            1 => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ContainsAsync(() => Task.FromResult(value)),
+            2 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ContainsAsync(value),
+            3 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ContainsAsync(() => Task.FromResult(value)),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ContainsAsync(value)
         };
 
         currentResult.ShouldBe(expectedResult);
@@ -124,6 +150,7 @@ public sealed class ResultContainsAsyncExtensionsTest
     public async Task ContainsAsyncCanceled()
     {
         var resultTask = ResultTask.Error<int>(new());
+        var result2Task = ResultTask.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -131,6 +158,12 @@ public sealed class ResultContainsAsyncExtensionsTest
             .Awaiting(x => x.ContainsAsync(0, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await resultTask
+            .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
+            .Awaiting(x => x.ContainsAsync(0, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
             .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

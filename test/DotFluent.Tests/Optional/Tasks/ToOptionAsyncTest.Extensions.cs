@@ -18,6 +18,7 @@ public sealed class OptionToOptionAsyncExtensionsTest
         Task<string> nullableTask = null;
         Task<int?> nullableValueTask = null;
         Task<Result<int>> nullableResultTask = null;
+        Task<Result<int, int>> nullableResult2Task = null;
 
         await nullableTask
             .Awaiting(x => x.ToOptionAsync())
@@ -28,6 +29,9 @@ public sealed class OptionToOptionAsyncExtensionsTest
         await nullableResultTask
             .Awaiting(x => x.ToOptionAsync())
             .ShouldThrowAsync<ArgumentNullException>();
+        await nullableResult2Task
+            .Awaiting(x => x.ToOptionAsync())
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
@@ -35,7 +39,8 @@ public sealed class OptionToOptionAsyncExtensionsTest
     [TestCase("ABC", new[] { "ABC" })]
     public async Task ReferenceTypeToOptionAsync(string source, IEnumerable<string> expectedResult)
     {
-        var result = await Task.FromResult(source)
+        var result = await Task
+            .FromResult(source)
             .ToOptionAsync();
 
         result.ShouldBe(expectedResult);
@@ -46,20 +51,29 @@ public sealed class OptionToOptionAsyncExtensionsTest
     [TestCase(1, new[] { 1 })]
     public async Task ValueTypeToOptionAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var result = await Task.FromResult(source)
+        var result = await Task
+            .FromResult(source)
             .ToOptionAsync();
 
         result.ShouldBe(expectedResult);
     }
 
     [Test]
-    [TestCase(null, new int[0])]
-    [TestCase(1, new[] { 1 })]
-    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    [TestCase(null, new int[0], 0)]
+    [TestCase(null, new int[0], 1)]
+    [TestCase(1, new[] { 1 }, 0)]
+    [TestCase(1, new[] { 1 }, 1)]
+    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult, int overload)
     {
-        var result = await source
-            .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
-            .ToOptionAsync();
+        var result = overload switch
+        {
+            1 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ToOptionAsync(),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ToOptionAsync()
+        };
 
         result.ShouldBe(expectedResult);
     }
@@ -77,6 +91,9 @@ public sealed class OptionToOptionAsyncExtensionsTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await ResultTask.Error<int>(new())
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await ResultTask.Error<int, int>(0)
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

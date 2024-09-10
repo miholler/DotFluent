@@ -9,10 +9,24 @@ public sealed class ResultOkTest
     #region Methods
 
     [Test]
-    public void Ok()
-        => Result
-            .Ok(1)
-            .ShouldBe(Result<int>.Ok(1));
+    [TestCase(0)]
+    [TestCase(1)]
+    public void Ok(int overload)
+    {
+        switch(overload)
+        {
+            case 1:
+                Result
+                    .Ok<int, int>(1)
+                    .ShouldBe(Result<int, int>.Ok(1));
+                break;
+            default:
+                Result
+                    .Ok(1)
+                    .ShouldBe(Result<int>.Ok(1));
+                break;
+        }
+    }
 
     #endregion
 }

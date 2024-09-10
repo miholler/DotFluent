@@ -85,11 +85,18 @@ public sealed class ResultExistsAsyncExtensionsTest
     public async Task SourceNullThrowsException()
     {
         Task<Result<int>> resultTask = null;
+        Task<Result<int, int>> result2Task = null;
 
         await resultTask
             .Awaiting(x => x.ExistsAsync(_ => false))
             .ShouldThrowAsync<ArgumentNullException>();
         await resultTask
+            .Awaiting(x => x.ExistsAsync(_ => Task.FromResult(false)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.ExistsAsync(_ => false))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
             .Awaiting(x => x.ExistsAsync(_ => Task.FromResult(false)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
@@ -98,6 +105,7 @@ public sealed class ResultExistsAsyncExtensionsTest
     public async Task PredicateNullThrowsException()
     {
         var resultTask = ResultTask.Error<int>(new());
+        var result2Task = ResultTask.Error<int, int>(0);
         Func<int, bool> predicate = null;
         Func<int, Task<bool>> taskPredicate = null;
 
@@ -107,22 +115,43 @@ public sealed class ResultExistsAsyncExtensionsTest
         await resultTask
             .Awaiting(x => x.ExistsAsync(taskPredicate))
             .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.ExistsAsync(predicate))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
+            .Awaiting(x => x.ExistsAsync(taskPredicate))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
     [TestCase(1, 1, true, 0)]
     [TestCase(1, 1, true, 1)]
+    [TestCase(1, 1, true, 2)]
+    [TestCase(1, 1, true, 3)]
     [TestCase(1, 2, false, 0)]
     [TestCase(1, 2, false, 1)]
+    [TestCase(1, 2, false, 2)]
+    [TestCase(1, 2, false, 3)]
     [TestCase(null, 1, false, 0)]
     [TestCase(null, 1, false, 1)]
+    [TestCase(null, 1, false, 2)]
+    [TestCase(null, 1, false, 3)]
     public async Task ExistsAsync(int? source, int value, bool expectedResult, int overload)
     {
-        var resultTask = source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
         var currentResult = overload switch
         {
-            1 => await resultTask.ExistsAsync(x => Task.FromResult(x == value)),
-            _ => await resultTask.ExistsAsync(x => x == value)
+            1 => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ExistsAsync(x => Task.FromResult(x == value)),
+            2 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ExistsAsync(x => x == value),
+            3 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ExistsAsync(x => Task.FromResult(x == value)),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ExistsAsync(x => x == value)
         };
 
         currentResult.ShouldBe(expectedResult);
@@ -132,6 +161,7 @@ public sealed class ResultExistsAsyncExtensionsTest
     public async Task ExistsAsyncCanceled()
     {
         var resultTask = ResultTask.Error<int>(new());
+        var result2Task = ResultTask.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -139,6 +169,12 @@ public sealed class ResultExistsAsyncExtensionsTest
             .Awaiting(x => x.ExistsAsync(_ => false, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await resultTask
+            .Awaiting(x => x.ExistsAsync(_ => Task.FromResult(false), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
+            .Awaiting(x => x.ExistsAsync(_ => false, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
             .Awaiting(x => x.ExistsAsync(_ => Task.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
