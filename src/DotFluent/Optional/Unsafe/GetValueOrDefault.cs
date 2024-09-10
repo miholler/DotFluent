@@ -46,8 +46,8 @@ public static partial class UnsafeOption
 }
 
 /// <summary>
-/// Provides a set of static methods for working 
-/// with <see cref="Result{T}"/> instances.
+/// Provides a set of static methods for working with
+/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> instances.
 /// </summary>
 public static partial class UnsafeResult
 {
@@ -81,6 +81,43 @@ public static partial class UnsafeResult
     /// <param name="defaultFactory">A function to create a default value.</param>
     /// <returns>The success value of the <see cref="Result{TSource}"/>; otherwise, the default value created by the specified function.</returns>
     public static TSource GetValueOrDefault<TSource>(this Result<TSource> source, Func<TSource> defaultFactory)
+    {
+        defaultFactory.ThrowIfNull();
+
+        return source.Match(x => x, _ => defaultFactory());
+    }
+
+    /// <summary>
+    /// Retrieves the success value of a result, or the type parameter's default value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The result to retrieve the success value of.</param>
+    /// <returns>The success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value for the <typeparamref name="TValue"/> type.</returns>
+    public static TValue? GetValueOrDefault<TValue, TError>(this Result<TValue, TError> source)
+        => source.GetValueOrDefault(() => default!);
+
+    /// <summary>
+    /// Retrieves the success value of a result, or a specified default value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The result to retrieve the success value of.</param>
+    /// <param name="defaultValue">The value to return if an error value is present.</param>
+    /// <returns>The success value of the <see cref="Result{TValue, TError}"/>; otherwise, the defaultValue parameter.</returns>
+    public static TValue GetValueOrDefault<TValue, TError>(this Result<TValue, TError> source, TValue defaultValue)
+        => source.GetValueOrDefault(() => defaultValue);
+
+    /// <summary>
+    /// Retrieves the success value of a result, or a default value created by a
+    /// specified function.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The result to retrieve the success value of.</param>
+    /// <param name="defaultFactory">A function to create a default value.</param>
+    /// <returns>The success value of the <see cref="Result{TValue, TError}"/>; otherwise, the default value created by the specified function.</returns>
+    public static TValue GetValueOrDefault<TValue, TError>(this Result<TValue, TError> source, Func<TValue> defaultFactory)
     {
         defaultFactory.ThrowIfNull();
 

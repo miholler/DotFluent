@@ -5,41 +5,47 @@ public static partial class Sequence
     #region Methods
 
     /// <summary>
-    /// Inserts the elements of a sequence into another sequence at a specified index.
+    /// Inserts an element into a sequence at a specified index.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="first">The sequence in which the elements of the second sequence are to be inserted.</param>
-    /// <param name="second">The sequence whose elements are to be inserted into the first sequence.</param>
-    /// <param name="index">The zero-based index at which to insert the elements.</param>
+    /// <param name="source">The sequence in which the element is to be inserted.</param>
+    /// <param name="index">The zero-based index at which to insert the element.</param>
+    /// <param name="item">The element to be inserted into the source sequence.</param>
     /// <returns>
-    /// An <see cref="IEnumerable{TSource}"/> that contains the elements of the second input sequence inserted
-    /// into the first input sequence at the specified index.
+    /// An <see cref="IEnumerable{TSource}"/> that contains the element inserted into
+    /// the input sequence at the specified index.
     /// </returns>
-    public static IEnumerable<TSource> Insert<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, int index)
+    public static IEnumerable<TSource> Insert<TSource>(this IEnumerable<TSource> source, int index, TSource item)
     {
-        first.ThrowIfNull();
-        second.ThrowIfNull();
+        source.ThrowIfNull();
 
+#if NETSTANDARD
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
+#else
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+#endif
 
-        return InsertIterator(first, second, index);
+        return InsertIterator(source, index, item);
     }
 
-    private static IEnumerable<TSource> InsertIterator<TSource>(IEnumerable<TSource> first, IEnumerable<TSource> second, int index)
+    private static IEnumerable<TSource> InsertIterator<TSource>(IEnumerable<TSource> source, int index, TSource item)
     {
-        using var enumerator = first.GetEnumerator();
+        using var enumerator = source.GetEnumerator();
         while (index > 0 && enumerator.MoveNext())
         {
             yield return enumerator.Current;
             index--;
         }
 
+#if NETSTANDARD
         if (index > 0)
             throw new ArgumentOutOfRangeException(nameof(index));
+#else
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
+#endif
 
-        foreach (var item in second)
-            yield return item;
+        yield return item;
 
         while (enumerator.MoveNext())
             yield return enumerator.Current;

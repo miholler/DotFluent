@@ -57,10 +57,7 @@ public sealed class PipeTest
         };
         result
             .Select(x => x.ToString())
-            .ShouldBe(
-                "#A",
-                "#B",
-                "#C");
+            .ShouldBe(["#A", "#B", "#C"]);
     }
 
     #endregion

@@ -203,11 +203,11 @@ public sealed class RightJoinTest
             7 => outer.RightJoin(inner, x => x.Id, x => x.Id, (o, i) => (o, i), EqualityComparer<int>.Default),
             _ => outer.RightJoin(inner, x => x.Id, (o, i) => (o, i))
         };
-        result.ShouldBe(
+        result.ShouldBe([
             (default, a),
             (b, b),
             (b, b),
-            (default, c));
+            (default, c)]);
     }
 
     #endregion

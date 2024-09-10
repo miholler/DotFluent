@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Authors>Michael Holler</Authors>
-    <Version>3.6.0</Version>
-	<Nullable>enable</Nullable>
-	<LangVersion>latest</LangVersion>
-	<ImplicitUsings>enable</ImplicitUsings>
+    <Version>3.8.0</Version>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Provides a set of types and extension methods to chain method calls and increase code readability.</Description>
     <PackageProjectUrl>https://bitbucket.org/miholler/dotfluent/wiki/Home</PackageProjectUrl>
-    <PackageTags>Fluent, Extensions, Linq, Task, Promise, Result, Option, Maybe, Nullable</PackageTags>
+    <PackageTags>Fluent, Extensions, Linq, Task, Promise, Result, Either, Option, Maybe, Nullable</PackageTags>
   </PropertyGroup>
-
 </Project>

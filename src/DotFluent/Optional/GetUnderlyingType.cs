@@ -15,14 +15,14 @@ public static partial class Option
     public static Type? GetUnderlyingType(Type optionType)
     {
         optionType.ThrowIfNull();
-        
-        if (optionType.IsGenericType && !optionType.IsGenericTypeDefinition)
-        {
-            var genericType = optionType.GetGenericTypeDefinition();
-            if (typeof(Option<>).IsAssignableFrom(genericType))
-                return optionType.GetGenericArguments().FirstOrDefault();
-        }
-        return null;
+
+        return optionType.IsGenericType
+            && !optionType.IsGenericTypeDefinition
+            && typeof(Option<>).IsAssignableFrom(optionType.GetGenericTypeDefinition())
+             ? optionType
+                .GetGenericArguments()
+                .FirstOrDefault()
+             : null;
     }
 
     #endregion
@@ -44,13 +44,13 @@ public static partial class Result
     {
         resultType.ThrowIfNull();
 
-        if (resultType.IsGenericType && !resultType.IsGenericTypeDefinition)
-        {
-            var genericType = resultType.GetGenericTypeDefinition();
-            if (typeof(Result<>).IsAssignableFrom(genericType))
-                return resultType.GetGenericArguments().FirstOrDefault();
-        }
-        return null;
+        return resultType.IsGenericType
+            && !resultType.IsGenericTypeDefinition
+            && typeof(Result<>).IsAssignableFrom(resultType.GetGenericTypeDefinition())
+             ? resultType
+                .GetGenericArguments()
+                .FirstOrDefault()
+             : null;
     }
 
     #endregion

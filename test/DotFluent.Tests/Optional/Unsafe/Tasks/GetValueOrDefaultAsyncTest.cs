@@ -1,5 +1,4 @@
-﻿using DotFluent.Optional.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading;
@@ -15,7 +14,7 @@ public sealed class OptionGetValueOrDefaultAsyncTest
     [Test]
     public async Task DefaultFactoryNullThrowsException()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         Func<Task<int>> defaultFactory = null;
 
         await option
@@ -28,8 +27,9 @@ public sealed class OptionGetValueOrDefaultAsyncTest
     [TestCase(1, 2, 1)]
     public async Task GetValueOrDefaultAsync(int? source, int defaultValue, int expectedResult)
     {
-        var option = await source.ToOptionAsync();
-        var result = await option.GetValueOrDefaultAsync(() => Task.FromResult(defaultValue));
+        var result = await source
+            .ToOption()
+            .GetValueOrDefaultAsync(() => Task.FromResult(defaultValue));
 
         result.ShouldBe(expectedResult);
     }
@@ -37,7 +37,7 @@ public sealed class OptionGetValueOrDefaultAsyncTest
     [Test]
     public async Task GetValueOrDefaultAsyncCanceled()
     {
-        var option = await OptionTask.None<int>();
+        var option = Option.None<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -57,21 +57,34 @@ public sealed class ResultGetValueOrDefaultAsyncTest
     [Test]
     public async Task DefaultFactoryNullThrowsException()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         Func<Task<int>> defaultFactory = null;
 
         await result
             .Awaiting(x => x.GetValueOrDefaultAsync(defaultFactory))
             .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.GetValueOrDefaultAsync(defaultFactory))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    [TestCase(1, 2, 1)]
-    [TestCase(null, 1, 1)]
-    public async Task GetValueOrDefaultAsync(int? source, int defaultValue, int expectedResult)
+    [TestCase(1, 2, 1, 0)]
+    [TestCase(1, 2, 1, 1)]
+    [TestCase(null, 1, 1, 0)]
+    [TestCase(null, 1, 1, 1)]
+    public async Task GetValueOrDefaultAsync(int? source, int defaultValue, int expectedResult, int overload)
     {
-        var result = await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new()));
-        var currentResult = await result.GetValueOrDefaultAsync(() => Task.FromResult(defaultValue));
+        var currentResult = overload switch
+        {
+            1 => await source
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .GetValueOrDefaultAsync(() => Task.FromResult(defaultValue)),
+            _ => await source
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .GetValueOrDefaultAsync(() => Task.FromResult(defaultValue))
+        };
 
         currentResult.ShouldBe(expectedResult);
     }
@@ -79,11 +92,15 @@ public sealed class ResultGetValueOrDefaultAsyncTest
     [Test]
     public async Task GetValueOrDefaultAsyncCanceled()
     {
-        var result = await ResultTask.Error<int>(new());
+        var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
         await result
+            .Awaiting(x => x.GetValueOrDefaultAsync(() => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
             .Awaiting(x => x.GetValueOrDefaultAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

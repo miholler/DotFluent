@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DotFluent.Tasks;
+using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
 using System.Threading;
@@ -16,8 +17,9 @@ public sealed class OptionFlattenAsyncTest
     [TestCase(1, new[] { 1 })]
     public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult)
     {
-        var option = await OptionTask.Some(await source.ToOptionAsync());
-        var result = await option.FlattenAsync();
+        var result = await Option
+            .Some(source.ToOption())
+            .FlattenAsync();
 
         result.ShouldBe(expectedResult);
     }
@@ -25,7 +27,7 @@ public sealed class OptionFlattenAsyncTest
     [Test]
     public async Task FlattenAsyncCanceled()
     {
-        var option = await OptionTask.None<Option<int>>();
+        var option = Option.None<Option<int>>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -43,12 +45,23 @@ public sealed class ResultFlattenAsyncTest
     #region Methods
 
     [Test]
-    [TestCase(1, new[] { 1 })]
-    [TestCase(null, new int[0])]
-    public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult)
+    [TestCase(1, new[] { 1 }, 0)]
+    [TestCase(1, new[] { 1 }, 1)]
+    [TestCase(null, new int[0], 0)]
+    [TestCase(null, new int[0], 1)]
+    public async Task FlattenAsync(int? source, IEnumerable<int> expectedResult, int overload)
     {
-        var result = await ResultTask.Ok(await source.Match(ResultTask.Ok, () => ResultTask.Error<int>(new())));
-        var currentResult = await result.FlattenAsync();
+        var currentResult = overload switch
+        {
+            1 => await Result
+                .Ok<Result<int, int>, int>(source.Match(Result.Ok<int, int>, () => Result.Error<int, int>(0)))
+                .FlattenAsync()
+                .Then(y => y.AsEnumerable()),
+            _ => await Result
+                .Ok(source.Match(Result.Ok, () => Result.Error<int>(new())))
+                .FlattenAsync()
+                .Then(y => y.AsEnumerable())
+        };
 
         currentResult.ShouldBe(expectedResult);
     }
@@ -56,11 +69,15 @@ public sealed class ResultFlattenAsyncTest
     [Test]
     public async Task FlattenAsyncCanceled()
     {
-        var result = await ResultTask.Error<Result<int>>(new());
+        var result = Result.Error<Result<int>>(new());
+        var result2 = Result.Error<Result<int, int>, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
         await result
+            .Awaiting(x => x.FlattenAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
             .Awaiting(x => x.FlattenAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

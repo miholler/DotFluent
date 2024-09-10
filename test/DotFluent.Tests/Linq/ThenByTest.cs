@@ -58,7 +58,7 @@ public sealed class ThenByTest
         source
             .OrderBy(y => y.Id)
             .ThenBy(y => y.Name, StringComparer.Ordinal.Compare)
-            .ShouldBe(a, b, c, d);
+            .ShouldBe([a, b, c, d]);
     }
 
     #endregion

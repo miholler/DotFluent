@@ -405,15 +405,14 @@ public sealed class OptionTest
     }
 
     [Test]
-    [TestCase(1, true)]
-    [TestCase(null, true)]
-    [TestCase(null, false)]
-    public void ToString(object source, bool isSome)
+    [TestCase(1, "Some(1)", true)]
+    [TestCase(null, "Some(null)", true)]
+    [TestCase(null, "None", false)]
+    public void ToString(object source, string expectedResult, bool isSome)
     {
         var option = isSome
             ? Option<object>.Some(source)
             : Option<object>.None;
-        var expectedResult = option.Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
 
         option
             .ToString()
