@@ -58,20 +58,32 @@ public sealed class ResultToNullableAsyncExtensionsTest
     public async Task SourceNullThrowsException()
     {
         Task<Result<int>> resultTask = null;
+        Task<Result<int, int>> result2Task = null;
 
         await resultTask
+            .Awaiting(x => x.ToNullableAsync())
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2Task
             .Awaiting(x => x.ToNullableAsync())
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    [TestCase(1)]
-    [TestCase(null)]
-    public async Task ToNullableAsync(int? source)
+    [TestCase(1, 0)]
+    [TestCase(1, 1)]
+    [TestCase(null, 0)]
+    [TestCase(null, 1)]
+    public async Task ToNullableAsync(int? source, int overload)
     {
-        var currentResult = await source
-            .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
-            .ToNullableAsync();
+        var currentResult = overload switch
+        {
+            1 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ToNullableAsync(),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ToNullableAsync()
+        };
 
         currentResult.ShouldBe(source);
     }
@@ -80,10 +92,14 @@ public sealed class ResultToNullableAsyncExtensionsTest
     public async Task ToNullableAsyncCanceled()
     {
         var resultTask = ResultTask.Error<int>(new());
+        var result2Task = ResultTask.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
         await resultTask
+            .Awaiting(x => x.ToNullableAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2Task
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

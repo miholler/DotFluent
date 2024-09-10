@@ -43,13 +43,21 @@ public sealed class ResultToNullableAsyncTest
     #region Methods
 
     [Test]
-    [TestCase(1)]
-    [TestCase(null)]
-    public async Task ToNullableAsync(int? source)
+    [TestCase(1, 0)]
+    [TestCase(1, 1)]
+    [TestCase(null, 0)]
+    [TestCase(null, 1)]
+    public async Task ToNullableAsync(int? source, int overload)
     {
-        var currentResult = await source
-            .Match(Result.Ok, () => Result.Error<int>(new()))
-            .ToNullableAsync();
+        var currentResult = overload switch
+        {
+            1 => await source
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .ToNullableAsync(),
+            _ => await source
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .ToNullableAsync()
+        };
 
         currentResult.ShouldBe(source);
     }
@@ -58,10 +66,14 @@ public sealed class ResultToNullableAsyncTest
     public async Task ToNullableAsyncCanceled()
     {
         var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
         await result
+            .Awaiting(x => x.ToNullableAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
