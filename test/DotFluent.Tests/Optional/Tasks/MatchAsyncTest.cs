@@ -260,6 +260,7 @@ public sealed class ResultMatchAsyncTest
     public async Task OkNullThrowsException()
     {
         var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         Action<int> ok = null;
         Func<int, int> okValue = null;
         Func<int, Task> taskOk = null;
@@ -283,12 +284,31 @@ public sealed class ResultMatchAsyncTest
         await result
             .Awaiting(x => x.MatchAsync(taskOkValue, _ => Task.FromResult(0)))
             .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(taskOk, _ => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(ok, _ => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(taskOk, _ => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(taskOkValue, _ => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(okValue, _ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(taskOkValue, _ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
     public async Task ErrorNullThrowsException()
     {
         var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, Exception>(new());
         Action<Exception> error = null;
         Func<Exception, int> errorValue = null;
         Func<Exception, Task> taskError = null;
@@ -312,12 +332,31 @@ public sealed class ResultMatchAsyncTest
         await result
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), taskErrorValue))
             .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, error))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => { }, taskError))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, taskError))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), errorValue))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(y => y, taskErrorValue))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), taskErrorValue))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
     public async Task OkReturningNullThrowsException()
     {
         var result = Result.Ok(0);
+        var result2 = Result.Ok<int, int>(0);
 
         await result
             .Awaiting(x => x.MatchAsync(_ => default, _ => { }))
@@ -331,12 +370,25 @@ public sealed class ResultMatchAsyncTest
         await result
             .Awaiting(x => x.MatchAsync(_ => default(Task<int>), _ => Task.FromResult(0)))
             .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => default, _ => { }))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => default(Task), _ => Task.CompletedTask))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => default, _ => 0))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => default(Task<int>), _ => Task.FromResult(0)))
+            .ShouldThrowAsync<InvalidOperationException>();
     }
 
     [Test]
     public async Task ErrorReturningNullThrowsException()
     {
         var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
 
         await result
             .Awaiting(x => x.MatchAsync(_ => { }, _ => default))
@@ -348,6 +400,18 @@ public sealed class ResultMatchAsyncTest
             .Awaiting(x => x.MatchAsync(_ => 0, _ => default))
             .ShouldThrowAsync<InvalidOperationException>();
         await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => default(Task<int>)))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => { }, _ => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, _ => default(Task)))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => 0, _ => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await result2
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => default(Task<int>)))
             .ShouldThrowAsync<InvalidOperationException>();
     }
@@ -365,46 +429,115 @@ public sealed class ResultMatchAsyncTest
     [TestCase(null, 0, 0, 4)]
     [TestCase(1, 1, 2, 5)]
     [TestCase(null, 0, 0, 5)]
+    [TestCase(1, 1, 2, 6)]
+    [TestCase(null, 0, 0, 6)]
+    [TestCase(1, 1, 2, 7)]
+    [TestCase(null, 0, 0, 7)]
+    [TestCase(1, 1, 2, 8)]
+    [TestCase(null, 0, 0, 8)]
+    [TestCase(1, 1, 2, 9)]
+    [TestCase(null, 0, 0, 9)]
+    [TestCase(1, 1, 2, 10)]
+    [TestCase(null, 0, 0, 10)]
+    [TestCase(1, 1, 2, 11)]
+    [TestCase(null, 0, 0, 11)]
     public async Task MatchAsync(int? source, int value, int expectedResult, int overload)
     {
         var currentResult = 0;
-        var result = source.Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }));
 
         switch (overload)
         {
             case 1:
-                await result.MatchAsync(x => { currentResult = x + value; }, x =>
-                {
-                    currentResult = x.HResult;
-                    return Task.CompletedTask;
-                });
+                await source
+                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .MatchAsync(x => { currentResult = x + value; }, x =>
+                    {
+                        currentResult = x.HResult;
+                        return Task.CompletedTask;
+                    });
                 break;
             case 2:
-                await result.MatchAsync(x =>
-                {
-                    currentResult = x + value;
-                    return Task.CompletedTask;
-                }, x =>
-                {
-                    currentResult = x.HResult;
-                    return Task.CompletedTask;
-                });
+                await source
+                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .MatchAsync(x =>
+                    {
+                        currentResult = x + value;
+                        return Task.CompletedTask;
+                    }, x =>
+                    {
+                        currentResult = x.HResult;
+                        return Task.CompletedTask;
+                    });
                 break;
             case 3:
-                currentResult = await result.MatchAsync(x => Task.FromResult(x + value), x => x.HResult);
+                currentResult = await source
+                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .MatchAsync(x => Task.FromResult(x + value), x => x.HResult);
                 break;
             case 4:
-                currentResult = await result.MatchAsync(x => x + value, x => Task.FromResult(x.HResult));
+                currentResult = await source
+                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .MatchAsync(x => x + value, x => Task.FromResult(x.HResult));
                 break;
             case 5:
-                currentResult = await result.MatchAsync(x => Task.FromResult(x + value), x => Task.FromResult(x.HResult));
+                currentResult = await source
+                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .MatchAsync(x => Task.FromResult(x + value), x => Task.FromResult(x.HResult));
+                break;
+            case 6:
+                await source
+                    .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                    .MatchAsync(x =>
+                    {
+                        currentResult = x + value;
+                        return Task.CompletedTask;
+                    }, x => currentResult = x);
+                break;
+            case 7:
+                await source
+                    .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                    .MatchAsync(x => { currentResult = x + value; }, x =>
+                    {
+                        currentResult = value;
+                        return Task.CompletedTask;
+                    });
+                break;
+            case 8:
+                await source
+                    .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                    .MatchAsync(x =>
+                    {
+                        currentResult = x + value;
+                        return Task.CompletedTask;
+                    }, x =>
+                    {
+                        currentResult = x;
+                        return Task.CompletedTask;
+                    });
+                break;
+            case 9:
+                currentResult = await source
+                    .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                    .MatchAsync(x => Task.FromResult(x + value), x => x);
+                break;
+            case 10:
+                currentResult = await source
+                    .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                    .MatchAsync(x => x + value, Task.FromResult);
+                break;
+            case 11:
+                currentResult = await source
+                    .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                    .MatchAsync(x => Task.FromResult(x + value), Task.FromResult);
                 break;
             default:
-                await result.MatchAsync(x =>
-                {
-                    currentResult = x + value;
-                    return Task.CompletedTask;
-                }, x => currentResult = x.HResult);
+                await source
+                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .MatchAsync(x =>
+                    {
+                        currentResult = x + value;
+                        return Task.CompletedTask;
+                    }, x => currentResult = x.HResult);
                 break;
         }
         currentResult.ShouldBe(expectedResult);
@@ -414,6 +547,7 @@ public sealed class ResultMatchAsyncTest
     public async Task MatchAsyncCanceled()
     {
         var result = Result.Error<int>(new());
+        var result2 = Result.Error<int, int>(0);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
@@ -433,6 +567,24 @@ public sealed class ResultMatchAsyncTest
             .Awaiting(x => x.MatchAsync(_ => 0, _ => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await result
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, _ => { }, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => { }, _ => Task.CompletedTask, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.CompletedTask, _ => Task.CompletedTask, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => 0, cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
+            .Awaiting(x => x.MatchAsync(_ => 0, _ => Task.FromResult(0), cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await result2
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

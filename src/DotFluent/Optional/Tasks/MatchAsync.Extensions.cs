@@ -457,5 +457,181 @@ public static partial class ResultTaskExtensions
         return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
+    /// <summary>
+    /// Asynchronously performs a specified action based on whether a result
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">An action to perform if a success value is present.</param>
+    /// <param name="error">An action to perform if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Action<TValue> ok, Action<TError> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.Match(ok, error), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function or performs a specified action
+    /// based on whether a result is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">A function to invoke if a success value is present.</param>
+    /// <param name="error">An action to perform if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<TValue, Task> ok, Action<TError> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously performs a specified action or invokes a specified function
+    /// based on whether a result is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">An action to perform if a success value is present.</param>
+    /// <param name="error">A function to invoke if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Action<TValue> ok, Func<TError, Task> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether a result
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">A function to invoke if a success value is present.</param>
+    /// <param name="error">A function to invoke if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous match operation.</returns>
+    public static Task MatchAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<TValue, Task> ok, Func<TError, Task> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether a result
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the result value.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">A function to invoke if a success value is present.</param>
+    /// <param name="error">A function to invoke if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
+    /// the result of the invoked function.
+    /// </returns>
+    public static Task<TResult> MatchAsync<TValue, TError, TResult>(this Task<Result<TValue, TError>> source, Func<TValue, TResult> ok, Func<TError, TResult> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.Match(ok, error), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether a result
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the result value.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">A function to invoke if a success value is present.</param>
+    /// <param name="error">A function to invoke if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
+    /// the result of the invoked function.
+    /// </returns>
+    public static Task<TResult> MatchAsync<TValue, TError, TResult>(this Task<Result<TValue, TError>> source, Func<TValue, Task<TResult>> ok, Func<TError, TResult> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether a result
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the result value.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">A function to invoke if a success value is present.</param>
+    /// <param name="error">A function to invoke if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
+    /// the result of the invoked function.
+    /// </returns>
+    public static Task<TResult> MatchAsync<TValue, TError, TResult>(this Task<Result<TValue, TError>> source, Func<TValue, TResult> ok, Func<TError, Task<TResult>> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+    }
+
+    /// <summary>
+    /// Asynchronously invokes a specified function based on whether a result
+    /// is an 'Ok' or an 'Error' value.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the success value of source.</typeparam>
+    /// <typeparam name="TError">The type of the error value of source.</typeparam>
+    /// <typeparam name="TResult">The type of the result value.</typeparam>
+    /// <param name="source">The task returning the result to check for a success or an error value.</param>
+    /// <param name="ok">A function to invoke if a success value is present.</param>
+    /// <param name="error">A function to invoke if an error value is present.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> representing the asynchronous match operation. The value of the TResult parameter contains
+    /// the result of the invoked function.
+    /// </returns>
+    public static Task<TResult> MatchAsync<TValue, TError, TResult>(this Task<Result<TValue, TError>> source, Func<TValue, Task<TResult>> ok, Func<TError, Task<TResult>> error, CancellationToken cancellationToken = default)
+    {
+        source.ThrowIfNull();
+        ok.ThrowIfNull();
+        error.ThrowIfNull();
+
+        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+    }
+
     #endregion
 }
