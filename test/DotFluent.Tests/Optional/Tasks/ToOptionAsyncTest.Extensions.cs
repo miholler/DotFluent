@@ -18,6 +18,7 @@ public sealed class OptionToOptionAsyncExtensionsTest
         Task<string> nullableTask = null;
         Task<int?> nullableValueTask = null;
         Task<Result<int>> nullableResultTask = null;
+        Task<Result<int, int>> nullableResult2Task = null;
 
         await nullableTask
             .Awaiting(x => x.ToOptionAsync())
@@ -26,6 +27,9 @@ public sealed class OptionToOptionAsyncExtensionsTest
             .Awaiting(x => x.ToOptionAsync())
             .ShouldThrowAsync<ArgumentNullException>();
         await nullableResultTask
+            .Awaiting(x => x.ToOptionAsync())
+            .ShouldThrowAsync<ArgumentNullException>();
+        await nullableResult2Task
             .Awaiting(x => x.ToOptionAsync())
             .ShouldThrowAsync<ArgumentNullException>();
     }
@@ -55,13 +59,21 @@ public sealed class OptionToOptionAsyncExtensionsTest
     }
 
     [Test]
-    [TestCase(null, new int[0])]
-    [TestCase(1, new[] { 1 })]
-    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    [TestCase(null, new int[0], 0)]
+    [TestCase(null, new int[0], 1)]
+    [TestCase(1, new[] { 1 }, 0)]
+    [TestCase(1, new[] { 1 }, 1)]
+    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult, int overload)
     {
-        var result = await source
-            .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
-            .ToOptionAsync();
+        var result = overload switch
+        {
+            1 => await source
+                .Match(ResultTask.Ok<int, int>, () => ResultTask.Error<int, int>(0))
+                .ToOptionAsync(),
+            _ => await source
+                .Match(ResultTask.Ok, () => ResultTask.Error<int>(new()))
+                .ToOptionAsync()
+        };
 
         result.ShouldBe(expectedResult);
     }
@@ -79,6 +91,9 @@ public sealed class OptionToOptionAsyncExtensionsTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await ResultTask.Error<int>(new())
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await ResultTask.Error<int, int>(0)
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

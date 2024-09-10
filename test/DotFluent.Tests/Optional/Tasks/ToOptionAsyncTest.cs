@@ -32,13 +32,21 @@ public sealed class OptionToOptionAsyncTest
     }
 
     [Test]
-    [TestCase(null, new int[0])]
-    [TestCase(1, new[] { 1 })]
-    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult)
+    [TestCase(null, new int[0], 0)]
+    [TestCase(null, new int[0], 1)]
+    [TestCase(1, new[] { 1 }, 0)]
+    [TestCase(1, new[] { 1 }, 1)]
+    public async Task ResultToOptionAsync(int? source, IEnumerable<int> expectedResult, int overload)
     {
-        var result = await source
-            .Match(Result.Ok, () => Result.Error<int>(new()))
-            .ToOptionAsync();
+        var result = overload switch
+        {
+            1 => await source
+                .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
+                .ToOptionAsync(),
+            _ => await source
+                .Match(Result.Ok, () => Result.Error<int>(new()))
+                .ToOptionAsync()
+        };
 
         result.ShouldBe(expectedResult);
     }
@@ -56,6 +64,9 @@ public sealed class OptionToOptionAsyncTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await Result.Error<int>(new())
+            .Awaiting(x => x.ToOptionAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await Result.Error<int, int>(0)
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
