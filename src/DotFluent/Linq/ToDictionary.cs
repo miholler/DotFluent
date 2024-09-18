@@ -17,7 +17,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values.</returns>
     public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison) where TKey : notnull
-        => source.ToDictionary(keySelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.ToDictionary(keySelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified 
@@ -30,8 +30,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values.</returns>
-    public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector) where TKey : notnull
-        => source.ToDictionary(keySelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
+        => source.ToDictionary(keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified 
@@ -47,7 +47,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>A <see cref="Dictionary{TKey, TElement}"/> that contains values of type TElement selected from the input sequence.</returns>
     public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison) where TKey : notnull
-        => source.ToDictionary(keySelector, elementSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.ToDictionary(keySelector, elementSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified 
@@ -63,8 +63,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>A <see cref="Dictionary{TKey, TElement}"/> that contains values of type TElement selected from the input sequence.</returns>
-    public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector) where TKey : notnull
-        => source.ToDictionary(keySelector, elementSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
+        => source.ToDictionary(keySelector, elementSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified 
@@ -76,7 +76,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>A <see cref="Dictionary{TKey, TValue}"/> that contains keys and values from source.</returns>
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, EqualityComparison<TKey> comparison) where TKey : notnull
-        => source.ToDictionary(ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.ToDictionary(EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to specified 
@@ -88,8 +88,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>A <see cref="Dictionary{TKey, TValue}"/> that contains keys and values from source.</returns>
-    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector) where TKey : notnull
-        => source.ToDictionary(ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
+        => source.ToDictionary(EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified 
@@ -101,7 +101,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>A <see cref="Dictionary{TKey, TValue}"/> that contains keys and values from source.</returns>
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source, EqualityComparison<TKey> comparison) where TKey : notnull
-        => source.ToDictionary(ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.ToDictionary(EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Creates a dictionary from a sequence according to specified 
@@ -113,8 +113,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>A <see cref="Dictionary{TKey, TValue}"/> that contains keys and values from source.</returns>
-    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector) where TKey : notnull
-        => source.ToDictionary(ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
+        => source.ToDictionary(EqualityComparer.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 

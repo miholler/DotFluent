@@ -45,14 +45,14 @@ public sealed class ToHashSetTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var source = Enumerable.Empty<int>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         source
             .Invoking(x => x.ToHashSet((y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]

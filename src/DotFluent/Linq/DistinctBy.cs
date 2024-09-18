@@ -17,7 +17,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
     public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison)
-        => source.DistinctBy(keySelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.DistinctBy(keySelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Returns distinct elements from a sequence according to a specified key selector function
@@ -30,8 +30,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
-    public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => source.DistinctBy(keySelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => source.DistinctBy(keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 

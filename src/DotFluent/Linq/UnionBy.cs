@@ -18,7 +18,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements from both input sequences, excluding duplicates.</returns>
     public static IEnumerable<TSource> UnionBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison)
-        => first.UnionBy(second, keySelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => first.UnionBy(second, keySelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Produces the set union of two sequences according to a specified key selector function
@@ -32,8 +32,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements from both input sequences, excluding duplicates.</returns>
-    public static IEnumerable<TSource> UnionBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => first.UnionBy(second, keySelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TSource> UnionBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => first.UnionBy(second, keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 

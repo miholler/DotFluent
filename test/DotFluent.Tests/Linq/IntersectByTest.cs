@@ -67,15 +67,15 @@ public sealed class IntersectByTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var first = Enumerable.Empty<int>();
         var second = Enumerable.Empty<int>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         first
             .Invoking(x => x.IntersectBy(second, y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]

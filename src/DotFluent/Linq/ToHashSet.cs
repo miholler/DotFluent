@@ -18,7 +18,7 @@ public static partial class Sequence
     /// from the input sequence.
     /// </returns>
     public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison)
-        => source.ToHashSet(ComparisonEqualityComparer<TSource>.Create(comparison));
+        => source.ToHashSet(EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Creates a hashset from a sequence using specified
@@ -32,8 +32,8 @@ public static partial class Sequence
     /// A <see cref="HashSet{TSource}"/> that contains values of type TSource selected
     /// from the input sequence.
     /// </returns>
-    public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, Func<TSource, int> hashCodeSelector)
-        => source.ToHashSet(ComparisonEqualityComparer<TSource>.Create(comparison, hashCodeSelector));
+    public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
+        => source.ToHashSet(EqualityComparer.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 
