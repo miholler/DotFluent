@@ -12,4 +12,7 @@
     <PackageProjectUrl>https://bitbucket.org/miholler/dotfluent/wiki/Home</PackageProjectUrl>
     <PackageTags>Fluent, Extensions, Linq, Task, Promise, Result, Either, Option, Maybe, Nullable</PackageTags>
   </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+  </ItemGroup>
 </Project>
