@@ -4,7 +4,7 @@ public static partial class AsyncSequence
 {
     #region Nested Classes
 
-    private abstract partial class AsyncIterator<TSource> : IAsyncEnumerable<TSource>, IAsyncEnumerator<TSource>, IAsyncDisposable
+    private abstract partial class AsyncIterator<TSource> : IAsyncEnumerable<TSource>, IAsyncEnumerator<TSource>
     {
         #region Fields
 

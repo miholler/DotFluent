@@ -53,6 +53,20 @@ public static partial class AsyncSequence
             return false;
         }
 
+        public override ValueTask<T[]> ToArrayAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return new(_source.ToArray());
+        }
+
+        public override ValueTask<List<T>> ToListAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return new(_source.ToList());
+        }
+
         public override ValueTask DisposeAsync()
         {
             if (_enumerator.IsNotNull())
