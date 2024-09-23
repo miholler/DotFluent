@@ -2,6 +2,7 @@
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotFluent.Linq;
@@ -39,6 +40,19 @@ public sealed class ToArrayAsyncTest
         };
 
         result.ShouldBe(source);
+    }
+
+    [Test]
+    public async Task ToArrayAsyncCanceled()
+    {
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await Array
+            .Empty<int>()
+            .ToAsyncEnumerable()
+            .Awaiting(x => x.ToArrayAsync(cts.Token))
+            .ShouldThrowAsync<TaskCanceledException>();
     }
 
     #endregion

@@ -54,18 +54,14 @@ public static partial class AsyncSequence
         }
 
         public override ValueTask<T[]> ToArrayAsync(CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            return new(_source.ToArray());
-        }
+            => cancellationToken.IsCancellationRequested
+                ? new(Task.FromCanceled<T[]>(cancellationToken))
+                : new(_source.ToArray());
 
         public override ValueTask<List<T>> ToListAsync(CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            return new(_source.ToList());
-        }
+            => cancellationToken.IsCancellationRequested
+                ? new(Task.FromCanceled<List<T>>(cancellationToken))
+                : new(_source.ToList());
 
         public override ValueTask DisposeAsync()
         {

@@ -25,7 +25,6 @@ public static partial class Sequence
 #else
         ArgumentOutOfRangeException.ThrowIfNegative(index);
 #endif
-
         return InsertIterator(source, index, item);
     }
 
@@ -44,7 +43,6 @@ public static partial class Sequence
 #else
         ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
 #endif
-
         yield return item;
 
         while (enumerator.MoveNext())

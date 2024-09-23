@@ -26,7 +26,6 @@ public static partial class Sequence
 #else
         ArgumentOutOfRangeException.ThrowIfNegative(index);
 #endif
-
         return InsertRangeIterator(first, index, second);
     }
 
@@ -45,7 +44,6 @@ public static partial class Sequence
 #else
         ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
 #endif
-
         foreach (var item in second)
             yield return item;
 
