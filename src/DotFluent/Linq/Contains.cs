@@ -15,7 +15,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>true if the source sequence contains an element that has the specified value; otherwise, false.</returns>
     public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource value, EqualityComparison<TSource> comparison)
-        => source.Contains(value, ComparisonEqualityComparer<TSource>.Create(comparison));
+        => source.Contains(value, EqualityComparer.Create(comparison));
 
     #endregion
 }

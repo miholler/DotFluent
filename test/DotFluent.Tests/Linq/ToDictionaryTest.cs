@@ -125,25 +125,25 @@ public sealed class ToDictionaryTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var source = Enumerable.Empty<int>();
         var pairSource = Enumerable.Empty<KeyValuePair<int, int>>();
         var tupleSource = Enumerable.Empty<ValueTuple<int, int>>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         source
             .Invoking(x => x.ToDictionary(y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         source
             .Invoking(x => x.ToDictionary(y => y, y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         pairSource
             .Invoking(x => x.ToDictionary((y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         tupleSource
             .Invoking(x => x.ToDictionary((y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]

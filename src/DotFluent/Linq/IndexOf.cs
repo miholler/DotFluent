@@ -33,7 +33,7 @@ public static partial class Sequence
     /// an element that has the specified value; otherwise, minus 1.
     /// </returns>
     public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, EqualityComparison<TSource> comparison)
-        => source.IndexOf(value, ComparisonEqualityComparer<TSource>.Create(comparison));
+        => source.IndexOf(value, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Returns the zero-based index of a specified element in a sequence by

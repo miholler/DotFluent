@@ -17,14 +17,14 @@ public static partial class StringExtensions
     [return: NotNull]
     public static string ThrowIfNullOrWhiteSpace([NotNull]this string? source, [CallerArgumentExpression(nameof(source))]string? paramName = null)
     {
-#if NETSTANDARD
+#if NET8_0_OR_GREATER
+        ArgumentException.ThrowIfNullOrWhiteSpace(source, paramName);
+#else
         if (source.IsNullOrWhiteSpace())
         {
             source.ThrowIfNull(paramName);
             throw new ArgumentException("The value cannot be an empty string or composed entirely of whitespace.", paramName);
         }
-#else
-        ArgumentException.ThrowIfNullOrWhiteSpace(source, paramName);
 #endif
         return source;
     }

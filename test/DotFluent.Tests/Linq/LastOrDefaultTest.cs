@@ -18,13 +18,7 @@ public sealed class LastOrDefaultTest
         IEnumerable<int> source = null;
 
         source
-            .Invoking(x => x.LastOrDefault(0))
-            .ShouldThrow<ArgumentNullException>();
-        source
             .Invoking(x => x.LastOrDefault(() => 0))
-            .ShouldThrow<ArgumentNullException>();
-        source
-            .Invoking(x => x.LastOrDefault(y => y == 0, 0))
             .ShouldThrow<ArgumentNullException>();
         source
             .Invoking(x => x.LastOrDefault(y => y == 0, () => 0))
@@ -52,9 +46,6 @@ public sealed class LastOrDefaultTest
         Func<int, bool> predicate = null;
 
         source
-            .Invoking(x => x.LastOrDefault(predicate, 0))
-            .ShouldThrow<ArgumentNullException>();
-        source
             .Invoking(x => x.LastOrDefault(predicate, () => 0))
             .ShouldThrow<ArgumentNullException>();
     }
@@ -64,18 +55,10 @@ public sealed class LastOrDefaultTest
     [TestCase(new int[0], 0, 1, 0)]
     [TestCase(new int[0], 0, 0, 1)]
     [TestCase(new int[0], 0, 1, 1)]
-    [TestCase(new int[0], 0, 0, 2)]
-    [TestCase(new int[0], 0, 1, 2)]
-    [TestCase(new int[0], 0, 0, 3)]
-    [TestCase(new int[0], 0, 1, 3)]
     [TestCase(new[] { 1, 2, 3, 4 }, 4, 0, 0)]
     [TestCase(new[] { 1, 2, 3, 4 }, 4, 1, 0)]
     [TestCase(new[] { 1, 2, 3, 4 }, 4, 0, 1)]
     [TestCase(new[] { 1, 2, 3, 4 }, 4, 1, 1)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 0, 2)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 1, 2)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 0, 3)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 1, 3)]
     public void LastOrDefault(IEnumerable<int> source, int expectedResult, int collectionType, int overload)
     {
         source = collectionType switch
@@ -89,10 +72,8 @@ public sealed class LastOrDefaultTest
         };
         var result = overload switch
         {
-            1 => source.LastOrDefault(() => 0),
-            2 => source.LastOrDefault(x => x % 2 == 0, 0),
-            3 => source.LastOrDefault(x => x % 2 == 0, () => 0),
-            _ => source.LastOrDefault(0)
+            1 => source.LastOrDefault(x => x % 2 == 0, () => 0),
+            _ => source.LastOrDefault(() => 0)
         };
 
         result.ShouldBe(expectedResult);

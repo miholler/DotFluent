@@ -17,7 +17,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TSource}"/> where each object contains a collection of objects and a key.</returns>
     public static IEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison)
-        => source.GroupBy(keySelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.GroupBy(keySelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Groups the elements of a sequence according to a specified key selector function
@@ -30,8 +30,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TSource}"/> where each object contains a collection of objects and a key.</returns>
-    public static IEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => source.GroupBy(keySelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => source.GroupBy(keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Groups the elements of a sequence according to a key selector function. The keys
@@ -47,7 +47,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TElement}"/> where each object contains a collection of objects of type TElement and a key.</returns>
     public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison)
-        => source.GroupBy(keySelector, elementSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.GroupBy(keySelector, elementSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Groups the elements of a sequence according to a key selector function. The keys
@@ -63,8 +63,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IGrouping{TKey, TElement}"/> where each object contains a collection of objects of type TElement and a key.</returns>
-    public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => source.GroupBy(keySelector, elementSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => source.GroupBy(keySelector, elementSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Groups the elements of a sequence according to a specified key selector function
@@ -80,7 +80,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
     public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => source.GroupBy(keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.GroupBy(keySelector, resultSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Groups the elements of a sequence according to a specified key selector function
@@ -96,8 +96,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
-    public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => source.GroupBy(keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => source.GroupBy(keySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Groups the elements of a sequence according to a specified key selector function
@@ -116,7 +116,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
     public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => source.GroupBy(keySelector, elementSelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => source.GroupBy(keySelector, elementSelector, resultSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Groups the elements of a sequence according to a specified key selector function
@@ -135,8 +135,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
-    public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => source.GroupBy(keySelector, elementSelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => source.GroupBy(keySelector, elementSelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     #endregion
 }

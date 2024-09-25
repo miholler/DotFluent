@@ -136,18 +136,18 @@ public sealed class GroupJoinTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var outer = Enumerable.Empty<int>();
         var inner = Enumerable.Empty<int>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         outer
             .Invoking(x => x.GroupJoin(inner, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         outer
             .Invoking(x => x.GroupJoin(inner, y => y, y => y, (o, ie) => new { Outer = o, Inners = ie }, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]

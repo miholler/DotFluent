@@ -20,13 +20,12 @@ public static partial class Sequence
         first.ThrowIfNull();
         second.ThrowIfNull();
 
-#if NETSTANDARD
+#if NET8_0_OR_GREATER
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+#else
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
-#else
-        ArgumentOutOfRangeException.ThrowIfNegative(index);
 #endif
-
         return InsertRangeIterator(first, index, second);
     }
 
@@ -39,13 +38,12 @@ public static partial class Sequence
             index--;
         }
 
-#if NETSTANDARD
+#if NET8_0_OR_GREATER
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
+#else
         if (index > 0)
             throw new ArgumentOutOfRangeException(nameof(index));
-#else
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
 #endif
-
         foreach (var item in second)
             yield return item;
 

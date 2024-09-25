@@ -16,14 +16,14 @@ public static partial class StringExtensions
     [return: NotNull]
     public static string ThrowIfNullOrEmpty([NotNull]this string? source, [CallerArgumentExpression(nameof(source))]string? paramName = null)
     {
-#if NETSTANDARD
+#if NET8_0_OR_GREATER
+        ArgumentException.ThrowIfNullOrEmpty(source, paramName); 
+#else
         if (source.IsNullOrEmpty())
         {
             source.ThrowIfNull(paramName);
             throw new ArgumentException("The value cannot be an empty string.", paramName);
-        }  
-#else
-        ArgumentException.ThrowIfNullOrEmpty(source, paramName);
+        }
 #endif
         return source;
     }

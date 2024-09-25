@@ -35,7 +35,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a right outer join on two sequences.</returns>
     public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => outer.RightJoin(inner, keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => outer.RightJoin(inner, keySelector, resultSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -51,8 +51,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a right outer join on two sequences.</returns>
-    public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => outer.RightJoin(inner, keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => outer.RightJoin(inner, keySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -107,7 +107,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a right outer join on two sequences.</returns>
     public static IEnumerable<TResult> RightJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -125,8 +125,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a right outer join on two sequences.</returns>
-    public static IEnumerable<TResult> RightJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TResult> RightJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => outer.RightJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified

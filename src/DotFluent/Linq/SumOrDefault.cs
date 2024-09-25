@@ -42,7 +42,7 @@ public static partial class Sequence
         defaultFactory.ThrowIfNull();
 
         return source
-            .Aggregate(default(int?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(int?), (sum, value) => sum.Match(x => checked(x + value), value))
             .GetValueOrDefault(defaultFactory);
     }
 
@@ -91,7 +91,7 @@ public static partial class Sequence
 
         return source
             .OfType<int>()
-            .Aggregate(default(int?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(int?), (sum, value) => sum.Match(x => checked(x + value), value))
             .OrElse(defaultFactory);
     }
 
@@ -133,7 +133,7 @@ public static partial class Sequence
         defaultFactory.ThrowIfNull();
 
         return source
-            .Aggregate(default(long?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(long?), (sum, value) => sum.Match(x => checked(x + value), value))
             .GetValueOrDefault(defaultFactory);
     }
 
@@ -182,7 +182,7 @@ public static partial class Sequence
 
         return source
             .OfType<long>()
-            .Aggregate(default(long?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(long?), (sum, value) => sum.Match(x => checked(x + value), value))
             .OrElse(defaultFactory);
     }
 
@@ -224,7 +224,7 @@ public static partial class Sequence
         defaultFactory.ThrowIfNull();
 
         return source
-            .Aggregate(default(float?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(float?), (sum, value) => sum.Match(x => checked(x + value), value))
             .GetValueOrDefault(defaultFactory);
     }
 
@@ -273,7 +273,7 @@ public static partial class Sequence
 
         return source
             .OfType<float>()
-            .Aggregate(default(float?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(float?), (sum, value) => sum.Match(x => checked(x + value), value))
             .OrElse(defaultFactory);
     }
 
@@ -315,7 +315,7 @@ public static partial class Sequence
         defaultFactory.ThrowIfNull();
 
         return source
-            .Aggregate(default(double?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(double?), (sum, value) => sum.Match(x => checked(x + value), value))
             .GetValueOrDefault(defaultFactory);
     }
 
@@ -364,7 +364,7 @@ public static partial class Sequence
 
         return source
             .OfType<double>()
-            .Aggregate(default(double?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(double?), (sum, value) => sum.Match(x => checked(x + value), value))
             .OrElse(defaultFactory);
     }
 
@@ -406,7 +406,7 @@ public static partial class Sequence
         defaultFactory.ThrowIfNull();
 
         return source
-            .Aggregate(default(decimal?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(decimal?), (sum, value) => sum.Match(x => checked(x + value), value))
             .GetValueOrDefault(defaultFactory);
     }
 
@@ -455,7 +455,7 @@ public static partial class Sequence
 
         return source
             .OfType<decimal>()
-            .Aggregate(default(decimal?), (sum, value) => checked(sum.Match(x => x + value, value)))
+            .Aggregate(default(decimal?), (sum, value) => sum.Match(x => checked(x + value), value))
             .OrElse(defaultFactory);
     }
 

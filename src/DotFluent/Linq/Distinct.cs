@@ -14,7 +14,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
     public static IEnumerable<TSource> Distinct<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison)
-        => source.Distinct(ComparisonEqualityComparer<TSource>.Create(comparison));
+        => source.Distinct(EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Returns distinct elements from a sequence by using specified compare functions to compare values.
@@ -24,8 +24,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a value.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
-    public static IEnumerable<TSource> Distinct<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, Func<TSource, int> hashCodeSelector)
-        => source.Distinct(ComparisonEqualityComparer<TSource>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TSource> Distinct<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
+        => source.Distinct(EqualityComparer.Create(comparison, hashCodeSelector));
 
     #endregion
 }

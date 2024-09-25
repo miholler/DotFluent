@@ -136,18 +136,18 @@ public sealed class JoinTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var outer = Enumerable.Empty<int>();
         var inner = Enumerable.Empty<int>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         outer
             .Invoking(x => x.Join(inner, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         outer
             .Invoking(x => x.Join(inner, y => y, y => y, (o, i) => new { Outer = o, Inner = i }, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]
