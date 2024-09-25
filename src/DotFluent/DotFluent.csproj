@@ -5,14 +5,11 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Provides a set of types and extension methods to chain method calls and increase code readability.</Description>
     <PackageProjectUrl>https://bitbucket.org/miholler/dotfluent/wiki/Home</PackageProjectUrl>
     <PackageTags>Fluent, Extensions, Linq, Task, Promise, Result, Either, Option, Maybe, Nullable</PackageTags>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
-  </ItemGroup>
 </Project>

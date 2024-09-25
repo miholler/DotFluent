@@ -116,7 +116,7 @@ public static partial class Sequence
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
         => source.ToDictionary(EqualityComparer.Create(comparison, hashCodeSelector));
 
-#if NETSTANDARD
+#if !NET8_0_OR_GREATER
 
     /// <summary>
     /// Creates a dictionary from a sequence according to the default comparer for

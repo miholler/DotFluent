@@ -15,7 +15,7 @@ public static partial class Sequence
     public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         => source.OrderDescending(Comparer<TSource>.Create(comparison));
 
-#if NETSTANDARD
+#if !NET8_0_OR_GREATER
 
     /// <summary>
     /// Sorts the elements of a sequence in descending order.
