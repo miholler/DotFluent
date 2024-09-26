@@ -67,7 +67,7 @@ public static partial class Sequence
             if (predicate(item))
             {
                 resultFactory = () => item;
-                checked { count++; };
+                checked { count++; }
             }
         }
         return count <= 1

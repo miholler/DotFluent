@@ -58,7 +58,7 @@ public static partial class Sequence
             if (comparer.Equals(item, value))
                 return index;
 
-            checked { index++; };
+            checked { index++; }
         }
         return -1;
     }

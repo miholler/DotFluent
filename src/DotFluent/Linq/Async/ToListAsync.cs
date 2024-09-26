@@ -23,15 +23,14 @@ public static partial class AsyncSequence
             AsyncIterator<TSource> iterator => iterator.ToListAsync(cancellationToken),
             _ => AsyncEnumerableToListAsync(source, cancellationToken)
         };
-    }
+        static async ValueTask<List<TSource>> AsyncEnumerableToListAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+        {
+            var list = new List<TSource>();
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+                list.Add(item);
 
-    private static async ValueTask<List<TSource>> AsyncEnumerableToListAsync<TSource>(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
-    {
-        var list = new List<TSource>();
-        await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-            list.Add(item);
-
-        return list;
+            return list;
+        }
     }
 
     #endregion
