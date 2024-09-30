@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ToListAsyncTest
+public sealed class AsyncEnumerableToListAsyncTest
 {
     #region Methods
 

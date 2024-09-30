@@ -4,7 +4,7 @@ using Shouldly;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class AsAsyncEnumerableTest
+public sealed class AsyncEnumerableAsAsyncEnumerableTest
 {
     #region Methods
 
