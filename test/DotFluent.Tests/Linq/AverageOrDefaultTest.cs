@@ -9,7 +9,7 @@ using static System.Convert;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class AverageOrDefaultTest
+public sealed class EnumerableAverageOrDefaultTest
 {
     #region Methods
 

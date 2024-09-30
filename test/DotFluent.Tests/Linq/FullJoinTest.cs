@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class FullJoinTest
+public sealed class EnumerableFullJoinTest
 {
     #region Methods
 

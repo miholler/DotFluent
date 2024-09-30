@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class UnionTest
+public sealed class EnumerableUnionTest
 {
     #region Methods
 

@@ -9,7 +9,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class NoneTest
+public sealed class EnumerableNoneTest
 {
     #region Methods
 

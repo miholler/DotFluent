@@ -8,7 +8,7 @@ using System.Text;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class PipeTest
+public sealed class EnumerablePipeTest
 {
     #region Methods
 

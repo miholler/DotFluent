@@ -8,7 +8,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ElementAtOrDefaultTest
+public sealed class EnumerableElementAtOrDefaultTest
 {
     #region Methods
 

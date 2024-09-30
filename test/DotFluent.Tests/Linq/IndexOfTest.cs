@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class IndexOfTest
+public sealed class EnumerableIndexOfTest
 {
     #region Methods
 
