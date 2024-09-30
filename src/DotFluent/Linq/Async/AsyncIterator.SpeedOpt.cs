@@ -12,6 +12,8 @@ public static partial class AsyncSequence
 
         public abstract ValueTask<List<TSource>> ToListAsync(CancellationToken cancellationToken = default);
 
+        public abstract ValueTask<int> GetCountAsync(bool onlyIfCheap, CancellationToken cancellationToken = default);
+
         #endregion
     }
 
