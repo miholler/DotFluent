@@ -44,7 +44,7 @@ public static partial class AsyncSequence
         {
             Current = default!;
             State = AsyncIteratorState.Disposed;
-            return default;
+            return ValueTask.CompletedTask;
         }
 
         protected abstract AsyncIterator<TSource> Clone();
