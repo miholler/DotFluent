@@ -12,7 +12,7 @@ public static partial class AsyncSequence
     /// Asynchronously applies a specified accumulator function over an async-sequence.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -46,7 +46,7 @@ public static partial class AsyncSequence
     /// Asynchronously applies a specified accumulator function over an async-sequence.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
@@ -82,7 +82,7 @@ public static partial class AsyncSequence
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="seed">The initial accumulator value.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
@@ -112,7 +112,7 @@ public static partial class AsyncSequence
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="seed">The initial accumulator value.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
@@ -144,7 +144,7 @@ public static partial class AsyncSequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="seed">The initial accumulator value.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
@@ -178,7 +178,7 @@ public static partial class AsyncSequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="seed">The initial accumulator value.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
@@ -212,7 +212,7 @@ public static partial class AsyncSequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="seed">The initial accumulator value.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
@@ -246,7 +246,7 @@ public static partial class AsyncSequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
-    /// <param name="source">The async-sequenece to aggregate over.</param>
+    /// <param name="source">The async-sequence to aggregate over.</param>
     /// <param name="seed">The initial accumulator value.</param>
     /// <param name="accumulator">An accumulator function to be invoked on each element.</param>
     /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
