@@ -24,7 +24,7 @@ public static partial class Sequence
     /// <param name="source">The sequence of values to order.</param>
     /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted in descending order.</returns>
     public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source)
-        => source.OrderDescending(Comparer<TSource>.Default);
+        => source.OrderDescending(comparer: null);
 
     /// <summary>
     /// Sorts the elements of a sequence in descending order 

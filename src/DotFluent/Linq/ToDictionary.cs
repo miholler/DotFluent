@@ -130,7 +130,7 @@ public static partial class Sequence
     /// for the key type.
     /// </returns>
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source) where TKey : notnull
-        => source.ToDictionary(EqualityComparer<TKey>.Default);
+        => source.ToDictionary(comparer: null);
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified key comparer.
@@ -159,7 +159,7 @@ public static partial class Sequence
     /// for the key type.
     /// </returns>
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source) where TKey : notnull
-        => source.ToDictionary(EqualityComparer<TKey>.Default);
+        => source.ToDictionary(comparer: null);
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified key comparer.
