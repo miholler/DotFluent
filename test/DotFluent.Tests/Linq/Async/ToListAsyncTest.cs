@@ -48,9 +48,8 @@ public sealed class AsyncEnumerableToListAsyncTest
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 
-        await Array
+        await AsyncSequence
             .Empty<int>()
-            .ToAsyncEnumerable()
             .Awaiting(x => x.ToListAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }

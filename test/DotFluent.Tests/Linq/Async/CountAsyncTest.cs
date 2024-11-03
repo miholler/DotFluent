@@ -31,9 +31,7 @@ public sealed class AsyncEnumerableCountAsyncTest
     [Test]
     public async Task PredicateNullThrowsException()
     {
-        var source = Array
-            .Empty<int>()
-            .ToAsyncEnumerable();
+        var source = AsyncSequence.Empty<int>();
         Func<int, bool> predicate = null;
         Func<int, ValueTask<bool>> taskPredicate = null;
 
@@ -78,9 +76,7 @@ public sealed class AsyncEnumerableCountAsyncTest
     [Test]
     public async Task CountAsyncCanceled()
     {
-        var source = Array
-            .Empty<int>()
-            .ToAsyncEnumerable();
+        var source = AsyncSequence.Empty<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

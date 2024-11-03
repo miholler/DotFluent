@@ -20,7 +20,7 @@ public static partial class AsyncSequence
 
         return source switch
         {
-            AsyncIterator<TSource> iterator => iterator.GetCountAsync(false, cancellationToken),
+            AsyncIterator<TSource> iterator => iterator.GetCountAsync(onlyIfCheap: false, cancellationToken),
             _ => AsyncEnumerableCountAsync(source, cancellationToken)
         };
         static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)

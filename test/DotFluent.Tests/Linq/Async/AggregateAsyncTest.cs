@@ -46,9 +46,7 @@ public sealed class AsyncEnumerableAggregateAsyncTest
     [Test]
     public async Task AccumulatorNullThrowsException()
     {
-        var source = Array
-            .Empty<int>()
-            .ToAsyncEnumerable();
+        var source = AsyncSequence.Empty<int>();
         Func<int, int, int> accumulator = null;
         Func<int, int, ValueTask<int>> taskAccumulator = null;
 
@@ -81,9 +79,7 @@ public sealed class AsyncEnumerableAggregateAsyncTest
     [Test]
     public async Task ResultSelectorNullThrowsException()
     {
-        var source = Array
-            .Empty<int>()
-            .ToAsyncEnumerable();
+        var source = AsyncSequence.Empty<int>();
         Func<int, int> resultSelector = null;
         Func<int, ValueTask<int>> taskResultSelector = null;
 
@@ -104,9 +100,7 @@ public sealed class AsyncEnumerableAggregateAsyncTest
     [Test]
     public async Task EmptySequenceThrowsException()
     {
-        var source = Array
-            .Empty<int>()
-            .ToAsyncEnumerable();
+        var source = AsyncSequence.Empty<int>();
 
         await source
             .Awaiting(x => x.AggregateAsync((sum, value) => sum + value))
@@ -146,9 +140,7 @@ public sealed class AsyncEnumerableAggregateAsyncTest
     [Test]
     public async Task AggregateAsyncCanceled()
     {
-        var source = Array
-            .Empty<int>()
-            .ToAsyncEnumerable();
+        var source = AsyncSequence.Empty<int>();
         using var cts = new CancellationTokenSource();
         cts.Cancel();
 

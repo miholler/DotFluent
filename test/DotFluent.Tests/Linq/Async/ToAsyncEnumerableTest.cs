@@ -25,9 +25,10 @@ public sealed class AsyncEnumerableToAsyncEnumerableTest
     public async Task ToAsyncEnumerable()
     {
         var source = new[] { 1, 2, 3 };
-        var result = source.ToAsyncEnumerable();
+        await using var enumerator = source
+            .ToAsyncEnumerable()
+            .GetAsyncEnumerator();
 
-        await using var enumerator = result.GetAsyncEnumerator();
         foreach (var item in source)
         {
             var hasNext = await enumerator.MoveNextAsync();
