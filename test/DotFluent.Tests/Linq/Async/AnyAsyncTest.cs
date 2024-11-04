@@ -69,7 +69,7 @@ public sealed class AsyncEnumerableAnyAsyncTest
             1 => source.ToAsyncIterator(),
             2 => source
                 .ToIterator()
-                .ToAsyncIterator(),
+                .ToAsyncEnumerable(),
             _ => source.ToAsyncEnumerable()
         };
         var result = overload switch

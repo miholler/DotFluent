@@ -10,7 +10,10 @@ public static partial class AsyncSequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The async-sequence to check for emptiness.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-    /// <returns>true if the source async-sequence contains any elements; otherwise, false.</returns>
+    /// <returns>
+    /// A <see cref="ValueTask{TResult}"/> representing the asynchronous any operation. The value of the TResult parameter contains
+    /// true if the source async-sequence contains any elements; otherwise, false.
+    /// </returns>
     public static ValueTask<bool> AnyAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
     {
         source.ThrowIfNull();
@@ -47,6 +50,7 @@ public static partial class AsyncSequence
     /// <param name="predicate">A function to test each element for a condition.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
+    /// A <see cref="ValueTask{TResult}"/> representing the asynchronous any operation. The value of the TResult parameter contains
     /// true if the source async-sequence is not empty and at least one of its elements passes
     /// the test in the specified predicate; otherwise, false.
     /// </returns>
@@ -75,6 +79,7 @@ public static partial class AsyncSequence
     /// <param name="predicate">A function to test each element for a condition.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
+    /// A <see cref="ValueTask{TResult}"/> representing the asynchronous any operation. The value of the TResult parameter contains
     /// true if the source async-sequence is not empty and at least one of its elements passes
     /// the test in the specified predicate; otherwise, false.
     /// </returns>
