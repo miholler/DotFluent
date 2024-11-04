@@ -60,7 +60,7 @@ public sealed class AsyncEnumerableLongCountAsyncTest
     {
         var items = collectionType switch
         {
-            1 => AsyncEnumerable.Create(source),
+            1 => source.ToAsyncIterator(),
             _ => source.ToAsyncEnumerable()
         };
         var result = overload switch

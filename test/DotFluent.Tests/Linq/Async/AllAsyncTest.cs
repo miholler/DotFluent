@@ -18,10 +18,10 @@ public sealed class AsyncEnumerableAllAsyncTest
         IAsyncEnumerable<int> source = null;
 
         await source
-            .Awaiting(x => x.AllAsync(y => y % 2 == 0))
+            .Awaiting(x => x.AllAsync(_ => false))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.AllAsync(y => new ValueTask<bool>(y % 2 == 0)))
+            .Awaiting(x => x.AllAsync(_ => new ValueTask<bool>(false)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -67,10 +67,10 @@ public sealed class AsyncEnumerableAllAsyncTest
         cts.Cancel();
 
         await source
-            .Awaiting(x => x.AllAsync(y => y % 2 == 0, cts.Token))
+            .Awaiting(x => x.AllAsync(_ => false, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.AllAsync(y => new ValueTask<bool>(y % 2 == 0), cts.Token))
+            .Awaiting(x => x.AllAsync(_ => new ValueTask<bool>(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

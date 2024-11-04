@@ -22,7 +22,7 @@ public sealed class EnumerableNoneTest
             .Invoking(x => x.None())
             .ShouldThrow<ArgumentNullException>();
         source
-            .Invoking(x => x.None(y => y == 0))
+            .Invoking(x => x.None(_ => false))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -55,7 +55,7 @@ public sealed class EnumerableNoneTest
         source = collectionType switch
         {
             1 => new ConcurrentQueue<int>(source),
-            2 => source.Select(x => x),
+            2 => source.ToIterator(),
             _ => source
                 .ToImmutableArray()
                 .AsEnumerable()

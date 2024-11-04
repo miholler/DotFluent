@@ -29,15 +29,12 @@ public sealed class AsyncEnumerableToListAsyncTest
     [TestCase(new[] { 1, 2, 3 }, 1)]
     public async Task ToListAsync(IEnumerable<int> source, int collectionType)
     {
-        var result = collectionType switch
+        var items = collectionType switch
         {
-            1 => await AsyncEnumerable
-                .Create(source)
-                .ToListAsync(),
-            _ => await source
-                .ToAsyncEnumerable()
-                .ToListAsync()
+            1 => source.ToAsyncIterator(),
+            _ => source.ToAsyncEnumerable()
         };
+        var result = await items.ToListAsync();
 
         result.ShouldBe(source);
     }
