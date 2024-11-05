@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Linq;
+﻿using DotFluent.Optional;
+
+namespace DotFluent.Linq;
 
 public static partial class AsyncSequence
 {
@@ -25,11 +27,11 @@ public static partial class AsyncSequence
                 ? new(_source.TryGetNonEnumeratedCount(out var count) ? count : -1)
                 : new(_source.Count());
 
-        public override ValueTask<(T? First, bool Found)> TryGetFirstAsync(CancellationToken cancellationToken = default)
+        public override ValueTask<Option<T>> TryGetFirstAsync(CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
-                ? new(Task.FromCanceled<(T?, bool)>(cancellationToken))
+                ? new(Task.FromCanceled<Option<T>>(cancellationToken))
                 : new(_source
-                    .Select(x => (x, true))
+                    .Select(Option.Some)
                     .FirstOrDefault());
 
         #endregion

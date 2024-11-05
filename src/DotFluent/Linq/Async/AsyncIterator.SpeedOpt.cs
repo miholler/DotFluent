@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Linq;
+﻿using DotFluent.Optional;
+
+namespace DotFluent.Linq;
 
 public static partial class AsyncSequence
 {
@@ -14,7 +16,7 @@ public static partial class AsyncSequence
 
         public abstract ValueTask<int> GetCountAsync(bool onlyIfCheap, CancellationToken cancellationToken = default);
 
-        public virtual ValueTask<(TSource? First, bool Found)> TryGetFirstAsync(CancellationToken cancellationToken = default)
+        public virtual ValueTask<Option<TSource>> TryGetFirstAsync(CancellationToken cancellationToken = default)
             => TryGetFirstNonIteratorAsync(this, cancellationToken);
 
         #endregion

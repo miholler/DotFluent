@@ -28,10 +28,10 @@ public static partial class AsyncSequence
                 if (count >= 0)
                     return count != 0;
 
-                var (_, found) = await iterator
+                var option = await iterator
                     .TryGetFirstAsync(cancellationToken)
                     .ConfigureAwait(false);
-                return found;
+                return option.IsSome;
             }
             await using var enumerator = source
                 .WithCancellation(cancellationToken)
