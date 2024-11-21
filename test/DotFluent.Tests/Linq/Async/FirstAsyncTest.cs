@@ -60,12 +60,12 @@ public sealed class AsyncEnumerableFirstAsyncTest
     }
 
     [Test]
-    [TestCase(new[] { 1, 2, 3 }, 1, 0, 0)]
-    [TestCase(new[] { 1, 2, 3 }, 1, 1, 0)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 0, 1)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 0, 2)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 2)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 1, 0, 0)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 1, 1, 0)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 2, 0, 1)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 2, 1, 1)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 2, 0, 2)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 2, 1, 2)]
     public async Task FirstAsync(IEnumerable<int> source, int expectedResult, int collectionType, int overload)
     {
         var items = collectionType switch

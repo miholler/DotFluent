@@ -28,11 +28,11 @@ public static partial class Sequence
                 {
                     if (enumerator.MoveNext())
                     {
-                        var item = enumerator.Current;
+                        var result = enumerator.Current;
                         while (enumerator.MoveNext())
-                            item = enumerator.Current;
+                            result = enumerator.Current;
 
-                        return item;
+                        return result;
                     }
                 }
                 break;

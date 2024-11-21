@@ -55,10 +55,10 @@ public sealed class EnumerableFirstOrDefaultTest
     [TestCase(new int[0], 0, 1, 0)]
     [TestCase(new int[0], 0, 0, 1)]
     [TestCase(new int[0], 0, 1, 1)]
-    [TestCase(new[] { 1, 2, 3 }, 1, 0, 0)]
-    [TestCase(new[] { 1, 2, 3 }, 1, 1, 0)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 0, 1)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 1, 0, 0)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 1, 1, 0)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 2, 0, 1)]
+    [TestCase(new[] { 1, 2, 3, 4 }, 2, 1, 1)]
     public void FirstOrDefault(IEnumerable<int> source, int expectedResult, int collectionType, int overload)
     {
         source = collectionType switch

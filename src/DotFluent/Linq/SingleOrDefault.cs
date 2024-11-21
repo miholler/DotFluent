@@ -34,9 +34,9 @@ public static partial class Sequence
                     if (!enumerator.MoveNext())
                         return defaultFactory();
 
-                    var item = enumerator.Current;
+                    var result = enumerator.Current;
                     if (!enumerator.MoveNext())
-                        return item;
+                        return result;
                 }
                 break;
         }
@@ -62,19 +62,20 @@ public static partial class Sequence
         predicate.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        var count = 0L;
-        var resultFactory = defaultFactory;
-        foreach (var item in source)
+        using var enumerator = source.GetEnumerator();
+        while (enumerator.MoveNext())
         {
-            if (predicate(item))
+            var result = enumerator.Current;
+            if (predicate(result))
             {
-                resultFactory = () => item;
-                checked { count++; }
+                while (enumerator.MoveNext())
+                    if (predicate(enumerator.Current))
+                        throw new InvalidOperationException(Errors.MoreThanOneMatch);
+
+                return result;
             }
         }
-        return count <= 1
-            ? resultFactory()
-            : throw new InvalidOperationException(Errors.MoreThanOneMatch);
+        return defaultFactory();
     }
 
     #endregion
