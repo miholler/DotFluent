@@ -1,5 +1,8 @@
-﻿namespace DotFluent.Internal;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace DotFluent.Internal;
+
+[ExcludeFromCodeCoverage]
 internal static class Errors
 {
     #region Fields
