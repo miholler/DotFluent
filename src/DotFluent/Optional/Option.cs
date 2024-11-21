@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DotFluent.Internal;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
@@ -48,7 +49,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// An <see cref="InvalidOperationException"/> is thrown if the option is 'None'.
     /// </summary>
     /// <returns>The value of the option if it is a 'Some' option.</returns>
-    public T Value => IsSome ? _value : throw new InvalidOperationException("Option has no value.");
+    public T Value => IsSome ? _value : throw new InvalidOperationException(Errors.NoValue);
 
     /// <summary>
     /// Gets whether the current option is a 'Some' value.

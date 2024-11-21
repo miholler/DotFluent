@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using DotFluent.Internal;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DotFluent;
@@ -22,7 +23,7 @@ public static partial class StringExtensions
         if (source.IsNullOrEmpty())
         {
             source.ThrowIfNull(paramName);
-            throw new ArgumentException("The value cannot be an empty string.", paramName);
+            throw new ArgumentException(Errors.ArgumentEmptyString, paramName);
         }
 #endif
         return source;

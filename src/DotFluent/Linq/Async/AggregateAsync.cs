@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Linq;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Linq;
 
 /// <summary>
 /// Provides a set of static methods for querying objects
@@ -31,7 +33,7 @@ public static partial class AsyncSequence
                 .ConfigureAwait(false)
                 .GetAsyncEnumerator();
             if (!await enumerator.MoveNextAsync())
-                throw new InvalidOperationException("Sequence contains no elements.");
+                throw new InvalidOperationException(Errors.NoElements);
 
             var result = enumerator.Current;
             while (await enumerator.MoveNextAsync())
@@ -65,7 +67,7 @@ public static partial class AsyncSequence
                 .ConfigureAwait(false)
                 .GetAsyncEnumerator();
             if (!await enumerator.MoveNextAsync())
-                throw new InvalidOperationException("Sequence contains no elements.");
+                throw new InvalidOperationException(Errors.NoElements);
 
             var result = enumerator.Current;
             while (await enumerator.MoveNextAsync())

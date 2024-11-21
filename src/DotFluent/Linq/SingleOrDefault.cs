@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Linq;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -38,7 +40,7 @@ public static partial class Sequence
                 }
                 break;
         }
-        throw new InvalidOperationException("Sequence contains more than one element.");
+        throw new InvalidOperationException(Errors.MoreThanOneElement);
     }
 
     /// <summary>
@@ -72,7 +74,7 @@ public static partial class Sequence
         }
         return count <= 1
             ? resultFactory()
-            : throw new InvalidOperationException("Sequence contains more than one matching element.");
+            : throw new InvalidOperationException(Errors.MoreThanOneMatch);
     }
 
     #endregion
