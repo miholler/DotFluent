@@ -29,7 +29,7 @@ public static partial class AsyncSequence
                     return count == 0;
 
                 var option = await iterator
-                    .TryGetFirstAsync(cancellationToken)
+                    .GetFirstAsync(cancellationToken)
                     .ConfigureAwait(false);
                 return option.IsNone;
             }

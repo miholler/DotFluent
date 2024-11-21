@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ContainsAsyncTest
+public sealed class AsyncEnumerableContainsAsyncTest
 {
     #region Methods
 

@@ -27,7 +27,7 @@ public static partial class AsyncSequence
                 ? new(_source.TryGetNonEnumeratedCount(out var count) ? count : -1)
                 : new(_source.Count());
 
-        public override ValueTask<Option<T>> TryGetFirstAsync(CancellationToken cancellationToken = default)
+        public override ValueTask<Option<T>> GetFirstAsync(CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
                 ? new(Task.FromCanceled<Option<T>>(cancellationToken))
                 : new(_source

@@ -12,6 +12,7 @@ internal static class Errors
     public const string MoreThanOneElement = "Sequence contains more than one element.";
     public const string MoreThanOneMatch = "Sequence contains more than one matching element.";
     public const string NoElements = "Sequence contains no elements.";
+    public const string NoMatch = "Sequence contains no matching element.";
     public const string NoValue = "Option has no value.";
 
     #endregion

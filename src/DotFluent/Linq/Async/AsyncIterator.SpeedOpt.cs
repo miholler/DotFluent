@@ -16,8 +16,8 @@ public static partial class AsyncSequence
 
         public abstract ValueTask<int> GetCountAsync(bool onlyIfCheap, CancellationToken cancellationToken = default);
 
-        public virtual ValueTask<Option<TSource>> TryGetFirstAsync(CancellationToken cancellationToken = default)
-            => TryGetFirstNonIteratorAsync(this, cancellationToken);
+        public virtual ValueTask<Option<TSource>> GetFirstAsync(CancellationToken cancellationToken = default)
+            => GetFirstNonIteratorAsync(this, cancellationToken);
 
         #endregion
     }
