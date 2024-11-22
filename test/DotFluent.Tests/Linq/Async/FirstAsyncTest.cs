@@ -24,7 +24,7 @@ public sealed class AsyncEnumerableFirstAsyncTest
             .Awaiting(x => x.FirstAsync(_ => false))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.FirstAsync(_ => new ValueTask<bool>(false)))
+            .Awaiting(x => x.FirstAsync(_ => ValueTask.FromResult(false)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -55,7 +55,7 @@ public sealed class AsyncEnumerableFirstAsyncTest
             .Awaiting(x => x.FirstAsync(_ => false))
             .ShouldThrowAsync<InvalidOperationException>();
         await source
-            .Awaiting(x => x.FirstAsync(_ => new ValueTask<bool>(false)))
+            .Awaiting(x => x.FirstAsync(_ => ValueTask.FromResult(false)))
             .ShouldThrowAsync<InvalidOperationException>();
     }
 
@@ -76,7 +76,7 @@ public sealed class AsyncEnumerableFirstAsyncTest
         var result = overload switch
         {
             1 => await items.FirstAsync(x => x % 2 == 0),
-            2 => await items.FirstAsync(x => new ValueTask<bool>(x % 2 == 0)),
+            2 => await items.FirstAsync(x => ValueTask.FromResult(x % 2 == 0)),
             _ => await items.FirstAsync()
         };
 
@@ -97,7 +97,7 @@ public sealed class AsyncEnumerableFirstAsyncTest
             .Awaiting(x => x.FirstAsync(_ => false, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.FirstAsync(_ => new ValueTask<bool>(false), cts.Token))
+            .Awaiting(x => x.FirstAsync(_ => ValueTask.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

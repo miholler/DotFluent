@@ -12,24 +12,24 @@ public static partial class AsyncSequence
 
         public override ValueTask<T[]> ToArrayAsync(CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
-                ? new(Task.FromCanceled<T[]>(cancellationToken))
+                ? ValueTask.FromCanceled<T[]>(cancellationToken)
                 : new(_source.ToArray());
 
         public override ValueTask<List<T>> ToListAsync(CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
-                ? new(Task.FromCanceled<List<T>>(cancellationToken))
+                ? ValueTask.FromCanceled<List<T>>(cancellationToken)
                 : new(_source.ToList());
 
         public override ValueTask<int> GetCountAsync(bool onlyIfCheap, CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
-                ? new(Task.FromCanceled<int>(cancellationToken))
+                ? ValueTask.FromCanceled<int>(cancellationToken)
                 : onlyIfCheap
                 ? new(_source.TryGetNonEnumeratedCount(out var count) ? count : -1)
                 : new(_source.Count());
 
         public override ValueTask<Option<T>> GetFirstAsync(CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
-                ? new(Task.FromCanceled<Option<T>>(cancellationToken))
+                ? ValueTask.FromCanceled<Option<T>>(cancellationToken)
                 : new(_source
                     .Select(Option.Some)
                     .FirstOrDefault());

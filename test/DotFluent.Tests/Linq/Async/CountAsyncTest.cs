@@ -24,7 +24,7 @@ public sealed class AsyncEnumerableCountAsyncTest
             .Awaiting(x => x.CountAsync(_ => false))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.CountAsync(_ => new ValueTask<bool>(false)))
+            .Awaiting(x => x.CountAsync(_ => ValueTask.FromResult(false)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -66,7 +66,7 @@ public sealed class AsyncEnumerableCountAsyncTest
         var result = overload switch
         {
             1 => await items.CountAsync(x => x % 2 == 0),
-            2 => await items.CountAsync(x => new ValueTask<bool>(x % 2 == 0)),
+            2 => await items.CountAsync(x => ValueTask.FromResult(x % 2 == 0)),
             _ => await items.CountAsync()
         };
 
@@ -87,7 +87,7 @@ public sealed class AsyncEnumerableCountAsyncTest
             .Awaiting(x => x.CountAsync(_ => false, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.CountAsync(_ => new ValueTask<bool>(false), cts.Token))
+            .Awaiting(x => x.CountAsync(_ => ValueTask.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

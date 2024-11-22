@@ -24,7 +24,7 @@ public sealed class AsyncEnumerableLongCountAsyncTest
             .Awaiting(x => x.LongCountAsync(_ => false))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.LongCountAsync(_ => new ValueTask<bool>(false)))
+            .Awaiting(x => x.LongCountAsync(_ => ValueTask.FromResult(false)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -66,7 +66,7 @@ public sealed class AsyncEnumerableLongCountAsyncTest
         var result = overload switch
         {
             1 => await items.LongCountAsync(x => x % 2 == 0),
-            2 => await items.LongCountAsync(x => new ValueTask<bool>(x % 2 == 0)),
+            2 => await items.LongCountAsync(x => ValueTask.FromResult(x % 2 == 0)),
             _ => await items.LongCountAsync()
         };
 
@@ -87,7 +87,7 @@ public sealed class AsyncEnumerableLongCountAsyncTest
             .Awaiting(x => x.LongCountAsync(_ => false, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.LongCountAsync(_ => new ValueTask<bool>(false), cts.Token))
+            .Awaiting(x => x.LongCountAsync(_ => ValueTask.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

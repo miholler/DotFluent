@@ -24,7 +24,7 @@ public sealed class AsyncEnumerableAnyAsyncTest
             .Awaiting(x => x.AnyAsync(_ => false))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.AnyAsync(_ => new ValueTask<bool>(false)))
+            .Awaiting(x => x.AnyAsync(_ => ValueTask.FromResult(false)))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -75,7 +75,7 @@ public sealed class AsyncEnumerableAnyAsyncTest
         var result = overload switch
         {
             1 => await items.AnyAsync(x => x % 2 == 0),
-            2 => await items.AnyAsync(x => new ValueTask<bool>(x % 2 == 0)),
+            2 => await items.AnyAsync(x => ValueTask.FromResult(x % 2 == 0)),
             _ => await items.AnyAsync()
         };
 
@@ -96,7 +96,7 @@ public sealed class AsyncEnumerableAnyAsyncTest
             .Awaiting(x => x.AnyAsync(_ => false, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.AnyAsync(_ => new ValueTask<bool>(false), cts.Token))
+            .Awaiting(x => x.AnyAsync(_ => ValueTask.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 
