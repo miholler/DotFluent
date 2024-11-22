@@ -23,7 +23,7 @@ public static partial class AsyncSequence
             AsyncIterator<TSource> iterator => iterator.GetCountAsync(onlyIfCheap: false, cancellationToken),
             _ => AsyncEnumerableCountAsync(source, cancellationToken)
         };
-        static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+        static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken)
         {
             var count = 0;
             await using var enumerator = source
@@ -54,7 +54,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken)
         {
             var count = 0;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -83,7 +83,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<int> AsyncEnumerableCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken)
         {
             var count = 0;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))

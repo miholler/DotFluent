@@ -26,7 +26,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         accumulator.ThrowIfNull();
 
-        static async ValueTask<TSource> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, Func<TSource, TSource, TSource> accumulator, CancellationToken cancellationToken = default)
+        static async ValueTask<TSource> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, Func<TSource, TSource, TSource> accumulator, CancellationToken cancellationToken)
         {
             await using var enumerator = source
                 .WithCancellation(cancellationToken)
@@ -60,7 +60,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         accumulator.ThrowIfNull();
 
-        static async ValueTask<TSource> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, Func<TSource, TSource, ValueTask<TSource>> accumulator, CancellationToken cancellationToken = default)
+        static async ValueTask<TSource> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, Func<TSource, TSource, ValueTask<TSource>> accumulator, CancellationToken cancellationToken)
         {
             await using var enumerator = source
                 .WithCancellation(cancellationToken)
@@ -97,7 +97,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         accumulator.ThrowIfNull();
 
-        static async ValueTask<TAccumulate> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, CancellationToken cancellationToken = default)
+        static async ValueTask<TAccumulate> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, CancellationToken cancellationToken)
         {
             var result = seed;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -127,7 +127,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         accumulator.ThrowIfNull();
 
-        static async ValueTask<TAccumulate> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator, CancellationToken cancellationToken = default)
+        static async ValueTask<TAccumulate> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator, CancellationToken cancellationToken)
         {
             var result = seed;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -161,7 +161,7 @@ public static partial class AsyncSequence
         accumulator.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, Func<TAccumulate, TResult> resultSelector, CancellationToken cancellationToken = default)
+        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, Func<TAccumulate, TResult> resultSelector, CancellationToken cancellationToken)
         {
             var result = seed;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -195,7 +195,7 @@ public static partial class AsyncSequence
         accumulator.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator, Func<TAccumulate, TResult> resultSelector, CancellationToken cancellationToken = default)
+        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator, Func<TAccumulate, TResult> resultSelector, CancellationToken cancellationToken)
         {
             var result = seed;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -229,7 +229,7 @@ public static partial class AsyncSequence
         accumulator.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, Func<TAccumulate, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken = default)
+        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, Func<TAccumulate, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken)
         {
             var result = seed;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -263,7 +263,7 @@ public static partial class AsyncSequence
         accumulator.ThrowIfNull();
         resultSelector.ThrowIfNull();
 
-        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator, Func<TAccumulate, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken = default)
+        static async ValueTask<TResult> AsyncEnumerableAggregateAsync(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator, Func<TAccumulate, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken)
         {
             var result = seed;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))

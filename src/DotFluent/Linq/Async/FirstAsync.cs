@@ -22,7 +22,7 @@ public static partial class AsyncSequence
     {
         source.ThrowIfNull();
 
-        static async ValueTask<TSource> AsyncEnumerableFirstAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+        static async ValueTask<TSource> AsyncEnumerableFirstAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken)
         {
             var option = await source
                 .GetFirstAsync(cancellationToken)
@@ -49,7 +49,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<TSource> AsyncEnumerableFirstAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<TSource> AsyncEnumerableFirstAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken)
         {
             var option = await source
                 .GetFirstAsync(predicate, cancellationToken)
@@ -76,7 +76,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<TSource> AsyncEnumerableFirstAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<TSource> AsyncEnumerableFirstAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken)
         {
             var option = await source
                 .GetFirstAsync(predicate, cancellationToken)

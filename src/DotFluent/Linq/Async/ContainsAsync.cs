@@ -54,7 +54,7 @@ public static partial class AsyncSequence
     {
         source.ThrowIfNull();
 
-        static async ValueTask<bool> AsyncEnumerableContainsAsync(IAsyncEnumerable<TSource> source, TSource value, IEqualityComparer<TSource>? comparer, CancellationToken cancellationToken = default)
+        static async ValueTask<bool> AsyncEnumerableContainsAsync(IAsyncEnumerable<TSource> source, TSource value, IEqualityComparer<TSource>? comparer, CancellationToken cancellationToken)
         {
             comparer ??= EqualityComparer<TSource>.Default;
 

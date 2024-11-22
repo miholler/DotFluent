@@ -23,7 +23,7 @@ public static partial class AsyncSequence
             AsyncIterator<TSource> iterator => iterator.ToArrayAsync(cancellationToken),
             _ => AsyncEnumerableToArrayAsync(source, cancellationToken)
         };
-        static async ValueTask<TSource[]> AsyncEnumerableToArrayAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+        static async ValueTask<TSource[]> AsyncEnumerableToArrayAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken)
         {
             var list = await source
                 .ToListAsync(cancellationToken)

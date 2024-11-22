@@ -21,7 +21,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<bool> AsyncEnumerableAllAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<bool> AsyncEnumerableAllAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken)
         {
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {
@@ -50,7 +50,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<bool> AsyncEnumerableAllAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<bool> AsyncEnumerableAllAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken)
         {
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
             {

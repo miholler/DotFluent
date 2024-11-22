@@ -18,7 +18,7 @@ public static partial class AsyncSequence
     {
         source.ThrowIfNull();
 
-        static async ValueTask<long> AsyncEnumerableLongCountAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default)
+        static async ValueTask<long> AsyncEnumerableLongCountAsync(IAsyncEnumerable<TSource> source, CancellationToken cancellationToken)
         {
             var count = 0L;
             await using var enumerator = source
@@ -50,7 +50,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<long> AsyncEnumerableLongCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<long> AsyncEnumerableLongCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken)
         {
             var count = 0L;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -79,7 +79,7 @@ public static partial class AsyncSequence
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        static async ValueTask<long> AsyncEnumerableLongCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+        static async ValueTask<long> AsyncEnumerableLongCountAsync(IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<bool>> predicate, CancellationToken cancellationToken)
         {
             var count = 0L;
             await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
