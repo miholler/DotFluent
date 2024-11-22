@@ -19,6 +19,9 @@ public static partial class AsyncSequence
         public virtual ValueTask<Option<TSource>> GetFirstAsync(CancellationToken cancellationToken = default)
             => GetFirstNonIteratorAsync(this, cancellationToken);
 
+        public virtual ValueTask<Option<TSource>> GetLastAsync(CancellationToken cancellationToken = default)
+            => GetLastNonIteratorAsync(this, cancellationToken);
+
         #endregion
     }
 

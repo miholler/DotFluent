@@ -34,6 +34,13 @@ public static partial class AsyncSequence
                     .Select(Option.Some)
                     .FirstOrDefault());
 
+        public override ValueTask<Option<T>> GetLastAsync(CancellationToken cancellationToken = default)
+            => cancellationToken.IsCancellationRequested
+                ? ValueTask.FromCanceled<Option<T>>(cancellationToken)
+                : new(_source
+                    .Select(Option.Some)
+                    .LastOrDefault());
+
         #endregion
     }
 
