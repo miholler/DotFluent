@@ -27,6 +27,13 @@ public static partial class AsyncSequence
                 ? new(_source.TryGetNonEnumeratedCount(out var count) ? count : -1)
                 : new(_source.Count());
 
+        public override ValueTask<Option<T>> GetElementAtAsync(int index, CancellationToken cancellationToken = default)
+            => cancellationToken.IsCancellationRequested
+                ? ValueTask.FromCanceled<Option<T>>(cancellationToken)
+                : new(_source
+                    .Select(Option.Some)
+                    .ElementAtOrDefault(index));
+
         public override ValueTask<Option<T>> GetFirstAsync(CancellationToken cancellationToken = default)
             => cancellationToken.IsCancellationRequested
                 ? ValueTask.FromCanceled<Option<T>>(cancellationToken)
