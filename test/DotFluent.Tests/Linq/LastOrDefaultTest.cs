@@ -55,10 +55,10 @@ public sealed class EnumerableLastOrDefaultTest
     [TestCase(new int[0], 0, 1, 0)]
     [TestCase(new int[0], 0, 0, 1)]
     [TestCase(new int[0], 0, 1, 1)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 0, 0)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 1, 0)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 0, 1)]
-    [TestCase(new[] { 1, 2, 3, 4 }, 4, 1, 1)]
+    [TestCase(new[] { 1, 2, 3, 4, 5 }, 5, 0, 0)]
+    [TestCase(new[] { 1, 2, 3, 4, 5 }, 5, 1, 0)]
+    [TestCase(new[] { 1, 2, 3, 4, 5 }, 4, 0, 1)]
+    [TestCase(new[] { 1, 2, 3, 4, 5 }, 4, 1, 1)]
     public void LastOrDefault(IEnumerable<int> source, int expectedResult, int collectionType, int overload)
     {
         source = collectionType switch
