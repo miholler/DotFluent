@@ -50,6 +50,8 @@ public sealed class EnumerableToHashSetTest
     }
 
     [Test]
+    [TestCase(new int[0], 0)]
+    [TestCase(new int[0], 1)]
     [TestCase(new[] { 1, 2, 3 }, 0)]
     [TestCase(new[] { 1, 2, 3 }, 1)]
     public void ToHashSet(IEnumerable<int> source, int overload)
