@@ -14,7 +14,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence to return the single element of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
-    /// <returns>The default value created by the specified function if the source sequence is empty; otherwise, the single element of the source sequence.</returns>
+    /// <returns>The single element of the input sequence; otherwise, the default value created by the specified function if the source sequence is empty.</returns>
     public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
     {
         source.ThrowIfNull();
@@ -44,7 +44,7 @@ public static partial class Sequence
     }
 
     /// <summary>
-    /// Returns the only element of a sequence that satisfies a specified condition or
+    /// Returns the only element of a sequence that satisfies a specified condition, or
     /// a default value created by a specified function if no such element exists; this method 
     /// throws an exception if more than one element satisfies the condition.
     /// </summary>

@@ -69,7 +69,7 @@ public sealed class EnumerableSingleOrDefaultTest
             .Invoking(x => x.SingleOrDefault(() => 0))
             .ShouldThrow<InvalidOperationException>();
         source
-            .Invoking(x => x.SingleOrDefault(x => x % 2 == 0, () => 0))
+            .Invoking(x => x.SingleOrDefault(y => y % 2 == 0, () => 0))
             .ShouldThrow<InvalidOperationException>();
     }
 
