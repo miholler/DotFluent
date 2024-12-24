@@ -14,14 +14,14 @@ public static partial class AsyncSequence
     {
         source.ThrowIfNull();
 
-        return new AsyncEnumerableIterator<TSource>(source);
+        return new EnumerableAsyncIterator<TSource>(source);
     }
 
     #endregion
 
     #region Nested Classes
 
-    private sealed partial class AsyncEnumerableIterator<T>(IEnumerable<T> source) : AsyncIterator<T>
+    private sealed partial class EnumerableAsyncIterator<T>(IEnumerable<T> source) : AsyncIterator<T>
     {
         #region Fields
 
@@ -34,17 +34,17 @@ public static partial class AsyncSequence
 
         public override async ValueTask<bool> MoveNextAsync()
         {
-            switch (State)
+            switch (_state)
             {
                 case AsyncIteratorState.Allocated:
                     _enumerator = _source.GetEnumerator();
-                    State = AsyncIteratorState.Iterating;
+                    _state = AsyncIteratorState.Iterating;
                     goto case AsyncIteratorState.Iterating;
                 case AsyncIteratorState.Iterating:
                     _enumerator.ThrowIfNull();
                     if (_enumerator.MoveNext())
                     {
-                        Current = _enumerator.Current;
+                        _current = _enumerator.Current;
                         return true;
                     }
                     await DisposeAsync().ConfigureAwait(false);
@@ -63,8 +63,8 @@ public static partial class AsyncSequence
             return base.DisposeAsync();
         }
 
-        protected override AsyncIterator<T> Clone()
-            => new AsyncEnumerableIterator<T>(_source);
+        private protected override AsyncIterator<T> Clone()
+            => new EnumerableAsyncIterator<T>(_source);
 
         #endregion
     }

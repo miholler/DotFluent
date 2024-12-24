@@ -36,10 +36,10 @@ public sealed class AsyncEnumerableAggregateAsyncTest
             .Awaiting(x => x.AggregateAsync(0, (sum, value) => ValueTask.FromResult(sum + value), sum => sum))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.AggregateAsync(0, (sum, value) => sum + value, sum => ValueTask.FromResult(sum)))
+            .Awaiting(x => x.AggregateAsync(0, (sum, value) => sum + value, ValueTask.FromResult))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.AggregateAsync(0, (sum, value) => ValueTask.FromResult(sum + value), sum => ValueTask.FromResult(sum)))
+            .Awaiting(x => x.AggregateAsync(0, (sum, value) => ValueTask.FromResult(sum + value), ValueTask.FromResult))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -69,10 +69,10 @@ public sealed class AsyncEnumerableAggregateAsyncTest
             .Awaiting(x => x.AggregateAsync(0, taskAccumulator, sum => sum))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.AggregateAsync(0, accumulator, sum => ValueTask.FromResult(sum)))
+            .Awaiting(x => x.AggregateAsync(0, accumulator, ValueTask.FromResult))
             .ShouldThrowAsync<ArgumentNullException>();
         await source
-            .Awaiting(x => x.AggregateAsync(0, taskAccumulator, sum => ValueTask.FromResult(sum)))
+            .Awaiting(x => x.AggregateAsync(0, taskAccumulator, ValueTask.FromResult))
             .ShouldThrowAsync<ArgumentNullException>();
     }
 
@@ -163,10 +163,10 @@ public sealed class AsyncEnumerableAggregateAsyncTest
             .Awaiting(x => x.AggregateAsync(0, (sum, value) => ValueTask.FromResult(sum + value), sum => sum, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.AggregateAsync(0, (sum, value) => sum + value, sum => ValueTask.FromResult(sum), cts.Token))
+            .Awaiting(x => x.AggregateAsync(0, (sum, value) => sum + value, ValueTask.FromResult, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await source
-            .Awaiting(x => x.AggregateAsync(0, (sum, value) => ValueTask.FromResult(sum + value), sum => ValueTask.FromResult(sum), cts.Token))
+            .Awaiting(x => x.AggregateAsync(0, (sum, value) => ValueTask.FromResult(sum + value), ValueTask.FromResult, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 

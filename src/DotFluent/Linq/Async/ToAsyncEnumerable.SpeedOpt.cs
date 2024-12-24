@@ -6,7 +6,7 @@ public static partial class AsyncSequence
 {
     #region Nested Classes
 
-    private sealed partial class AsyncEnumerableIterator<T>
+    private sealed partial class EnumerableAsyncIterator<T>
     {
         #region Methods
 

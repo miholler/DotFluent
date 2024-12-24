@@ -9,45 +9,47 @@ public static partial class AsyncSequence
         #region Fields
 
         private readonly int _threadId = Environment.CurrentManagedThreadId;
+        private protected AsyncIteratorState _state = AsyncIteratorState.New;
+        private protected CancellationToken _cancellationToken;
+        private protected TSource _current = default!;
 
         #endregion
 
         #region Properties
 
-        public TSource Current { get; protected set; } = default!;
-
-        protected AsyncIteratorState State { get; set; } = AsyncIteratorState.New;
-
-        protected CancellationToken CancellationToken { get; set; }
+        public TSource Current => _current;
 
         #endregion
 
         #region Methods
 
-        public IAsyncEnumerator<TSource> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        public AsyncIterator<TSource> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var enumerator = State == AsyncIteratorState.New && _threadId == Environment.CurrentManagedThreadId
+            var enumerator = _state == AsyncIteratorState.New && _threadId == Environment.CurrentManagedThreadId
                 ? this
                 : Clone();
 
-            enumerator.State = AsyncIteratorState.Allocated;
-            enumerator.CancellationToken = cancellationToken;
+            enumerator._state = AsyncIteratorState.Allocated;
+            enumerator._cancellationToken = cancellationToken;
 
             return enumerator;
         }
+
+        IAsyncEnumerator<TSource> IAsyncEnumerable<TSource>.GetAsyncEnumerator(CancellationToken cancellationToken)
+            => GetAsyncEnumerator(cancellationToken);
 
         public abstract ValueTask<bool> MoveNextAsync();
 
         public virtual ValueTask DisposeAsync()
         {
-            Current = default!;
-            State = AsyncIteratorState.Disposed;
+            _current = default!;
+            _state = AsyncIteratorState.Disposed;
             return ValueTask.CompletedTask;
         }
 
-        protected abstract AsyncIterator<TSource> Clone();
+        private protected abstract AsyncIterator<TSource> Clone();
 
         #endregion
     }
