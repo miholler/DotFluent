@@ -2,10 +2,6 @@
 
 namespace DotFluent.Optional.Tasks;
 
-/// <summary>
-/// Provides a set of static methods for working with 
-/// <see cref="Option{T}"/> instances asynchronously.
-/// </summary>
 public static partial class OptionTask
 {
     #region Methods
@@ -35,11 +31,6 @@ public static partial class OptionTask
     #endregion
 }
 
-/// <summary>
-/// Provides a set of static methods for working with 
-/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> 
-/// instances asynchronously.
-/// </summary>
 public static partial class ResultTask
 {
     #region Methods

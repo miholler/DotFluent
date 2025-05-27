@@ -6,6 +6,12 @@ using System.Runtime.Serialization;
 namespace DotFluent.Optional;
 
 /// <summary>
+/// Provides a set of static methods for working 
+/// with <see cref="Option{T}"/> instances.
+/// </summary>
+public static partial class Option;
+
+/// <summary>
 /// Represents an optional value.
 /// </summary>
 /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
