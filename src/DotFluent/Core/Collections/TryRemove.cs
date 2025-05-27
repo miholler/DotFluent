@@ -2,7 +2,7 @@
 
 namespace DotFluent;
 
-public static partial class DictionaryExtensions
+public static partial class CollectionExtensions
 {
     #region Methods
 
