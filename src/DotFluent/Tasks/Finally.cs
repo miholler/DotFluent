@@ -12,7 +12,7 @@ public static partial class TaskExtensions
     /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
     public static Task Finally(this Task source, Action action)
-        => source.Finally(action, TaskScheduler.Current);
+        => source.Finally(action, scheduler: null);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously even if any of the
@@ -64,7 +64,7 @@ public static partial class TaskExtensions
     /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> Finally<TSource>(this Task<TSource> source, Action action)
-        => source.Finally(action, TaskScheduler.Current);
+        => source.Finally(action, scheduler: null);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously even if any of the

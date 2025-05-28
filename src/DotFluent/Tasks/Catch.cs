@@ -13,7 +13,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
     public static Task Catch(this Task source, Action action, CancellationToken cancellationToken = default)
-        => source.Catch(action, TaskScheduler.Current, cancellationToken);
+        => source.Catch(action, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -62,7 +62,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
     public static Task Catch<TException>(this Task source, Action<TException> action, CancellationToken cancellationToken = default) where TException : Exception
-        => source.Catch(action, TaskScheduler.Current, cancellationToken);
+        => source.Catch(action, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -119,7 +119,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<TSource> selector, CancellationToken cancellationToken = default)
-        => source.Catch(selector, TaskScheduler.Current, cancellationToken);
+        => source.Catch(selector, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -168,7 +168,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<Task<TSource>> selector, CancellationToken cancellationToken = default)
-        => source.Catch(selector, TaskScheduler.Current, cancellationToken);
+        => source.Catch(selector, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -218,7 +218,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, TSource> selector, CancellationToken cancellationToken = default) where TException : Exception
-        => source.Catch(selector, TaskScheduler.Current, cancellationToken);
+        => source.Catch(selector, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -276,7 +276,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, Task<TSource>> selector, CancellationToken cancellationToken = default) where TException : Exception
-        => source.Catch(selector, TaskScheduler.Current, cancellationToken);
+        => source.Catch(selector, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the

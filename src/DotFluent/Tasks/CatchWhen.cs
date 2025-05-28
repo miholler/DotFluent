@@ -19,7 +19,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
     public static Task CatchWhen<TException>(this Task source, Func<TException, bool> predicate, Action<TException> action, CancellationToken cancellationToken = default) where TException : Exception
-        => source.CatchWhen(predicate, action, TaskScheduler.Current, cancellationToken);
+        => source.CatchWhen(predicate, action, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -88,7 +88,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, TSource> selector, CancellationToken cancellationToken = default) where TException : Exception
-        => source.CatchWhen(predicate, selector, TaskScheduler.Current, cancellationToken);
+        => source.CatchWhen(predicate, selector, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
@@ -157,7 +157,7 @@ public static partial class TaskExtensions
     /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> CatchWhen<TSource, TException>(this Task<TSource> source, Func<TException, bool> predicate, Func<TException, Task<TSource>> selector, CancellationToken cancellationToken = default) where TException : Exception
-        => source.CatchWhen(predicate, selector, TaskScheduler.Current, cancellationToken);
+        => source.CatchWhen(predicate, selector, scheduler: null, cancellationToken);
 
     /// <summary>
     /// Creates a continuation task that executes asynchronously when any of the
