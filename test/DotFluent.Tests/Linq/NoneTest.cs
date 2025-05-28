@@ -55,7 +55,7 @@ public sealed class EnumerableNoneTest
         source = collectionType switch
         {
             1 => new ConcurrentQueue<int>(source),
-            2 => source.ToIterator(),
+            2 => source.AsIterator(),
             _ => source
                 .ToImmutableArray()
                 .AsEnumerable()
