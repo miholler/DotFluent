@@ -1,9 +1,6 @@
 ﻿namespace DotFluent;
 
-/// <summary>
-/// Provides extension methods for <see cref="IDictionary{TKey, TValue}"/> objects.
-/// </summary>
-public static partial class DictionaryExtensions
+public static partial class CollectionExtensions
 {
     #region Methods
 

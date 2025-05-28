@@ -7,7 +7,7 @@ public static partial class Sequence
     #region Methods
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to a specified 
+    /// Creates a dictionary from a sequence according to a specified
     /// key selector function and a key compare function.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -15,12 +15,15 @@ public static partial class Sequence
     /// <param name="source">The sequence to create a dictionary from.</param>
     /// <param name="keySelector">A function to extract a key from each element.</param>
     /// <param name="comparison">A function to compare keys.</param>
-    /// <returns>A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values.</returns>
+    /// <returns>
+    /// A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values. The
+    /// values within each group are in the same order as in source.
+    /// </returns>
     public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison) where TKey : notnull
         => source.ToDictionary(keySelector, EqualityComparer.Create(comparison));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to a specified 
+    /// Creates a dictionary from a sequence according to a specified
     /// key selector function and key compare functions.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -29,13 +32,16 @@ public static partial class Sequence
     /// <param name="keySelector">A function to extract a key from each element.</param>
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
-    /// <returns>A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values.</returns>
+    /// <returns>
+    /// A <see cref="Dictionary{TKey, TSource}"/> that contains keys and values. The
+    /// values within each group are in the same order as in source.
+    /// </returns>
     public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
         => source.ToDictionary(keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to a specified 
-    /// key selector function, an element selector function and a 
+    /// Creates a dictionary from a sequence according to a specified
+    /// key selector function, an element selector function and a
     /// key compare function.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -50,7 +56,7 @@ public static partial class Sequence
         => source.ToDictionary(keySelector, elementSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to a specified 
+    /// Creates a dictionary from a sequence according to a specified
     /// key selector function, an element selector function and key
     /// compare functions.
     /// </summary>
@@ -67,7 +73,7 @@ public static partial class Sequence
         => source.ToDictionary(keySelector, elementSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to a specified 
+    /// Creates a dictionary from a sequence according to a specified
     /// key compare function.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys from elements of source.</typeparam>
@@ -79,7 +85,7 @@ public static partial class Sequence
         => source.ToDictionary(EqualityComparer.Create(comparison));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to specified 
+    /// Creates a dictionary from a sequence according to specified
     /// key compare functions.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys from elements of source.</typeparam>
@@ -92,7 +98,7 @@ public static partial class Sequence
         => source.ToDictionary(EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to a specified 
+    /// Creates a dictionary from a sequence according to a specified
     /// key compare function.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys from elements of source.</typeparam>
@@ -104,7 +110,7 @@ public static partial class Sequence
         => source.ToDictionary(EqualityComparer.Create(comparison));
 
     /// <summary>
-    /// Creates a dictionary from a sequence according to specified 
+    /// Creates a dictionary from a sequence according to specified
     /// key compare functions.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys from elements of source.</typeparam>
@@ -130,7 +136,7 @@ public static partial class Sequence
     /// for the key type.
     /// </returns>
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source) where TKey : notnull
-        => source.ToDictionary(EqualityComparer<TKey>.Default);
+        => source.ToDictionary(comparer: null);
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified key comparer.
@@ -159,7 +165,7 @@ public static partial class Sequence
     /// for the key type.
     /// </returns>
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source) where TKey : notnull
-        => source.ToDictionary(EqualityComparer<TKey>.Default);
+        => source.ToDictionary(comparer: null);
 
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified key comparer.

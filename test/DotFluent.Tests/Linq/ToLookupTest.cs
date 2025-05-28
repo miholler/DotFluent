@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ToLookupTest
+public sealed class EnumerableToLookupTest
 {
     #region Methods
 

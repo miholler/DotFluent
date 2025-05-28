@@ -5,6 +5,12 @@ using System.Runtime.ExceptionServices;
 namespace DotFluent.Optional;
 
 /// <summary>
+/// Provides a set of static methods for working with
+/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> instances.
+/// </summary>
+public static partial class Result;
+
+/// <summary>
 /// Represents an operational result that is either a success value (Ok)
 /// or an error value (Error).
 /// </summary>

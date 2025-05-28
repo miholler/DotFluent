@@ -5,7 +5,7 @@ public static partial class Sequence
     #region Methods
 
     /// <summary>
-    /// Returns the first element of a sequence, or a default value created by a specified function if 
+    /// Returns the first element of a sequence, or a default value created by a specified function if
     /// the sequence contains no elements.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -33,7 +33,7 @@ public static partial class Sequence
     }
 
     /// <summary>
-    /// Returns the first element of the sequence that satisfies a condition or a default value created by
+    /// Returns the first element of the sequence that satisfies a condition, or a default value created by
     /// a specified function if no such element is found.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>

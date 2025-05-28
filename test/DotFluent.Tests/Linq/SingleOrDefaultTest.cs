@@ -8,7 +8,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class SingleOrDefaultTest
+public sealed class EnumerableSingleOrDefaultTest
 {
     #region Methods
 
@@ -69,7 +69,7 @@ public sealed class SingleOrDefaultTest
             .Invoking(x => x.SingleOrDefault(() => 0))
             .ShouldThrow<InvalidOperationException>();
         source
-            .Invoking(x => x.SingleOrDefault(x => x % 2 == 0, () => 0))
+            .Invoking(x => x.SingleOrDefault(y => y % 2 == 0, () => 0))
             .ShouldThrow<InvalidOperationException>();
     }
 

@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class MaxTest
+public sealed class EnumerableMaxTest
 {
     #region Methods
 

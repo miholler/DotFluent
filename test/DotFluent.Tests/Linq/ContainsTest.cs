@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ContainsTest
+public sealed class EnumerableContainsTest
 {
     #region Methods
 

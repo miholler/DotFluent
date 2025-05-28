@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class OrderTest
+public sealed class EnumerableOrderTest
 {
     #region Methods
 

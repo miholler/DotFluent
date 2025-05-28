@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ToDictionaryTest
+public sealed class EnumerableToDictionaryTest
 {
     #region Methods
 

@@ -19,7 +19,7 @@ public static partial class Sequence
     /// <param name="resultSelector">A function to create a result element from an element from the first sequence and a collection of matching elements from the second sequence.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that contains elements of type TResult that are obtained by performing a grouped join on two sequences.</returns>
     public static IEnumerable<TResult> GroupJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
-        => outer.GroupJoin(inner, keySelector, resultSelector, EqualityComparer<TKey>.Default);
+        => outer.GroupJoin(inner, keySelector, resultSelector, comparer: null);
 
     /// <summary>
     /// Correlates the elements of two sequences based on key equality and groups the

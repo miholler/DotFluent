@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class IntersectTest
+public sealed class EnumerableIntersectTest
 {
     #region Methods
 

@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class OrderByDescendingTest
+public sealed class EnumerableOrderByDescendingTest
 {
     #region Methods
 

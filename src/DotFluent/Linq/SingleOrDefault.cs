@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Linq;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -12,7 +14,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence to return the single element of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
-    /// <returns>The default value created by the specified function if the source sequence is empty; otherwise, the single element of the source sequence.</returns>
+    /// <returns>The single element of the input sequence; otherwise, the default value created by the specified function if the source sequence is empty.</returns>
     public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
     {
         source.ThrowIfNull();
@@ -32,17 +34,17 @@ public static partial class Sequence
                     if (!enumerator.MoveNext())
                         return defaultFactory();
 
-                    var item = enumerator.Current;
+                    var result = enumerator.Current;
                     if (!enumerator.MoveNext())
-                        return item;
+                        return result;
                 }
                 break;
         }
-        throw new InvalidOperationException("Sequence contains more than one element.");
+        throw new InvalidOperationException(Errors.MoreThanOneElement);
     }
 
     /// <summary>
-    /// Returns the only element of a sequence that satisfies a specified condition or
+    /// Returns the only element of a sequence that satisfies a specified condition, or
     /// a default value created by a specified function if no such element exists; this method 
     /// throws an exception if more than one element satisfies the condition.
     /// </summary>
@@ -60,19 +62,20 @@ public static partial class Sequence
         predicate.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        var count = 0L;
-        var resultFactory = defaultFactory;
-        foreach (var item in source)
+        using var enumerator = source.GetEnumerator();
+        while (enumerator.MoveNext())
         {
-            if (predicate(item))
+            var result = enumerator.Current;
+            if (predicate(result))
             {
-                resultFactory = () => item;
-                checked { count++; };
+                while (enumerator.MoveNext())
+                    if (predicate(enumerator.Current))
+                        throw new InvalidOperationException(Errors.MoreThanOneMatch);
+
+                return result;
             }
         }
-        return count <= 1
-            ? resultFactory()
-            : throw new InvalidOperationException("Sequence contains more than one matching element.");
+        return defaultFactory();
     }
 
     #endregion

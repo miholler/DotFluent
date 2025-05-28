@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class InsertRangeTest
+public sealed class EnumerableInsertRangeTest
 {
     #region Methods
 

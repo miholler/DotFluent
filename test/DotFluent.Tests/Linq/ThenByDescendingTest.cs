@@ -6,7 +6,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ThenByDescendingTest
+public sealed class EnumerableThenByDescendingTest
 {
     #region Methods
 

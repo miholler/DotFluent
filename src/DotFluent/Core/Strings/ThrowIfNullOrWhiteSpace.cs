@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using DotFluent.Internal;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DotFluent;
@@ -23,7 +24,7 @@ public static partial class StringExtensions
         if (source.IsNullOrWhiteSpace())
         {
             source.ThrowIfNull(paramName);
-            throw new ArgumentException("The value cannot be an empty string or composed entirely of whitespace.", paramName);
+            throw new ArgumentException(Errors.ArgumentEmptyOrWhiteSpaceString, paramName);
         }
 #endif
         return source;

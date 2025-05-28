@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class MinTest
+public sealed class EnumerableMinTest
 {
     #region Methods
 

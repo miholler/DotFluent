@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class CreateTest
+public sealed class EnumerableCreateTest
 {
     #region Methods
 

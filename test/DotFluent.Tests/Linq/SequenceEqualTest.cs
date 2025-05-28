@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class SequenceEqualTest
+public sealed class EnumerableSequenceEqualTest
 {
     #region Methods
 

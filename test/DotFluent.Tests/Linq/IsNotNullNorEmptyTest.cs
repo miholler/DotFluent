@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class IsNotNullNorEmptyTest
+public sealed class EnumerableIsNotNullNorEmptyTest
 {
     #region Methods
 

@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class FlattenTest
+public sealed class EnumerableFlattenTest
 {
     #region Methods
 

@@ -2,9 +2,6 @@
 
 namespace DotFluent.Optional.Unsafe.Tasks;
 
-/// <summary>
-/// Provides extension methods for specific kinds of <see cref="Task{TResult}"/> objects.
-/// </summary>
 public static partial class UnsafeOptionTaskExtensions
 {
     #region Methods
@@ -87,9 +84,6 @@ public static partial class UnsafeOptionTaskExtensions
     #endregion
 }
 
-/// <summary>
-/// Provides extension methods for specific kinds of <see cref="Task{TResult}"/> objects.
-/// </summary>
 public static partial class UnsafeResultTaskExtensions
 {
     #region Methods

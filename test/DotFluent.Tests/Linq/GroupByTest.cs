@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class GroupByTest
+public sealed class EnumerableGroupByTest
 {
     #region Methods
 

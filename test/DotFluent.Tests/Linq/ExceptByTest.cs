@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ExceptByTest
+public sealed class EnumerableExceptByTest
 {
     #region Methods
 

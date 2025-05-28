@@ -21,18 +21,18 @@ public static partial class Sequence
         {
             case IList<TSource> list:
                 if (list.Count > 0)
-                    return list[list.Count - 1];
+                    return list[^1];
                 break;
             default:
                 using (var enumerator = source.GetEnumerator())
                 {
                     if (enumerator.MoveNext())
                     {
-                        var item = enumerator.Current;
+                        var result = enumerator.Current;
                         while (enumerator.MoveNext())
-                            item = enumerator.Current;
+                            result = enumerator.Current;
 
-                        return item;
+                        return result;
                     }
                 }
                 break;
@@ -58,13 +58,37 @@ public static partial class Sequence
         predicate.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        var resultFactory = defaultFactory;
-        foreach (var item in source)
+        switch (source)
         {
-            if (predicate(item))
-                resultFactory = () => item;
+            case IList<TSource> list:
+                for (var i = list.Count - 1; i >= 0; i--)
+                {
+                    var item = list[i];
+                    if (predicate(item))
+                        return item;
+                }
+                break;
+            default:
+                using (var enumerator = source.GetEnumerator())
+                {
+                    while (enumerator.MoveNext())
+                    {
+                        var result = enumerator.Current;
+                        if (predicate(result))
+                        {
+                            while (enumerator.MoveNext())
+                            {
+                                var item = enumerator.Current;
+                                if (predicate(item))
+                                    result = item;
+                            }
+                            return result;
+                        }
+                    }
+                }
+                break;
         }
-        return resultFactory();
+        return defaultFactory();
     }
 
     #endregion

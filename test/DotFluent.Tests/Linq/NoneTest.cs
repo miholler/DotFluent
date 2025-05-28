@@ -9,7 +9,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class NoneTest
+public sealed class EnumerableNoneTest
 {
     #region Methods
 
@@ -22,7 +22,7 @@ public sealed class NoneTest
             .Invoking(x => x.None())
             .ShouldThrow<ArgumentNullException>();
         source
-            .Invoking(x => x.None(y => y == 0))
+            .Invoking(x => x.None(_ => false))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -55,7 +55,7 @@ public sealed class NoneTest
         source = collectionType switch
         {
             1 => new ConcurrentQueue<int>(source),
-            2 => source.Select(x => x),
+            2 => source.AsIterator(),
             _ => source
                 .ToImmutableArray()
                 .AsEnumerable()

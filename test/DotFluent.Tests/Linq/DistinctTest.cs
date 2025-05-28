@@ -7,7 +7,7 @@ using System.Linq;
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class DistinctTest
+public sealed class EnumerableDistinctTest
 {
     #region Methods
 
