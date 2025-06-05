@@ -12,53 +12,53 @@ public sealed class TaskThenTest
     #region Methods
 
     [Test]
-    public void SourceNullThrowsException()
+    public async Task SourceNullThrowsException()
     {
         Task<int> source = null;
 
-        source
+        await source
             .Awaiting(x => x.Then(() => { }))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(() => Task.CompletedTask))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(() => 0))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(() => Task.FromResult(0)))
-            .ShouldThrow<ArgumentNullException>();
-        source
-            .Awaiting(x => x.Then(x => { x++; }))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.Then(y => { y++; }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(_ => Task.CompletedTask))
-            .ShouldThrow<ArgumentNullException>();
-        source
-            .Awaiting(x => x.Then(x => x++))
-            .ShouldThrow<ArgumentNullException>();
-        source
-            .Awaiting(x => x.Then(x => Task.FromResult(++x)))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.Then(y => y++))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.Then(y => Task.FromResult(++y)))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void ActionNullThrowsException()
+    public async Task ActionNullThrowsException()
     {
         var source = Task.FromResult(0);
         Action action = null;
         Action<int> genericAction = null;
 
-        source
+        await source
             .Awaiting(x => x.Then(action))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(genericAction))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void SelectorNullThrowsException()
+    public async Task SelectorNullThrowsException()
     {
         var source = Task.FromResult(0);
         Func<Task> taskSelector = null;
@@ -68,38 +68,57 @@ public sealed class TaskThenTest
         Func<int, int> resultSelector = null;
         Func<int, Task<int>> genericTaskResultSelector = null;
 
-        source
+        await source
             .Awaiting(x => x.Then(taskSelector))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(selector))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(genericTaskSelector))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(taskResultSelector))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(resultSelector))
-            .ShouldThrow<ArgumentNullException>();
-        source
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
             .Awaiting(x => x.Then(genericTaskResultSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    [TestCase(1, 1, 0)]
-    [TestCase(1, 1, 1)]
-    [TestCase(1, 1, 2)]
-    [TestCase(1, 1, 3)]
-    [TestCase(1, 1, 4)]
-    [TestCase(1, 1, 5)]
-    [TestCase(1, 1, 6)]
-    [TestCase(1, 1, 7)]
-    public async Task Then(int value, int expectedResult, int overload)
+    public async Task SelectorReturningNullThrowsException()
     {
-        var result = 0;
+        var source = Task.FromResult(0);
+
+        await source
+            .Awaiting(x => x.Then(() => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await source
+            .Awaiting(x => x.Then(() => default(Task<int>)))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await source
+            .Awaiting(x => x.Then(_ => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await source
+            .Awaiting(x => x.Then(_ => default(Task<int>)))
+            .ShouldThrowAsync<InvalidOperationException>();
+    }
+
+    [Test]
+    [TestCase(1, 2, 3, 0)]
+    [TestCase(1, 2, 3, 1)]
+    [TestCase(1, 2, 3, 2)]
+    [TestCase(1, 2, 3, 3)]
+    [TestCase(1, 2, 3, 4)]
+    [TestCase(1, 2, 3, 5)]
+    [TestCase(1, 2, 3, 6)]
+    [TestCase(1, 2, 3, 7)]
+    public async Task Then(int source, int value, int expectedResult, int overload)
+    {
+        var result = source;
 
         switch (overload)
         {
@@ -119,14 +138,14 @@ public sealed class TaskThenTest
             case 4:
                 await Task
                     .FromResult(result)
-                    .Then(x => { result += value; });
+                    .Then(x => { result = x + value; });
                 break;
             case 5:
                 await Task
                     .FromResult(result)
                     .Then(x =>
                     {
-                        result += value;
+                        result = x + value;
                         return Task.CompletedTask;
                     });
                 break;
@@ -175,11 +194,11 @@ public sealed class TaskThenTest
             .ShouldThrowAsync<TaskCanceledException>();
         await Task
             .FromResult(0)
-            .Awaiting(x => x.Then(x => x, cts.Token))
+            .Awaiting(x => x.Then(y => y, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
         await Task
             .FromResult(0)
-            .Awaiting(x => x.Then(x => Task.FromResult(x), cts.Token))
+            .Awaiting(x => x.Then(y => Task.FromResult(y), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 
