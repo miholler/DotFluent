@@ -10,46 +10,52 @@ public static partial class TaskExtensions
     /// </summary>
     /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="action">An action to perform when any of the previous tasks failes.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
-    public static Task Catch(this Task source, Action action, CancellationToken cancellationToken = default)
-        => source.Catch(action, scheduler: null, cancellationToken);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously when any of the
-    /// previous tasks in the chain failes. The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="action">An action to perform when any of the previous tasks failes.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
-    /// <returns>A continuation <see cref="Task"/>.</returns>
-    public static Task Catch(this Task source, Action action, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
+    public static Task Catch(this Task source, Action action)
     {
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource();
-        source.ContinueWith(x =>
+        static async Task ContinueWithAsync(Task source, Action action)
         {
-            if (x.IsCanceled || cancellationToken.IsCancellationRequested)
-                tcs.TrySetCanceled();
-            else if (x.IsFaulted)
+            try
             {
-                try
-                {
-                    action();
-                    tcs.TrySetResult();
-                }
-                catch (Exception ex)
-                {
-                    tcs.TrySetException(ex);
-                }
+                await source.ConfigureAwait(false);
             }
-            else
-                tcs.TrySetResult();
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task;
+            catch
+            {
+                action();
+            }
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously when any of the
+    /// previous tasks in the chain failes.
+    /// </summary>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
+    /// <returns>A continuation <see cref="Task"/>.</returns>
+    public static Task Catch(this Task source, Func<Task> selector)
+    {
+        source.ThrowIfNull();
+        selector.ThrowIfNull();
+
+        static async Task ContinueWithAsync(Task source, Func<Task> selector)
+        {
+            try
+            {
+                await source.ConfigureAwait(false);
+            }
+            catch
+            {
+                await selector()
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     /// <summary>
@@ -59,54 +65,53 @@ public static partial class TaskExtensions
     /// <typeparam name="TException">The type of exception to catch.</typeparam>
     /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="action">An action to perform when any of the previous tasks failes due to the specified exception type.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
-    public static Task Catch<TException>(this Task source, Action<TException> action, CancellationToken cancellationToken = default) where TException : Exception
-        => source.Catch(action, scheduler: null, cancellationToken);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously when any of the
-    /// previous tasks in the chain failes due to the specified exception type.
-    /// The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <typeparam name="TException">The type of exception to catch.</typeparam>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="action">An action to perform when any of the previous tasks failes due to the specified exception type.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
-    /// <returns>A continuation <see cref="Task"/>.</returns>
-    public static Task Catch<TException>(this Task source, Action<TException> action, TaskScheduler? scheduler, CancellationToken cancellationToken = default) where TException : Exception
+    public static Task Catch<TException>(this Task source, Action<TException> action) where TException : Exception
     {
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource();
-        source.ContinueWith(x =>
+        static async Task ContinueWithAsync(Task source, Action<TException> action)
         {
-            if (x.IsCanceled || cancellationToken.IsCancellationRequested)
-                tcs.TrySetCanceled();
-            else if (x.IsFaulted)
+            try
             {
-                var exception = x.Exception!.InnerExceptions.OfType<TException>().FirstOrDefault();
-                if (exception.IsNotNull())
-                {
-                    try
-                    {
-                        action(exception);
-                        tcs.TrySetResult();
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                }
-                else
-                    tcs.TrySetException(x.Exception.InnerExceptions);
+                await source.ConfigureAwait(false);
             }
-            else
-                tcs.TrySetResult();
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task;
+            catch (TException ex)
+            {
+                action(ex);
+            }
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously when any of the
+    /// previous tasks in the chain failes due to the specified exception type.
+    /// </summary>
+    /// <typeparam name="TException">The type of exception to catch.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke when any of the previous tasks failes due to the specified exception type.</param>
+    /// <returns>A continuation <see cref="Task"/>.</returns>
+    public static Task Catch<TException>(this Task source, Func<TException, Task> selector) where TException : Exception
+    {
+        source.ThrowIfNull();
+        selector.ThrowIfNull();
+
+        static async Task ContinueWithAsync(Task source, Func<TException, Task> selector)
+        {
+            try
+            {
+                await source.ConfigureAwait(false);
+            }
+            catch (TException ex)
+            {
+                await selector(ex)
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     /// <summary>
@@ -116,46 +121,24 @@ public static partial class TaskExtensions
     /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
     /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<TSource> selector, CancellationToken cancellationToken = default)
-        => source.Catch(selector, scheduler: null, cancellationToken);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously when any of the
-    /// previous tasks in the chain failes. The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
-    /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<TSource> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
+    public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<TSource> selector)
     {
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<TSource>();
-        source.ContinueWith(x =>
+        static async Task<TSource> ContinueWithAsync(Task<TSource> source, Func<TSource> selector)
         {
-            if (x.IsCanceled || cancellationToken.IsCancellationRequested)
-                tcs.TrySetCanceled();
-            else if (x.IsFaulted)
+            try
             {
-                try
-                {
-                    tcs.TrySetResult(selector());
-                }
-                catch (Exception ex)
-                {
-                    tcs.TrySetException(ex);
-                }
+                return await source.ConfigureAwait(false);
             }
-            else
-                tcs.TrySetResult(x.Result);
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task;
+            catch
+            {
+                return selector();
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     /// <summary>
@@ -165,46 +148,26 @@ public static partial class TaskExtensions
     /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
     /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<Task<TSource>> selector, CancellationToken cancellationToken = default)
-        => source.Catch(selector, scheduler: null, cancellationToken);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously when any of the
-    /// previous tasks in the chain failes. The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
-    /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<Task<TSource>> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default)
+    public static Task<TSource> Catch<TSource>(this Task<TSource> source, Func<Task<TSource>> selector)
     {
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<Task<TSource>>();
-        source.ContinueWith(x =>
+        static async Task<TSource> ContinueWithAsync(Task<TSource> source, Func<Task<TSource>> selector)
         {
-            if (x.IsCanceled || cancellationToken.IsCancellationRequested)
-                tcs.TrySetCanceled();
-            else if (x.IsFaulted)
+            try
             {
-                try
-                {
-                    tcs.TrySetResult(selector());
-                }
-                catch (Exception ex)
-                {
-                    tcs.TrySetException(ex);
-                }
+                return await source.ConfigureAwait(false);
             }
-            else
-                tcs.TrySetResult(x);
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task.Unwrap();
+            catch
+            {
+                return await selector()
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     /// <summary>
@@ -215,54 +178,24 @@ public static partial class TaskExtensions
     /// <typeparam name="TException">The type of exception to catch.</typeparam>
     /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="selector">A function to invoke when any of the previous tasks failes due to the specified exception type.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, TSource> selector, CancellationToken cancellationToken = default) where TException : Exception
-        => source.Catch(selector, scheduler: null, cancellationToken);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously when any of the
-    /// previous tasks in the chain failes due to the specified exception type.
-    /// The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
-    /// <typeparam name="TException">The type of exception to catch.</typeparam>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="selector">A function to invoke when any of the previous tasks failes due to the specified exception type.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
-    /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, TSource> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default) where TException : Exception
+    public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, TSource> selector) where TException : Exception
     {
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<TSource>();
-        source.ContinueWith(x =>
+        static async Task<TSource> ContinueWithAsync(Task<TSource> source, Func<TException, TSource> selector)
         {
-            if (x.IsCanceled || cancellationToken.IsCancellationRequested)
-                tcs.TrySetCanceled();
-            else if (x.IsFaulted)
+            try
             {
-                var exception = x.Exception!.InnerExceptions.OfType<TException>().FirstOrDefault();
-                if (exception.IsNotNull())
-                {
-                    try
-                    {
-                        tcs.TrySetResult(selector(exception));
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                }
-                else
-                    tcs.TrySetException(x.Exception.InnerExceptions);
+                return await source.ConfigureAwait(false);
             }
-            else
-                tcs.TrySetResult(x.Result);
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task;
+            catch (TException ex)
+            {
+                return selector(ex);
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     /// <summary>
@@ -273,54 +206,26 @@ public static partial class TaskExtensions
     /// <typeparam name="TException">The type of exception to catch.</typeparam>
     /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="selector">A function to invoke when any of the previous tasks failes due to the specified exception type.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, Task<TSource>> selector, CancellationToken cancellationToken = default) where TException : Exception
-        => source.Catch(selector, scheduler: null, cancellationToken);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously when any of the
-    /// previous tasks in the chain failes due to the specified exception type.
-    /// The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
-    /// <typeparam name="TException">The type of exception to catch.</typeparam>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="selector">A function to invoke when any of the previous tasks failes due to the specified exception type.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <param name="cancellationToken">A cancellation token that will be assigned to the continuation task.</param>
-    /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, Task<TSource>> selector, TaskScheduler? scheduler, CancellationToken cancellationToken = default) where TException : Exception
+    public static Task<TSource> Catch<TSource, TException>(this Task<TSource> source, Func<TException, Task<TSource>> selector) where TException : Exception
     {
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<Task<TSource>>();
-        source.ContinueWith(x =>
+        static async Task<TSource> ContinueWithAsync(Task<TSource> source, Func<TException, Task<TSource>> selector)
         {
-            if (x.IsCanceled || cancellationToken.IsCancellationRequested)
-                tcs.TrySetCanceled();
-            else if (x.IsFaulted)
+            try
             {
-                var exception = x.Exception!.InnerExceptions.OfType<TException>().FirstOrDefault();
-                if (exception.IsNotNull())
-                {
-                    try
-                    {
-                        tcs.TrySetResult(selector(exception));
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                }
-                else
-                    tcs.TrySetException(x.Exception.InnerExceptions);
+                return await source.ConfigureAwait(false);
             }
-            else
-                tcs.TrySetResult(x);
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task.Unwrap();
+            catch (TException ex)
+            {
+                return await selector(ex)
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     #endregion
