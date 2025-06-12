@@ -1,173 +1,117 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotFluent.Tasks;
 
 [TestFixture]
-public sealed class TaskFinallyTest : TaskTest
+public sealed class TaskFinallyTest
 {
     #region Methods
 
     [Test]
-    public void SourceNullThrowsException()
+    public async Task SourceNullThrowsException()
     {
         Task source = null;
         Task<int> genericSource = null;
 
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(() => { }));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(() => { }, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(() => { }));
-        Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(() => { }, TaskScheduler.Current));
+        await source
+            .Awaiting(x => x.Finally(() => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.Finally(() => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await genericSource
+            .Awaiting(x => x.Finally(() => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await genericSource
+            .Awaiting(x => x.Finally(() => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void ActionNullThrowsException()
+    public async Task ActionNullThrowsException()
     {
         var source = Task.CompletedTask;
         var genericSource = Task.FromResult(0);
         Action action = null;
 
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(action));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.Finally(action, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(action));
-        Assert.ThrowsAsync<ArgumentNullException>(() => genericSource.Finally(action, TaskScheduler.Current));
+        await source
+            .Awaiting(x => x.Finally(action))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await genericSource
+            .Awaiting(x => x.Finally(action))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public async Task Finally()
+    public async Task SelectorNullThrowsException()
     {
-        var result = 1;
+        var source = Task.CompletedTask;
+        var genericSource = Task.FromResult(0);
+        Func<Task> selector = null;
 
-        await Task.CompletedTask
-            .Finally(() => { result++; })
-                .Finally(() => { result++; }, null);
-
-        Assert.That(result, Is.EqualTo(3));
+        await source
+            .Awaiting(x => x.Finally(selector))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await genericSource
+            .Awaiting(x => x.Finally(selector))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void FinallyCanceled()
+    public async Task SelectorReturningNullThrowsException()
     {
-        var result = 1;
-        using (var cts = new CancellationTokenSource())
+        var source = Task.CompletedTask;
+        var genericSource = Task.FromResult(0);
+
+        await source
+            .Awaiting(x => x.Finally(() => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await genericSource
+            .Awaiting(x => x.Finally(() => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+    }
+
+    [Test]
+    [TestCase(1, 2, 3, 0)]
+    [TestCase(1, 2, 3, 1)]
+    [TestCase(1, 2, 3, 2)]
+    [TestCase(1, 2, 3, 3)]
+    public async Task Finally(int source, int value, int expectedResult, int overload)
+    {
+        var result = source;
+
+        switch (overload)
         {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.CompletedTask
-                    .Then(() => cts.Cancel(), cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token)
-                        .Finally(() => { result++; }));
-        }
-
-        using (var cts = new CancellationTokenSource())
-        {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.CompletedTask
-                    .Then(() => cts.Cancel(), null, cts.Token)
-                        .Then(ShouldNotBeCalled, null, cts.Token)
-                        .Finally(() => { result++; }, null));
-        }
-        Assert.That(result, Is.EqualTo(3));
-    }
-
-    [Test]
-    public void FinallyFaulted()
-    {
-        Assert.ThrowsAsync<Exception>(() => 
-            Task.CompletedTask
-                .Finally(ThrowException));
-
-        Assert.ThrowsAsync<Exception>(() =>
-            Task.CompletedTask
-                .Finally(ThrowException, null));
-
-        var result = 1;
-        Assert.ThrowsAsync<NotImplementedException>(() =>
-            GetFaultedTask()
-                .Finally(() => { result++; }));
-
-        Assert.ThrowsAsync<NotImplementedException>(() =>
-            GetFaultedTask()
-                .Finally(() => { result++; }, null));
-
-        Assert.That(result, Is.EqualTo(3));
-    }
-
-    [Test]
-    public async Task FinallyWithGenericSource()
-    {
-        var result = 1;
-        var taskResult = await Task.FromResult(0)
-            .Finally(() => { result++; })
-                .Finally(() => { result++; }, null);
-
-        Assert.That(result, Is.EqualTo(3));
-        Assert.That(taskResult, Is.EqualTo(0));
-    }
-
-    [Test]
-    public void FinallyWithGenericSourceCanceled()
-    {
-        var result = 1;
-        using (var cts = new CancellationTokenSource())
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromResult(0)
-                    .Then(() =>
+            case 1:
+                await Task.CompletedTask.Finally(() =>
+                {
+                    result += value;
+                    return Task.CompletedTask;
+                });
+                break;
+            case 2:
+                await Task
+                    .FromResult(result)
+                    .Finally(() => { result += value; });
+                break;
+            case 3:
+                await Task
+                    .FromResult(result)
+                    .Finally(() =>
                     {
-                        cts.Cancel();
-                        return 0;
-                    }, cts.Token)
-                        .Then(() =>
-                        {
-                            ShouldNotBeCalled();
-                            return 0;
-                        }, cts.Token)
-                        .Finally(() => { result++; }));
-
-        using (var cts = new CancellationTokenSource())
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromResult(0)
-                    .Then(() =>
-                    {
-                        cts.Cancel();
-                        return 0;
-                    }, null, cts.Token)
-                        .Then(() =>
-                        {
-                            ShouldNotBeCalled();
-                            return 0;
-                        }, null, cts.Token)
-                        .Finally(() => { result++; }, null));
-
-        Assert.That(result, Is.EqualTo(3));
+                        result += value;
+                        return Task.CompletedTask;
+                    });
+                break;
+            default:
+                await Task.CompletedTask.Finally(() => { result += value; });
+                break;
+        }
+        result.ShouldBe(expectedResult);
     }
-
-    [Test]
-    public void FinallyWithGenericSourceFaulted()
-    {
-        Assert.ThrowsAsync<Exception>(() =>
-            Task.FromResult(0)
-                .Finally(ThrowException));
-
-        Assert.ThrowsAsync<Exception>(() =>
-            Task.FromResult(0)
-                .Finally(ThrowException, null));
-
-        var result = 1;
-        Assert.ThrowsAsync<NotImplementedException>(() =>
-            GetFaultedTask<int>()
-                .Finally(() => { result++; }));
-
-        Assert.ThrowsAsync<NotImplementedException>(() =>
-            GetFaultedTask<int>()
-                .Finally(() => { result++; }, null));
-
-        Assert.That(result, Is.EqualTo(3));
-    }
-
-    private static void ThrowException()
-        => throw new Exception("This is expected!");
 
     #endregion
 }
