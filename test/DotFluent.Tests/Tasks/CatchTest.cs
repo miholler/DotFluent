@@ -114,6 +114,8 @@ public sealed class TaskCatchTest
     [TestCase(1, 2, 3, 3)]
     [TestCase(1, 2, 3, 4)]
     [TestCase(1, 2, 3, 5)]
+    [TestCase(1, 2, 3, 6)]
+    [TestCase(1, 2, 3, 7)]
     public async Task Catch(int source, int value, int expectedResult, int overload)
     {
         var result = source;

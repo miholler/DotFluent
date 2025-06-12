@@ -1,379 +1,216 @@
 ﻿using NUnit.Framework;
+using Shouldly;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotFluent.Tasks;
 
 [TestFixture]
-public sealed class TaskCatchWhenTest : TaskTest
+public sealed class TaskCatchWhenTest
 {
     #region Methods
 
     [Test]
-    public void SourceNullThrowsException()
+    public async Task SourceNullThrowsException()
     {
         Task<int> source = null;
 
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen<Exception>(x => true, x => { }));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen<Exception>(x => true, x => { }, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen<int, Exception>(x => true, x => 0));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen<int, Exception>(x => true, x => 0, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen<int, Exception>(x => true, x => Task.FromResult(0)));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen<int, Exception>(x => true, x => Task.FromResult(0), TaskScheduler.Current));
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, () => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen<Exception>(_ => false, _ => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen<Exception>(_ => false, _ => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, () => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, () => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen<int, Exception>(_ => false, _ => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen<int, Exception>(_ => false, _ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void PredicateNullThrowsException()
+    public async Task ConditionNullThrowsException()
+    {
+        var source = Task.FromResult(0);
+        Func<bool> condition = null;
+
+        await source
+            .Awaiting(x => x.CatchWhen(condition, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(condition, () => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(condition, () => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(condition, () => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task PredicateNullThrowsException()
     {
         var source = Task.FromResult(0);
         Func<Exception, bool> predicate = null;
 
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(predicate, x => { }));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(predicate, x => { }, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(predicate, x => 0));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(predicate, x => 0, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(predicate, x => Task.FromResult(0)));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(predicate, x => Task.FromResult(0), TaskScheduler.Current));
+        await source
+            .Awaiting(x => x.CatchWhen(predicate, _ => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(predicate, _ => Task.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(predicate, _ => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(predicate, _ => Task.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void ActionNullThrowsException()
+    public async Task ActionNullThrowsException()
     {
         var source = Task.FromResult(0);
-        Action<Exception> action = null;
+        Action action = null;
+        Action<Exception> exceptionAction = null;
 
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(x => true, action));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(x => true, action, TaskScheduler.Current));
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, action))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(_ => false, exceptionAction))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public void SelectorNullThrowsException()
+    public async Task SelectorNullThrowsException()
     {
         var source = Task.FromResult(0);
-        Func<Exception, int> selector = null; ;
-        Func<Exception, Task<int>> taskSelector = null;
+        Func<Task> taskSelector = null;
+        Func<Exception, Task> taskExceptionSelector = null;
+        Func<int> selector = null;
+        Func<Task<int>> genericTaskSelector = null;
+        Func<Exception, int> exceptionSelector = null;
+        Func<Exception, Task<int>> genericTaskExceptionSelector = null;
 
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(x => true, selector));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(x => true, selector, TaskScheduler.Current));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(x => true, taskSelector));
-        Assert.ThrowsAsync<ArgumentNullException>(() => source.CatchWhen(x => true, taskSelector, TaskScheduler.Current));
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, taskSelector))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(_ => false, taskExceptionSelector))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, selector))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(() => false, genericTaskSelector))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(_ => false, exceptionSelector))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await source
+            .Awaiting(x => x.CatchWhen(_ => false, genericTaskExceptionSelector))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
-    public async Task CatchWhen()
+    public async Task SelectorReturningNullThrowsException()
     {
-        var result = 1;
+        var source = Task.FromException<int>(new());
 
-        await GetFaultedTask()
-            .CatchWhen<ArgumentNullException>(x => true, x => ShouldNotBeCalled())
-            .CatchWhen<NotImplementedException>(x => false, x => ShouldNotBeCalled())
-            .CatchWhen<NotImplementedException>(x => true, x => { result++; });
-
-        await GetFaultedTask()
-            .CatchWhen<ArgumentNullException>(x => true, x => ShouldNotBeCalled(), null)
-            .CatchWhen<NotImplementedException>(x => false, x => ShouldNotBeCalled(), null)
-            .CatchWhen<NotImplementedException>(x => true, x => { result++; }, null);
-
-        Assert.That(result, Is.EqualTo(3));
+        await source
+            .Awaiting(x => x.CatchWhen(() => true, () => default(Task)))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await source
+            .Awaiting(x => x.CatchWhen<Exception>(_ => true, _ => default))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await source
+            .Awaiting(x => x.CatchWhen(() => true, () => default(Task<int>)))
+            .ShouldThrowAsync<InvalidOperationException>();
+        await source
+            .Awaiting(x => x.CatchWhen<int, Exception>(_ => true, _ => default(Task<int>)))
+            .ShouldThrowAsync<InvalidOperationException>();
     }
 
     [Test]
-    public void CatchWhenCanceled()
+    [TestCase(1, 2, 3, 0)]
+    [TestCase(1, 2, 3, 1)]
+    [TestCase(1, 2, 3, 2)]
+    [TestCase(1, 2, 3, 3)]
+    [TestCase(1, 2, 3, 4)]
+    [TestCase(1, 2, 3, 5)]
+    [TestCase(1, 2, 3, 6)]
+    [TestCase(1, 2, 3, 7)]
+    public async Task CatchWhen(int source, int value, int expectedResult, int overload)
     {
-        using (var cts = new CancellationTokenSource())
+        var result = source;
+
+        switch (overload)
         {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                GetFaultedTask()
-                    .CatchWhen<NotImplementedException>(x => true, x => cts.Cancel(), cts.Token)
-                        .Then(ShouldNotBeCalled, cts.Token));
-
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromCanceled(cts.Token)
-                    .Then(GetFaultedTask, cts.Token)
-                    .CatchWhen<NotImplementedException>(x => true, x => ShouldNotBeCalled(), cts.Token));
-        }
-
-        using (var cts = new CancellationTokenSource())
-        {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                GetFaultedTask()
-                    .CatchWhen<NotImplementedException>(x => true, x => cts.Cancel(), null, cts.Token)
-                    .Then(ShouldNotBeCalled, null, cts.Token));
-
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromCanceled(cts.Token)
-                    .Then(GetFaultedTask, null, cts.Token)
-                    .CatchWhen<NotImplementedException>(x => true, x => ShouldNotBeCalled(), null, cts.Token));
-        }
-    }
-
-    [Test]
-    public void CatchWhenFaulted()
-    {
-        Assert.ThrowsAsync<AggregateException>(() =>
-            GetFaultedTask()
-                .CatchWhen<NotImplementedException>(x => true, ThrowException));
-
-        Assert.ThrowsAsync<AggregateException>(() =>
-            GetFaultedTask()
-                .CatchWhen<NotImplementedException>(x => true, ThrowException, null));
-    }
-
-    [Test]
-    public async Task CatchWhenCompleted()
-    {
-        try
-        {
-            await Task.CompletedTask
-                .CatchWhen<NotImplementedException>(x => true, x => ShouldNotBeCalled())
-                .CatchWhen<NotImplementedException>(x => true, x => ShouldNotBeCalled(), null);
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail(ex.Message);
-        }
-    }
-
-    [Test]
-    public async Task CatchWhenWithSelector()
-    {
-        var firstResult = await GetFaultedTask<int>()
-            .CatchWhen<int, ArgumentNullException>(x => true, x =>
-            {
-                ShouldNotBeCalled();
-                return 0;
-            })
-            .CatchWhen<int, NotImplementedException>(x => false, x =>
-            {
-                ShouldNotBeCalled();
-                return 0;
-            })
-            .CatchWhen<int, NotImplementedException>(x => true, x => 1);
-
-        var secondResult = await GetFaultedTask<int>()
-            .CatchWhen<int, ArgumentNullException>(x => true, x =>
-            {
-                ShouldNotBeCalled();
-                return 0;
-            }, null)
-            .CatchWhen<int, NotImplementedException>(x => false, x =>
-            {
-                ShouldNotBeCalled();
-                return 0;
-            }, null)
-            .CatchWhen<int, NotImplementedException>(x => true, x => 1, null);
-
-        Assert.That(firstResult, Is.EqualTo(secondResult));
-    }
-
-    [Test]
-    public void CatchWhenWithSelectorCanceled()
-    {
-        using (var cts = new CancellationTokenSource())
-        {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                GetFaultedTask<int>()
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
+            case 1:
+                await Task
+                    .FromException(new())
+                    .CatchWhen(() => true, () =>
                     {
-                        cts.Cancel();
-                        return 0;
-                    }, cts.Token)
-                    .Then(ShouldNotBeCalled, cts.Token));
-
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromCanceled(cts.Token)
-                    .Then(GetFaultedTask<int>, cts.Token)
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
+                        result += value;
+                        return Task.CompletedTask;
+                    });
+                break;
+            case 2:
+                await Task
+                    .FromException(new())
+                    .CatchWhen<Exception>(_ => true, _ => { result += value; });
+                break;
+            case 3:
+                await Task
+                    .FromException(new())
+                    .CatchWhen<Exception>(_ => true, _ =>
                     {
-                        ShouldNotBeCalled();
-                        return 0;
-                    }, cts.Token));
+                        result += value;
+                        return Task.CompletedTask;
+                    });
+                break;
+            case 4:
+                result = await Task
+                    .FromException<int>(new())
+                    .CatchWhen(() => true, () => result + value);
+                break;
+            case 5:
+                result = await Task
+                    .FromException<int>(new())
+                    .CatchWhen(() => true, () => Task.FromResult(result + value));
+                break;
+            case 6:
+                result = await Task
+                    .FromException<int>(new())
+                    .CatchWhen<int, Exception>(_ => true, _ => result + value);
+                break;
+            case 7:
+                result = await Task
+                    .FromException<int>(new())
+                    .CatchWhen<int, Exception>(_ => true, _ => Task.FromResult(result + value));
+                break;
+            default:
+                await Task
+                    .FromException(new())
+                    .CatchWhen(() => true, () => { result += value; });
+                break;
         }
-
-        using (var cts = new CancellationTokenSource())
-        {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                GetFaultedTask<int>()
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
-                    {
-                        cts.Cancel();
-                        return 0;
-                    }, null, cts.Token)
-                    .Then(ShouldNotBeCalled, null, cts.Token));
-
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromCanceled(cts.Token)
-                    .Then(GetFaultedTask<int>, null, cts.Token)
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
-                    {
-                        ShouldNotBeCalled();
-                        return 0;
-                    }, null, cts.Token));
-        }
-    }
-
-    [Test]
-    public void CatchWhenWithSelectorFaulted()
-    {
-        Assert.ThrowsAsync<AggregateException>(() =>
-            GetFaultedTask<int>()
-                .CatchWhen<int, NotImplementedException>(x => true, ThrowExceptionSelector));
-
-        Assert.ThrowsAsync<AggregateException>(() =>
-            GetFaultedTask<int>()
-                .CatchWhen<int, NotImplementedException>(x => true, ThrowExceptionSelector, null));
-    }
-
-    [Test]
-    public async Task CatchWhenWithSelectorCompleted()
-    {
-        try
-        {
-            await Task.FromResult(0)
-                .CatchWhen<int, NotImplementedException>(x => true, x =>
-                {
-                    ShouldNotBeCalled();
-                    return 0;
-                })
-                .CatchWhen<int, NotImplementedException>(x => true, x =>
-                {
-                    ShouldNotBeCalled();
-                    return 0;
-                }, null);
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail(ex.Message);
-        }
-    }
-
-    [Test]
-    public async Task CatchWhenWithTaskSelector()
-    {
-        var firstResult = await GetFaultedTask<int>()
-            .CatchWhen<int, ArgumentNullException>(x => true, x =>
-            {
-                ShouldNotBeCalled();
-                return Task.FromResult(0);
-            })
-            .CatchWhen<int, NotImplementedException>(x => false, x =>
-            {
-                ShouldNotBeCalled();
-                return Task.FromResult(0);
-            })
-            .CatchWhen<int, NotImplementedException>(x => true, x => Task.FromResult(1));
-
-        var secondResult = await GetFaultedTask<int>()
-            .CatchWhen<int, ArgumentNullException>(x => true, x =>
-            {
-                ShouldNotBeCalled();
-                return Task.FromResult(0);
-            }, null)
-            .CatchWhen<int, NotImplementedException>(x => false, x =>
-            {
-                ShouldNotBeCalled();
-                return Task.FromResult(0);
-            }, null)
-            .CatchWhen<int, NotImplementedException>(x => true, x => Task.FromResult(1), null);
-
-        Assert.That(firstResult, Is.EqualTo(secondResult));
-    }
-
-    [Test]
-    public void CatchWhenWithTaskSelectorCanceled()
-    {
-        using (var cts = new CancellationTokenSource())
-        {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                GetFaultedTask<int>()
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
-                    {
-                        cts.Cancel();
-                        return Task.FromResult(0);
-                    }, cts.Token)
-                    .Then(ShouldNotBeCalled, cts.Token));
-
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromCanceled(cts.Token)
-                    .Then(GetFaultedTask<int>, cts.Token)
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
-                    {
-                        ShouldNotBeCalled();
-                        return Task.FromResult(0);
-                    }, cts.Token));
-        }
-
-        using (var cts = new CancellationTokenSource())
-        {
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                GetFaultedTask<int>()
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
-                    {
-                        cts.Cancel();
-                        return Task.FromResult(0);
-                    }, null, cts.Token)
-                    .Then(ShouldNotBeCalled, null, cts.Token));
-
-            Assert.ThrowsAsync<TaskCanceledException>(() =>
-                Task.FromCanceled(cts.Token)
-                    .Then(GetFaultedTask<int>, null, cts.Token)
-                    .CatchWhen<int, NotImplementedException>(x => true, x =>
-                    {
-                        ShouldNotBeCalled();
-                        return Task.FromResult(0);
-                    }, null, cts.Token));
-        }
-    }
-
-    [Test]
-    public void CatchWhenWithTaskSelectorFaulted()
-    {
-        Assert.ThrowsAsync<AggregateException>(() =>
-            GetFaultedTask<int>()
-                .CatchWhen<int, NotImplementedException>(x => true, ThrowExceptionTaskSelector));
-
-        Assert.ThrowsAsync<AggregateException>(() =>
-            GetFaultedTask<int>()
-                .CatchWhen<int, NotImplementedException>(x => true, ThrowExceptionTaskSelector, null));
-    }
-
-    [Test]
-    public async Task CatchWhenWithTaskSelectorCompleted()
-    {
-        try
-        {
-            await Task.FromResult(0)
-                .CatchWhen<int, NotImplementedException>(x => true, x =>
-                {
-                    ShouldNotBeCalled();
-                    return Task.FromResult(0);
-                })
-                .CatchWhen<int, NotImplementedException>(x => true, x =>
-                {
-                    ShouldNotBeCalled();
-                    return Task.FromResult(0);
-                }, null);
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail(ex.Message);
-        }
-    }
-
-    private static void ThrowException<T>(T ex) where T : Exception
-        => throw new AggregateException(ex);
-
-    private static int ThrowExceptionSelector<T>(T ex) where T : Exception
-    {
-        ThrowException(ex);
-        return 0;
-    }
-
-    private static Task<int> ThrowExceptionTaskSelector<T>(T ex) where T : Exception
-    {
-        ThrowException(ex);
-        return Task.FromResult(0);
+        result.ShouldBe(expectedResult);
     }
 
     #endregion
