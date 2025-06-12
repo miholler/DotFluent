@@ -147,23 +147,33 @@ public sealed class TaskCatchWhenTest
     }
 
     [Test]
-    [TestCase(1, 2, 3, 0)]
-    [TestCase(1, 2, 3, 1)]
-    [TestCase(1, 2, 3, 2)]
-    [TestCase(1, 2, 3, 3)]
-    [TestCase(1, 2, 3, 4)]
-    [TestCase(1, 2, 3, 5)]
-    [TestCase(1, 2, 3, 6)]
-    [TestCase(1, 2, 3, 7)]
-    public async Task CatchWhen(int source, int value, int expectedResult, int overload)
+    [TestCase(1, 1, true, 0)]
+    [TestCase(1, 0, false, 0)]
+    [TestCase(1, 1, true, 1)]
+    [TestCase(1, 0, false, 1)]
+    [TestCase(1, 1, true, 2)]
+    [TestCase(1, 0, false, 2)]
+    [TestCase(1, 1, true, 3)]
+    [TestCase(1, 0, false, 3)]
+    [TestCase(1, 1, true, 4)]
+    [TestCase(1, 0, false, 4)]
+    [TestCase(1, 1, true, 5)]
+    [TestCase(1, 0, false, 5)]
+    [TestCase(1, 1, true, 6)]
+    [TestCase(1, 0, false, 6)]
+    [TestCase(1, 1, true, 7)]
+    [TestCase(1, 0, false, 7)]
+    public async Task CatchWhen(int value, int expectedResult, bool isFailed, int overload)
     {
-        var result = source;
+        var result = 0;
 
         switch (overload)
         {
             case 1:
                 await Task
-                    .FromException(new())
+                    .Run(() => isFailed
+                        ? Task.FromException(new())
+                        : Task.CompletedTask)
                     .CatchWhen(() => true, () =>
                     {
                         result += value;
@@ -172,12 +182,16 @@ public sealed class TaskCatchWhenTest
                 break;
             case 2:
                 await Task
-                    .FromException(new())
+                    .Run(() => isFailed
+                        ? Task.FromException(new())
+                        : Task.CompletedTask)
                     .CatchWhen<Exception>(_ => true, _ => { result += value; });
                 break;
             case 3:
                 await Task
-                    .FromException(new())
+                    .Run(() => isFailed
+                        ? Task.FromException(new())
+                        : Task.CompletedTask)
                     .CatchWhen<Exception>(_ => true, _ =>
                     {
                         result += value;
@@ -186,27 +200,37 @@ public sealed class TaskCatchWhenTest
                 break;
             case 4:
                 result = await Task
-                    .FromException<int>(new())
+                    .Run(() => isFailed
+                        ? Task.FromException<int>(new())
+                        : Task.FromResult(result))
                     .CatchWhen(() => true, () => result + value);
                 break;
             case 5:
                 result = await Task
-                    .FromException<int>(new())
+                    .Run(() => isFailed
+                        ? Task.FromException<int>(new())
+                        : Task.FromResult(result))
                     .CatchWhen(() => true, () => Task.FromResult(result + value));
                 break;
             case 6:
                 result = await Task
-                    .FromException<int>(new())
+                    .Run(() => isFailed
+                        ? Task.FromException<int>(new())
+                        : Task.FromResult(result))
                     .CatchWhen<int, Exception>(_ => true, _ => result + value);
                 break;
             case 7:
                 result = await Task
-                    .FromException<int>(new())
+                    .Run(() => isFailed
+                        ? Task.FromException<int>(new())
+                        : Task.FromResult(result))
                     .CatchWhen<int, Exception>(_ => true, _ => Task.FromResult(result + value));
                 break;
             default:
                 await Task
-                    .FromException(new())
+                    .Run(() => isFailed
+                        ? Task.FromException(new())
+                        : Task.CompletedTask)
                     .CatchWhen(() => true, () => { result += value; });
                 break;
         }

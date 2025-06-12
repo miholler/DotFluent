@@ -108,17 +108,17 @@ public sealed class TaskThenTest
     }
 
     [Test]
-    [TestCase(1, 2, 3, 0)]
-    [TestCase(1, 2, 3, 1)]
-    [TestCase(1, 2, 3, 2)]
-    [TestCase(1, 2, 3, 3)]
-    [TestCase(1, 2, 3, 4)]
-    [TestCase(1, 2, 3, 5)]
-    [TestCase(1, 2, 3, 6)]
-    [TestCase(1, 2, 3, 7)]
-    public async Task Then(int source, int value, int expectedResult, int overload)
+    [TestCase(1, 1, 0)]
+    [TestCase(1, 1, 1)]
+    [TestCase(1, 1, 2)]
+    [TestCase(1, 1, 3)]
+    [TestCase(1, 1, 4)]
+    [TestCase(1, 1, 5)]
+    [TestCase(1, 1, 6)]
+    [TestCase(1, 1, 7)]
+    public async Task Then(int value, int expectedResult, int overload)
     {
-        var result = source;
+        var result = 0;
 
         switch (overload)
         {
