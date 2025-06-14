@@ -130,8 +130,7 @@ public sealed class TaskCatchTest
         switch (overload)
         {
             case 1:
-                await Task
-                    .Run(() => isFailed
+                await (isFailed
                         ? Task.FromException(new())
                         : Task.CompletedTask)
                     .Catch(() =>
@@ -141,15 +140,13 @@ public sealed class TaskCatchTest
                     });
                 break;
             case 2:
-                await Task
-                    .Run(() => isFailed
+                await (isFailed
                         ? Task.FromException(new())
                         : Task.CompletedTask)
                     .Catch<Exception>(_ => { result += value; });
                 break;
             case 3:
-                await Task
-                    .Run(() => isFailed
+                await (isFailed
                         ? Task.FromException(new())
                         : Task.CompletedTask)
                     .Catch<Exception>(_ =>
@@ -159,36 +156,31 @@ public sealed class TaskCatchTest
                     });
                 break;
             case 4:
-                result = await Task
-                    .Run(() => isFailed
+                result = await (isFailed
                         ? Task.FromException<int>(new())
                         : Task.FromResult(result))
                     .Catch(() => result + value);
                 break;
             case 5:
-                result = await Task
-                    .Run(() => isFailed
+                result = await (isFailed
                         ? Task.FromException<int>(new())
                         : Task.FromResult(result))
                     .Catch(() => Task.FromResult(result + value));
                 break;
             case 6:
-                result = await Task
-                    .Run(() => isFailed
+                result = await (isFailed
                         ? Task.FromException<int>(new())
                         : Task.FromResult(result))
                     .Catch<int, Exception>(_ => result + value);
                 break;
             case 7:
-                result = await Task
-                    .Run(() => isFailed
+                result = await (isFailed
                         ? Task.FromException<int>(new())
                         : Task.FromResult(result))
                     .Catch<int, Exception>(_ => Task.FromResult(result + value));
                 break;
             default:
-                await Task
-                    .Run(() => isFailed
+                await (isFailed
                         ? Task.FromException(new())
                         : Task.CompletedTask)
                     .Catch(() => { result += value; });

@@ -170,10 +170,9 @@ public sealed class TaskCatchWhenTest
         switch (overload)
         {
             case 1:
-                await Task
-                    .Run(() => isFailed
-                        ? Task.FromException(new())
-                        : Task.CompletedTask)
+                await (isFailed
+                    ? Task.FromException(new())
+                    : Task.CompletedTask)
                     .CatchWhen(() => true, () =>
                     {
                         result += value;
@@ -181,17 +180,15 @@ public sealed class TaskCatchWhenTest
                     });
                 break;
             case 2:
-                await Task
-                    .Run(() => isFailed
-                        ? Task.FromException(new())
-                        : Task.CompletedTask)
+                await (isFailed
+                    ? Task.FromException(new())
+                    : Task.CompletedTask)
                     .CatchWhen<Exception>(_ => true, _ => { result += value; });
                 break;
             case 3:
-                await Task
-                    .Run(() => isFailed
-                        ? Task.FromException(new())
-                        : Task.CompletedTask)
+                await (isFailed
+                    ? Task.FromException(new())
+                    : Task.CompletedTask)
                     .CatchWhen<Exception>(_ => true, _ =>
                     {
                         result += value;
@@ -199,38 +196,33 @@ public sealed class TaskCatchWhenTest
                     });
                 break;
             case 4:
-                result = await Task
-                    .Run(() => isFailed
-                        ? Task.FromException<int>(new())
-                        : Task.FromResult(result))
+                result = await (isFailed
+                    ? Task.FromException<int>(new())
+                    : Task.FromResult(result))
                     .CatchWhen(() => true, () => result + value);
                 break;
             case 5:
-                result = await Task
-                    .Run(() => isFailed
-                        ? Task.FromException<int>(new())
-                        : Task.FromResult(result))
+                result = await (isFailed
+                    ? Task.FromException<int>(new())
+                    : Task.FromResult(result))
                     .CatchWhen(() => true, () => Task.FromResult(result + value));
                 break;
             case 6:
-                result = await Task
-                    .Run(() => isFailed
-                        ? Task.FromException<int>(new())
-                        : Task.FromResult(result))
+                result = await (isFailed
+                    ? Task.FromException<int>(new())
+                    : Task.FromResult(result))
                     .CatchWhen<int, Exception>(_ => true, _ => result + value);
                 break;
             case 7:
-                result = await Task
-                    .Run(() => isFailed
-                        ? Task.FromException<int>(new())
-                        : Task.FromResult(result))
+                result = await (isFailed
+                    ? Task.FromException<int>(new())
+                    : Task.FromResult(result))
                     .CatchWhen<int, Exception>(_ => true, _ => Task.FromResult(result + value));
                 break;
             default:
-                await Task
-                    .Run(() => isFailed
-                        ? Task.FromException(new())
-                        : Task.CompletedTask)
+                await (isFailed
+                    ? Task.FromException(new())
+                    : Task.CompletedTask)
                     .CatchWhen(() => true, () => { result += value; });
                 break;
         }

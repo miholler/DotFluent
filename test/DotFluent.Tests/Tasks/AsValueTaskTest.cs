@@ -34,7 +34,7 @@ public sealed class TaskAsValueTaskTest
         {
             case 1:
                 result = await Task
-                    .Run(() => result + value)
+                    .FromResult(result + value)
                     .AsValueTask();
                 break;
             default:
