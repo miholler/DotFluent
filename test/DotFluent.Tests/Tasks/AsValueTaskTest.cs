@@ -29,6 +29,7 @@ public sealed class TaskAsValueTaskTest
     public async Task AsValueTask(int value, int expectedResult, int overload)
     {
         var result = 0;
+
         switch (overload)
         {
             case 1:

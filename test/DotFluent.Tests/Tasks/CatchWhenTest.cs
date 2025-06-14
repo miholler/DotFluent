@@ -84,7 +84,7 @@ public sealed class TaskCatchWhenTest
     [Test]
     public async Task ActionNullThrowsException()
     {
-        var source = Task.FromResult(0);
+        var source = Task.CompletedTask;
         Action action = null;
         Action<Exception> exceptionAction = null;
 
