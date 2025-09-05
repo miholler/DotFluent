@@ -40,7 +40,7 @@ public static partial class Sequence
                 }
                 break;
         }
-        throw new InvalidOperationException(Errors.MoreThanOneElement);
+        throw new InvalidOperationException(Errors.SequenceMoreThanOneElement);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public static partial class Sequence
             {
                 while (enumerator.MoveNext())
                     if (predicate(enumerator.Current))
-                        throw new InvalidOperationException(Errors.MoreThanOneMatch);
+                        throw new InvalidOperationException(Errors.SequenceMoreThanOneMatch);
 
                 return result;
             }

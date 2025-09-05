@@ -55,7 +55,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// An <see cref="InvalidOperationException"/> is thrown if the option is 'None'.
     /// </summary>
     /// <returns>The value of the option if it is a 'Some' option.</returns>
-    public T Value => IsSome ? _value : throw new InvalidOperationException(Errors.NoValue);
+    public T Value => IsSome ? _value : throw new InvalidOperationException(Errors.OptionNoValue);
 
     /// <summary>
     /// Gets whether the current option is a 'Some' value.
