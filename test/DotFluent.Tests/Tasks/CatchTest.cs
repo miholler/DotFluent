@@ -203,6 +203,16 @@ public sealed class ValueTaskCatchTest
         await exceptionAction
             .Awaiting(x => ValueTask.CompletedTask.Catch(x))
             .ShouldThrowAsync<ArgumentNullException>();
+        await action
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Catch(x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await exceptionAction
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Catch(x))
+            .ShouldThrowAsync<ArgumentNullException>();
     }
 
     [Test]
@@ -221,12 +231,22 @@ public sealed class ValueTaskCatchTest
         await taskExceptionSelector
             .Awaiting(x => ValueTask.CompletedTask.Catch(x))
             .ShouldThrowAsync<ArgumentNullException>();
+        await taskSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Catch(x))
+            .ShouldThrowAsync<ArgumentNullException>();
         await selector
             .Awaiting(x => ValueTask
                 .FromResult(0)
                 .Catch(x))
             .ShouldThrowAsync<ArgumentNullException>();
         await genericTaskSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Catch(x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await taskExceptionSelector
             .Awaiting(x => ValueTask
                 .FromResult(0)
                 .Catch(x))
@@ -260,6 +280,14 @@ public sealed class ValueTaskCatchTest
     [TestCase(1, 0, false, 6)]
     [TestCase(1, 1, true, 7)]
     [TestCase(1, 0, false, 7)]
+    [TestCase(1, 1, true, 8)]
+    [TestCase(1, 0, false, 8)]
+    [TestCase(1, 1, true, 9)]
+    [TestCase(1, 0, false, 9)]
+    [TestCase(1, 1, true, 10)]
+    [TestCase(1, 0, false, 10)]
+    [TestCase(1, 1, true, 11)]
+    [TestCase(1, 0, false, 11)]
     public async Task Catch(int value, int expectedResult, bool isFailed, int overload)
     {
         var result = 0;
@@ -295,25 +323,59 @@ public sealed class ValueTaskCatchTest
                     });
                 break;
             case 4:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .Catch(() => { result += value; });
+                break;
+            case 5:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .Catch(() => ValueTask.FromException(new()))
+                    .Catch(() =>
+                    {
+                        result += value;
+                        return ValueTask.CompletedTask;
+                    });
+                break;
+            case 6:
                 result = await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
                     .Catch(() => result + value);
                 break;
-            case 5:
+            case 7:
                 result = await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
                     .Catch(() => ValueTask.FromException<int>(new()))
                     .Catch(() => ValueTask.FromResult(result + value));
                 break;
-            case 6:
+            case 8:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .Catch<int, Exception>(_ => { result += value; });
+                break;
+            case 9:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .Catch<int, Exception>(ValueTask.FromException)
+                    .Catch<Exception>(_ =>
+                    {
+                        result += value;
+                        return ValueTask.CompletedTask;
+                    });
+                break;
+            case 10:
                 result = await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
                     .Catch<int, Exception>(_ => result + value);
                 break;
-            case 7:
+            case 11:
                 result = await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))

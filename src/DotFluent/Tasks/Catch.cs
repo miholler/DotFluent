@@ -345,6 +345,62 @@ public static partial class ValueTaskExtensions
     /// </summary>
     /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
     /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="action">An action to perform when any of the previous tasks failes.</param>
+    /// <returns>A continuation <see cref="ValueTask"/>.</returns>
+    public static ValueTask Catch<TSource>(this in ValueTask<TSource> source, Action action)
+    {
+        action.ThrowIfNull();
+
+        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Action action)
+        {
+            try
+            {
+                if (!source.IsCompletedSuccessfully)
+                    await source.ConfigureAwait(false);
+            }
+            catch
+            {
+                action();
+            }
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously when any of the
+    /// previous tasks in the chain failes.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
+    /// <returns>A continuation <see cref="ValueTask"/>.</returns>
+    public static ValueTask Catch<TSource>(this in ValueTask<TSource> source, Func<ValueTask> selector)
+    {
+        selector.ThrowIfNull();
+
+        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Func<ValueTask> selector)
+        {
+            try
+            {
+                if (!source.IsCompletedSuccessfully)
+                    await source.ConfigureAwait(false);
+            }
+            catch
+            {
+                var handler = selector();
+                if (!handler.IsCompletedSuccessfully)
+                    await handler.ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously when any of the
+    /// previous tasks in the chain failes.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
     /// <param name="selector">A function to invoke when any of the previous tasks failes.</param>
     /// <returns>A continuation <see cref="ValueTask{TSource}"/>.</returns>
     public static ValueTask<TSource> Catch<TSource>(this in ValueTask<TSource> source, Func<TSource> selector)
@@ -393,6 +449,64 @@ public static partial class ValueTaskExtensions
                 return handler.IsCompletedSuccessfully
                     ? handler.Result
                     : await handler.ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously when any of the
+    /// previous tasks in the chain failes due to the specified exception type.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <typeparam name="TException">The type of exception to catch.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="action">An action to perform when any of the previous tasks failes due to the specified exception type.</param>
+    /// <returns>A continuation <see cref="ValueTask"/>.</returns>
+    public static ValueTask Catch<TSource, TException>(this in ValueTask<TSource> source, Action<TException> action) where TException : Exception
+    {
+        action.ThrowIfNull();
+
+        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Action<TException> action)
+        {
+            try
+            {
+                if (!source.IsCompletedSuccessfully)
+                    await source.ConfigureAwait(false);
+            }
+            catch (TException ex)
+            {
+                action(ex);
+            }
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously when any of the
+    /// previous tasks in the chain failes due to the specified exception type.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <typeparam name="TException">The type of exception to catch.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke when any of the previous tasks failes due to the specified exception type.</param>
+    /// <returns>A continuation <see cref="ValueTask"/>.</returns>
+    public static ValueTask Catch<TSource, TException>(this in ValueTask<TSource> source, Func<TException, ValueTask> selector) where TException : Exception
+    {
+        selector.ThrowIfNull();
+
+        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Func<TException, ValueTask> selector)
+        {
+            try
+            {
+                if (!source.IsCompletedSuccessfully)
+                    await source.ConfigureAwait(false);
+            }
+            catch (TException ex)
+            {
+                var handler = selector(ex);
+                if (!handler.IsCompletedSuccessfully)
+                    await handler.ConfigureAwait(false);
             }
         }
         return ContinueWithAsync(source, selector);
