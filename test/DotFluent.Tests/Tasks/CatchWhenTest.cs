@@ -8,8 +8,6 @@ namespace DotFluent.Tasks;
 [TestFixture]
 public sealed class TaskCatchWhenTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -228,6 +226,275 @@ public sealed class TaskCatchWhenTest
         }
         result.ShouldBe(expectedResult);
     }
+}
 
-    #endregion
+[TestFixture]
+public sealed class ValueTaskCatchWhenTest
+{
+    [Test]
+    public async Task ConditionNullThrowsException()
+    {
+        Func<bool> condition = null;
+
+        await condition
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(x, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await condition
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(x, () => ValueTask.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await condition
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, () => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await condition
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, () => ValueTask.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await condition
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, () => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await condition
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, () => ValueTask.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task PredicateNullThrowsException()
+    {
+        Func<Exception, bool> predicate = null;
+
+        await predicate
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(x, _ => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await predicate
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(x, _ => ValueTask.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await predicate
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, _ => { }))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await predicate
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, _ => ValueTask.CompletedTask))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await predicate
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, _ => 0))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await predicate
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(x, _ => ValueTask.FromResult(0)))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task ActionNullThrowsException()
+    {
+        Action action = null;
+        Action<Exception> exceptionAction = null;
+
+        await action
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(() => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await exceptionAction
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(_ => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await action
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(() => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await exceptionAction
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(_ => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task SelectorNullThrowsException()
+    {
+        Func<ValueTask> taskSelector = null;
+        Func<Exception, ValueTask> taskExceptionSelector = null;
+        Func<int> selector = null;
+        Func<ValueTask<int>> genericTaskSelector = null;
+        Func<Exception, int> exceptionSelector = null;
+        Func<Exception, ValueTask<int>> genericTaskExceptionSelector = null;
+
+        await taskSelector
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(() => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await taskExceptionSelector
+            .Awaiting(x => ValueTask.CompletedTask.CatchWhen(_ => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await taskSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(() => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await selector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(() => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await genericTaskSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(() => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await taskExceptionSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(_ => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await exceptionSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(_ => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+        await genericTaskExceptionSelector
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .CatchWhen(_ => false, x))
+            .ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    [TestCase(1, 1, true, 0)]
+    [TestCase(1, 0, false, 0)]
+    [TestCase(1, 1, true, 1)]
+    [TestCase(1, 0, false, 1)]
+    [TestCase(1, 1, true, 2)]
+    [TestCase(1, 0, false, 2)]
+    [TestCase(1, 1, true, 3)]
+    [TestCase(1, 0, false, 3)]
+    [TestCase(1, 1, true, 4)]
+    [TestCase(1, 0, false, 4)]
+    [TestCase(1, 1, true, 5)]
+    [TestCase(1, 0, false, 5)]
+    [TestCase(1, 1, true, 6)]
+    [TestCase(1, 0, false, 6)]
+    [TestCase(1, 1, true, 7)]
+    [TestCase(1, 0, false, 7)]
+    [TestCase(1, 1, true, 8)]
+    [TestCase(1, 0, false, 8)]
+    [TestCase(1, 1, true, 9)]
+    [TestCase(1, 0, false, 9)]
+    [TestCase(1, 1, true, 10)]
+    [TestCase(1, 0, false, 10)]
+    [TestCase(1, 1, true, 11)]
+    [TestCase(1, 0, false, 11)]
+    public async Task CatchWhen(int value, int expectedResult, bool isFailed, int overload)
+    {
+        var result = 0;
+
+        switch (overload)
+        {
+            case 1:
+                await (isFailed
+                    ? ValueTask.FromException(new())
+                    : ValueTask.CompletedTask)
+                    .CatchWhen(() => true, () => ValueTask.FromException(new()))
+                    .CatchWhen(() => true, () =>
+                    {
+                        result += value;
+                        return ValueTask.CompletedTask;
+                    });
+                break;
+            case 2:
+                await (isFailed
+                    ? ValueTask.FromException(new())
+                    : ValueTask.CompletedTask)
+                    .CatchWhen<Exception>(_ => true, _ => { result += value; });
+                break;
+            case 3:
+                await (isFailed
+                    ? ValueTask.FromException(new())
+                    : ValueTask.CompletedTask)
+                    .CatchWhen<Exception>(_ => true, ValueTask.FromException)
+                    .CatchWhen<Exception>(_ => true, _ =>
+                    {
+                        result += value;
+                        return ValueTask.CompletedTask;
+                    });
+                break;
+            case 4:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen(() => true, () => { result += value; });
+                break;
+            case 5:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen(() => true, () => ValueTask.FromException(new()))
+                    .CatchWhen(() => true, () =>
+                    {
+                        result += value;
+                        return ValueTask.CompletedTask;
+                    });
+                break;
+            case 6:
+                result = await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen(() => true, () => result + value);
+                break;
+            case 7:
+                result = await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen(() => true, () => ValueTask.FromException<int>(new()))
+                    .CatchWhen(() => true, () => ValueTask.FromResult(result + value));
+                break;
+            case 8:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen<int, Exception>(_ => true, _ => { result += value; });
+                break;
+            case 9:
+                await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen<int, Exception>(_ => true, ValueTask.FromException)
+                    .CatchWhen<Exception>(_ => true, _ =>
+                    {
+                        result += value;
+                        return ValueTask.CompletedTask;
+                    });
+                break;
+            case 10:
+                result = await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen<int, Exception>(_ => true, _ => result + value);
+                break;
+            case 11:
+                result = await (isFailed
+                    ? ValueTask.FromException<int>(new())
+                    : ValueTask.FromResult(result))
+                    .CatchWhen<int, Exception>(_ => true, ValueTask.FromException<int>)
+                    .CatchWhen<int, Exception>(_ => true, _ => ValueTask.FromResult(result + value));
+                break;
+            default:
+                await (isFailed
+                    ? ValueTask.FromException(new())
+                    : ValueTask.CompletedTask)
+                    .CatchWhen(() => true, () => { result += value; });
+                break;
+        }
+        result.ShouldBe(expectedResult);
+    }
 }
