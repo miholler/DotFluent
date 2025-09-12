@@ -7,8 +7,6 @@ namespace DotFluent.Tasks;
 
 public sealed class TaskAsValueTaskTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -45,6 +43,4 @@ public sealed class TaskAsValueTaskTest
         }
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

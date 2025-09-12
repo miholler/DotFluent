@@ -2,8 +2,6 @@
 
 public static partial class TaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Converts a specified task to a value task.
     /// </summary>
@@ -20,6 +18,4 @@ public static partial class TaskExtensions
     /// <returns>A <see cref="ValueTask{TSource}"/> that represents the input <see cref="Task{TSource}"/>.</returns>
     public static ValueTask<TSource> AsValueTask<TSource>(this Task<TSource> source)
         => new(source);
-
-    #endregion
 }
