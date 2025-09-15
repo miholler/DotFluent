@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 

@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 

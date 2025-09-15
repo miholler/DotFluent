@@ -1,9 +1,7 @@
 ﻿using DotFluent.Linq;
 using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace DotFluent.Optional;
 

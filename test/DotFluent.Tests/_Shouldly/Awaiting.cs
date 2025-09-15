@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Shouldly;
+﻿namespace Shouldly;
 
 [ShouldlyMethods]
 public static partial class ShouldlyExtensions

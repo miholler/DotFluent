@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Serialization;
 
 namespace DotFluent.Optional;
