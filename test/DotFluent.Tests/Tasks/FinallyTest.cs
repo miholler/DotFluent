@@ -73,17 +73,17 @@ public sealed class TaskFinallyTest
     }
 
     [Test]
-    [TestCase(1, 2, 3, true, 0)]
-    [TestCase(1, 2, 3, false, 0)]
-    [TestCase(1, 2, 3, true, 1)]
-    [TestCase(1, 2, 3, false, 1)]
-    [TestCase(1, 2, 3, true, 2)]
-    [TestCase(1, 2, 3, false, 2)]
-    [TestCase(1, 2, 3, true, 3)]
-    [TestCase(1, 2, 3, false, 3)]
-    public async Task Finally(int source, int value, int expectedResult, bool isFailed, int overload)
+    [TestCase(1, 1, true, 0)]
+    [TestCase(1, 1, false, 0)]
+    [TestCase(1, 1, true, 1)]
+    [TestCase(1, 1, false, 1)]
+    [TestCase(1, 1, true, 2)]
+    [TestCase(1, 1, false, 2)]
+    [TestCase(1, 1, true, 3)]
+    [TestCase(1, 1, false, 3)]
+    public async Task Finally(int value, int expectedResult, bool isFailed, int overload)
     {
-        var result = source;
+        var result = 0;
         try
         {
             switch (overload)
@@ -167,17 +167,17 @@ public sealed class ValueTaskFinallyTest
     }
 
     [Test]
-    [TestCase(1, 2, 3, true, 0)]
-    [TestCase(1, 2, 3, false, 0)]
-    [TestCase(1, 2, 3, true, 1)]
-    [TestCase(1, 2, 3, false, 1)]
-    [TestCase(1, 2, 3, true, 2)]
-    [TestCase(1, 2, 3, false, 2)]
-    [TestCase(1, 2, 3, true, 3)]
-    [TestCase(1, 2, 3, false, 3)]
-    public async Task Finally(int source, int value, int expectedResult, bool isFailed, int overload)
+    [TestCase(1, 1, true, 0)]
+    [TestCase(1, 1, false, 0)]
+    [TestCase(1, 1, true, 1)]
+    [TestCase(1, 1, false, 1)]
+    [TestCase(1, 1, true, 2)]
+    [TestCase(1, 1, false, 2)]
+    [TestCase(1, 1, true, 3)]
+    [TestCase(1, 1, false, 3)]
+    public async Task Finally(int value, int expectedResult, bool isFailed, int overload)
     {
-        var result = source;
+        var result = 0;
         try
         {
             switch (overload)
