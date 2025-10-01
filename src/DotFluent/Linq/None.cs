@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether a sequence contains no elements.
     /// </summary>
@@ -47,6 +45,4 @@ public static partial class Sequence
         }
         return true;
     }
-
-    #endregion
 }

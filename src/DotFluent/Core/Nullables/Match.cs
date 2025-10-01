@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Performs a specified action if a nullable object has no value.
     /// </summary>
@@ -81,6 +79,4 @@ public static partial class NullableExtensions
             ? some(source.Value)
             : none();
     }
-
-    #endregion
 }

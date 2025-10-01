@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously creates an option from an object.
     /// </summary>
@@ -74,6 +72,4 @@ public static partial class OptionTaskExtensions
 
         return source.Then(x => x.ToOption(), cancellationToken);
     }
-
-    #endregion
 }

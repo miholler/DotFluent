@@ -2,8 +2,6 @@
 
 public static partial class ObjectExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether two objects are considered equal.
     /// </summary>
@@ -15,6 +13,4 @@ public static partial class ObjectExtensions
         => reference
             ? ReferenceEquals(source, value)
             : Equals(source, value);
-
-    #endregion
 }

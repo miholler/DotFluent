@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously projects the error value of a result into a new form using a specified function,
     /// or returns an 'Ok' result based on whether the result is an 'Ok' or an 'Error' value.
@@ -57,6 +55,4 @@ public static partial class ResultTask
                     .ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null."))
                     .Then(Error<TValue, TResult>, cancellationToken));
     }
-
-    #endregion
 }

@@ -4,8 +4,6 @@ namespace DotFluent;
 
 public static partial class ObjectExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether an object is null.
     /// </summary>
@@ -13,6 +11,4 @@ public static partial class ObjectExtensions
     /// <returns>true if the object is null; otherwise, false.</returns>
     public static bool IsNull([NotNullWhen(false)]this object? source)
         => source is null;
-
-    #endregion
 }

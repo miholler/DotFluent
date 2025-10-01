@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Produces the set difference of two sequences by using a specified compare function to compare values.
     /// </summary>
@@ -28,6 +26,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
     public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
         => first.Except(second, EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

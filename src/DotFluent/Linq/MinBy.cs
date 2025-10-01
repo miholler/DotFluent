@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the minimum value in a generic sequence according to a specified key selector function
     /// and using a specified function to compare keys.
@@ -16,6 +14,4 @@ public static partial class Sequence
     /// <returns>The value with the minimum key in the sequence.</returns>
     public static TSource? MinBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Comparison<TKey> comparison)
         => source.MinBy(keySelector, Comparer<TKey>.Create(comparison));
-
-    #endregion
 }

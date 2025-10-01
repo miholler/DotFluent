@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Inserts an element into a sequence at a specified index.
     /// </summary>
@@ -48,6 +46,4 @@ public static partial class Sequence
         while (enumerator.MoveNext())
             yield return enumerator.Current;
     }
-
-    #endregion
 }

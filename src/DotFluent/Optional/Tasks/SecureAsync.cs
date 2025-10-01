@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously removes the value from an option if it is a null value.
     /// </summary>
@@ -18,6 +16,4 @@ public static partial class OptionTask
         => cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Option<TSource>>(cancellationToken)
             : Task.FromResult(source.Secure());
-
-    #endregion
 }

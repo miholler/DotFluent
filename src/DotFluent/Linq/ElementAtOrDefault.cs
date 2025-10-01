@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the element at a specified index in a sequence or a specified default value 
     /// if the index is out of range.
@@ -60,6 +58,4 @@ public static partial class Sequence
         }
         return defaultFactory();
     }
-
-    #endregion
 }

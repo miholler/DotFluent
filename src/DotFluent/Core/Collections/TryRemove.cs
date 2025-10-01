@@ -4,8 +4,6 @@ namespace DotFluent;
 
 public static partial class CollectionExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Attempts to remove and return the value that has the specified key from a dictionary.
     /// </summary>
@@ -24,6 +22,4 @@ public static partial class CollectionExtensions
 
         return source.TryGetValue(key, out value) && source.Remove(key);
     }
-
-    #endregion
 }

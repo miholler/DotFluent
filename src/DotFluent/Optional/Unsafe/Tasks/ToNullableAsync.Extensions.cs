@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Unsafe.Tasks;
 
 public static partial class UnsafeOptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously creates a nullable object from an option.
     /// </summary>
@@ -22,14 +20,10 @@ public static partial class UnsafeOptionTaskExtensions
 
         return source.Then(x => x.ToNullable(), cancellationToken);
     }
-
-    #endregion
 }
 
 public static partial class UnsafeResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously creates a nullable object from a result.
     /// </summary>
@@ -64,6 +58,4 @@ public static partial class UnsafeResultTaskExtensions
 
         return source.Then(x => x.ToNullable(), cancellationToken);
     }
-
-    #endregion
 }

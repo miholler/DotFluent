@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Produces the set intersection of two sequences according to a specified key selector function
     /// and using a specified compare function to compare keys.
@@ -34,6 +32,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
     public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
         => first.IntersectBy(second, keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

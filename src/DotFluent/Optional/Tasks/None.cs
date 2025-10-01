@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Creates a task returning an option value that is a 'None' value.
     /// </summary>
@@ -14,6 +12,4 @@ public static partial class OptionTask
     /// </returns>
     public static Task<Option<TResult>> None<TResult>()
         => Task.FromResult(Option.None<TResult>());
-
-    #endregion
 }

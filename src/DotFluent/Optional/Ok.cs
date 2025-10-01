@@ -2,8 +2,6 @@
 
 public static partial class Result
 {
-    #region Methods
-
     /// <summary>
     /// Creates a result value that is an 'Ok' value.
     /// </summary>
@@ -22,6 +20,4 @@ public static partial class Result
     /// <returns>A <see cref="Result{TValue, TError}"/> representing the success value.</returns>
     public static Result<TValue, TError> Ok<TValue, TError>(TValue value)
         => Result<TValue, TError>.Ok(value);
-
-    #endregion
 }

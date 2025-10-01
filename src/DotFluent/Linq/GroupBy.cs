@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Groups the elements of a sequence according to a specified key selector function
     /// and compares the keys by using a specified function.
@@ -137,6 +135,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TResult}"/> where each element represents a projection over a group and its key.</returns>
     public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
         => source.GroupBy(keySelector, elementSelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

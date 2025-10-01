@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns a sequence containing all specified elements.
     /// </summary>
@@ -12,6 +10,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TResult}"/> containing all specified elements.</returns>
     public static IEnumerable<TResult> Create<TResult>(params IEnumerable<TResult>? elements)
         => elements ?? [];
-
-    #endregion
 }

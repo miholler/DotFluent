@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Flattens a sequence of nested sequences into one sequence.
     /// </summary>
@@ -48,6 +46,4 @@ public static partial class Sequence
                     yield return child;
         }
     }
-
-    #endregion
 }

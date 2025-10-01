@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the only element of a sequence, or a default value created by a specified function
     /// if the sequence is empty; this method throws an exception if there is more than one element 
@@ -77,6 +75,4 @@ public static partial class Sequence
         }
         return defaultFactory();
     }
-
-    #endregion
 }

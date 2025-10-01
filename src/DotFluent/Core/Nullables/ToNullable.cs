@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Creates a nullable object from an object.
     /// </summary>
@@ -12,6 +10,4 @@ public static partial class NullableExtensions
     /// <returns>A <see cref="Nullable{TSource}"/> representing source.</returns>
     public static TSource? ToNullable<TSource>(this TSource source) where TSource : struct
         => source;
-
-    #endregion
 }

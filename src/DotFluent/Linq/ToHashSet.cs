@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Creates a hashset from a sequence using a specified
     /// compare function to compare values.
@@ -34,6 +32,4 @@ public static partial class Sequence
     /// </returns>
     public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
         => source.ToHashSet(EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

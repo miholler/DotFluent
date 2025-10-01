@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. The default
     /// equality comparer is used to compare keys.
@@ -180,6 +178,4 @@ public static partial class Sequence
         foreach (var pair in pairs.Where(x => !keys.Contains(x.Key)))
             yield return resultSelector(default, pair.Value);
     }
-
-    #endregion
 }

@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the first element of a sequence, or a default value created by a specified function if
     /// the sequence contains no elements.
@@ -57,6 +55,4 @@ public static partial class Sequence
         }
         return defaultFactory();
     }
-
-    #endregion
 }

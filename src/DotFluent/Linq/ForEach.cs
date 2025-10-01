@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Performs a specified action on each element of a sequence.
     /// </summary>
@@ -34,6 +32,4 @@ public static partial class Sequence
         foreach (var item in source)
             action(item, checked(index++));
     }
-
-    #endregion
 }

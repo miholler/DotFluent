@@ -18,13 +18,7 @@ public static partial class Option;
 [Serializable]
 public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable, ISerializable
 {
-    #region Fields
-
     private readonly T _value;
-
-    #endregion
-
-    #region Ctors
 
     private Option(T value)
     {
@@ -39,10 +33,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
             ? (T)info.GetValue(nameof(_value), typeof(T))!
             : default!;
     }
-
-    #endregion
-
-    #region Properties
 
     /// <summary>
     /// Gets an option value that is a 'None' value.
@@ -68,10 +58,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
     public bool IsNone => !IsSome;
-
-    #endregion
-
-    #region Methods
 
     /// <summary>
     /// Creates an option value that is a 'Some' value.
@@ -390,10 +376,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     public override string ToString()
         => Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
 
-    #endregion
-
-    #region Operators
-
     /// <summary>
     /// Implicitly converts a value into an option.
     /// </summary>
@@ -489,6 +471,4 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
     public static bool operator false(Option<T> option)
         => option.IsNone;
-
-    #endregion
 }

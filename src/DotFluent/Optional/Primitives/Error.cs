@@ -12,16 +12,10 @@ public readonly struct Error;
 /// <param name="value">The input value.</param>
 public readonly struct Error<T>(T value)
 {
-    #region Properties
-
     /// <summary>
     /// Get the value of the current error.
     /// </summary>
     public T Value { get; } = value;
-
-    #endregion
-
-    #region Operators
 
     /// <summary>
     /// Implicitly converts a value into an error.
@@ -36,6 +30,4 @@ public readonly struct Error<T>(T value)
     /// <param name="error">The error to convert.</param>
     public static implicit operator T(Error<T> error)
         => error.Value;
-
-    #endregion
 }

@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously flattens an option with a nested option into one option.
     /// </summary>
@@ -22,14 +20,10 @@ public static partial class OptionTaskExtensions
 
         return source.Then(x => x.Flatten(), cancellationToken);
     }
-
-    #endregion
 }
 
 public static partial class ResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously flattens a result with a nested result into one result.
     /// </summary>
@@ -64,6 +58,4 @@ public static partial class ResultTaskExtensions
 
         return source.Then(x => x.Flatten(), cancellationToken);
     }
-
-    #endregion
 }

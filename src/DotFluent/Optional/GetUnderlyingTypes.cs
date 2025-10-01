@@ -2,8 +2,6 @@
 
 public static partial class Result
 {
-    #region Methods
-
     /// <summary>
     /// Returns the underlying type arguments of the specified result type.
     /// </summary>
@@ -22,6 +20,4 @@ public static partial class Result
              ? resultType.GetGenericArguments()
              : [];
     }
-
-    #endregion
 }

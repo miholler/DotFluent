@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Returns an alternative nullable object if a nullable object 
     /// does not have a value.
@@ -37,6 +35,4 @@ public static partial class NullableExtensions
             ? source
             : otherFactory();
     }
-
-    #endregion
 }

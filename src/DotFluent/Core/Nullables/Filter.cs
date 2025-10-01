@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Removes the value from a nullable object if it does not
     /// satisfy a condition.
@@ -23,6 +21,4 @@ public static partial class NullableExtensions
             ? source
             : default;
     }
-
-    #endregion
 }
