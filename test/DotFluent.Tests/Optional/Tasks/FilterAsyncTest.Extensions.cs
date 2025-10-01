@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionFilterAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -69,6 +67,4 @@ public sealed class OptionFilterAsyncExtensionsTest
             .Awaiting(x => x.FilterAsync(_ => Task.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

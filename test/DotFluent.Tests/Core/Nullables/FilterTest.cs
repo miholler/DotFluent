@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableFilterTest
 {
-    #region Methods
-
     [Test]
     public void PredicateNullThrowsException()
     {
@@ -27,6 +25,4 @@ public sealed class NullableFilterTest
         => source
             .Filter(x => x == value)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

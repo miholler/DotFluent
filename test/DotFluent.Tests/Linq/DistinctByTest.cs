@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableDistinctByTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -77,6 +75,4 @@ public sealed class EnumerableDistinctByTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

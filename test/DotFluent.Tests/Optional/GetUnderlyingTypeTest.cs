@@ -6,8 +6,6 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class OptionGetUnderlyingTypeTest
 {
-    #region Methods
-
     [Test]
     public void OptionTypeNullThrowsException()
     {
@@ -28,15 +26,11 @@ public sealed class OptionGetUnderlyingTypeTest
         => Option
             .GetUnderlyingType(source)
             .ShouldBe(expectedResult);
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultGetUnderlyingTypeTest
 {
-    #region Methods
-
     [Test]
     public void ResultTypeNullThrowsException()
     {
@@ -57,6 +51,4 @@ public sealed class ResultGetUnderlyingTypeTest
         => Result
             .GetUnderlyingType(source)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

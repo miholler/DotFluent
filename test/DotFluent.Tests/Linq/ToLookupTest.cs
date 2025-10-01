@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableToLookupTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -116,6 +114,4 @@ public sealed class EnumerableToLookupTest
         };
         result.ShouldBe(source.GroupBy(x => x.Id));
     }
-
-    #endregion
 }

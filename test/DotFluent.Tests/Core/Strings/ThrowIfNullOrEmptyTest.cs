@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class StringThrowIfNullOrEmptyTest
 {
-    #region Methods
-
     [Test]
     public void StringNullOrEmptyThrowsException()
     {
@@ -31,6 +29,4 @@ public sealed class StringThrowIfNullOrEmptyTest
             .ThrowIfNullOrEmpty()
             .ShouldBe(source);
     }
-
-    #endregion
 }

@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class DictionaryTryUpdateTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -45,6 +43,4 @@ public sealed class DictionaryTryUpdateTest
             .TryUpdate(key, value, comparisonValue)
             .ShouldBe(expectedResult);
     }
-
-    #endregion
 }

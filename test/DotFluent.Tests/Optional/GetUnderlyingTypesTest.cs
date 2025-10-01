@@ -6,8 +6,6 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class ResultGetUnderlyingTypesTest
 {
-    #region Methods
-
     [Test]
     public void ResultTypeNullThrowsException()
     {
@@ -30,6 +28,4 @@ public sealed class ResultGetUnderlyingTypesTest
         => Result
             .GetUnderlyingTypes(source)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

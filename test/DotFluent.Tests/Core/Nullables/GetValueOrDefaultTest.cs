@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableGetValueOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void DefaultFactoryNullThrowsException()
     {
@@ -26,6 +24,4 @@ public sealed class NullableGetValueOrDefaultTest
         => source
             .GetValueOrDefault(() => defaultValue)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

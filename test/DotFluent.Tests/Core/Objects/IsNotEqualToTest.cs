@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class ObjectIsNotEqualToTest
 {
-    #region Methods
-
     [Test]
     public void IsEqual()
     {
@@ -47,6 +45,4 @@ public sealed class ObjectIsNotEqualToTest
         a.IsNotEqualTo(b, true)
          .ShouldBeTrue();
     }
-
-    #endregion
 }

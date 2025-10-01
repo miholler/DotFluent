@@ -7,8 +7,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionFlattenAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -42,15 +40,11 @@ public sealed class OptionFlattenAsyncExtensionsTest
             .Awaiting(x => x.FlattenAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultFlattenAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -102,6 +96,4 @@ public sealed class ResultFlattenAsyncExtensionsTest
             .Awaiting(x => x.FlattenAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

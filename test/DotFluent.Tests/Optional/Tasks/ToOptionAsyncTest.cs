@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionToOptionAsyncTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new string[0])]
     [TestCase("ABC", new[] { "ABC" })]
@@ -67,6 +65,4 @@ public sealed class OptionToOptionAsyncTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

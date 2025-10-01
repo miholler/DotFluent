@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableOrderDescendingTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -53,6 +51,4 @@ public sealed class EnumerableOrderDescendingTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

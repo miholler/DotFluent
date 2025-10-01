@@ -7,8 +7,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableInsertTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -36,6 +34,4 @@ public sealed class EnumerableInsertTest
         => source
             .Insert(index, item)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

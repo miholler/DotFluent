@@ -1,10 +1,8 @@
 ﻿namespace Shouldly;
 
 [ShouldlyMethods]
-public static partial class ShouldlyExtensions
+public static class ShouldlyExtensions
 {
-    #region Methods
-
     public static Func<Task> Awaiting<TSource>(this TSource source, Func<TSource, Task> selector)
         => () => selector(source);
 
@@ -17,5 +15,9 @@ public static partial class ShouldlyExtensions
     public static Func<Task> Awaiting<TSource, TResult>(this TSource source, Func<TSource, ValueTask<TResult>> selector)
         => () => selector(source).AsTask();
 
-    #endregion
+    public static Action Invoking<TSource>(this TSource source, Action<TSource> action)
+        => () => action(source);
+
+    public static Func<object> Invoking<TSource, TResult>(this TSource source, Func<TSource, TResult> selector)
+        => () => selector(source);
 }

@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableContainsTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, 1, false)]
     [TestCase(1, 2, false)]
@@ -16,6 +14,4 @@ public sealed class NullableContainsTest
         => source
             .Contains(value)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

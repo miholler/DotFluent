@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class StringThrowIfNullOrWhiteSpaceTest
 {
-    #region Methods
-
     [Test]
     public void StringNullOrWhiteSpaceThrowsException()
     {
@@ -35,6 +33,4 @@ public sealed class StringThrowIfNullOrWhiteSpaceTest
             .ThrowIfNullOrWhiteSpace()
             .ShouldBe(source);
     }
-
-    #endregion
 }

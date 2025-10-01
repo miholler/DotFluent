@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class ObjectIsTest
 {
-    #region Methods
-
     [Test]
     public void PredicateNullThrowsException()
     {
@@ -27,6 +25,4 @@ public sealed class ObjectIsTest
         => source
             .Is(x => x.Length > 0)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableMinTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -57,6 +55,4 @@ public sealed class EnumerableMinTest
         => source
             .Min(Comparer<int>.Default.Compare)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

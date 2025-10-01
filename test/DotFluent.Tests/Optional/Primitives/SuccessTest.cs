@@ -7,8 +7,6 @@ namespace DotFluent.Optional.Primitives;
 [TestFixture]
 public sealed class SuccessTest
 {
-    #region Methods
-
     [Test]
     public void OP_Implicit()
     {
@@ -16,6 +14,4 @@ public sealed class SuccessTest
         HttpStatusCode statusCode = success;
         statusCode.ShouldBe(HttpStatusCode.OK);
     }
-
-    #endregion
 }

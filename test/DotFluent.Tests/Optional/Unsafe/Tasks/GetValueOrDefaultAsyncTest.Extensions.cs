@@ -7,8 +7,6 @@ namespace DotFluent.Optional.Unsafe.Tasks;
 [TestFixture]
 public sealed class OptionGetValueOrDefaultAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -95,15 +93,11 @@ public sealed class OptionGetValueOrDefaultAsyncExtensionsTest
             .Awaiting(x => x.GetValueOrDefaultAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultGetValueOrDefaultAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -251,6 +245,4 @@ public sealed class ResultGetValueOrDefaultAsyncExtensionsTest
             .Awaiting(x => x.GetValueOrDefaultAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

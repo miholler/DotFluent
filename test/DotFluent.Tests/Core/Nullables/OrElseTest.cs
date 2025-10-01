@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableOrElseTest
 {
-    #region Methods
-
     [Test]
     public void OtherFactoryNullThrowsException()
     {
@@ -38,6 +36,4 @@ public sealed class NullableOrElseTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableIntersectTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -67,6 +65,4 @@ public sealed class EnumerableIntersectTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

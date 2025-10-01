@@ -2,8 +2,6 @@
 
 public static class EnumerableExtensions
 {
-    #region Methods
-
     public static IEnumerable<TSource> AsIterator<TSource>(this IEnumerable<TSource> source)
         => Iterator(source);
 
@@ -12,6 +10,4 @@ public static class EnumerableExtensions
         foreach (var item in source)
             yield return item;
     }
-
-    #endregion
 }

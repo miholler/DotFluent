@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableDefaultIfEmptyTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -36,6 +34,4 @@ public sealed class EnumerableDefaultIfEmptyTest
         => source
             .DefaultIfEmpty(() => 0)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

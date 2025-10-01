@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableToHashSetTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -60,6 +58,4 @@ public sealed class EnumerableToHashSetTest
         };
         result.ShouldBe(new HashSet<int>(source));
     }
-
-    #endregion
 }

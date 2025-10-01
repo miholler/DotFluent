@@ -6,8 +6,6 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class OptionToOptionTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new string[0])]
     [TestCase("ABC", new[] { "ABC" })]
@@ -43,6 +41,4 @@ public sealed class OptionToOptionTest
 
         option.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

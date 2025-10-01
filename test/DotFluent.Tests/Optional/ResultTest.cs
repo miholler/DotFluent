@@ -8,8 +8,6 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class ResultTest
 {
-    #region Methods
-
     [Test]
     public void IsOk()
     {
@@ -456,15 +454,11 @@ public sealed class ResultTest
 
         currentResult.ShouldBe(expectedResult);
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class Result2Test
 {
-    #region Methods
-
     [Test]
     public void IsOk()
     {
@@ -914,6 +908,4 @@ public sealed class Result2Test
 
         currentResult.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

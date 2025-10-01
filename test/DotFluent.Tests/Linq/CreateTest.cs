@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableCreateTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new string[0])]
     [TestCase(new string[0], new string[0])]
@@ -18,6 +16,4 @@ public sealed class EnumerableCreateTest
         => Sequence
             .Create(source)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

@@ -8,8 +8,6 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class OptionTest
 {
-    #region Methods
-
     [Test]
     public void SomeValueReturnsValue()
         => Option<int>
@@ -567,6 +565,4 @@ public sealed class OptionTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

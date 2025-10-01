@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableThenByDescendingTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -58,6 +56,4 @@ public sealed class EnumerableThenByDescendingTest
             .ThenByDescending(x => x.Name, StringComparer.Ordinal.Compare)
             .ShouldBe([b, a, d, c]);
     }
-
-    #endregion
 }

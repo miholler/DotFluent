@@ -7,8 +7,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionFlattenAsyncTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(1, new[] { 1 })]
@@ -32,15 +30,11 @@ public sealed class OptionFlattenAsyncTest
             .Awaiting(x => x.FlattenAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultFlattenAsyncTest
 {
-    #region Methods
-
     [Test]
     [TestCase(1, new[] { 1 }, 0)]
     [TestCase(1, new[] { 1 }, 1)]
@@ -78,6 +72,4 @@ public sealed class ResultFlattenAsyncTest
             .Awaiting(x => x.FlattenAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

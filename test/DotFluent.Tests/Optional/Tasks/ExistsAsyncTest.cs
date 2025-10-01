@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionExistsAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task PredicateNullThrowsException()
     {
@@ -53,15 +51,11 @@ public sealed class OptionExistsAsyncTest
             .Awaiting(x => x.ExistsAsync(_ => Task.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultExistsAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task PredicateNullThrowsException()
     {
@@ -128,6 +122,4 @@ public sealed class ResultExistsAsyncTest
             .Awaiting(x => x.ExistsAsync(_ => Task.FromResult(false), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

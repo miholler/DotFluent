@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableSequenceEqualTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -38,6 +36,4 @@ public sealed class EnumerableSequenceEqualTest
         => first
             .SequenceEqual(second, (x, y) => x == y)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

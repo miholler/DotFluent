@@ -7,8 +7,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableSingleOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -102,6 +100,4 @@ public sealed class EnumerableSingleOrDefaultTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

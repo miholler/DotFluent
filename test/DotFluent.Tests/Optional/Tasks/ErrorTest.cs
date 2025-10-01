@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class ResultErrorTest
 {
-    #region Methods
-
     [Test]
     [TestCase(0)]
     [TestCase(1)]
@@ -25,6 +23,4 @@ public sealed class ResultErrorTest
                 break;
         }
     }
-
-    #endregion
 }

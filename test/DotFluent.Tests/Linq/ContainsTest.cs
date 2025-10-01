@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableContainsTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -37,6 +35,4 @@ public sealed class EnumerableContainsTest
         => source
             .Contains(value, (x, y) => x == y)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

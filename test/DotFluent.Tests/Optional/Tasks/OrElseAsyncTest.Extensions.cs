@@ -7,8 +7,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionOrElseAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -83,15 +81,11 @@ public sealed class OptionOrElseAsyncExtensionsTest
             .Awaiting(x => x.OrElseAsync(OptionTask.None<int>, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultOrElseAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -224,6 +218,4 @@ public sealed class ResultOrElseAsyncExtensionsTest
             .Awaiting(x => x.OrElseAsync(() => ResultTask.Error<int, int>(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

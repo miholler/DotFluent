@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableMaxTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -57,6 +55,4 @@ public sealed class EnumerableMaxTest
         => source
             .Max(Comparer<int>.Default.Compare)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

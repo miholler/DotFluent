@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableIsNotNullNorEmptyTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, false)]
     [TestCase(new int[0], false)]
@@ -16,6 +14,4 @@ public sealed class EnumerableIsNotNullNorEmptyTest
         => source
             .IsNotNullNorEmpty()
             .ShouldBe(expectedResult);
-
-    #endregion
 }

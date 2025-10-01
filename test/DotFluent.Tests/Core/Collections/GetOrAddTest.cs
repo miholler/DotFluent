@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class DictionaryGetOrAddTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -65,6 +63,4 @@ public sealed class DictionaryGetOrAddTest
         };
         result.ShouldBe(value);
     }
-
-    #endregion
 }

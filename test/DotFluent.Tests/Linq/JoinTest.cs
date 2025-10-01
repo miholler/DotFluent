@@ -6,8 +6,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableJoinTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -176,6 +174,4 @@ public sealed class EnumerableJoinTest
             (b, b),
             (b, b)]);
     }
-
-    #endregion
 }

@@ -7,8 +7,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerablePipeTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -56,6 +54,4 @@ public sealed class EnumerablePipeTest
             .Select(x => x.ToString())
             .ShouldBe(["#A", "#B", "#C"]);
     }
-
-    #endregion
 }

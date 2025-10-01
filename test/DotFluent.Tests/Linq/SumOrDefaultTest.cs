@@ -8,8 +8,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableSumOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -732,6 +730,4 @@ public sealed class EnumerableSumOrDefaultTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

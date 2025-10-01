@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionNoneTest
 {
-    #region Methods
-
     [Test]
     public async Task None()
     {
@@ -15,6 +13,4 @@ public sealed class OptionNoneTest
 
         result.ShouldBe(Option<int>.None);
     }
-
-    #endregion
 }

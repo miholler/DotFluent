@@ -7,8 +7,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableIndexOfTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -82,6 +80,4 @@ public sealed class EnumerableIndexOfTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

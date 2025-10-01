@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class OptionMatchAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task NoneNullThrowsException()
     {
@@ -244,15 +242,11 @@ public sealed class OptionMatchAsyncTest
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultMatchAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task OkNullThrowsException()
     {
@@ -585,6 +579,4 @@ public sealed class ResultMatchAsyncTest
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

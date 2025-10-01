@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableMapTest
 {
-    #region Methods
-
     [Test]
     public void MapperNullThrowsException()
     {
@@ -26,6 +24,4 @@ public sealed class NullableMapTest
         => source
             .Map(x => ++x)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

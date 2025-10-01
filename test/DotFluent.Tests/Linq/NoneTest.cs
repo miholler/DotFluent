@@ -8,8 +8,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableNoneTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -65,6 +63,4 @@ public sealed class EnumerableNoneTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

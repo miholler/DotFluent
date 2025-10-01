@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Unsafe.Tasks;
 [TestFixture]
 public sealed class OptionToNullableAsyncTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null)]
     [TestCase(1)]
@@ -31,15 +29,11 @@ public sealed class OptionToNullableAsyncTest
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultToNullableAsyncTest
 {
-    #region Methods
-
     [Test]
     [TestCase(1, 0)]
     [TestCase(1, 1)]
@@ -75,6 +69,4 @@ public sealed class ResultToNullableAsyncTest
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

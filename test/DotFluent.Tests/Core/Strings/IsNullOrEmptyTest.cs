@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class StringIsNullOrEmptyTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, true)]
     [TestCase("", true)]
@@ -19,6 +17,4 @@ public sealed class StringIsNullOrEmptyTest
         => source
             .IsNullOrEmpty()
             .ShouldBe(expectedResult);
-
-    #endregion
 }

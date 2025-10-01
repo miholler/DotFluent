@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableFlatMapTest
 {
-    #region Methods
-
     [Test]
     public void MapperNullThrowsException()
     {
@@ -26,6 +24,4 @@ public sealed class NullableFlatMapTest
         => source
             .FlatMap(x => new int?(x))
             .ShouldBe(expectedResult);
-
-    #endregion
 }

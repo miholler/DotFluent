@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Tasks;
 [TestFixture]
 public sealed class ResultMapErrorAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task MapperNullThrowsException()
     {
@@ -98,6 +96,4 @@ public sealed class ResultMapErrorAsyncTest
                 }, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
