@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously projects the value of an option into another option using a specified function and
     /// flattens the result, or returns an empty option based on whether the option is a 'Some' or a 'None' value.
@@ -28,14 +26,10 @@ public static partial class OptionTask
                 mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")),
                 None<TResult>);
     }
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously projects the success value of a result into another result using a specified function and
     /// flattens the result, or returns an 'Error' result based on whether the result is an 'Ok' or an 'Error' value.
@@ -86,6 +80,4 @@ public static partial class ResultTask
                 mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")),
                 Error<TResult, TError>);
     }
-
-    #endregion
 }

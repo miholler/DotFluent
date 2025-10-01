@@ -1,18 +1,13 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableNoneTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -68,6 +63,4 @@ public sealed class EnumerableNoneTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

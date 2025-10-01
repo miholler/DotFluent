@@ -1,17 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionToOptionAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -97,6 +91,4 @@ public sealed class OptionToOptionAsyncExtensionsTest
             .Awaiting(x => x.ToOptionAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

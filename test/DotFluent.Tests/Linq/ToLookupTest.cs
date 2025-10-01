@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableToLookupTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -119,6 +114,4 @@ public sealed class EnumerableToLookupTest
         };
         result.ShouldBe(source.GroupBy(x => x.Id));
     }
-
-    #endregion
 }

@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionContainsAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -68,15 +63,11 @@ public sealed class OptionContainsAsyncExtensionsTest
             .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultContainsAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -167,6 +158,4 @@ public sealed class ResultContainsAsyncExtensionsTest
             .Awaiting(x => x.ContainsAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

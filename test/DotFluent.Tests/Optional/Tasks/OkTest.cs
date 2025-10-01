@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class ResultOkTest
 {
-    #region Methods
-
     [Test]
     [TestCase(0)]
     [TestCase(1)]
@@ -26,6 +23,4 @@ public sealed class ResultOkTest
                 break;
         }
     }
-
-    #endregion
 }

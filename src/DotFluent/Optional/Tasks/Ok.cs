@@ -2,8 +2,6 @@
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Creates a task returning a result value that is an 'Ok' value.
     /// </summary>
@@ -28,6 +26,4 @@ public static partial class ResultTask
     /// </returns>
     public static Task<Result<TValue, TError>> Ok<TValue, TError>(TValue value)
         => Task.FromResult(Result.Ok<TValue, TError>(value));
-
-    #endregion
 }

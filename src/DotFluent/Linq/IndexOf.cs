@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the zero-based index of a specified element in a sequence by
     /// using the default equality comparer.
@@ -66,6 +64,4 @@ public static partial class Sequence
         }
         return -1;
     }
-
-    #endregion
 }

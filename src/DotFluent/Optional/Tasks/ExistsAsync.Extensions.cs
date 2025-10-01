@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether an option contains a value that satisfies a condition.
     /// </summary>
@@ -43,14 +41,10 @@ public static partial class OptionTaskExtensions
 
         return source.Then(x => x.ExistsAsync(predicate, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }
 
 public static partial class ResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether a result contains a value that satisfies a condition.
     /// </summary>
@@ -128,6 +122,4 @@ public static partial class ResultTaskExtensions
 
         return source.Then(x => x.ExistsAsync(predicate, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }

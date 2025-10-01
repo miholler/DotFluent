@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the minimum value in a generic sequence
     /// by using a specified function to compare values.
@@ -14,6 +12,4 @@ public static partial class Sequence
     /// <returns>The minimum value in the sequence.</returns>
     public static TSource? Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         => source.Min(Comparer<TSource>.Create(comparison));
-
-    #endregion
 }

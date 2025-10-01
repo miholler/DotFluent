@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System.Collections.Generic;
 
 namespace DotFluent.Optional;
 
 [TestFixture]
 public sealed class OptionFlattenTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(1, new[] { 1 })]
@@ -17,15 +14,11 @@ public sealed class OptionFlattenTest
             .Some(source.ToOption())
             .Flatten()
             .ShouldBe(expectedResult);
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultFlattenTest
 {
-    #region Methods
-
     [Test]
     [TestCase(1, new[] { 1 }, 0)]
     [TestCase(1, new[] { 1 }, 1)]
@@ -47,6 +40,4 @@ public sealed class ResultFlattenTest
 
         currentResult.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

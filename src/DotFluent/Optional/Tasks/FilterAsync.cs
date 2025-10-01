@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously removes the value from an option if it does not satisfy a condition.
     /// </summary>
@@ -30,6 +28,4 @@ public static partial class OptionTask
                     .Then(isMatch => isMatch ? source : Option.None<TSource>(), cancellationToken),
                 None<TSource>);
     }
-
-    #endregion
 }

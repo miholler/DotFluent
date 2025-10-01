@@ -2,8 +2,6 @@
 
 public static partial class UnsafeOption
 {
-    #region Methods
-
     /// <summary>
     /// Retrieves the value of an option, or the type parameter's default value.
     /// </summary>
@@ -37,14 +35,10 @@ public static partial class UnsafeOption
 
         return source.Match(x => x, defaultFactory);
     }
-
-    #endregion
 }
 
 public static partial class UnsafeResult
 {
-    #region Methods
-
     /// <summary>
     /// Retrieves the success value of a result, or the type parameter's default value.
     /// </summary>
@@ -115,6 +109,4 @@ public static partial class UnsafeResult
 
         return source.Match(x => x, _ => defaultFactory());
     }
-
-    #endregion
 }

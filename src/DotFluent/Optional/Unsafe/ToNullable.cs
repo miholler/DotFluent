@@ -2,8 +2,6 @@
 
 public static partial class UnsafeOption
 {
-    #region Methods
-
     /// <summary>
     /// Creates a nullable object from an option.
     /// </summary>
@@ -12,14 +10,10 @@ public static partial class UnsafeOption
     /// <returns>A <see cref="Nullable{TSource}"/> representing the value of source.</returns>
     public static TSource? ToNullable<TSource>(this Option<TSource> source) where TSource : struct
         => source.Match(x => new TSource?(x), () => default);
-
-    #endregion
 }
 
 public static partial class UnsafeResult
 {
-    #region Methods
-
     /// <summary>
     /// Creates a nullable object from a result.
     /// </summary>
@@ -38,6 +32,4 @@ public static partial class UnsafeResult
     /// <returns>A <see cref="Nullable{TValue}"/> representing the success value of source.</returns>
     public static TValue? ToNullable<TValue, TError>(this Result<TValue, TError> source) where TValue : struct
         => source.Match(x => new TValue?(x), _ => default);
-
-    #endregion
 }

@@ -1,18 +1,12 @@
 ﻿using DotFluent.Tasks;
 using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionFlatMapAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -72,15 +66,11 @@ public sealed class OptionFlatMapAsyncExtensionsTest
             .Awaiting(x => x.FlatMapAsync(_ => OptionTask.None<int>(), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultFlatMapAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -180,6 +170,4 @@ public sealed class ResultFlatMapAsyncExtensionsTest
             .Awaiting(x => x.FlatMapAsync(ResultTask.Error<int, int>, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

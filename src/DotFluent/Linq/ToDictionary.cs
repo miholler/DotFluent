@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified
     /// key selector function and a key compare function.
@@ -183,6 +181,4 @@ public static partial class Sequence
     }
 
 #endif
-
-    #endregion
 }

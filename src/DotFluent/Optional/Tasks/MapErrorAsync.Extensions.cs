@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class ResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously projects the error value of a result into a new form using a specified function,
     /// or returns an 'Ok' result based on whether the result is an 'Ok' or an 'Error' value.
@@ -93,6 +91,4 @@ public static partial class ResultTaskExtensions
 
         return source.Then(x => x.MapErrorAsync(mapper, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }

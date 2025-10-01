@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Sorts the elements of a sequence in ascending order 
     /// by using a specified function to compare values.
@@ -38,6 +36,4 @@ public static partial class Sequence
         => source.OrderBy(x => x, comparer);
 
 #endif
-
-    #endregion
 }

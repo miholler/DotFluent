@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class ObjectIsNotTest
 {
-    #region Methods
-
     [Test]
     public void PredicateNullThrowsException()
     {
@@ -28,6 +25,4 @@ public sealed class ObjectIsNotTest
         => source
             .IsNot(x => x.Length > 0)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

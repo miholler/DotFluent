@@ -2,8 +2,6 @@
 
 public static partial class CollectionExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Adds a key/value pair to a dictionary if the key does not already exist,
     /// or returns the existing value if the key exists.
@@ -47,6 +45,4 @@ public static partial class CollectionExtensions
         }
         return value;
     }
-
-    #endregion
 }

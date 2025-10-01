@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Retrieves the value of a nullable object, or a default value 
     /// created by a specified function.
@@ -18,6 +16,4 @@ public static partial class NullableExtensions
 
         return source ?? defaultFactory();
     }
-
-    #endregion
 }

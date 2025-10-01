@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. The default
     /// equality comparer is used to compare keys.
@@ -110,6 +108,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing an inner join on two sequences.</returns>
     public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
         => outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

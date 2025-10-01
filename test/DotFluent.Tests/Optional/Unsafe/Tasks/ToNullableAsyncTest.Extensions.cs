@@ -1,17 +1,12 @@
 ﻿using DotFluent.Optional.Tasks;
 using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Unsafe.Tasks;
 
 [TestFixture]
 public sealed class OptionToNullableAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -45,15 +40,11 @@ public sealed class OptionToNullableAsyncExtensionsTest
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultToNullableAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -103,6 +94,4 @@ public sealed class ResultToNullableAsyncExtensionsTest
             .Awaiting(x => x.ToNullableAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

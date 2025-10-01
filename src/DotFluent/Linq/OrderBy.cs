@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Sorts the elements of a sequence in ascending order 
     /// by using a specified function to compare keys.
@@ -16,6 +14,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted according to a key.</returns>
     public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Comparison<TKey> comparison)
         => source.OrderBy(keySelector, Comparer<TKey>.Create(comparison));
-
-    #endregion
 }

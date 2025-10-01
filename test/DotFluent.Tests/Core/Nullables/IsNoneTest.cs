@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class NullableIsNoneTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, true)]
     [TestCase(1, false)]
@@ -15,6 +13,4 @@ public sealed class NullableIsNoneTest
         => source
             .IsNone()
             .ShouldBe(expectedResult);
-
-    #endregion
 }

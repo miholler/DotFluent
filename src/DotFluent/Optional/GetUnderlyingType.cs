@@ -2,8 +2,6 @@
 
 public static partial class Option
 {
-    #region Methods
-
     /// <summary>
     /// Returns the underlying type argument of the specified option type.
     /// </summary>
@@ -24,14 +22,10 @@ public static partial class Option
                 .FirstOrDefault()
              : null;
     }
-
-    #endregion
 }
 
 public static partial class Result
 {
-    #region Methods
-
     /// <summary>
     /// Returns the underlying type argument of the specified result type.
     /// </summary>
@@ -52,6 +46,4 @@ public static partial class Result
                 .FirstOrDefault()
              : null;
     }
-
-    #endregion
 }

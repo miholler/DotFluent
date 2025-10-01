@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionMatchAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -310,15 +305,11 @@ public sealed class OptionMatchAsyncExtensionsTest
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), () => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultMatchAsyncExtensionsTest
 {
-    #region Methods
-
     [Test]
     public async Task SourceNullThrowsException()
     {
@@ -707,6 +698,4 @@ public sealed class ResultMatchAsyncExtensionsTest
             .Awaiting(x => x.MatchAsync(_ => Task.FromResult(0), _ => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

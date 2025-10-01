@@ -7,8 +7,6 @@ namespace DotFluent.Optional.Primitives;
 [TestFixture]
 public sealed class ErrorTest
 {
-    #region Methods
-
     [Test]
     public void OP_Implicit()
     {
@@ -16,6 +14,4 @@ public sealed class ErrorTest
         HttpStatusCode statusCode = error;
         statusCode.ShouldBe(HttpStatusCode.InternalServerError);
     }
-
-    #endregion
 }

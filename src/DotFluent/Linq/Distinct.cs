@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns distinct elements from a sequence by using a specified compare function to compare values.
     /// </summary>
@@ -26,6 +24,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
     public static IEnumerable<TSource> Distinct<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
         => source.Distinct(EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace DotFluent.Linq;
@@ -9,8 +7,6 @@ namespace DotFluent.Linq;
 [TestFixture]
 public sealed class EnumerableInsertRangeTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -38,6 +34,4 @@ public sealed class EnumerableInsertRangeTest
         => first
             .InsertRange(index, second)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

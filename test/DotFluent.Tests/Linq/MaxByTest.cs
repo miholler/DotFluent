@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableMaxByTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -71,6 +66,4 @@ public sealed class EnumerableMaxByTest
         => source
             .MaxBy(x => x, Comparer<int>.Default.Compare)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

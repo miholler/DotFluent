@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableLeftJoinTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -209,6 +204,4 @@ public sealed class EnumerableLeftJoinTest
             (b, b),
             (c, default)]);
     }
-
-    #endregion
 }

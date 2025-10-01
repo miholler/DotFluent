@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously projects the value of an option into a new form using a specified function,
     /// or returns an empty option based on whether the option is a 'Some' or a 'None' value.
@@ -32,14 +30,10 @@ public static partial class OptionTask
                     .Then(Option.Some, cancellationToken),
                 None<TResult>);
     }
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously projects the success value of a result into a new form using a specified function,
     /// or returns an 'Error' result based on whether the result is an 'Ok' or an 'Error' value.
@@ -94,6 +88,4 @@ public static partial class ResultTask
                     .Then(Result.Ok<TResult, TError>, cancellationToken),
                 Error<TResult, TError>);
     }
-
-    #endregion
 }

@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableDistinctByTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -80,6 +75,4 @@ public sealed class EnumerableDistinctByTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

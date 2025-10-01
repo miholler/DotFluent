@@ -6,8 +6,6 @@ namespace DotFluent;
 
 public static partial class StringExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Throws an exception if a string is null or an empty string; otherwise, returns the string.
     /// </summary>
@@ -28,6 +26,4 @@ public static partial class StringExtensions
 #endif
         return source;
     }
-
-    #endregion
 }

@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Serialization;
 
 namespace DotFluent.Optional;
@@ -11,8 +8,6 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class OptionTest
 {
-    #region Methods
-
     [Test]
     public void SomeValueReturnsValue()
         => Option<int>
@@ -570,6 +565,4 @@ public sealed class OptionTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

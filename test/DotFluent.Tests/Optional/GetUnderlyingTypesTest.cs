@@ -1,15 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 
 namespace DotFluent.Optional;
 
 [TestFixture]
 public sealed class ResultGetUnderlyingTypesTest
 {
-    #region Methods
-
     [Test]
     public void ResultTypeNullThrowsException()
     {
@@ -32,6 +28,4 @@ public sealed class ResultGetUnderlyingTypesTest
         => Result
             .GetUnderlyingTypes(source)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Creates a lookup from a sequence according to a specified 
     /// key selector function and a key compare function.
@@ -65,6 +63,4 @@ public static partial class Sequence
     /// <returns>An <see cref="ILookup{TKey, TElement}"/> that contains values of type TElement selected from the input sequence.</returns>
     public static ILookup<TKey, TElement> ToLookup<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
         => source.ToLookup(keySelector, elementSelector, EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

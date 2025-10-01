@@ -1,15 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class DictionaryTryRemoveTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -45,6 +41,4 @@ public sealed class DictionaryTryRemoveTest
 
         (result, removedValue).ShouldBe((expectedResult, expectedValue));
     }
-
-    #endregion
 }

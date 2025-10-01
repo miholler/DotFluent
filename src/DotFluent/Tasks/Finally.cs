@@ -2,8 +2,6 @@
 
 public static partial class TaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Creates a continuation task that executes asynchronously even if any of the
     /// previous tasks in the chain failes or is canceled.
@@ -12,47 +10,50 @@ public static partial class TaskExtensions
     /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
     /// <returns>A continuation <see cref="Task"/>.</returns>
     public static Task Finally(this Task source, Action action)
-        => source.Finally(action, TaskScheduler.Current);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously even if any of the
-    /// previous tasks in the chain failes or is canceled.
-    /// The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <returns>A continuation <see cref="Task"/>.</returns>
-    public static Task Finally(this Task source, Action action, TaskScheduler? scheduler)
     {
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource();
-        source.ContinueWith(x =>
+        static async Task ContinueWithAsync(Task source, Action action)
         {
-            var exception = default(Exception);
             try
             {
-                action();
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
+                await source.ConfigureAwait(false);
             }
             finally
             {
-                if (exception.IsNotNull())
-                    tcs.TrySetException(exception);
-                else if (x.IsFaulted)
-                    tcs.TrySetException(x.Exception!.InnerExceptions);
-                else if (x.IsCanceled)
-                    tcs.TrySetCanceled();
-                else
-                    tcs.TrySetResult();
+                action();
             }
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task;
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously even if any of the
+    /// previous tasks in the chain failes or is canceled.
+    /// </summary>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke even if any of the previous tasks failes or is canceled.</param>
+    /// <returns>A continuation <see cref="Task"/>.</returns>
+    public static Task Finally(this Task source, Func<Task> selector)
+    {
+        source.ThrowIfNull();
+        selector.ThrowIfNull();
+
+        static async Task ContinueWithAsync(Task source, Func<Task> selector)
+        {
+            try
+            {
+                await source.ConfigureAwait(false);
+            }
+            finally
+            {
+                await selector()
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
     }
 
     /// <summary>
@@ -64,49 +65,165 @@ public static partial class TaskExtensions
     /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
     /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
     public static Task<TSource> Finally<TSource>(this Task<TSource> source, Action action)
-        => source.Finally(action, TaskScheduler.Current);
-
-    /// <summary>
-    /// Creates a continuation task that executes asynchronously even if any of the
-    /// previous tasks in the chain failes or is canceled.
-    /// The continuation task uses a specified scheduler.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
-    /// <param name="source">The task to create the continuation task for.</param>
-    /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
-    /// <param name="scheduler">The task scheduler to associate with the continuation task and to use for its execution.</param>
-    /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
-    public static Task<TSource> Finally<TSource>(this Task<TSource> source, Action action, TaskScheduler? scheduler)
     {
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        var tcs = new TaskCompletionSource<TSource>();
-        source.ContinueWith(x =>
+        static async Task<TSource> ContinueWithAsync(Task<TSource> source, Action action)
         {
-            var exception = default(Exception);
             try
             {
-                action();
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
+                return await source.ConfigureAwait(false);
             }
             finally
             {
-                if (exception.IsNotNull())
-                    tcs.TrySetException(exception);
-                else if (x.IsFaulted)
-                    tcs.TrySetException(x.Exception!.InnerExceptions);
-                else if (x.IsCanceled)
-                    tcs.TrySetCanceled();
-                else
-                    tcs.TrySetResult(x.Result);
+                action();
             }
-        }, scheduler ?? TaskScheduler.Current);
-        return tcs.Task;
+        }
+        return ContinueWithAsync(source, action);
     }
 
-    #endregion
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously even if any of the
+    /// previous tasks in the chain failes or is canceled.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke even if any of the previous tasks failes or is canceled.</param>
+    /// <returns>A continuation <see cref="Task{TSource}"/>.</returns>
+    public static Task<TSource> Finally<TSource>(this Task<TSource> source, Func<Task> selector)
+    {
+        source.ThrowIfNull();
+        selector.ThrowIfNull();
+
+        static async Task<TSource> ContinueWithAsync(Task<TSource> source, Func<Task> selector)
+        {
+            try
+            {
+                return await source.ConfigureAwait(false);
+            }
+            finally
+            {
+                await selector()
+                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
+    }
+}
+
+public static partial class ValueTaskExtensions
+{
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously even if any of the
+    /// previous tasks in the chain failes or is canceled.
+    /// </summary>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
+    /// <returns>A continuation <see cref="ValueTask"/>.</returns>
+    public static ValueTask Finally(this in ValueTask source, Action action)
+    {
+        action.ThrowIfNull();
+
+        static async ValueTask ContinueWithAsync(ValueTask source, Action action)
+        {
+            try
+            {
+                if (!source.IsCompletedSuccessfully)
+                    await source.ConfigureAwait(false);
+            }
+            finally
+            {
+                action();
+            }
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously even if any of the
+    /// previous tasks in the chain failes or is canceled.
+    /// </summary>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke even if any of the previous tasks failes or is canceled.</param>
+    /// <returns>A continuation <see cref="ValueTask"/>.</returns>
+    public static ValueTask Finally(this in ValueTask source, Func<ValueTask> selector)
+    {
+        selector.ThrowIfNull();
+
+        static async ValueTask ContinueWithAsync(ValueTask source, Func<ValueTask> selector)
+        {
+            try
+            {
+                if (!source.IsCompletedSuccessfully)
+                    await source.ConfigureAwait(false);
+            }
+            finally
+            {
+                var handler = selector();
+                if (!handler.IsCompletedSuccessfully)
+                    await handler.ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously even if any of the
+    /// previous tasks in the chain failes or is canceled.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="action">An action to perform even if any of the previous tasks failes or is canceled.</param>
+    /// <returns>A continuation <see cref="ValueTask{TSource}"/>.</returns>
+    public static ValueTask<TSource> Finally<TSource>(this in ValueTask<TSource> source, Action action)
+    {
+        action.ThrowIfNull();
+
+        static async ValueTask<TSource> ContinueWithAsync(ValueTask<TSource> source, Action action)
+        {
+            try
+            {
+                return source.IsCompletedSuccessfully
+                    ? source.Result
+                    : await source.ConfigureAwait(false);
+            }
+            finally
+            {
+                action();
+            }
+        }
+        return ContinueWithAsync(source, action);
+    }
+
+    /// <summary>
+    /// Creates a continuation task that executes asynchronously even if any of the
+    /// previous tasks in the chain failes or is canceled.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the result produced by the source task.</typeparam>
+    /// <param name="source">The task to create the continuation task for.</param>
+    /// <param name="selector">A function to invoke even if any of the previous tasks failes or is canceled.</param>
+    /// <returns>A continuation <see cref="ValueTask{TSource}"/>.</returns>
+    public static ValueTask<TSource> Finally<TSource>(this in ValueTask<TSource> source, Func<ValueTask> selector)
+    {
+        selector.ThrowIfNull();
+
+        static async ValueTask<TSource> ContinueWithAsync(ValueTask<TSource> source, Func<ValueTask> selector)
+        {
+            try
+            {
+                return source.IsCompletedSuccessfully
+                    ? source.Result
+                    : await source.ConfigureAwait(false);
+            }
+            finally
+            {
+                var handler = selector();
+                if (!handler.IsCompletedSuccessfully)
+                    await handler.ConfigureAwait(false);
+            }
+        }
+        return ContinueWithAsync(source, selector);
+    }
 }

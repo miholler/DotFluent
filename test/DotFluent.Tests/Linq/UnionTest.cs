@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableUnionTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -68,6 +63,4 @@ public sealed class EnumerableUnionTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

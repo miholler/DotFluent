@@ -4,8 +4,6 @@ namespace DotFluent;
 
 public static partial class StringExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Returns a new string in which all occurrences of each specified character
     /// in a string are replaced with another specified character.
@@ -51,6 +49,4 @@ public static partial class StringExtensions
 
         return builder.ToString();
     }
-
-    #endregion
 }

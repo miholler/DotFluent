@@ -1,17 +1,12 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
 public sealed class EnumerableLastOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -78,6 +73,4 @@ public sealed class EnumerableLastOrDefaultTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

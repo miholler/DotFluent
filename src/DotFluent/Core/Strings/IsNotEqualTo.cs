@@ -2,8 +2,6 @@
 
 public static partial class StringExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether two strings are not considered equal.
     /// </summary>
@@ -22,6 +20,4 @@ public static partial class StringExtensions
     /// <returns>true if the strings are not considered equal; otherwise, false.</returns>
     public static bool IsNotEqualTo(this string? source, string? value, StringComparison comparison)
         => !string.Equals(source, value, comparison);
-
-    #endregion
 }

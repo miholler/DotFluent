@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the only element of a sequence, or a default value created by a specified function
     /// if the sequence is empty; this method throws an exception if there is more than one element 
@@ -40,7 +38,7 @@ public static partial class Sequence
                 }
                 break;
         }
-        throw new InvalidOperationException(Errors.MoreThanOneElement);
+        throw new InvalidOperationException(Errors.SequenceMoreThanOneElement);
     }
 
     /// <summary>
@@ -70,13 +68,11 @@ public static partial class Sequence
             {
                 while (enumerator.MoveNext())
                     if (predicate(enumerator.Current))
-                        throw new InvalidOperationException(Errors.MoreThanOneMatch);
+                        throw new InvalidOperationException(Errors.SequenceMoreThanOneMatch);
 
                 return result;
             }
         }
         return defaultFactory();
     }
-
-    #endregion
 }

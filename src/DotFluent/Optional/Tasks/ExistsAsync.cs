@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether an option contains a value that satisfies a condition.
     /// </summary>
@@ -25,14 +23,10 @@ public static partial class OptionTask
                 predicate(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null.")),
                 () => Task.FromResult(false));
     }
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether a result contains a value that satisfies a condition.
     /// </summary>
@@ -77,6 +71,4 @@ public static partial class ResultTask
                 predicate(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null.")),
                 _ => Task.FromResult(false));
     }
-
-    #endregion
 }

@@ -2,8 +2,6 @@
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Creates a task returning a result value that is an 'Error' value.
     /// </summary>
@@ -28,6 +26,4 @@ public static partial class ResultTask
     /// </returns>
     public static Task<Result<TValue, TError>> Error<TValue, TError>(TError error)
         => Task.FromResult(Result.Error<TValue, TError>(error));
-
-    #endregion
 }

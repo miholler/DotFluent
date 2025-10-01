@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether an option contains a value created by a specified function.
     /// </summary>
@@ -27,14 +25,10 @@ public static partial class OptionTask
                 .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
                 .Then(source.Contains, cancellationToken);
     }
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether a result contains a value created by a specified function.
     /// </summary>
@@ -79,6 +73,4 @@ public static partial class ResultTask
                 .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
                 .Then(source.Contains, cancellationToken);
     }
-
-    #endregion
 }

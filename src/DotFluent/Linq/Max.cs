@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the maximum value in a generic sequence
     /// by using a specified function to compare values.
@@ -14,6 +12,4 @@ public static partial class Sequence
     /// <returns>The maximum value in the sequence.</returns>
     public static TSource? Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         => source.Max(Comparer<TSource>.Create(comparison));
-
-    #endregion
 }

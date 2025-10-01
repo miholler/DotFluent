@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Produces the set union of two sequences according to a specified key selector function
     /// and using a specified compare function to compare keys.
@@ -34,6 +32,4 @@ public static partial class Sequence
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements from both input sequences, excluding duplicates.</returns>
     public static IEnumerable<TSource> UnionBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
         => first.UnionBy(second, keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
-
-    #endregion
 }

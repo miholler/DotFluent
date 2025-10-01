@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the elements of a sequence or a singleton collection containing
     /// a default value created by a specified function.
@@ -37,6 +35,4 @@ public static partial class Sequence
         }
         while (enumerator.MoveNext());
     }
-
-    #endregion
 }

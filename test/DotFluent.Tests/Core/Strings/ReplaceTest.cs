@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class StringReplaceTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -65,6 +62,4 @@ public sealed class StringReplaceTest
         => source
             .Replace(oldValues, newValue)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

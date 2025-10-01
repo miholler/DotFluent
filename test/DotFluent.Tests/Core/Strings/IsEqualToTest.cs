@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class StringIsEqualToTest
 {
-    #region Methods
-
     [Test]
     [TestCase("ABC", "ABC", true)]
     [TestCase("ABC", "abc", false)]
@@ -61,6 +58,4 @@ public sealed class StringIsEqualToTest
         => source
             .IsEqualTo(value, comparison)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

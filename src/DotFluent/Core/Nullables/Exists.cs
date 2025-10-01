@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether a nullable object contains a value that
     /// satisfies a condition.
@@ -18,6 +16,4 @@ public static partial class NullableExtensions
 
         return source.IsSome() && predicate(source.Value);
     }
-
-    #endregion
 }

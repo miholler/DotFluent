@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class NullableExistsTest
 {
-    #region Methods
-
     [Test]
     public void PredicateNullThrowsException()
     {
@@ -28,6 +25,4 @@ public sealed class NullableExistsTest
         => source
             .Exists(x => x == value)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

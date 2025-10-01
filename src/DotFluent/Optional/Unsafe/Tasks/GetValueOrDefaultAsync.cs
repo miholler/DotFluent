@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Unsafe.Tasks;
 
 public static partial class UnsafeOptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously retrieves the value of an option, or a default value created by a
     /// specified function.
@@ -24,14 +22,10 @@ public static partial class UnsafeOptionTask
 
         return source.MatchAsync(Task.FromResult, defaultFactory, cancellationToken);
     }
-
-    #endregion
 }
 
 public static partial class UnsafeResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously retrieves the success value of a result, or a default value created by a
     /// specified function.
@@ -70,6 +64,4 @@ public static partial class UnsafeResultTask
 
         return source.MatchAsync(Task.FromResult, _ => defaultFactory(), cancellationToken);
     }
-
-    #endregion
 }

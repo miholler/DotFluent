@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Unsafe.Tasks;
 
 [TestFixture]
 public sealed class OptionGetValueOrDefaultAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task DefaultFactoryNullThrowsException()
     {
@@ -45,15 +40,11 @@ public sealed class OptionGetValueOrDefaultAsyncTest
             .Awaiting(x => x.GetValueOrDefaultAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultGetValueOrDefaultAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task DefaultFactoryNullThrowsException()
     {
@@ -104,6 +95,4 @@ public sealed class ResultGetValueOrDefaultAsyncTest
             .Awaiting(x => x.GetValueOrDefaultAsync(() => Task.FromResult(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

@@ -2,8 +2,6 @@
 
 public static partial class CollectionExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Attempts to update an existing value for the specified key by comparing the existing
     /// value with a specified value, and if they are equal, updates the key with a third value.
@@ -29,6 +27,4 @@ public static partial class CollectionExtensions
         }
         return false;
     }
-
-    #endregion
 }

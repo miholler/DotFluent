@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Computes the average of a sequence of int values,
     /// or returns a default value if the sequence contains no elements.
@@ -1050,6 +1048,4 @@ public static partial class Sequence
             .Select(selector)
             .AverageOrDefault(defaultFactory);
     }
-
-    #endregion
 }

@@ -1,15 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionSecureAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task SecureAsync()
     {
@@ -31,6 +27,4 @@ public sealed class OptionSecureAsyncTest
             .Awaiting(x => x.SecureAsync(cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
