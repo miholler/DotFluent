@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class ObjectIsNotNullTest
 {
-    #region Methods
-
     [Test]
     [TestCase(1, true)]
     [TestCase("", true)]
@@ -16,6 +14,4 @@ public sealed class ObjectIsNotNullTest
         => source
             .IsNotNull()
             .ShouldBe(expectedResult);
-
-    #endregion
 }

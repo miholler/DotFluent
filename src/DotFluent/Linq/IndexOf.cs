@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the zero-based index of a specified element in a sequence by
     /// using the default equality comparer.
@@ -18,7 +16,11 @@ public static partial class Sequence
     /// an element that has the specified value; otherwise, minus 1.
     /// </returns>
     public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value)
-        => source.IndexOf(value, EqualityComparer<TSource>.Default);
+        => source switch
+        {
+            IList<TSource> list => list.IndexOf(value),
+            _ => source.IndexOf(value, comparer: null)
+        };
 
     /// <summary>
     /// Returns the zero-based index of a specified element in a sequence by
@@ -33,7 +35,7 @@ public static partial class Sequence
     /// an element that has the specified value; otherwise, minus 1.
     /// </returns>
     public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource value, EqualityComparison<TSource> comparison)
-        => source.IndexOf(value, ComparisonEqualityComparer<TSource>.Create(comparison));
+        => source.IndexOf(value, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Returns the zero-based index of a specified element in a sequence by
@@ -58,10 +60,8 @@ public static partial class Sequence
             if (comparer.Equals(item, value))
                 return index;
 
-            checked { index++; };
+            checked { index++; }
         }
         return -1;
     }
-
-    #endregion
 }

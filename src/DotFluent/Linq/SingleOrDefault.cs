@@ -1,9 +1,9 @@
-﻿namespace DotFluent.Linq;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the only element of a sequence, or a default value created by a specified function
     /// if the sequence is empty; this method throws an exception if there is more than one element 
@@ -12,7 +12,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence to return the single element of.</param>
     /// <param name="defaultFactory">A function to create a default value.</param>
-    /// <returns>The default value created by the specified function if the source sequence is empty; otherwise, the single element of the source sequence.</returns>
+    /// <returns>The single element of the input sequence; otherwise, the default value created by the specified function if the source sequence is empty.</returns>
     public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource> defaultFactory)
     {
         source.ThrowIfNull();
@@ -32,17 +32,17 @@ public static partial class Sequence
                     if (!enumerator.MoveNext())
                         return defaultFactory();
 
-                    var item = enumerator.Current;
+                    var result = enumerator.Current;
                     if (!enumerator.MoveNext())
-                        return item;
+                        return result;
                 }
                 break;
         }
-        throw new InvalidOperationException("Sequence contains more than one element.");
+        throw new InvalidOperationException(Errors.SequenceMoreThanOneElement);
     }
 
     /// <summary>
-    /// Returns the only element of a sequence that satisfies a specified condition or
+    /// Returns the only element of a sequence that satisfies a specified condition, or
     /// a default value created by a specified function if no such element exists; this method 
     /// throws an exception if more than one element satisfies the condition.
     /// </summary>
@@ -60,49 +60,19 @@ public static partial class Sequence
         predicate.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        var count = 0L;
-        var resultFactory = defaultFactory;
-        foreach (var item in source)
+        using var enumerator = source.GetEnumerator();
+        while (enumerator.MoveNext())
         {
-            if (predicate(item))
+            var result = enumerator.Current;
+            if (predicate(result))
             {
-                resultFactory = () => item;
-                checked { count++; };
+                while (enumerator.MoveNext())
+                    if (predicate(enumerator.Current))
+                        throw new InvalidOperationException(Errors.SequenceMoreThanOneMatch);
+
+                return result;
             }
         }
-        return count <= 1
-            ? resultFactory()
-            : throw new InvalidOperationException("Sequence contains more than one matching element.");
+        return defaultFactory();
     }
-
-#if NETSTANDARD
-
-    /// <summary>
-    /// Returns the only element of a sequence, or a specified default value if the sequence is
-    /// empty; this method throws an exception if there is more than one element in the
-    /// sequence.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The sequence to return the single element of.</param>
-    /// <param name="defaultValue">The value to return if the source sequence is empty.</param>
-    /// <returns>The specified default value if the source sequence is empty; otherwise, the single element of the source sequence.</returns>
-    public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, TSource defaultValue)
-        => source.SingleOrDefault(() => defaultValue);
-
-    /// <summary>
-    /// Returns the only element of a sequence that satisfies a specified condition or
-    /// a specified default value if no such element exists; this method throws an exception 
-    /// if more than one element satisfies the condition.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The sequence to return a single element from.</param>
-    /// <param name="predicate">A function to test an element for a condition.</param>
-    /// <param name="defaultValue">The value to return if the source sequence is empty or if no element satisfies the condition.</param>
-    /// <returns>The single element of the source sequence that satisfies the condition; otherwise, the specified default value if no such element is found.</returns>
-    public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, TSource defaultValue)
-        => source.SingleOrDefault(predicate, () => defaultValue);
-
-#endif
-
-    #endregion
 }

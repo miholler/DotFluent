@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ToLookupTest
+public sealed class EnumerableToLookupTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -85,17 +80,17 @@ public sealed class ToLookupTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var source = Enumerable.Empty<int>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         source
             .Invoking(x => x.ToLookup(y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         source
             .Invoking(x => x.ToLookup(y => y, y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]
@@ -119,6 +114,4 @@ public sealed class ToLookupTest
         };
         result.ShouldBe(source.GroupBy(x => x.Id));
     }
-
-    #endregion
 }

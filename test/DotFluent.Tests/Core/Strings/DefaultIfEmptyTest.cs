@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class StringDefaultIfEmptyTest
 {
-    #region Methods
-
     [Test]
     public void DefaultFactoryNullThrowsException()
     {
@@ -39,6 +36,4 @@ public sealed class StringDefaultIfEmptyTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

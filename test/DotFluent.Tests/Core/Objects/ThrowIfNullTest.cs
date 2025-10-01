@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class ObjectThrowIfNullTest
 {
-    #region Methods
-
     [Test]
     public void ObjectNullThrowsException()
     {
@@ -37,6 +34,4 @@ public sealed class ObjectThrowIfNullTest
 
         result.ShouldBe(source);
     }
-
-    #endregion
 }

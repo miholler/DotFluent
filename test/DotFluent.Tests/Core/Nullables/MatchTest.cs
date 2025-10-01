@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent;
 
 [TestFixture]
 public sealed class NullableMatchTest
 {
-    #region Methods
-
     [Test]
     public void NoneNullThrowsException()
     {
@@ -81,6 +78,4 @@ public sealed class NullableMatchTest
         }
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

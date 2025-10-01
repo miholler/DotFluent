@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Produces the set difference of two sequences by using a specified compare function to compare values.
     /// </summary>
@@ -15,7 +13,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
     public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison)
-        => first.Except(second, ComparisonEqualityComparer<TSource>.Create(comparison));
+        => first.Except(second, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Produces the set difference of two sequences by using specified compare functions to compare values.
@@ -26,8 +24,6 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a value.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
-    public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, Func<TSource, int> hashCodeSelector)
-        => first.Except(second, ComparisonEqualityComparer<TSource>.Create(comparison, hashCodeSelector));
-
-    #endregion
+    public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
+        => first.Except(second, EqualityComparer.Create(comparison, hashCodeSelector));
 }

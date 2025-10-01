@@ -1,13 +1,7 @@
 ﻿namespace DotFluent.Optional.Unsafe;
 
-/// <summary>
-/// Provides a set of static methods for working 
-/// with <see cref="Option{T}"/> instances.
-/// </summary>
 public static partial class UnsafeOption
 {
-    #region Methods
-
     /// <summary>
     /// Retrieves the value of an option, or the type parameter's default value.
     /// </summary>
@@ -41,18 +35,10 @@ public static partial class UnsafeOption
 
         return source.Match(x => x, defaultFactory);
     }
-
-    #endregion
 }
 
-/// <summary>
-/// Provides a set of static methods for working with
-/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> instances.
-/// </summary>
 public static partial class UnsafeResult
 {
-    #region Methods
-
     /// <summary>
     /// Retrieves the success value of a result, or the type parameter's default value.
     /// </summary>
@@ -123,6 +109,4 @@ public static partial class UnsafeResult
 
         return source.Match(x => x, _ => defaultFactory());
     }
-
-    #endregion
 }

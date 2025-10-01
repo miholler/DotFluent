@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionContainsAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task ValueFactoryNullThrowsException()
     {
@@ -71,15 +66,11 @@ public sealed class OptionContainsAsyncTest
             }, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultContainsAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task ValueFactoryNullThrowsException()
     {
@@ -170,6 +161,4 @@ public sealed class ResultContainsAsyncTest
                 }, cts.Token))
                 .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

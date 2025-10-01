@@ -1,16 +1,12 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class InsertTest
+public sealed class EnumerableInsertTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -38,6 +34,4 @@ public sealed class InsertTest
         => source
             .Insert(index, item)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

@@ -1,17 +1,12 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class PipeTest
+public sealed class EnumerablePipeTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -59,6 +54,4 @@ public sealed class PipeTest
             .Select(x => x.ToString())
             .ShouldBe(["#A", "#B", "#C"]);
     }
-
-    #endregion
 }

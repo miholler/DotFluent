@@ -1,30 +1,19 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class SingleOrDefaultTest
+public sealed class EnumerableSingleOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
         IEnumerable<int> source = null;
 
         source
-            .Invoking(x => x.SingleOrDefault(0))
-            .ShouldThrow<ArgumentNullException>();
-        source
             .Invoking(x => x.SingleOrDefault(() => 0))
-            .ShouldThrow<ArgumentNullException>();
-        source
-            .Invoking(x => x.SingleOrDefault(y => y == 0, 0))
             .ShouldThrow<ArgumentNullException>();
         source
             .Invoking(x => x.SingleOrDefault(y => y == 0, () => 0))
@@ -52,9 +41,6 @@ public sealed class SingleOrDefaultTest
         Func<int, bool> predicate = null;
 
         source
-            .Invoking(x => x.SingleOrDefault(predicate, 0))
-            .ShouldThrow<ArgumentNullException>();
-        source
             .Invoking(x => x.SingleOrDefault(predicate, () => 0))
             .ShouldThrow<ArgumentNullException>();
     }
@@ -75,16 +61,10 @@ public sealed class SingleOrDefaultTest
         };
 
         source
-            .Invoking(x => x.SingleOrDefault(0))
-            .ShouldThrow<InvalidOperationException>();
-        source
             .Invoking(x => x.SingleOrDefault(() => 0))
             .ShouldThrow<InvalidOperationException>();
         source
-            .Invoking(x => x.SingleOrDefault(y => y % 2 == 0, 0))
-            .ShouldThrow<InvalidOperationException>();
-        source
-            .Invoking(x => x.SingleOrDefault(x => x % 2 == 0, () => 0))
+            .Invoking(x => x.SingleOrDefault(y => y % 2 == 0, () => 0))
             .ShouldThrow<InvalidOperationException>();
     }
 
@@ -93,22 +73,14 @@ public sealed class SingleOrDefaultTest
     [TestCase(new int[0], 0, 1, 0)]
     [TestCase(new int[0], 0, 0, 1)]
     [TestCase(new int[0], 0, 1, 1)]
-    [TestCase(new int[0], 0, 0, 2)]
-    [TestCase(new int[0], 0, 1, 2)]
-    [TestCase(new int[0], 0, 0, 3)]
-    [TestCase(new int[0], 0, 1, 3)]
     [TestCase(new[] { 1 }, 1, 0, 0)]
     [TestCase(new[] { 1 }, 1, 1, 0)]
-    [TestCase(new[] { 1 }, 1, 0, 1)]
-    [TestCase(new[] { 1 }, 1, 1, 1)]
-    [TestCase(new[] { 1, 3, 5 }, 0, 0, 2)]
-    [TestCase(new[] { 1, 3, 5 }, 0, 0, 2)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 0, 2)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 2)]
-    [TestCase(new[] { 1, 3, 5 }, 0, 0, 3)]
-    [TestCase(new[] { 1, 3, 5 }, 0, 0, 3)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 0, 3)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 3)]
+    [TestCase(new[] { 1 }, 0, 0, 1)]
+    [TestCase(new[] { 1 }, 0, 1, 1)]
+    [TestCase(new[] { 1, 3, 5 }, 0, 0, 1)]
+    [TestCase(new[] { 1, 3, 5 }, 0, 1, 1)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 0, 1)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1)]
     public void SingleOrDefault(IEnumerable<int> source, int expectedResult, int collectionType, int overload)
     {
         source = collectionType switch
@@ -122,14 +94,10 @@ public sealed class SingleOrDefaultTest
         };
         var result = overload switch
         {
-            1 => source.SingleOrDefault(() => 0),
-            2 => source.SingleOrDefault(x => x % 2 == 0, 0),
-            3 => source.SingleOrDefault(x => x % 2 == 0, () => 0),
-            _ => source.SingleOrDefault(0)
+            1 => source.SingleOrDefault(x => x % 2 == 0, () => 0),
+            _ => source.SingleOrDefault(() => 0)
         };
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

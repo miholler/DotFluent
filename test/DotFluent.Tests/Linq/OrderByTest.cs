@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class OrderByTest
+public sealed class EnumerableOrderByTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -50,6 +45,4 @@ public sealed class OrderByTest
         => source
             .OrderBy(x => x, Comparer<int>.Default.Compare)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

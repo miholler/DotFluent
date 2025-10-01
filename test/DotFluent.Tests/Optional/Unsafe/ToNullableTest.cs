@@ -6,8 +6,6 @@ namespace DotFluent.Optional.Unsafe;
 [TestFixture]
 public sealed class OptionToNullableTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null)]
     [TestCase(1)]
@@ -16,15 +14,11 @@ public sealed class OptionToNullableTest
             .ToOption()
             .ToNullable()
             .ShouldBe(source);
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultToNullableTest
 {
-    #region Methods
-
     [Test]
     [TestCase(1, 0)]
     [TestCase(1, 1)]
@@ -44,6 +38,4 @@ public sealed class ResultToNullableTest
 
         currentResult.ShouldBe(source);
     }
-
-    #endregion
 }

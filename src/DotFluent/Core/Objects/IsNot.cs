@@ -2,8 +2,6 @@
 
 public static partial class ObjectExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether an object does not satisfy a condition.
     /// </summary>
@@ -17,6 +15,4 @@ public static partial class ObjectExtensions
 
         return source.IsNull() || !predicate(source);
     }
-
-    #endregion
 }

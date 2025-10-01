@@ -5,20 +5,20 @@ using System.Runtime.ExceptionServices;
 namespace DotFluent.Optional;
 
 /// <summary>
+/// Provides a set of static methods for working with
+/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> instances.
+/// </summary>
+public static partial class Result;
+
+/// <summary>
 /// Represents an operational result that is either a success value (Ok)
 /// or an error value (Error).
 /// </summary>
 /// <typeparam name="T">The underlying type of the <see cref="Result{T}"/> generic type.</typeparam>
 public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, IComparable<Result<T>>, IComparable, IStructuralComparable, IStructuralEquatable
 {
-    #region Fields
-
     private readonly T _value;
     private readonly ExceptionDispatchInfo _error;
-
-    #endregion
-
-    #region Ctors
 
     private Result(T value)
     {
@@ -33,10 +33,6 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
         IsOk = false;
     }
 
-    #endregion
-
-    #region Properties
-
     /// <summary>
     /// Gets whether the current result is an 'Ok' value.
     /// </summary>
@@ -48,10 +44,6 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <returns>true if the result is an 'Error' value; otherwise, false.</returns>
     public bool IsError => !IsOk;
-
-    #endregion
-
-    #region Methods
 
     /// <summary>
     /// Creates a result value that is an 'Ok' value.
@@ -321,10 +313,6 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     public override string ToString()
         => Match(x => $"Ok({x?.ToString() ?? "null"})", x => $"Error({x})");
 
-    #endregion
-
-    #region Operators
-
     /// <summary>
     /// Implicitly converts a success value into a result.
     /// </summary>
@@ -394,8 +382,6 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// <returns>true if the specified results are not equal; otherwise, false.</returns>
     public static bool operator !=(Result<T> left, Result<T> right)
         => !left.Equals(right);
-
-    #endregion
 }
 
 /// <summary>
@@ -406,14 +392,8 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
 /// <typeparam name="TError">The type of the error value.</typeparam>
 public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<Result<TValue, TError>>, IComparable<Result<TValue, TError>>, IComparable, IStructuralComparable, IStructuralEquatable
 {
-    #region Fields
-
     private readonly TValue _value;
     private readonly TError _error;
-
-    #endregion
-
-    #region Ctors
 
     private Result(TValue value)
     {
@@ -428,10 +408,6 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
         IsOk = false;
     }
 
-    #endregion
-
-    #region Properties
-
     /// <summary>
     /// Gets whether the current result is an 'Ok' value.
     /// </summary>
@@ -443,10 +419,6 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <returns>true if the result is an 'Error' value; otherwise, false.</returns>
     public bool IsError => !IsOk;
-
-    #endregion
-
-    #region Methods
 
     /// <summary>
     /// Creates a result value that is an 'Ok' value.
@@ -719,10 +691,6 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     public override string ToString()
         => Match(x => $"Ok({x?.ToString() ?? "null"})", x => $"Error({x?.ToString() ?? "null"})");
 
-    #endregion
-
-    #region Operators
-
     /// <summary>
     /// Implicitly converts a success value into a result.
     /// </summary>
@@ -792,6 +760,4 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// <returns>true if the specified results are not equal; otherwise, false.</returns>
     public static bool operator !=(Result<TValue, TError> left, Result<TValue, TError> right)
         => !left.Equals(right);
-
-    #endregion
 }

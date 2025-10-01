@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Sorts the elements of a sequence in descending order 
     /// by using a specified function to compare values.
@@ -15,7 +13,7 @@ public static partial class Sequence
     public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         => source.OrderDescending(Comparer<TSource>.Create(comparison));
 
-#if NETSTANDARD
+#if !NET8_0_OR_GREATER
 
     /// <summary>
     /// Sorts the elements of a sequence in descending order.
@@ -24,7 +22,7 @@ public static partial class Sequence
     /// <param name="source">The sequence of values to order.</param>
     /// <returns>An <see cref="IOrderedEnumerable{TSource}"/> whose elements are sorted in descending order.</returns>
     public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source)
-        => source.OrderDescending(Comparer<TSource>.Default);
+        => source.OrderDescending(comparer: null);
 
     /// <summary>
     /// Sorts the elements of a sequence in descending order 
@@ -38,6 +36,4 @@ public static partial class Sequence
         => source.OrderByDescending(x => x, comparer);
 
 #endif
-
-    #endregion
 }

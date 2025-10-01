@@ -1,18 +1,12 @@
 ﻿using DotFluent.Tasks;
 using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionOrElseAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task OtherFactoryNullThrowsException()
     {
@@ -59,15 +53,11 @@ public sealed class OptionOrElseAsyncTest
             .OrElseAsync(OptionTask.None<int>, cts.Token)
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultOrElseAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task OtherFactoryNullThrowsException()
     {
@@ -139,6 +129,4 @@ public sealed class ResultOrElseAsyncTest
             .Awaiting(x => x.OrElseAsync(() => ResultTask.Error<int, int>(0), cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

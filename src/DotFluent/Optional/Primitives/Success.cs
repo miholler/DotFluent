@@ -12,16 +12,10 @@ public readonly struct Success;
 /// <param name="value">The input value.</param>
 public readonly struct Success<T>(T value)
 {
-    #region Properties
-
     /// <summary>
     /// Get the value of the current success.
     /// </summary>
     public T Value { get; } = value;
-
-    #endregion
-
-    #region Operators
 
     /// <summary>
     /// Implicitly converts a value into a success.
@@ -36,6 +30,4 @@ public readonly struct Success<T>(T value)
     /// <param name="success">The success to convert.</param>
     public static implicit operator T(Success<T> success)
         => success.Value;
-
-    #endregion
 }

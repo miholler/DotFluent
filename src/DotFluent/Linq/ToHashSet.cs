@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Creates a hashset from a sequence using a specified
     /// compare function to compare values.
@@ -18,7 +16,7 @@ public static partial class Sequence
     /// from the input sequence.
     /// </returns>
     public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison)
-        => source.ToHashSet(ComparisonEqualityComparer<TSource>.Create(comparison));
+        => source.ToHashSet(EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Creates a hashset from a sequence using specified
@@ -32,42 +30,6 @@ public static partial class Sequence
     /// A <see cref="HashSet{TSource}"/> that contains values of type TSource selected
     /// from the input sequence.
     /// </returns>
-    public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, Func<TSource, int> hashCodeSelector)
-        => source.ToHashSet(ComparisonEqualityComparer<TSource>.Create(comparison, hashCodeSelector));
-
-#if NETSTANDARD
-
-    /// <summary>
-    /// Creates a hashset from a sequence.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The sequence to create a hashset from.</param>
-    /// <returns>
-    /// A <see cref="HashSet{TSource}"/> that contains values of type TSource selected
-    /// from the input sequence.
-    /// </returns>
-    public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source)
-        => source.ToHashSet(EqualityComparer<TSource>.Default);
-
-    /// <summary>
-    /// Creates a hashset from a sequence using a specified
-    /// comparer to compare values.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The sequence to create a hashset from.</param>
-    /// <param name="comparer">The equality comparer to compare values.</param>
-    /// <returns>
-    /// A <see cref="HashSet{TSource}"/> that contains values of type TSource selected
-    /// from the input sequence.
-    /// </returns>
-    public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
-    {
-        source.ThrowIfNull();
-
-        return new(source, comparer);
-    }
-
-#endif
-
-    #endregion
+    public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
+        => source.ToHashSet(EqualityComparer.Create(comparison, hashCodeSelector));
 }

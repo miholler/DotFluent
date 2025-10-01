@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System.Collections.Generic;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class CreateTest
+public sealed class EnumerableCreateTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new string[0])]
     [TestCase(new string[0], new string[0])]
@@ -19,6 +16,4 @@ public sealed class CreateTest
         => Sequence
             .Create(source)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

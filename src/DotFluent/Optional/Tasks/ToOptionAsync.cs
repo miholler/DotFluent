@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously creates an option from an object.
     /// </summary>
@@ -64,6 +62,4 @@ public static partial class OptionTask
         => cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Option<TValue>>(cancellationToken)
             : Task.FromResult(source.ToOption());
-
-    #endregion
 }

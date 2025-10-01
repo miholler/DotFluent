@@ -1,18 +1,13 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using static System.Convert;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class AverageOrDefaultTest
+public sealed class EnumerableAverageOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -731,6 +726,4 @@ public sealed class AverageOrDefaultTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

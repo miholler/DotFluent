@@ -1,8 +1,15 @@
-﻿using System.Collections;
+﻿using DotFluent.Internal;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace DotFluent.Optional;
+
+/// <summary>
+/// Provides a set of static methods for working 
+/// with <see cref="Option{T}"/> instances.
+/// </summary>
+public static partial class Option;
 
 /// <summary>
 /// Represents an optional value.
@@ -11,13 +18,7 @@ namespace DotFluent.Optional;
 [Serializable]
 public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable, ISerializable
 {
-    #region Fields
-
     private readonly T _value;
-
-    #endregion
-
-    #region Ctors
 
     private Option(T value)
     {
@@ -33,10 +34,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
             : default!;
     }
 
-    #endregion
-
-    #region Properties
-
     /// <summary>
     /// Gets an option value that is a 'None' value.
     /// </summary>
@@ -48,7 +45,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// An <see cref="InvalidOperationException"/> is thrown if the option is 'None'.
     /// </summary>
     /// <returns>The value of the option if it is a 'Some' option.</returns>
-    public T Value => IsSome ? _value : throw new InvalidOperationException("Option has no value.");
+    public T Value => IsSome ? _value : throw new InvalidOperationException(Errors.OptionNoValue);
 
     /// <summary>
     /// Gets whether the current option is a 'Some' value.
@@ -61,10 +58,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
     public bool IsNone => !IsSome;
-
-    #endregion
-
-    #region Methods
 
     /// <summary>
     /// Creates an option value that is a 'Some' value.
@@ -383,10 +376,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     public override string ToString()
         => Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
 
-    #endregion
-
-    #region Operators
-
     /// <summary>
     /// Implicitly converts a value into an option.
     /// </summary>
@@ -482,6 +471,4 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
     public static bool operator false(Option<T> option)
         => option.IsNone;
-
-    #endregion
 }

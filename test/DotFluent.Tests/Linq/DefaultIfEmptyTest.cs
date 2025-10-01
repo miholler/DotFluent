@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class DefaultIfEmptyTest
+public sealed class EnumerableDefaultIfEmptyTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -39,6 +34,4 @@ public sealed class DefaultIfEmptyTest
         => source
             .DefaultIfEmpty(() => 0)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Creates a task returning an option value that is a 'Some' value.
     /// </summary>
@@ -15,6 +13,4 @@ public static partial class OptionTask
     /// </returns>
     public static Task<Option<TResult>> Some<TResult>(TResult value)
         => Task.FromResult(Option.Some(value));
-
-    #endregion
 }

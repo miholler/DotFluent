@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously flattens an option with a nested option into one option.
     /// </summary>
@@ -18,14 +16,10 @@ public static partial class OptionTask
         => cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Option<TSource>>(cancellationToken)
             : Task.FromResult(source.Flatten());
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously flattens a result with a nested result into one result.
     /// </summary>
@@ -56,6 +50,4 @@ public static partial class ResultTask
         => cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Result<TValue, TError>>(cancellationToken)
             : Task.FromResult(source.Flatten());
-
-    #endregion
 }

@@ -2,14 +2,8 @@
 
 namespace DotFluent.Linq;
 
-/// <summary>
-/// Provides a set of static methods for querying objects
-/// that implement <see cref="IEnumerable{T}"/>.
-/// </summary>
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Computes the average of a sequence of int values,
     /// or returns a default value if the sequence contains no elements.
@@ -52,7 +46,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -106,7 +100,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -153,7 +147,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -207,7 +201,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -254,7 +248,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => ToSingle(sum / count), defaultFactory);
     }
@@ -308,7 +302,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return sum.Match(x => x + value, value);
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => ToSingle(sum / count), defaultFactory);
     }
@@ -355,7 +349,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -409,7 +403,7 @@ public static partial class Sequence
             .Aggregate(default(double?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -456,7 +450,7 @@ public static partial class Sequence
             .Aggregate(default(decimal?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -510,7 +504,7 @@ public static partial class Sequence
             .Aggregate(default(decimal?), (sum, value) =>
             {
                 count++;
-                return checked(sum.Match(x => x + value, value));
+                return sum.Match(x => checked(x + value), value);
             })
             .Match(sum => sum / count, defaultFactory);
     }
@@ -1054,6 +1048,4 @@ public static partial class Sequence
             .Select(selector)
             .AverageOrDefault(defaultFactory);
     }
-
-    #endregion
 }

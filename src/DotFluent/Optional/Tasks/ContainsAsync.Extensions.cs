@@ -2,13 +2,8 @@
 
 namespace DotFluent.Optional.Tasks;
 
-/// <summary>
-/// Provides extension methods for specific kinds of <see cref="Task{TResult}"/> objects.
-/// </summary>
 public static partial class OptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether an option contains a specified value.
     /// </summary>
@@ -45,17 +40,10 @@ public static partial class OptionTaskExtensions
 
         return source.Then(x => x.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }
 
-/// <summary>
-/// Provides extension methods for specific kinds of <see cref="Task{TResult}"/> objects.
-/// </summary>
 public static partial class ResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether a result contains a specified value.
     /// </summary>
@@ -131,6 +119,4 @@ public static partial class ResultTaskExtensions
 
         return source.Then(x => x.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }

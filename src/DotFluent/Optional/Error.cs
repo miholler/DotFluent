@@ -1,13 +1,7 @@
 ﻿namespace DotFluent.Optional;
 
-/// <summary>
-/// Provides a set of static methods for working with
-/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> instances.
-/// </summary>
 public static partial class Result
 {
-    #region Methods
-
     /// <summary>
     /// Creates a result value that is an 'Error' value.
     /// </summary>
@@ -26,6 +20,4 @@ public static partial class Result
     /// <returns>A <see cref="Result{TValue, TError}"/> representing the error value.</returns>
     public static Result<TValue, TError> Error<TValue, TError>(TError error)
         => Result<TValue, TError>.Error(error);
-
-    #endregion
 }

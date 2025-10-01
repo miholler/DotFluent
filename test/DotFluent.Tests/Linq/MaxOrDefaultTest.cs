@@ -1,18 +1,13 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using static System.Convert;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class MaxOrDefaultTest
+public sealed class EnumerableMaxOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -735,6 +730,4 @@ public sealed class MaxOrDefaultTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the last element of a sequence, or a default value created by a specified function if 
     /// the sequence contains no elements.
@@ -21,18 +19,18 @@ public static partial class Sequence
         {
             case IList<TSource> list:
                 if (list.Count > 0)
-                    return list[list.Count - 1];
+                    return list[^1];
                 break;
             default:
                 using (var enumerator = source.GetEnumerator())
                 {
                     if (enumerator.MoveNext())
                     {
-                        var item = enumerator.Current;
+                        var result = enumerator.Current;
                         while (enumerator.MoveNext())
-                            item = enumerator.Current;
+                            result = enumerator.Current;
 
-                        return item;
+                        return result;
                     }
                 }
                 break;
@@ -58,44 +56,36 @@ public static partial class Sequence
         predicate.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        var resultFactory = defaultFactory;
-        foreach (var item in source)
+        switch (source)
         {
-            if (predicate(item))
-                resultFactory = () => item;
+            case IList<TSource> list:
+                for (var i = list.Count - 1; i >= 0; i--)
+                {
+                    var item = list[i];
+                    if (predicate(item))
+                        return item;
+                }
+                break;
+            default:
+                using (var enumerator = source.GetEnumerator())
+                {
+                    while (enumerator.MoveNext())
+                    {
+                        var result = enumerator.Current;
+                        if (predicate(result))
+                        {
+                            while (enumerator.MoveNext())
+                            {
+                                var item = enumerator.Current;
+                                if (predicate(item))
+                                    result = item;
+                            }
+                            return result;
+                        }
+                    }
+                }
+                break;
         }
-        return resultFactory();
+        return defaultFactory();
     }
-
-#if NETSTANDARD
-
-    /// <summary>
-    /// Returns the last element of a sequence, or a specified default value if the sequence contains
-    /// no elements.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The sequence to return the last element of.</param>
-    /// <param name="defaultValue">The value to return if the source sequence is empty.</param>
-    /// <returns>The specified default value if the source sequence is empty; otherwise, the last element in the source sequence.</returns>
-    public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, TSource defaultValue)
-        => source.LastOrDefault(() => defaultValue);
-
-    /// <summary>
-    /// Returns the last element of the sequence that satisfies a condition or a specified default
-    /// value if no such element is found.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">The sequence to return an element from.</param>
-    /// <param name="predicate">A function to test each element for a condition.</param>
-    /// <param name="defaultValue">The value to return if the source sequence is empty or if no element satisfies the condition.</param>
-    /// <returns>
-    /// The specified default value if the source sequence is empty or if no element passes the test in the predicate function;
-    /// otherwise, the last element that passes the test in the predicate function.
-    /// </returns>
-    public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, TSource defaultValue)
-        => source.LastOrDefault(predicate, () => defaultValue);
-
-#endif
-
-    #endregion
 }

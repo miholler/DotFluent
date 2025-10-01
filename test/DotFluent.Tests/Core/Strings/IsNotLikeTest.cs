@@ -6,8 +6,6 @@ namespace DotFluent;
 [TestFixture]
 public sealed class StringIsNotLikeTest
 {
-    #region Methods
-
     [Test]
     [TestCase("ABC", "ABC", false)]
     [TestCase("ABC", "abc", false)]
@@ -24,6 +22,4 @@ public sealed class StringIsNotLikeTest
         => source
             .IsNotLike(value)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

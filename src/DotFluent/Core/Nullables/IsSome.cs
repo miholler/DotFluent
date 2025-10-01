@@ -4,8 +4,6 @@ namespace DotFluent;
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether a nullable object has a value (is a 'Some' value).
     /// </summary>
@@ -14,6 +12,4 @@ public static partial class NullableExtensions
     /// <returns>true if the nullable object has a value; otherwise, false.</returns>
     public static bool IsSome<TSource>([NotNullWhen(true)]this TSource? source) where TSource : struct
         => source.HasValue;
-
-    #endregion
 }

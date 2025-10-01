@@ -2,8 +2,6 @@
 
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Projects the value of a nullable object into a new form using a specified function,
     /// or returns an empty nullable object if the nullable object has no value.
@@ -22,6 +20,4 @@ public static partial class NullableExtensions
 
         return source.Match(x => mapper(x), () => default(TResult?));
     }
-
-    #endregion
 }

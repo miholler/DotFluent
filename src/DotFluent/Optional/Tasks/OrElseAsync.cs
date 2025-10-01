@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously returns an alternative option created by a specified function
     /// if an option is a 'None' value.
@@ -27,14 +25,10 @@ public static partial class OptionTask
                 ? Task.FromResult(source)
                 : otherFactory().ThrowIfNull(() => new InvalidOperationException($"{nameof(otherFactory)} must not return null."));
     }
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously returns an alternative result created by a specified function
     /// if a result is an 'Error' value.
@@ -83,6 +77,4 @@ public static partial class ResultTask
                 ? Task.FromResult(source)
                 : otherFactory().ThrowIfNull(() => new InvalidOperationException($"{nameof(otherFactory)} must not return null."));
     }
-
-    #endregion
 }

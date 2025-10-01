@@ -1,15 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ThenByDescendingTest
+public sealed class EnumerableThenByDescendingTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -60,6 +56,4 @@ public sealed class ThenByDescendingTest
             .ThenByDescending(x => x.Name, StringComparer.Ordinal.Compare)
             .ShouldBe([b, a, d, c]);
     }
-
-    #endregion
 }

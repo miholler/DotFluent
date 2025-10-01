@@ -2,13 +2,8 @@
 
 namespace DotFluent.Optional.Unsafe.Tasks;
 
-/// <summary>
-/// Provides extension methods for specific kinds of <see cref="Task{TResult}"/> objects.
-/// </summary>
 public static partial class UnsafeOptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously retrieves the value of an option, or the type parameter's default value.
     /// </summary>
@@ -83,17 +78,10 @@ public static partial class UnsafeOptionTaskExtensions
 
         return source.Then(x => x.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }
 
-/// <summary>
-/// Provides extension methods for specific kinds of <see cref="Task{TResult}"/> objects.
-/// </summary>
 public static partial class UnsafeResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously retrieves the success value of a result, or the type parameter's default value.
     /// </summary>
@@ -247,6 +235,4 @@ public static partial class UnsafeResultTaskExtensions
 
         return source.Then(x => x.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }

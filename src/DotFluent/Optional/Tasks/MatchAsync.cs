@@ -2,8 +2,6 @@
 
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously invokes a specified function if an option is a 'None' value.
     /// </summary>
@@ -174,14 +172,10 @@ public static partial class OptionTask
                 some(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(some)} must not return null.")),
                 () => none().ThrowIfNull(() => new InvalidOperationException($"{nameof(none)} must not return null.")));
     }
-
-    #endregion
 }
 
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously invokes a specified function or performs a specified action
     /// based on whether a result is an 'Ok' or an 'Error' value.
@@ -451,6 +445,4 @@ public static partial class ResultTask
                 ok(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(ok)} must not return null.")),
                 x => error(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(error)} must not return null.")));
     }
-
-    #endregion
 }

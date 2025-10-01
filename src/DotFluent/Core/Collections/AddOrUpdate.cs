@@ -1,12 +1,7 @@
 ﻿namespace DotFluent;
 
-/// <summary>
-/// Provides extension methods for <see cref="IDictionary{TKey, TValue}"/> objects.
-/// </summary>
-public static partial class DictionaryExtensions
+public static partial class CollectionExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Adds a key/value pair to a dictionary if the key does not already exist,
     /// or updates a key/value pair in the dictionary by using a specified function 
@@ -51,6 +46,4 @@ public static partial class DictionaryExtensions
         source[key] = value;
         return value;
     }
-
-    #endregion
 }

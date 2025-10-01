@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class SequenceEqualTest
+public sealed class EnumerableSequenceEqualTest
 {
-    #region Methods
-
     [Test]
     [TestCase(null, new int[0])]
     [TestCase(new int[0], null)]
@@ -41,6 +36,4 @@ public sealed class SequenceEqualTest
         => first
             .SequenceEqual(second, (x, y) => x == y)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

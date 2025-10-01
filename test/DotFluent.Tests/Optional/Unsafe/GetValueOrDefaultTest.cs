@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
 
 namespace DotFluent.Optional.Unsafe;
 
 [TestFixture]
 public sealed class OptionGetValueOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void DefaultFactoryNullThrowsExcption()
     {
@@ -45,15 +42,11 @@ public sealed class OptionGetValueOrDefaultTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }
 
 [TestFixture]
 public sealed class ResultGetValueOrDefaultTest
 {
-    #region Methods
-
     [Test]
     public void DefaultFactoryNullThrowsExcption()
     {
@@ -118,6 +111,4 @@ public sealed class ResultGetValueOrDefaultTest
 
         currentResult.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

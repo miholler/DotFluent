@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DotFluent/DotFluent.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/DotFluent.Tests/DotFluent.Tests.csproj" />
+  </Folder>
+</Solution>

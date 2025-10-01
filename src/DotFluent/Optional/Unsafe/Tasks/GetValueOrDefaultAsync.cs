@@ -2,14 +2,8 @@
 
 namespace DotFluent.Optional.Unsafe.Tasks;
 
-/// <summary>
-/// Provides a set of static methods for working with 
-/// <see cref="Option{T}"/> instances asynchronously.
-/// </summary>
 public static partial class UnsafeOptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously retrieves the value of an option, or a default value created by a
     /// specified function.
@@ -28,19 +22,10 @@ public static partial class UnsafeOptionTask
 
         return source.MatchAsync(Task.FromResult, defaultFactory, cancellationToken);
     }
-
-    #endregion
 }
 
-/// <summary>
-/// Provides a set of static methods for working with 
-/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/>
-/// instances asynchronously.
-/// </summary>
 public static partial class UnsafeResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously retrieves the success value of a result, or a default value created by a
     /// specified function.
@@ -79,6 +64,4 @@ public static partial class UnsafeResultTask
 
         return source.MatchAsync(Task.FromResult, _ => defaultFactory(), cancellationToken);
     }
-
-    #endregion
 }

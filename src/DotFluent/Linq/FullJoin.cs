@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. The default
     /// equality comparer is used to compare keys.
@@ -19,7 +17,7 @@ public static partial class Sequence
     /// <param name="resultSelector">A function to create a result element from two matching elements or from one element having no match.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a full outer join on two sequences.</returns>
     public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource?, TResult> resultSelector)
-        => outer.FullJoin(inner, keySelector, resultSelector, EqualityComparer<TKey>.Default);
+        => outer.FullJoin(inner, keySelector, resultSelector, comparer: null);
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -35,7 +33,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a full outer join on two sequences.</returns>
     public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource?, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => outer.FullJoin(inner, keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => outer.FullJoin(inner, keySelector, resultSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -51,8 +49,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a full outer join on two sequences.</returns>
-    public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource?, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => outer.FullJoin(inner, keySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource?, TSource?, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => outer.FullJoin(inner, keySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -89,7 +87,7 @@ public static partial class Sequence
     /// <param name="resultSelector">A function to create a result element from two matching elements or from one element having no match.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a full outer join on two sequences.</returns>
     public static IEnumerable<TResult> FullJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner?, TResult> resultSelector)
-        => outer.FullJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer<TKey>.Default);
+        => outer.FullJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer: null);
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -107,7 +105,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a full outer join on two sequences.</returns>
     public static IEnumerable<TResult> FullJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner?, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => outer.FullJoin(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison));
+        => outer.FullJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -125,8 +123,8 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a full outer join on two sequences.</returns>
-    public static IEnumerable<TResult> FullJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner?, TResult> resultSelector, EqualityComparison<TKey> comparison, Func<TKey, int> hashCodeSelector)
-        => outer.FullJoin(inner, outerKeySelector, innerKeySelector, resultSelector, ComparisonEqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+    public static IEnumerable<TResult> FullJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter?, TInner?, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
+        => outer.FullJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -180,6 +178,4 @@ public static partial class Sequence
         foreach (var pair in pairs.Where(x => !keys.Contains(x.Key)))
             yield return resultSelector(default, pair.Value);
     }
-
-    #endregion
 }

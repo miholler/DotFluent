@@ -1,12 +1,7 @@
 ﻿namespace DotFluent;
 
-/// <summary>
-/// Provides extension methods for <see cref="Nullable{T}"/> objects.
-/// </summary>
 public static partial class NullableExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether a nullable object contains a specified value.
     /// </summary>
@@ -16,6 +11,4 @@ public static partial class NullableExtensions
     /// <returns>true if the nullable object contains the specified value; otherwise, false.</returns>
     public static bool Contains<TSource>(this TSource? source, TSource value) where TSource : struct
         => source.IsSome() && EqualityComparer<TSource>.Default.Equals(source.Value, value);
-
-    #endregion
 }

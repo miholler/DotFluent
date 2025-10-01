@@ -1,16 +1,12 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class IndexOfTest
+public sealed class EnumerableIndexOfTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -39,20 +35,41 @@ public sealed class IndexOfTest
     }
 
     [Test]
-    [TestCase(new int[0], 0, -1, 0)]
-    [TestCase(new int[0], 0, -1, 1)]
-    [TestCase(new int[0], 0, -1, 2)]
-    [TestCase(new int[0], 0, -1, 3)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 0)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 2)]
-    [TestCase(new[] { 1, 2, 3 }, 2, 1, 3)]
-    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 0)]
-    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 1)]
-    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 2)]
-    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 3)]
-    public void IndexOf(IEnumerable<int> source, int value, int expectedResult, int overload)
+    [TestCase(new int[0], 0, -1, 0, 0)]
+    [TestCase(new int[0], 0, -1, 1, 0)]
+    [TestCase(new int[0], 0, -1, 0, 1)]
+    [TestCase(new int[0], 0, -1, 1, 1)]
+    [TestCase(new int[0], 0, -1, 0, 2)]
+    [TestCase(new int[0], 0, -1, 1, 2)]
+    [TestCase(new int[0], 0, -1, 0, 3)]
+    [TestCase(new int[0], 0, -1, 1, 3)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 0, 0)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1, 0)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 0, 1)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1, 1)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 0, 2)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1, 2)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 0, 3)]
+    [TestCase(new[] { 1, 2, 3 }, 2, 1, 1, 3)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 0, 0)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 1, 0)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 0, 1)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 1, 1)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 0, 2)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 1, 2)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 0, 3)]
+    [TestCase(new[] { 1, 2, 3, 2 }, 2, 1, 1, 3)]
+    public void IndexOf(IEnumerable<int> source, int value, int expectedResult, int collectionType, int overload)
     {
+        source = collectionType switch
+        {
+            1 => source
+                .ToImmutableHashSet()
+                .AsEnumerable(),
+            _ => source
+                .ToImmutableArray()
+                .AsEnumerable()
+        };
         var result = overload switch
         {
             1 => source.IndexOf(value, (x, y) => x == y),
@@ -63,6 +80,4 @@ public sealed class IndexOfTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

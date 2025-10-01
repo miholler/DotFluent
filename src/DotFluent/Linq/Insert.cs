@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Inserts an element into a sequence at a specified index.
     /// </summary>
@@ -19,13 +17,12 @@ public static partial class Sequence
     {
         source.ThrowIfNull();
 
-#if NETSTANDARD
+#if NET8_0_OR_GREATER
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+#else
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
-#else
-        ArgumentOutOfRangeException.ThrowIfNegative(index);
 #endif
-
         return InsertIterator(source, index, item);
     }
 
@@ -38,18 +35,15 @@ public static partial class Sequence
             index--;
         }
 
-#if NETSTANDARD
+#if NET8_0_OR_GREATER
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
+#else
         if (index > 0)
             throw new ArgumentOutOfRangeException(nameof(index));
-#else
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
 #endif
-
         yield return item;
 
         while (enumerator.MoveNext())
             yield return enumerator.Current;
     }
-
-    #endregion
 }

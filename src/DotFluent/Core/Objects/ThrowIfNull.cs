@@ -5,8 +5,6 @@ namespace DotFluent;
 
 public static partial class ObjectExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Throws an <see cref="ArgumentNullException"/> if an object is null; otherwise, returns the object.
     /// </summary>
@@ -28,6 +26,4 @@ public static partial class ObjectExtensions
     [return: NotNull]
     public static TSource ThrowIfNull<TSource>([NotNull]this TSource? source, Func<Exception> factory)
         => source ?? throw factory();
-
-    #endregion
 }

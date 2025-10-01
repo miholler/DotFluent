@@ -2,8 +2,6 @@
 
 public static partial class Option
 {
-    #region Methods
-
     /// <summary>
     /// Creates an option value that is a 'Some' value.
     /// </summary>
@@ -12,6 +10,4 @@ public static partial class Option
     /// <returns>An <see cref="Option{TResult}"/> representing the value.</returns>
     public static Option<TResult> Some<TResult>(TResult value)
         => Option<TResult>.Some(value);
-
-    #endregion
 }

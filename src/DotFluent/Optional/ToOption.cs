@@ -2,8 +2,6 @@
 
 public static partial class Option
 {
-    #region Methods
-
     /// <summary>
     /// Creates an option from an object.
     /// </summary>
@@ -40,6 +38,4 @@ public static partial class Option
     /// <returns>An <see cref="Option{TValue}"/> representing the success value of source.</returns>
     public static Option<TValue> ToOption<TValue, TError>(this Result<TValue, TError> source)
         => source.Match(Some, _ => None<TValue>());
-
-    #endregion
 }

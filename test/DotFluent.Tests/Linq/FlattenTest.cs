@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class FlattenTest
+public sealed class EnumerableFlattenTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -60,15 +55,9 @@ public sealed class FlattenTest
             .Flatten(x => x.Children)
             .Select(x => x.Id)
             .ShouldBe(new[] { 1, 2, 3, 4, 5, 6 });
-
-    #endregion
 }
 
 file sealed record TreeItem(int Id)
 {
-    #region Properties
-
     public IEnumerable<TreeItem> Children { get; set; }
-
-    #endregion
 }

@@ -2,14 +2,8 @@
 
 namespace DotFluent.Optional.Tasks;
 
-/// <summary>
-/// Provides a set of static methods for working with 
-/// <see cref="Option{T}"/> instances asynchronously.
-/// </summary>
 public static partial class OptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether an option contains a value created by a specified function.
     /// </summary>
@@ -31,19 +25,10 @@ public static partial class OptionTask
                 .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
                 .Then(source.Contains, cancellationToken);
     }
-
-    #endregion
 }
 
-/// <summary>
-/// Provides a set of static methods for working with 
-/// <see cref="Result{T}"/> and <see cref="Result{TValue, TError}"/> 
-/// instances asynchronously.
-/// </summary>
 public static partial class ResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously determines whether a result contains a value created by a specified function.
     /// </summary>
@@ -88,6 +73,4 @@ public static partial class ResultTask
                 .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
                 .Then(source.Contains, cancellationToken);
     }
-
-    #endregion
 }

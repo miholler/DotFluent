@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Performs a specified action on each element of a sequence.
     /// </summary>
@@ -58,6 +56,4 @@ public static partial class Sequence
             yield return item;
         }
     }
-
-    #endregion
 }

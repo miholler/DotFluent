@@ -1,9 +1,9 @@
-﻿namespace DotFluent.Linq;
+﻿using System.Collections;
+
+namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether a sequence contains no elements.
     /// </summary>
@@ -14,8 +14,16 @@ public static partial class Sequence
     {
         source.ThrowIfNull();
 
-        using var enumerator = source.GetEnumerator();
-        return !enumerator.MoveNext();
+        switch (source)
+        {
+            case ICollection<TSource> genericCollection:
+                return genericCollection.Count == 0;
+            case ICollection collection:
+                return collection.Count == 0;
+            default:
+                using (var enumerator = source.GetEnumerator())
+                    return !enumerator.MoveNext();
+        }
     }
 
     /// <summary>
@@ -37,6 +45,4 @@ public static partial class Sequence
         }
         return true;
     }
-
-    #endregion
 }

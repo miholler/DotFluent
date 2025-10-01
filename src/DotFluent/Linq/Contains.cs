@@ -4,8 +4,6 @@ namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether a sequence contains a specified element by using a specified compare function.
     /// </summary>
@@ -15,7 +13,5 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>true if the source sequence contains an element that has the specified value; otherwise, false.</returns>
     public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource value, EqualityComparison<TSource> comparison)
-        => source.Contains(value, ComparisonEqualityComparer<TSource>.Create(comparison));
-
-    #endregion
+        => source.Contains(value, EqualityComparer.Create(comparison));
 }

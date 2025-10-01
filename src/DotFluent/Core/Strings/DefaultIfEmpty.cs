@@ -1,12 +1,7 @@
 ﻿namespace DotFluent;
 
-/// <summary>
-/// Provides extension methods for <see cref="string"/> objects.
-/// </summary>
 public static partial class StringExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Returns a specified default value if a string is null, empty, or consists only of 
     /// white-space characters; otherwise, returns the string.
@@ -38,6 +33,4 @@ public static partial class StringExtensions
             ? defaultFactory()
             : source;
     }
-
-    #endregion
 }

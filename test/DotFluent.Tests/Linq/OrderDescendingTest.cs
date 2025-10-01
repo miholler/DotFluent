@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class OrderDescendingTest
+public sealed class EnumerableOrderDescendingTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -56,6 +51,4 @@ public sealed class OrderDescendingTest
 
         result.ShouldBe(expectedResult);
     }
-
-    #endregion
 }

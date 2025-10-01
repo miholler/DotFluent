@@ -2,8 +2,6 @@
 
 public static partial class StringExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether two strings are considered equal regardless of their case.
     /// </summary>
@@ -12,6 +10,4 @@ public static partial class StringExtensions
     /// <returns>true if the strings are considered equal regardless of their case; otherwise, false.</returns>
     public static bool IsLike(this string? source, string? value)
         => string.Equals(source, value, StringComparison.OrdinalIgnoreCase);
-
-    #endregion
 }

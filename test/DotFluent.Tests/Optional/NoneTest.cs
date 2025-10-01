@@ -6,13 +6,9 @@ namespace DotFluent.Optional;
 [TestFixture]
 public sealed class OptionNoneTest
 {
-    #region Methods
-
     [Test]
     public void None()
         => Option
             .None<int>()
             .ShouldBe(Option<int>.None);
-
-    #endregion
 }

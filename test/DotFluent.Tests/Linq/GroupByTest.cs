@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class GroupByTest
+public sealed class EnumerableGroupByTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -147,23 +142,23 @@ public sealed class GroupByTest
     }
 
     [Test]
-    public void HashCodeSelectorNullThrowsException()
+    public void HashCodeSelectorNullDoesNotThrowException()
     {
         var source = Enumerable.Empty<int>();
-        Func<int, int> hashCodeSelector = null;
+        HashFunc<int> hashCodeSelector = null;
 
         source
             .Invoking(x => x.GroupBy(y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         source
             .Invoking(x => x.GroupBy(y => y, y => y, (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         source
             .Invoking(x => x.GroupBy(y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
         source
             .Invoking(x => x.GroupBy(y => y, y => y, (k, ie) => ie.FirstOrDefault(), (y, z) => y == z, hashCodeSelector))
-            .ShouldThrow<ArgumentNullException>();
+            .ShouldNotThrow();
     }
 
     [Test]
@@ -200,6 +195,4 @@ public sealed class GroupByTest
                 Sequence.Create(b),
                 Sequence.Create(c)]);
     }
-
-    #endregion
 }

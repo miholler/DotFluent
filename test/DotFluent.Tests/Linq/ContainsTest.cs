@@ -1,16 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotFluent.Linq;
 
 [TestFixture]
-public sealed class ContainsTest
+public sealed class EnumerableContainsTest
 {
-    #region Methods
-
     [Test]
     public void SourceNullThrowsException()
     {
@@ -40,6 +35,4 @@ public sealed class ContainsTest
         => source
             .Contains(value, (x, y) => x == y)
             .ShouldBe(expectedResult);
-
-    #endregion
 }

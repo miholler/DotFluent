@@ -4,8 +4,6 @@ namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously returns an alternative option if an option is a 'None' value.
     /// </summary>
@@ -65,14 +63,10 @@ public static partial class OptionTaskExtensions
 
         return source.Then(x => x.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }
 
 public static partial class ResultTaskExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously returns an alternative result if a result is an 'Error' value.
     /// </summary>
@@ -195,6 +189,4 @@ public static partial class ResultTaskExtensions
 
         return source.Then(x => x.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
     }
-
-    #endregion
 }

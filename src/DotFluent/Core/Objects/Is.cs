@@ -2,13 +2,8 @@
 
 namespace DotFluent;
 
-/// <summary>
-/// Provides extension methods for all objects.
-/// </summary>
 public static partial class ObjectExtensions
 {
-    #region Methods
-
     /// <summary>
     /// Determines whether an object satisfies a condition.
     /// </summary>
@@ -22,6 +17,4 @@ public static partial class ObjectExtensions
 
         return source.IsNotNull() && predicate(source);
     }
-
-    #endregion
 }

@@ -2,8 +2,6 @@
 
 public static partial class UnsafeOptionTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously creates a nullable object from an option.
     /// </summary>
@@ -18,14 +16,10 @@ public static partial class UnsafeOptionTask
         => cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TSource?>(cancellationToken)
             : Task.FromResult(source.ToNullable());
-
-    #endregion
 }
 
 public static partial class UnsafeResultTask
 {
-    #region Methods
-
     /// <summary>
     /// Asynchronously creates a nullable object from a result.
     /// </summary>
@@ -56,6 +50,4 @@ public static partial class UnsafeResultTask
         => cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TValue?>(cancellationToken)
             : Task.FromResult(source.ToNullable());
-
-    #endregion
 }

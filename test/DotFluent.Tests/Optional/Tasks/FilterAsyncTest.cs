@@ -1,17 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
 [TestFixture]
 public sealed class OptionFilterAsyncTest
 {
-    #region Methods
-
     [Test]
     public async Task PredicateNullThrowsException()
     {
@@ -72,6 +66,4 @@ public sealed class OptionFilterAsyncTest
             }, cts.Token))
             .ShouldThrowAsync<TaskCanceledException>();
     }
-
-    #endregion
 }

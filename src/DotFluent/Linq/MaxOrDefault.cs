@@ -2,8 +2,6 @@
 
 public static partial class Sequence
 {
-    #region Methods
-
     /// <summary>
     /// Returns the maximum value in a sequence of int values,
     /// or a default value if the sequence contains no elements.
@@ -963,6 +961,4 @@ public static partial class Sequence
             .Select(selector)
             .MaxOrDefault(defaultFactory);
     }
-
-    #endregion
 }
