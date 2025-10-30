@@ -10,4 +10,5 @@ internal static class Errors
     public const string OptionNoValue = "Option has no value.";
     public const string SequenceMoreThanOneElement = "Sequence contains more than one element.";
     public const string SequenceMoreThanOneMatch = "Sequence contains more than one matching element.";
+    public const string SequenceNoElements = "Sequence contains no elements.";
 }
