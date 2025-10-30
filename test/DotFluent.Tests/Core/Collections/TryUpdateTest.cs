@@ -32,12 +32,9 @@ public sealed class DictionaryTryUpdateTest
     [TestCase(1, 2, 2, true, true)]
     public void TryUpdate(int key, int value, int comparisonValue, bool isExisting, bool expectedResult)
     {
-        var source = isExisting
-            ? new Dictionary<int, int>()
-            {
-                [key] = value
-            }
-            : new Dictionary<int, int>();
+        var source = new Dictionary<int, int>();
+        if (isExisting)
+            source[key] = value;
 
         source
             .TryUpdate(key, value, comparisonValue)

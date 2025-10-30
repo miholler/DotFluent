@@ -12,10 +12,16 @@ public sealed class EnumerableExceptByTest
     public void FirstOrSecondNullThrowsException(IEnumerable<int> first, IEnumerable<int> second)
     {
         first
+            .Invoking(x => x.ExceptBy(second, y => y))
+            .ShouldThrow<ArgumentNullException>();
+        first
             .Invoking(x => x.ExceptBy(second, y => y, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         first
             .Invoking(x => x.ExceptBy(second, y => y, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        first
+            .Invoking(x => x.ExceptBy(second, y => y, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -27,10 +33,16 @@ public sealed class EnumerableExceptByTest
         Func<int, int> keySelector = null;
 
         first
+            .Invoking(x => x.ExceptBy(second, keySelector))
+            .ShouldThrow<ArgumentNullException>();
+        first
             .Invoking(x => x.ExceptBy(second, keySelector, (y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         first
             .Invoking(x => x.ExceptBy(second, keySelector, (y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        first
+            .Invoking(x => x.ExceptBy(second, keySelector, EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -64,16 +76,24 @@ public sealed class EnumerableExceptByTest
     [Test]
     [TestCase(new int[0], new int[0], new int[0], 0)]
     [TestCase(new int[0], new int[0], new int[0], 1)]
+    [TestCase(new int[0], new int[0], new int[0], 2)]
+    [TestCase(new int[0], new int[0], new int[0], 3)]
     [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0], 0)]
     [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0], 1)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0], 2)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, new int[0], 3)]
     [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 }, 0)]
     [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 }, 1)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 }, 2)]
+    [TestCase(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 1, 2, 3 }, 3)]
     public void ExceptBy(IEnumerable<int> first, IEnumerable<int> second, IEnumerable<int> expectedResult, int overload)
     {
         var result = overload switch
         {
-            1 => first.ExceptBy(second, x => x, (x, y) => x == y, x => x.GetHashCode()),
-            _ => first.ExceptBy(second, x => x, (x, y) => x == y)
+            1 => first.ExceptBy(second, x => x, (x, y) => x == y),
+            2 => first.ExceptBy(second, x => x, (x, y) => x == y, x => x.GetHashCode()),
+            3 => first.ExceptBy(second, x => x, EqualityComparer<int>.Default),
+            _ => first.ExceptBy(second, x => x)
         };
 
         result.ShouldBe(expectedResult);

@@ -50,12 +50,10 @@ public sealed class DictionaryGetOrAddTest
     [TestCase(1, 2, true, 1)]
     public void GetOrAdd(int key, int value, bool isExisting, int overload)
     {
-        var source = isExisting
-            ? new Dictionary<int, int>()
-            { 
-                [key] = value
-            }
-            : new Dictionary<int, int>();
+        var source = new Dictionary<int, int>();
+        if (isExisting)
+            source[key] = value;
+
         var result = overload switch
         {
             1 => source.GetOrAdd(key, k => value),

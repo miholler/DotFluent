@@ -11,7 +11,7 @@ public static partial class StringExtensions
     /// </summary>
     /// <param name="source">The string to test.</param>
     /// <param name="paramName">The parameter name to use when throwing the exception.</param>
-    /// <returns>The <see cref="string"/> if not null nor an empty string ("").</returns>
+    /// <returns>The <see cref="string"/> if not null nor an empty <see cref="string"/> ("").</returns>
     [return: NotNull]
     public static string ThrowIfNullOrEmpty([NotNull]this string? source, [CallerArgumentExpression(nameof(source))]string? paramName = null)
     {
