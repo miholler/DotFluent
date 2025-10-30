@@ -31,12 +31,10 @@ public sealed class DictionaryTryRemoveTest
     [TestCase(1, 2, true, true, 2)]
     public void TryRemove(int key, int value, bool isExisting, bool expectedResult, int expectedValue)
     {
-        var source = isExisting
-            ? new Dictionary<int, int>()
-            {
-                [key] = value
-            }
-            : new Dictionary<int, int>();
+        var source = new Dictionary<int, int>();
+        if (isExisting)
+            source[key] = value;
+
         var result = source.TryRemove(key, out var removedValue);
 
         (result, removedValue).ShouldBe((expectedResult, expectedValue));
