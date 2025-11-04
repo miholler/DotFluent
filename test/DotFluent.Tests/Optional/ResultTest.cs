@@ -64,7 +64,7 @@ public sealed class ResultTest
     public void Match(int? source, int value, int expectedResult, int overload)
     {
         var currentResult = 0;
-        var result = source.Match(Result<int>.Ok, () => Result<int>.Error(new() { HResult = value }));
+        var result = source.Match(Result<int>.Ok, () => Result<int>.Error(new HResultException(value)));
         switch (overload)
         {
             case 1:

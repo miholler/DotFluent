@@ -440,7 +440,7 @@ public sealed class ResultMatchAsyncTest
         {
             case 1:
                 await source
-                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .Match(Result.Ok, () => Result.Error<int>(new HResultException(value)))
                     .MatchAsync(x => { currentResult = x + value; }, x =>
                     {
                         currentResult = x.HResult;
@@ -449,7 +449,7 @@ public sealed class ResultMatchAsyncTest
                 break;
             case 2:
                 await source
-                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .Match(Result.Ok, () => Result.Error<int>(new HResultException(value)))
                     .MatchAsync(x =>
                     {
                         currentResult = x + value;
@@ -462,17 +462,17 @@ public sealed class ResultMatchAsyncTest
                 break;
             case 3:
                 currentResult = await source
-                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .Match(Result.Ok, () => Result.Error<int>(new HResultException(value)))
                     .MatchAsync(x => Task.FromResult(x + value), x => x.HResult);
                 break;
             case 4:
                 currentResult = await source
-                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .Match(Result.Ok, () => Result.Error<int>(new HResultException(value)))
                     .MatchAsync(x => x + value, x => Task.FromResult(x.HResult));
                 break;
             case 5:
                 currentResult = await source
-                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .Match(Result.Ok, () => Result.Error<int>(new HResultException(value)))
                     .MatchAsync(x => Task.FromResult(x + value), x => Task.FromResult(x.HResult));
                 break;
             case 6:
@@ -523,7 +523,7 @@ public sealed class ResultMatchAsyncTest
                 break;
             default:
                 await source
-                    .Match(Result.Ok, () => Result.Error<int>(new() { HResult = value }))
+                    .Match(Result.Ok, () => Result.Error<int>(new HResultException(value)))
                     .MatchAsync(x =>
                     {
                         currentResult = x + value;
