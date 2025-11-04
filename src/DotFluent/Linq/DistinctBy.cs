@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -15,7 +13,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
     public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison)
-        => source.DistinctBy(keySelector, EqualityComparer.Create(comparison));
+        => source.DistinctBy(keySelector, EqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Returns distinct elements from a sequence according to a specified key selector function
@@ -29,7 +27,7 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains distinct elements from the source sequence.</returns>
     public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
-        => source.DistinctBy(keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
+        => source.DistinctBy(keySelector, EqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 
