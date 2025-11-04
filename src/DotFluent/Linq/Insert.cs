@@ -16,13 +16,8 @@ public static partial class Sequence
     public static IEnumerable<TSource> Insert<TSource>(this IEnumerable<TSource> source, int index, TSource item)
     {
         source.ThrowIfNull();
-
-#if NET8_0_OR_GREATER
         ArgumentOutOfRangeException.ThrowIfNegative(index);
-#else
-        if (index < 0)
-            throw new ArgumentOutOfRangeException(nameof(index));
-#endif
+
         return InsertIterator(source, index, item);
     }
 
@@ -35,12 +30,7 @@ public static partial class Sequence
             index--;
         }
 
-#if NET8_0_OR_GREATER
         ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0);
-#else
-        if (index > 0)
-            throw new ArgumentOutOfRangeException(nameof(index));
-#endif
         yield return item;
 
         while (enumerator.MoveNext())

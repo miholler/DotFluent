@@ -1,8 +1,6 @@
 ﻿namespace DotFluent;
 
-#if NETFRAMEWORK
-
-public static class ValueTaskExtensions
+public static class ValueTaskPolyfills
 {
     extension(ValueTask)
     {
@@ -24,5 +22,3 @@ public static class ValueTaskExtensions
             => new(result);
     }
 }
-
-#endif
