@@ -10,5 +10,5 @@ public static partial class NullableExtensions
     /// <param name="value">The value to locate in the nullable object.</param>
     /// <returns>true if the nullable object contains the specified value; otherwise, false.</returns>
     public static bool Contains<TSource>(this TSource? source, TSource value) where TSource : struct
-        => source.IsSome() && EqualityComparer<TSource>.Default.Equals(source.Value, value);
+        => source.IsSome && EqualityComparer<TSource>.Default.Equals(source.Value, value);
 }
