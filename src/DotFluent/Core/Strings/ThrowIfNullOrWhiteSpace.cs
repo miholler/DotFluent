@@ -1,5 +1,4 @@
-﻿using DotFluent.Internal;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DotFluent;
@@ -16,15 +15,8 @@ public static partial class StringExtensions
     [return: NotNull]
     public static string ThrowIfNullOrWhiteSpace([NotNull]this string? source, [CallerArgumentExpression(nameof(source))]string? paramName = null)
     {
-#if NET8_0_OR_GREATER
         ArgumentException.ThrowIfNullOrWhiteSpace(source, paramName);
-#else
-        if (source.IsNullOrWhiteSpace())
-        {
-            source.ThrowIfNull(paramName);
-            throw new ArgumentException(Errors.ArgumentEmptyOrWhiteSpaceString, paramName);
-        }
-#endif
+
         return source;
     }
 }

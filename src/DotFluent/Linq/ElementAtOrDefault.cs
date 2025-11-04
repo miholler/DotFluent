@@ -18,6 +18,21 @@ public static partial class Sequence
         => source.ElementAtOrDefault(index, () => defaultValue);
 
     /// <summary>
+    /// Returns the element at a specified index in a sequence or a specified default value 
+    /// if the index is out of range.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+    /// <param name="source">The sequence to return an element from.</param>
+    /// <param name="index">The index of the element to retrieve, which is either from the start or the end.</param>
+    /// <param name="defaultValue">The value to return if the index is out of range.</param>
+    /// <returns>
+    /// The specified default value if the index is outside the bounds of the source sequence; otherwise,
+    /// the element at the specified position in the source sequence.
+    /// </returns>
+    public static TSource ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index, TSource defaultValue)
+        => source.ElementAtOrDefault(index, () => defaultValue);
+
+    /// <summary>
     /// Returns the element at a specified index in a sequence or a default value
     /// created by a specified function if the index is out of range.
     /// </summary>
@@ -57,5 +72,33 @@ public static partial class Sequence
             }
         }
         return defaultFactory();
+    }
+
+    /// <summary>
+    /// Returns the element at a specified index in a sequence or a default value
+    /// created by a specified function if the index is out of range.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+    /// <param name="source">The sequence to return an element from.</param>
+    /// <param name="index">The index of the element to retrieve, which is either from the start or the end.</param>
+    /// <param name="defaultFactory">A function to create a default value.</param>
+    /// <returns>
+    /// The default value created by the specified function if the index is outside the bounds of the source sequence; otherwise,
+    /// the element at the specified position in the source sequence.
+    /// </returns>
+    public static TSource ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index, Func<TSource> defaultFactory)
+    {
+        source.ThrowIfNull();
+        defaultFactory.ThrowIfNull();
+
+        return !index.IsFromEnd
+            ? source.ElementAtOrDefault(index.Value, defaultFactory)
+#if NET
+            : source.TryGetNonEnumeratedCount(out var count)
+            ? source.ElementAtOrDefault(count - index.Value, defaultFactory)
+#endif
+            : source
+                .Reverse()
+                .ElementAtOrDefault(index.Value - 1, defaultFactory);
     }
 }

@@ -59,7 +59,9 @@ public static partial class Sequence
         source.ThrowIfNull();
         keySelector.ThrowIfNull();
 
-        return DistinctByIterator(source, keySelector, comparer);
+        return source.IsEmptyArray()
+            ? []
+            : DistinctByIterator(source, keySelector, comparer);
     }
 
     private static IEnumerable<TSource> DistinctByIterator<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
