@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections;
-using System.Runtime.Serialization;
 
 namespace DotFluent.Optional;
 
@@ -249,22 +248,6 @@ public sealed class OptionTest
             .ToOption()
             .Exists(x => x == value)
             .ShouldBe(expectedResult);
-
-    [Test]
-    [TestCase(null)]
-    [TestCase(1)]
-    public void GetObjectData(int? source)
-    {
-        var option = source.ToOption();
-        var serializer = new DataContractSerializer(typeof(Option<int>));
-        using var stream = new MemoryStream();
-
-        serializer.WriteObject(stream, option);
-        stream.Seek(0, SeekOrigin.Begin);
-
-        var result = (Option<int>)serializer.ReadObject(stream);
-        option.ShouldBe(result);
-    }
 
     [Test]
     [TestCase(null, false)]

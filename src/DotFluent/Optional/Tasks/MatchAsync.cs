@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Optional.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
@@ -84,8 +86,8 @@ public static partial class OptionTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled(cancellationToken)
             : source.Match(x => 
-                some(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(some)} must not return null.")),
-                () => none().ThrowIfNull(() => new InvalidOperationException($"{nameof(none)} must not return null.")));
+                some(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(some)))),
+                () => none().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(none)))));
     }
 
     /// <summary>
@@ -169,8 +171,8 @@ public static partial class OptionTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TResult>(cancellationToken)
             : source.Match(x =>
-                some(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(some)} must not return null.")),
-                () => none().ThrowIfNull(() => new InvalidOperationException($"{nameof(none)} must not return null.")));
+                some(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(some)))),
+                () => none().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(none)))));
     }
 }
 
@@ -236,8 +238,8 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled(cancellationToken)
             : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(ok)} must not return null.")),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(error)} must not return null.")));
+                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -304,8 +306,8 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TResult>(cancellationToken)
             : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(ok)} must not return null.")),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(error)} must not return null.")));
+                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -371,8 +373,8 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled(cancellationToken)
             : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(ok)} must not return null.")),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(error)} must not return null.")));
+                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -442,7 +444,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TResult>(cancellationToken)
             : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(ok)} must not return null.")),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(error)} must not return null.")));
+                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 }

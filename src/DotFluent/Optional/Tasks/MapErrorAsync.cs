@@ -1,4 +1,5 @@
-﻿using DotFluent.Tasks;
+﻿using DotFluent.Internal;
+using DotFluent.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
@@ -25,7 +26,7 @@ public static partial class ResultTask
             ? Task.FromCanceled<Result<TSource>>(cancellationToken)
             : source.Match(Ok, x =>
                 mapper(x)
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper))))
                     .Then(Error<TSource>, cancellationToken));
     }
 
@@ -52,7 +53,7 @@ public static partial class ResultTask
             ? Task.FromCanceled<Result<TValue, TResult>>(cancellationToken)
             : source.Match(Ok<TValue, TResult>, x =>
                 mapper(x)
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper))))
                     .Then(Error<TValue, TResult>, cancellationToken));
     }
 }

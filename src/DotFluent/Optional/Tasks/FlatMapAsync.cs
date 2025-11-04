@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Optional.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
@@ -23,7 +25,7 @@ public static partial class OptionTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Option<TResult>>(cancellationToken)
             : source.Match(x => 
-                mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")),
+                mapper(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper)))),
                 None<TResult>);
     }
 }
@@ -51,7 +53,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Result<TResult>>(cancellationToken)
             : source.Match(x =>
-                mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")),
+                mapper(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper)))),
                 Error<TResult>);
     }
 
@@ -77,7 +79,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Result<TResult, TError>>(cancellationToken)
             : source.Match(x =>
-                mapper(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(mapper)} must not return null.")),
+                mapper(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper)))),
                 Error<TResult, TError>);
     }
 }

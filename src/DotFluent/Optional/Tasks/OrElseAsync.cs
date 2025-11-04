@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Optional.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
@@ -23,7 +25,7 @@ public static partial class OptionTask
             ? Task.FromCanceled<Option<TSource>>(cancellationToken)
             : source.IsSome
                 ? Task.FromResult(source)
-                : otherFactory().ThrowIfNull(() => new InvalidOperationException($"{nameof(otherFactory)} must not return null."));
+                : otherFactory().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(otherFactory))));
     }
 }
 
@@ -50,7 +52,7 @@ public static partial class ResultTask
             ? Task.FromCanceled<Result<TSource>>(cancellationToken)
             : source.IsOk
                 ? Task.FromResult(source)
-                : otherFactory().ThrowIfNull(() => new InvalidOperationException($"{nameof(otherFactory)} must not return null."));
+                : otherFactory().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(otherFactory))));
     }
 
     /// <summary>
@@ -75,6 +77,6 @@ public static partial class ResultTask
             ? Task.FromCanceled<Result<TValue, TError>>(cancellationToken)
             : source.IsOk
                 ? Task.FromResult(source)
-                : otherFactory().ThrowIfNull(() => new InvalidOperationException($"{nameof(otherFactory)} must not return null."));
+                : otherFactory().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(otherFactory))));
     }
 }

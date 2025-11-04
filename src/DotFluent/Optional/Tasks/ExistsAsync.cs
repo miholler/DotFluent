@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Optional.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Optional.Tasks;
 
 public static partial class OptionTask
 {
@@ -20,7 +22,7 @@ public static partial class OptionTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
             : source.Match(x => 
-                predicate(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null.")),
+                predicate(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
                 () => Task.FromResult(false));
     }
 }
@@ -45,7 +47,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
             : source.Match(x =>
-                predicate(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null.")),
+                predicate(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
                 _ => Task.FromResult(false));
     }
 
@@ -68,7 +70,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
             : source.Match(x =>
-                predicate(x).ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null.")),
+                predicate(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
                 _ => Task.FromResult(false));
     }
 }

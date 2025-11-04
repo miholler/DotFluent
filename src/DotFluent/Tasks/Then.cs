@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Tasks;
 
 public static partial class TaskExtensions
 {
@@ -42,7 +44,7 @@ public static partial class TaskExtensions
 
             cancellationToken.ThrowIfCancellationRequested();
             await selector()
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
         return ContinueWithAsync(source, selector, cancellationToken);
@@ -90,7 +92,7 @@ public static partial class TaskExtensions
 
             cancellationToken.ThrowIfCancellationRequested();
             return await selector()
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
         return ContinueWithAsync(source, selector, cancellationToken);
@@ -138,7 +140,7 @@ public static partial class TaskExtensions
 
             cancellationToken.ThrowIfCancellationRequested();
             await selector(result)
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
         return ContinueWithAsync(source, selector, cancellationToken);
@@ -188,7 +190,7 @@ public static partial class TaskExtensions
 
             cancellationToken.ThrowIfCancellationRequested();
             return await selector(result)
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
         return ContinueWithAsync(source, selector, cancellationToken);

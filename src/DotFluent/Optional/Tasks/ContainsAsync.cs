@@ -1,4 +1,5 @@
-﻿using DotFluent.Tasks;
+﻿using DotFluent.Internal;
+using DotFluent.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
@@ -22,7 +23,7 @@ public static partial class OptionTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
             : valueFactory()
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(valueFactory))))
                 .Then(source.Contains, cancellationToken);
     }
 }
@@ -47,7 +48,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
             : valueFactory()
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(valueFactory))))
                 .Then(source.Contains, cancellationToken);
     }
 
@@ -70,7 +71,7 @@ public static partial class ResultTask
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
             : valueFactory()
-                .ThrowIfNull(() => new InvalidOperationException($"{nameof(valueFactory)} must not return null."))
+                .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(valueFactory))))
                 .Then(source.Contains, cancellationToken);
     }
 }

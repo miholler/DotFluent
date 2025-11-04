@@ -1,7 +1,6 @@
 ﻿using DotFluent.Internal;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 
 namespace DotFluent.Optional;
 
@@ -15,8 +14,7 @@ public static partial class Option;
 /// Represents an optional value.
 /// </summary>
 /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
-[Serializable]
-public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable, ISerializable
+public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable
 {
     private readonly T _value;
 
@@ -24,14 +22,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         _value = value;
         IsSome = true;
-    }
-
-    private Option(SerializationInfo info, StreamingContext context)
-    {
-        IsSome = info.GetBoolean(nameof(IsSome));
-        _value = IsSome
-            ? (T)info.GetValue(nameof(_value), typeof(T))!
-            : default!;
     }
 
     /// <summary>
@@ -239,18 +229,6 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
         predicate.ThrowIfNull();
 
         return IsSome && predicate(_value);
-    }
-
-    /// <summary>
-    /// Populates a storage object with the data needed to serialize the current option.
-    /// </summary>
-    /// <param name="info">The storage object to populate with data.</param>
-    /// <param name="context">The destination for this serialization.</param>
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        info.AddValue(nameof(IsSome), IsSome);
-        if (IsSome)
-            info.AddValue(nameof(_value), _value);
     }
 
     /// <summary>

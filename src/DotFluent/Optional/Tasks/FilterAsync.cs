@@ -1,4 +1,5 @@
-﻿using DotFluent.Tasks;
+﻿using DotFluent.Internal;
+using DotFluent.Tasks;
 
 namespace DotFluent.Optional.Tasks;
 
@@ -24,7 +25,7 @@ public static partial class OptionTask
             ? Task.FromCanceled<Option<TSource>>(cancellationToken)
             : source.Match(x => 
                 predicate(x)
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(predicate)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate))))
                     .Then(isMatch => isMatch ? source : Option.None<TSource>(), cancellationToken),
                 None<TSource>);
     }

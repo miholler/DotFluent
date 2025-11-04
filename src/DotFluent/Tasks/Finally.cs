@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Tasks;
 
 public static partial class TaskExtensions
 {
@@ -49,7 +51,7 @@ public static partial class TaskExtensions
             finally
             {
                 await selector()
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                     .ConfigureAwait(false);
             }
         }
@@ -105,7 +107,7 @@ public static partial class TaskExtensions
             finally
             {
                 await selector()
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                     .ConfigureAwait(false);
             }
         }
