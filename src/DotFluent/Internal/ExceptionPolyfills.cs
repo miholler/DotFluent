@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace System;
 
+[ExcludeFromCodeCoverage]
 internal static class ExceptionPolyfills
 {
     extension(ArgumentException)

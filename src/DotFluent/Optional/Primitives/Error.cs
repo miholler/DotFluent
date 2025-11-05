@@ -3,20 +3,15 @@
 /// <summary>
 /// Represents an error value.
 /// </summary>
-public readonly struct Error;
+public readonly record struct Error;
 
 /// <summary>
 /// Represents an error value.
 /// </summary>
 /// <typeparam name="T">The underlying type of the <see cref="Error{T}"/> generic type.</typeparam>
-/// <param name="value">The input value.</param>
-public readonly struct Error<T>(T value)
+/// <param name="Value">The input value.</param>
+public readonly record struct Error<T>(T Value)
 {
-    /// <summary>
-    /// Get the value of the current error.
-    /// </summary>
-    public T Value { get; } = value;
-
     /// <summary>
     /// Implicitly converts a value into an error.
     /// </summary>
