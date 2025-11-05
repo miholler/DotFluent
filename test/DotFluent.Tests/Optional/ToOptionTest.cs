@@ -38,7 +38,6 @@ public sealed class OptionToOptionTest
                     .Match(Result.Ok, () => Result.Error<int>(new()))
                     .ToOption()
         };
-
         option.ShouldBe(expectedResult);
     }
 }

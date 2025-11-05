@@ -101,7 +101,6 @@ public sealed class EnumerableMaxByTest
             2 => source.MaxBy(x => x, StringComparer.Ordinal),
             _ => source.MaxBy(x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -120,7 +119,6 @@ public sealed class EnumerableMaxByTest
             2 => source.MaxBy(x => x, Comparer<int>.Default),
             _ => source.MaxBy(x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

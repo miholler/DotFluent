@@ -483,7 +483,6 @@ public sealed class EnumerableAverageOrDefaultTest
             9 => ToDouble(source.Select(ToDecimal).AverageOrDefault(x => x)),
             _ => source.AverageOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -543,7 +542,6 @@ public sealed class EnumerableAverageOrDefaultTest
             9 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).AverageOrDefault(x => x),
             _ => source.OfType<int?>().AverageOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -613,7 +611,6 @@ public sealed class EnumerableAverageOrDefaultTest
             19 => ToDouble(source.Select(ToDecimal).AverageOrDefault(x => x, () => ToDecimal(defaultValue))),
             _ => source.AverageOrDefault(defaultValue)
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -723,7 +720,6 @@ public sealed class EnumerableAverageOrDefaultTest
             19 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).AverageOrDefault(x => x, () => ToDecimal(defaultValue)),
             _ => source.OfType<int?>().AverageOrDefault(defaultValue)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

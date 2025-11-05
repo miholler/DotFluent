@@ -60,7 +60,6 @@ public sealed class EnumerableExceptTest
             1 => first.Except(second, (x, y) => x == y, x => x.GetHashCode()),
             _ => first.Except(second, (x, y) => x == y)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

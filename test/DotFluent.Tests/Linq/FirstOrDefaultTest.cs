@@ -89,7 +89,6 @@ public sealed class EnumerableFirstOrDefaultTest
             3 => source.FirstOrDefault(x => x % 2 == 0, () => 0),
             _ => source.FirstOrDefault(0)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

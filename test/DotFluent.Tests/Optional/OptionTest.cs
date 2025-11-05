@@ -183,7 +183,6 @@ public sealed class OptionTest
             1 => option.OrElse(() => other.ToOption()),
             _ => option.OrElse(other.ToOption())
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -310,7 +309,6 @@ public sealed class OptionTest
             4 => StructuralComparisons.StructuralComparer.Compare(option, value.ToOption()),
             _ => option.CompareTo(value.ToOption())
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -356,7 +354,6 @@ public sealed class OptionTest
             4 => StructuralComparisons.StructuralEqualityComparer.Equals(option, value.ToOption()),
             _ => option.Equals(value.ToOption())
         };
-
         result.ShouldBe(expectedResult);
     }
 

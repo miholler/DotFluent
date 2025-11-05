@@ -99,7 +99,6 @@ public sealed class EnumerableIntersectByTest
             3 => first.IntersectBy(second, x => x, EqualityComparer<int>.Default),
             _ => first.IntersectBy(second, x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

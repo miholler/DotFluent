@@ -60,7 +60,6 @@ public sealed class EnumerableUnionTest
             1 => first.Union(second, (x, y) => x == y, x => x.GetHashCode()),
             _ => first.Union(second, (x, y) => x == y)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

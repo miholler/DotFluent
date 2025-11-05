@@ -95,7 +95,6 @@ public sealed class EnumerableExceptByTest
             3 => first.ExceptBy(second, x => x, EqualityComparer<int>.Default),
             _ => first.ExceptBy(second, x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

@@ -72,7 +72,6 @@ public sealed class EnumerableMinTest
             1 => source.Min(StringComparer.Ordinal),
             _ => source.Min(StringComparer.Ordinal.Compare)
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -88,7 +87,6 @@ public sealed class EnumerableMinTest
             1 => source.Min(Comparer<int>.Default),
             _ => source.Min(Comparer<int>.Default.Compare)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

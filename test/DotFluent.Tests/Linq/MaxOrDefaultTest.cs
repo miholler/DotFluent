@@ -487,7 +487,6 @@ public sealed class EnumerableMaxOrDefaultTest
             9 => ToDouble(source.Select(ToDecimal).MaxOrDefault(x => x)),
             _ => source.MaxOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -547,7 +546,6 @@ public sealed class EnumerableMaxOrDefaultTest
             9 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).MaxOrDefault(x => x),
             _ => source.OfType<int?>().MaxOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -617,7 +615,6 @@ public sealed class EnumerableMaxOrDefaultTest
             19 => ToDouble(source.Select(ToDecimal).MaxOrDefault(x => x, () => ToDecimal(defaultValue))),
             _ => source.MaxOrDefault(ToInt32(defaultValue))
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -727,7 +724,6 @@ public sealed class EnumerableMaxOrDefaultTest
             19 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).MaxOrDefault(x => x, () => ToDecimal(defaultValue)),
             _ => source.OfType<int?>().MaxOrDefault(ToInt32(defaultValue))
         };
-
         result.ShouldBe(expectedResult);
     }
 }

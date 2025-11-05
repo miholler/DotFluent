@@ -101,7 +101,6 @@ public sealed class EnumerableMinByTest
             2 => source.MinBy(x => x, StringComparer.Ordinal),
             _ => source.MinBy(x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -120,7 +119,6 @@ public sealed class EnumerableMinByTest
             2 => source.MinBy(x => x, Comparer<int>.Default),
             _ => source.MinBy(x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

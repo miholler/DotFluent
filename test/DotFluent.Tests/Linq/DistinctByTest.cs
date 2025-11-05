@@ -92,7 +92,6 @@ public sealed class EnumerableDistinctByTest
             3 => source.DistinctBy(x => x, EqualityComparer<int>.Default),
             _ => source.DistinctBy(x => x)
         };
-
         result.ShouldBe(expectedResult);
     }
 }
