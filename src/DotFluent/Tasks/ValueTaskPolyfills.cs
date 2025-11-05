@@ -66,5 +66,5 @@ public static class ValueTaskPolyfills
 
 file static class ValueTaskValues
 {
-    public static readonly ValueTask CompletedTask;
+    public static readonly ValueTask CompletedTask = default;
 }

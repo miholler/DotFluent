@@ -415,9 +415,9 @@ public sealed class OptionTest
     [TestCase(2, 1, new int[0])]
     public void OP_BitwiseAnd(int? left, int? right, IEnumerable<int> expectedResult)
     {
-        var option = left.ToOption() & right.ToOption();
+        var result = left.ToOption() & right.ToOption();
 
-        option.ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 
     [Test]
@@ -429,9 +429,9 @@ public sealed class OptionTest
     [TestCase(2, 1, new[] { 2 })]
     public void OP_BitwiseOr(int? left, int? right, IEnumerable<int> expectedResult)
     {
-        var option = left.ToOption() | right.ToOption();
+        var result = left.ToOption() | right.ToOption();
 
-        option.ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 
     [Test]
