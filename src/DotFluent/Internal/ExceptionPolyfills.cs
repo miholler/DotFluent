@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 
 namespace System;
 
+#if !NET8_0_OR_GREATER
+
 [ExcludeFromCodeCoverage]
 internal static class ExceptionPolyfills
 {
@@ -44,3 +46,5 @@ internal static class ExceptionPolyfills
         }
     }
 }
+
+#endif

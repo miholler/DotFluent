@@ -1,5 +1,7 @@
 ﻿namespace System.Threading.Tasks;
 
+#if NETSTANDARD
+
 /// <summary>
 /// Provides extension members for <see cref="ValueTask"/> 
 /// and <see cref="ValueTask{TResult}"/> objects.
@@ -68,3 +70,5 @@ file static class ValueTaskValues
 {
     public static readonly ValueTask CompletedTask = default;
 }
+
+#endif
