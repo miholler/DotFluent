@@ -150,8 +150,7 @@ public static partial class Sequence
             do
             {
                 var item = enumerator.Current;
-                var key = keySelector(item);
-                dictionary.AddOrUpdate(key, _ => func(seed, item), (_, a) => func(a, item));
+                dictionary.AddOrUpdate(keySelector(item), _ => func(seed, item), (_, accumulate) => func(accumulate, item));
             }
             while (enumerator.MoveNext());
 
@@ -169,8 +168,7 @@ public static partial class Sequence
             do
             {
                 var item = enumerator.Current;
-                var key = keySelector(item);
-                dictionary.AddOrUpdate(key, k => func(seedSelector(k), item), (_, a) => func(a, item));
+                dictionary.AddOrUpdate(keySelector(item), key => func(seedSelector(key), item), (_, accumulate) => func(accumulate, item));
             }
             while (enumerator.MoveNext());
 
