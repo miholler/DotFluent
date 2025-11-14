@@ -58,7 +58,6 @@ public sealed class EnumerableDistinctTest
             1 => source.Distinct((x, y) => x == y, x => x.GetHashCode()),
             _ => source.Distinct((x, y) => x == y)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

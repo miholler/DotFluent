@@ -14,6 +14,6 @@ public static partial class NullableExtensions
     {
         predicate.ThrowIfNull();
 
-        return source.IsSome() && predicate(source.Value);
+        return source.IsSome && predicate(source.Value);
     }
 }

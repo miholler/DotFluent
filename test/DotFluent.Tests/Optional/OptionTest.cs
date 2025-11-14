@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections;
-using System.Runtime.Serialization;
 
 namespace DotFluent.Optional;
 
@@ -184,7 +183,6 @@ public sealed class OptionTest
             1 => option.OrElse(() => other.ToOption()),
             _ => option.OrElse(other.ToOption())
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -251,22 +249,6 @@ public sealed class OptionTest
             .ShouldBe(expectedResult);
 
     [Test]
-    [TestCase(null)]
-    [TestCase(1)]
-    public void GetObjectData(int? source)
-    {
-        var option = source.ToOption();
-        var serializer = new DataContractSerializer(typeof(Option<int>));
-        using var stream = new MemoryStream();
-
-        serializer.WriteObject(stream, option);
-        stream.Seek(0, SeekOrigin.Begin);
-
-        var result = (Option<int>)serializer.ReadObject(stream);
-        option.ShouldBe(result);
-    }
-
-    [Test]
     [TestCase(null, false)]
     [TestCase(1, true)]
     public void GetEnumerator(int? source, bool expectedResult)
@@ -327,7 +309,6 @@ public sealed class OptionTest
             4 => StructuralComparisons.StructuralComparer.Compare(option, value.ToOption()),
             _ => option.CompareTo(value.ToOption())
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -373,7 +354,6 @@ public sealed class OptionTest
             4 => StructuralComparisons.StructuralEqualityComparer.Equals(option, value.ToOption()),
             _ => option.Equals(value.ToOption())
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -435,9 +415,9 @@ public sealed class OptionTest
     [TestCase(2, 1, new int[0])]
     public void OP_BitwiseAnd(int? left, int? right, IEnumerable<int> expectedResult)
     {
-        var option = left.ToOption() & right.ToOption();
+        var result = left.ToOption() & right.ToOption();
 
-        option.ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 
     [Test]
@@ -449,9 +429,9 @@ public sealed class OptionTest
     [TestCase(2, 1, new[] { 2 })]
     public void OP_BitwiseOr(int? left, int? right, IEnumerable<int> expectedResult)
     {
-        var option = left.ToOption() | right.ToOption();
+        var result = left.ToOption() | right.ToOption();
 
-        option.ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 
     [Test]

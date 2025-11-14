@@ -48,7 +48,6 @@ public sealed class EnumerableOrderTest
             2 => source.Order(Comparer<int>.Default),
             _ => source.Order()
         };
-
         result.ShouldBe(expectedResult);
     }
 }

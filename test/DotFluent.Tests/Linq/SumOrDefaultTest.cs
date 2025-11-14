@@ -487,7 +487,6 @@ public sealed class EnumerableSumOrDefaultTest
             9 => ToDouble(source.Select(ToDecimal).SumOrDefault(x => x)),
             _ => source.SumOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -547,7 +546,6 @@ public sealed class EnumerableSumOrDefaultTest
             9 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).SumOrDefault(x => x),
             _ => source.OfType<int?>().SumOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -617,7 +615,6 @@ public sealed class EnumerableSumOrDefaultTest
             19 => ToDouble(source.Select(ToDecimal).SumOrDefault(x => x, () => ToDecimal(defaultValue))),
             _ => source.SumOrDefault(ToInt32(defaultValue))
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -727,7 +724,6 @@ public sealed class EnumerableSumOrDefaultTest
             19 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).SumOrDefault(x => x, () => ToDecimal(defaultValue)),
             _ => source.OfType<int?>().SumOrDefault(ToInt32(defaultValue))
         };
-
         result.ShouldBe(expectedResult);
     }
 }

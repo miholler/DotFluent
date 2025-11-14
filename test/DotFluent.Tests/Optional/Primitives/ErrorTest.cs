@@ -8,6 +8,16 @@ namespace DotFluent.Optional.Primitives;
 public sealed class ErrorTest
 {
     [Test]
+    public void Set_Value()
+    {
+        var error = new Error<HttpStatusCode>()
+        {
+            Value = HttpStatusCode.InternalServerError
+        };
+        error.Value.ShouldBe(HttpStatusCode.InternalServerError);
+    }
+
+    [Test]
     public void OP_Implicit()
     {
         Error<HttpStatusCode> error = HttpStatusCode.InternalServerError;

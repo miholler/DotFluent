@@ -122,7 +122,6 @@ public sealed class EnumerableSingleOrDefaultTest
             3 => source.SingleOrDefault(x => x % 2 == 0, () => 0),
             _ => source.SingleOrDefault(0)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

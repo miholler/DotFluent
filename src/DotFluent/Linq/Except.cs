@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -13,7 +11,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
     public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison)
-        => first.Except(second, EqualityComparer.Create(comparison));
+        => first.Except(second, EqualityComparer<TSource>.Create(comparison));
 
     /// <summary>
     /// Produces the set difference of two sequences by using specified compare functions to compare values.
@@ -25,5 +23,5 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a value.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
     public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
-        => first.Except(second, EqualityComparer.Create(comparison, hashCodeSelector));
+        => first.Except(second, EqualityComparer<TSource>.Create(comparison, hashCodeSelector));
 }

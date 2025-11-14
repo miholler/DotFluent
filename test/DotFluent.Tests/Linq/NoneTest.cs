@@ -60,7 +60,6 @@ public sealed class EnumerableNoneTest
             1 => source.None(x => x % 2 == 0),
             _ => source.None()
         };
-
         result.ShouldBe(expectedResult);
     }
 }

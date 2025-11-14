@@ -1,16 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using DotFluent;
+using System.Diagnostics.CodeAnalysis;
 
-namespace DotFluent.Internal;
+namespace System.Collections.Generic;
 
 [ExcludeFromCodeCoverage]
-internal static class EqualityComparer
+internal static class EqualityComparerExtensions
 {
-    public static EqualityComparer<T> Create<T>(EqualityComparison<T> comparison, HashFunc<T>? hashFunc = null)
+    extension<T>(EqualityComparer<T>)
     {
-        comparison.ThrowIfNull();
-        hashFunc ??= _ => 0;
+        public static EqualityComparer<T> Create(EqualityComparison<T> comparison, HashFunc<T>? hashFunc = null)
+        {
+            comparison.ThrowIfNull();
+            hashFunc ??= _ => 0;
 
-        return new ComparisonEqualityComparer<T>(comparison, hashFunc);
+            return new ComparisonEqualityComparer<T>(comparison, hashFunc);
+        }
     }
 }
 

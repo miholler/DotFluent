@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -14,7 +12,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
     public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison)
-        => first.Intersect(second, EqualityComparer.Create(comparison));
+        => first.Intersect(second, EqualityComparer<TSource>.Create(comparison));
 
     /// <summary>
     /// Produces the set intersection of two sequences by using
@@ -27,5 +25,5 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a value.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements that form the set intersection of two sequences.</returns>
     public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
-        => first.Intersect(second, EqualityComparer.Create(comparison, hashCodeSelector));
+        => first.Intersect(second, EqualityComparer<TSource>.Create(comparison, hashCodeSelector));
 }

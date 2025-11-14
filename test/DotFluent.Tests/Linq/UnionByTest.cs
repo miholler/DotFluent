@@ -95,7 +95,6 @@ public sealed class EnumerableUnionByTest
             3 => first.UnionBy(second, y => y, EqualityComparer<int>.Default),
             _ => first.UnionBy(second, y => y)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

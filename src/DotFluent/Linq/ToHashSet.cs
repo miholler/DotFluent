@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -16,7 +14,7 @@ public static partial class Sequence
     /// from the input sequence.
     /// </returns>
     public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison)
-        => source.ToHashSet(EqualityComparer.Create(comparison));
+        => source.ToHashSet(EqualityComparer<TSource>.Create(comparison));
 
     /// <summary>
     /// Creates a hashset from a sequence using specified
@@ -31,7 +29,7 @@ public static partial class Sequence
     /// from the input sequence.
     /// </returns>
     public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
-        => source.ToHashSet(EqualityComparer.Create(comparison, hashCodeSelector));
+        => source.ToHashSet(EqualityComparer<TSource>.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 

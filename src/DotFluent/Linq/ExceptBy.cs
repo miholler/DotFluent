@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -16,7 +14,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
     public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison)
-        => first.ExceptBy(second, keySelector, EqualityComparer.Create(comparison));
+        => first.ExceptBy(second, keySelector, EqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Produces the set difference of two sequences according to a specified key selector function
@@ -31,7 +29,7 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the set difference of the elements of two sequences.</returns>
     public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
-        => first.ExceptBy(second, keySelector, EqualityComparer.Create(comparison, hashCodeSelector));
+        => first.ExceptBy(second, keySelector, EqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
 #if NETSTANDARD
 

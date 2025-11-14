@@ -10,7 +10,5 @@ public sealed class NullableIsSomeTest
     [TestCase(null, false)]
     [TestCase(1, true)]
     public void IsSome(int? source, bool expectedResult)
-        => source
-            .IsSome()
-            .ShouldBe(expectedResult);
+        => source.IsSome.ShouldBe(expectedResult);
 }

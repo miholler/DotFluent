@@ -33,7 +33,6 @@ public sealed class NullableOrElseTest
             1 => source.OrElse(() => other),
             _ => source.OrElse(other)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

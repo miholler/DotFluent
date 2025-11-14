@@ -33,7 +33,6 @@ public sealed class StringDefaultIfEmptyTest
             1 => source.DefaultIfEmpty(() => defaultValue),
             _ => source.DefaultIfEmpty(defaultValue)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

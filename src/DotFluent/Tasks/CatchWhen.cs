@@ -1,4 +1,6 @@
-﻿namespace DotFluent.Tasks;
+﻿using DotFluent.Internal;
+
+namespace DotFluent.Tasks;
 
 public static partial class TaskExtensions
 {
@@ -59,7 +61,7 @@ public static partial class TaskExtensions
             catch when (condition())
             {
                 await selector()
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                     .ConfigureAwait(false);
             }
         }
@@ -127,7 +129,7 @@ public static partial class TaskExtensions
             catch (TException ex) when (predicate(ex))
             {
                 await selector(ex)
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                     .ConfigureAwait(false);
             }
         }
@@ -193,7 +195,7 @@ public static partial class TaskExtensions
             catch when (condition())
             {
                 return await selector()
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                     .ConfigureAwait(false);
             }
         }
@@ -263,7 +265,7 @@ public static partial class TaskExtensions
             catch (TException ex) when (predicate(ex))
             {
                 return await selector(ex)
-                    .ThrowIfNull(() => new InvalidOperationException($"{nameof(selector)} must not return null."))
+                    .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                     .ConfigureAwait(false);
             }
         }

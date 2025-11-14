@@ -16,7 +16,9 @@ public static partial class Result
 
         return resultType.IsGenericType
             && !resultType.IsGenericTypeDefinition
-            && typeof(Result<,>).IsAssignableFrom(resultType.GetGenericTypeDefinition())
+            && resultType
+                .GetGenericTypeDefinition()
+                .IsEqualTo(typeof(Result<,>), reference: true)
              ? resultType.GetGenericArguments()
              : [];
     }

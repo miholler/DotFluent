@@ -96,7 +96,6 @@ public sealed class EnumerableElementAtOrDefaultTest
             3 => source.ElementAtOrDefault(i, () => 0),
             _ => source.ElementAtOrDefault(i.Value, 0)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

@@ -72,7 +72,6 @@ public sealed class EnumerableMaxTest
             1 => source.Max(StringComparer.Ordinal),
             _ => source.Max(StringComparer.Ordinal.Compare)
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -88,7 +87,6 @@ public sealed class EnumerableMaxTest
             1 => source.Max(Comparer<int>.Default),
             _ => source.Max(Comparer<int>.Default.Compare)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

@@ -89,7 +89,6 @@ public sealed class EnumerableLastOrDefaultTest
             3 => source.LastOrDefault(x => x % 2 == 0, () => 0),
             _ => source.LastOrDefault(0)
         };
-
         result.ShouldBe(expectedResult);
     }
 }
