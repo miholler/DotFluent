@@ -9,7 +9,7 @@ public static partial class StringExtensions
     /// white-space characters.
     /// </summary>
     /// <param name="source">The string to test.</param>
-    /// <returns>true if the string is null, empty, or consists exclusively of white-space characters; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the string is null, empty, or consists exclusively of white-space characters; otherwise, <see langword="false"/>.</returns>
     public static bool IsNullOrWhiteSpace([NotNullWhen(false)]this string? source)
         => string.IsNullOrWhiteSpace(source);
 }

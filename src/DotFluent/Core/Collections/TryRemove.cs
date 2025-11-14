@@ -15,7 +15,7 @@ public static partial class CollectionExtensions
     /// When this method returns, contains the value of the element removed from the dictionary
     /// or the default value of the TValue type if the key does not exist.
     /// </param>
-    /// <returns>true if the element was removed successfully; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the element was removed successfully; otherwise, <see langword="false"/>.</returns>
     public static bool TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, [MaybeNullWhen(false)]out TValue value)
     {
         source.ThrowIfNull();

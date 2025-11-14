@@ -10,7 +10,7 @@ public static partial class Sequence
     /// <param name="first">The sequence to compare to the second sequence.</param>
     /// <param name="second">The sequence to compare to the first sequence.</param>
     /// <param name="comparison">A function to compare values.</param>
-    /// <returns>true if the two source sequences are of equal length and their corresponding elements compare equal according to comparer; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the two source sequences are of equal length and their corresponding elements compare equal according to comparer; otherwise, <see langword="false"/>.</returns>
     public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison)
         => first.SequenceEqual(second, EqualityComparer<TSource>.Create(comparison));
 }

@@ -7,7 +7,7 @@ public static partial class StringExtensions
     /// </summary>
     /// <param name="source">The first string to compare.</param>
     /// <param name="value">The second string to compare.</param>
-    /// <returns>true if the strings are not considered equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the strings are not considered equal; otherwise, <see langword="false"/>.</returns>
     public static bool IsNotEqualTo(this string? source, string? value)
         => !string.Equals(source, value);
 
@@ -17,7 +17,7 @@ public static partial class StringExtensions
     /// <param name="source">The first string to compare.</param>
     /// <param name="value">The second string to compare.</param>
     /// <param name="comparison">The comparison type to use.</param>
-    /// <returns>true if the strings are not considered equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the strings are not considered equal; otherwise, <see langword="false"/>.</returns>
     public static bool IsNotEqualTo(this string? source, string? value, StringComparison comparison)
         => !string.Equals(source, value, comparison);
 }

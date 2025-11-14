@@ -12,7 +12,7 @@ public static partial class CollectionExtensions
     /// <param name="source">The dictionary to modify.</param>
     /// <param name="key">The key of the element to add.</param>
     /// <param name="value">The value of the element to add. The value can be null for reference types.</param>
-    /// <returns>true if the key/value pair was added to the dictionary successfully; false if the key already exists.</returns>
+    /// <returns><see langword="true"/> if the key/value pair was added to the dictionary successfully; <see langword="false"/> if the key already exists.</returns>
     public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue value)
     {
         source.ThrowIfNull();
