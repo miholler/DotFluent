@@ -40,13 +40,13 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <summary>
     /// Gets whether the current option is a 'Some' value.
     /// </summary>
-    /// <returns>true if the option is a 'Some' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the option is a 'Some' value; otherwise, <see langword="false"/>.</returns>
     public bool IsSome { get; }
 
     /// <summary>
     /// Gets whether the current option is a 'None' value. 
     /// </summary>
-    /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the option is a 'None' value; otherwise, <see langword="false"/>.</returns>
     public bool IsNone => !IsSome;
 
     /// <summary>
@@ -214,7 +214,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Determines whether the current option contains a specified value.
     /// </summary>
     /// <param name="value">The value to locate in the option.</param>
-    /// <returns>true if the option contains the specified value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the option contains the specified value; otherwise, <see langword="false"/>.</returns>
     public bool Contains(T value)
         => IsSome && EqualityComparer<T>.Default.Equals(_value, value);
 
@@ -223,7 +223,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// satisfies a condition.
     /// </summary>
     /// <param name="predicate">A function to test the value for a condition.</param>
-    /// <returns>true if the option contains a value that satisfies the condition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the option contains a value that satisfies the condition; otherwise, <see langword="false"/>.</returns>
     public bool Exists(Func<T, bool> predicate)
     {
         predicate.ThrowIfNull();
@@ -309,7 +309,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Determines whether the specified option is equal to the current option.
     /// </summary>
     /// <param name="other">The option to compare with the current option.</param>
-    /// <returns>true if the specified option is equal to the current option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified option is equal to the current option; otherwise, <see langword="false"/>.</returns>
     public bool Equals(Option<T> other)
         => (IsNone && other.IsNone) || (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
 
@@ -317,7 +317,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Determines whether the specified object is equal to the current option.
     /// </summary>
     /// <param name="other">The object to compare with the current option.</param>
-    /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified object is equal to the current option; otherwise, <see langword="false"/>.</returns>
     public override bool Equals([NotNullWhen(true)]object? other)
         => other is Option<T> option && Equals(option);
 
@@ -327,7 +327,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="other">The object to compare with the current option.</param>
     /// <param name="comparer">The equality comparer to compare the represented values.</param>
-    /// <returns>true if the specified object is equal to the current option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified object is equal to the current option; otherwise, <see langword="false"/>.</returns>
     bool IStructuralEquatable.Equals(object? other, IEqualityComparer comparer)
         => other is Option<T> option && ((IsNone && option.IsNone) || (IsSome && option.IsSome && comparer.Equals(_value, option._value)));
 
@@ -385,7 +385,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is less than the right option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left option is less than the right option; otherwise, <see langword="false"/>.</returns>
     public static bool operator <(Option<T> left, Option<T> right)
         => left.CompareTo(right) < 0;
 
@@ -394,7 +394,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is less than or equal to the right option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left option is less than or equal to the right option; otherwise, <see langword="false"/>.</returns>
     public static bool operator <=(Option<T> left, Option<T> right)
         => left.CompareTo(right) <= 0;
 
@@ -403,7 +403,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is greater than the right option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left option is greater than the right option; otherwise, <see langword="false"/>.</returns>
     public static bool operator >(Option<T> left, Option<T> right)
         => left.CompareTo(right) > 0;
 
@@ -412,7 +412,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the left option is greater than or equal to the right option; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left option is greater than or equal to the right option; otherwise, <see langword="false"/>.</returns>
     public static bool operator >=(Option<T> left, Option<T> right)
         => left.CompareTo(right) >= 0;
 
@@ -421,7 +421,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the specified options are equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified options are equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(Option<T> left, Option<T> right)
         => left.Equals(right);
 
@@ -430,7 +430,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// </summary>
     /// <param name="left">The first option to compare.</param>
     /// <param name="right">The second option to compare.</param>
-    /// <returns>true if the specified options are not equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified options are not equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(Option<T> left, Option<T> right)
         => !left.Equals(right);
 
@@ -438,7 +438,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Determines whether a specified option is a 'Some' value.
     /// </summary>
     /// <param name="option">The option to check.</param>
-    /// <returns>true if the option is a 'Some' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the option is a 'Some' value; otherwise, <see langword="false"/>.</returns>
     public static bool operator true(Option<T> option)
         => option.IsSome;
 
@@ -446,7 +446,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// Determines whether a specified option is a 'None' value.
     /// </summary>
     /// <param name="option">The option to check.</param>
-    /// <returns>true if the option is a 'None' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the option is a 'None' value; otherwise, <see langword="false"/>.</returns>
     public static bool operator false(Option<T> option)
         => option.IsNone;
 }

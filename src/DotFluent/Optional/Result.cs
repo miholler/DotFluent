@@ -36,13 +36,13 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// <summary>
     /// Gets whether the current result is an 'Ok' value.
     /// </summary>
-    /// <returns>true if the result is an 'Ok' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result is an 'Ok' value; otherwise, <see langword="false"/>.</returns>
     public bool IsOk { get; } = true;
 
     /// <summary>
     /// Gets whether the current result is an 'Error' value.
     /// </summary>
-    /// <returns>true if the result is an 'Error' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result is an 'Error' value; otherwise, <see langword="false"/>.</returns>
     public bool IsError => !IsOk;
 
     /// <summary>
@@ -173,7 +173,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// Determines whether the current result contains a specified value.
     /// </summary>
     /// <param name="value">The value to locate in the result.</param>
-    /// <returns>true if the result contains the specified value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.</returns>
     public bool Contains(T value)
         => IsOk && EqualityComparer<T>.Default.Equals(_value, value);
 
@@ -182,7 +182,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// satisfies a condition.
     /// </summary>
     /// <param name="predicate">A function to test the value for a condition.</param>
-    /// <returns>true if the result contains a value that satisfies the condition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.</returns>
     public bool Exists(Func<T, bool> predicate)
     {
         predicate.ThrowIfNull();
@@ -268,7 +268,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// Determines whether the specified result is equal to the current result.
     /// </summary>
     /// <param name="other">The result to compare with the current result.</param>
-    /// <returns>true if the specified result is equal to the current result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified result is equal to the current result; otherwise, <see langword="false"/>.</returns>
     public bool Equals(Result<T> other)
         => (IsError && other.IsError) || (IsOk && other.IsOk && EqualityComparer<T>.Default.Equals(_value, other._value));
 
@@ -276,7 +276,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// Determines whether the specified object is equal to the current result.
     /// </summary>
     /// <param name="other">The object to compare with the current result.</param>
-    /// <returns>true if the specified object is equal to the current result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified object is equal to the current result; otherwise, <see langword="false"/>.</returns>
     public override bool Equals([NotNullWhen(true)]object? other)
         => other is Result<T> result && Equals(result);
 
@@ -286,7 +286,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="other">The object to compare with the current result.</param>
     /// <param name="comparer">The equality comparer to compare the represented values.</param>
-    /// <returns>true if the specified object is equal to the current result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified object is equal to the current result; otherwise, <see langword="false"/>.</returns>
     bool IStructuralEquatable.Equals(object? other, IEqualityComparer comparer)
         => other is Result<T> result && ((IsError && result.IsError) || (IsOk && result.IsOk && comparer.Equals(_value, result._value)));
 
@@ -334,7 +334,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is less than the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is less than the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator <(Result<T> left, Result<T> right)
         => left.CompareTo(right) < 0;
 
@@ -343,7 +343,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is less than or equal to the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is less than or equal to the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator <=(Result<T> left, Result<T> right)
         => left.CompareTo(right) <= 0;
 
@@ -352,7 +352,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is greater than the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is greater than the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator >(Result<T> left, Result<T> right)
         => left.CompareTo(right) > 0;
 
@@ -361,7 +361,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is greater than or equal to the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is greater than or equal to the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator >=(Result<T> left, Result<T> right)
         => left.CompareTo(right) >= 0;
 
@@ -370,7 +370,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the specified results are equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified results are equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(Result<T> left, Result<T> right)
         => left.Equals(right);
 
@@ -379,7 +379,7 @@ public readonly struct Result<T> : IEnumerable<T>, IEquatable<Result<T>>, ICompa
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the specified results are not equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified results are not equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(Result<T> left, Result<T> right)
         => !left.Equals(right);
 }
@@ -411,13 +411,13 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// <summary>
     /// Gets whether the current result is an 'Ok' value.
     /// </summary>
-    /// <returns>true if the result is an 'Ok' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result is an 'Ok' value; otherwise, <see langword="false"/>.</returns>
     public bool IsOk { get; } = true;
 
     /// <summary>
     /// Gets whether the current result is an 'Error' value.
     /// </summary>
-    /// <returns>true if the result is an 'Error' value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result is an 'Error' value; otherwise, <see langword="false"/>.</returns>
     public bool IsError => !IsOk;
 
     /// <summary>
@@ -551,7 +551,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// Determines whether the current result contains a specified value.
     /// </summary>
     /// <param name="value">The value to locate in the result.</param>
-    /// <returns>true if the result contains the specified value; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.</returns>
     public bool Contains(TValue value)
         => IsOk && EqualityComparer<TValue>.Default.Equals(_value, value);
 
@@ -560,7 +560,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// satisfies a condition.
     /// </summary>
     /// <param name="predicate">A function to test the value for a condition.</param>
-    /// <returns>true if the result contains a value that satisfies the condition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.</returns>
     public bool Exists(Func<TValue, bool> predicate)
     {
         predicate.ThrowIfNull();
@@ -646,7 +646,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// Determines whether the specified result is equal to the current result.
     /// </summary>
     /// <param name="other">The result to compare with the current result.</param>
-    /// <returns>true if the specified result is equal to the current result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified result is equal to the current result; otherwise, <see langword="false"/>.</returns>
     public bool Equals(Result<TValue, TError> other)
         => (IsError && other.IsError) || (IsOk && other.IsOk && EqualityComparer<TValue>.Default.Equals(_value, other._value));
 
@@ -654,7 +654,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// Determines whether the specified object is equal to the current result.
     /// </summary>
     /// <param name="other">The object to compare with the current result.</param>
-    /// <returns>true if the specified object is equal to the current result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified object is equal to the current result; otherwise, <see langword="false"/>.</returns>
     public override bool Equals([NotNullWhen(true)]object? other)
         => other is Result<TValue, TError> result && Equals(result);
 
@@ -664,7 +664,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="other">The object to compare with the current result.</param>
     /// <param name="comparer">The equality comparer to compare the represented values.</param>
-    /// <returns>true if the specified object is equal to the current result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified object is equal to the current result; otherwise, <see langword="false"/>.</returns>
     bool IStructuralEquatable.Equals(object? other, IEqualityComparer comparer)
         => other is Result<TValue, TError> result && ((IsError && result.IsError) || (IsOk && result.IsOk && comparer.Equals(_value, result._value)));
 
@@ -712,7 +712,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is less than the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is less than the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator <(Result<TValue, TError> left, Result<TValue, TError> right)
         => left.CompareTo(right) < 0;
 
@@ -721,7 +721,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is less than or equal to the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is less than or equal to the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator <=(Result<TValue, TError> left, Result<TValue, TError> right)
         => left.CompareTo(right) <= 0;
 
@@ -730,7 +730,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is greater than the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is greater than the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator >(Result<TValue, TError> left, Result<TValue, TError> right)
         => left.CompareTo(right) > 0;
 
@@ -739,7 +739,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the left result is greater than or equal to the right result; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the left result is greater than or equal to the right result; otherwise, <see langword="false"/>.</returns>
     public static bool operator >=(Result<TValue, TError> left, Result<TValue, TError> right)
         => left.CompareTo(right) >= 0;
 
@@ -748,7 +748,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the specified results are equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified results are equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(Result<TValue, TError> left, Result<TValue, TError> right)
         => left.Equals(right);
 
@@ -757,7 +757,7 @@ public readonly struct Result<TValue, TError> : IEnumerable<TValue>, IEquatable<
     /// </summary>
     /// <param name="left">The first result to compare.</param>
     /// <param name="right">The second result to compare.</param>
-    /// <returns>true if the specified results are not equal; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified results are not equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(Result<TValue, TError> left, Result<TValue, TError> right)
         => !left.Equals(right);
 }

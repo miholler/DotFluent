@@ -14,7 +14,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the option contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the option contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Option<TSource> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the option contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the option contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Task<Option<TSource>> source, TSource value, CancellationToken cancellationToken = default)
     {
@@ -54,7 +54,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the option contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the option contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Task<Option<TSource>> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
     {
@@ -76,7 +76,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the result contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Result<TSource> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
     {
@@ -98,7 +98,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the result contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Task<Result<TSource>> source, TSource value, CancellationToken cancellationToken = default)
     {
@@ -116,7 +116,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the result contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TSource>(this Task<Result<TSource>> source, Func<Task<TSource>> valueFactory, CancellationToken cancellationToken = default)
     {
@@ -136,7 +136,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the result contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TValue, TError>(this Result<TValue, TError> source, Func<Task<TValue>> valueFactory, CancellationToken cancellationToken = default)
     {
@@ -159,7 +159,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the result contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TValue, TError>(this Task<Result<TValue, TError>> source, TValue value, CancellationToken cancellationToken = default)
     {
@@ -178,7 +178,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous contains operation. The value of the TResult parameter contains
-    /// true if the result contains the specified value; otherwise, false.
+    /// <see langword="true"/> if the result contains the specified value; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ContainsAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<Task<TValue>> valueFactory, CancellationToken cancellationToken = default)
     {

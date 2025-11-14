@@ -9,7 +9,7 @@ public static partial class Sequence
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence to check for emptiness.</param>
-    /// <returns>true if the source sequence contains no elements; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the source sequence contains no elements; otherwise, <see langword="false"/>.</returns>
     public static bool None<TSource>(this IEnumerable<TSource> source)
     {
         source.ThrowIfNull();
@@ -32,7 +32,7 @@ public static partial class Sequence
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">The sequence whose elements to apply the predicate to.</param>
     /// <param name="predicate">A function to test each element for a condition.</param>
-    /// <returns>true if no element in the source sequence passes the test in the specified predicate; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if no element in the source sequence passes the test in the specified predicate; otherwise, <see langword="false"/>.</returns>
     public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
         source.ThrowIfNull();

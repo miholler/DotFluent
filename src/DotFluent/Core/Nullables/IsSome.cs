@@ -9,7 +9,7 @@ public static partial class NullableExtensions
         /// <summary>
         /// Gets whether the current nullable object has a value (is a 'Some' value).
         /// </summary>
-        /// <returns>true if the nullable object has a value; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the nullable object has a value; otherwise, <see langword="false"/>.</returns>
         public bool IsSome => source.HasValue;
     }
 }

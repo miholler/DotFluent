@@ -14,7 +14,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the option contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the option contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TSource>(this Option<TSource> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the option contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the option contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
     {
@@ -55,7 +55,7 @@ public static partial class OptionTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the option contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the option contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TSource>(this Task<Option<TSource>> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
     {
@@ -77,7 +77,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the result contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TSource>(this Result<TSource> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
     {
@@ -99,7 +99,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the result contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TSource>(this Task<Result<TSource>> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
     {
@@ -118,7 +118,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the result contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TSource>(this Task<Result<TSource>> source, Func<TSource, Task<bool>> predicate, CancellationToken cancellationToken = default)
     {
@@ -138,7 +138,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the result contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TValue, TError>(this Result<TValue, TError> source, Func<TValue, Task<bool>> predicate, CancellationToken cancellationToken = default)
     {
@@ -161,7 +161,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the result contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<TValue, bool> predicate, CancellationToken cancellationToken = default)
     {
@@ -181,7 +181,7 @@ public static partial class ResultTask
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous exists operation. The value of the TResult parameter contains
-    /// true if the result contains a value that satisfies the condition; otherwise, false.
+    /// <see langword="true"/> if the result contains a value that satisfies the condition; otherwise, <see langword="false"/>.
     /// </returns>
     public static Task<bool> ExistsAsync<TValue, TError>(this Task<Result<TValue, TError>> source, Func<TValue, Task<bool>> predicate, CancellationToken cancellationToken = default)
     {
