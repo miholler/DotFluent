@@ -14,6 +14,9 @@ public sealed class EnumerableMaxTest
         source
             .Invoking(x => x.Max((y, z) => 0))
             .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.Max(Comparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -23,6 +26,9 @@ public sealed class EnumerableMaxTest
 
         source
             .Invoking(x => x.Max((y, z) => 0))
+            .ShouldThrow<InvalidOperationException>();
+        source
+            .Invoking(x => x.Max(Comparer<int>.Default))
             .ShouldThrow<InvalidOperationException>();
     }
 
@@ -38,21 +44,49 @@ public sealed class EnumerableMaxTest
     }
 
     [Test]
-    [TestCase(new string[0], null)]
-    [TestCase(new string[] { null, null, null }, null)]
-    [TestCase(new[] { "A" }, "A")]
-    [TestCase(new[] { "A", "C", "B" }, "C")]
-    [TestCase(new[] { null, "B", null }, "B")]
-    public void ReferenceTypeMax(IEnumerable<string> source, string expectedResult)
-        => source
-            .Max(StringComparer.Ordinal.Compare)
-            .ShouldBe(expectedResult);
+    public void ComparerNullDoesNotThrowException()
+    {
+        var source = Enumerable.Empty<object>();
+        var comparer = default(IComparer<object>);
+
+        source
+            .Invoking(x => x.Max(comparer))
+            .ShouldNotThrow();
+    }
 
     [Test]
-    [TestCase(new[] { 1 }, 1)]
-    [TestCase(new[] { 1, 3, 2 }, 3)]
-    public void ValueTypeMax(IEnumerable<int> source, int expectedResult)
-        => source
-            .Max(Comparer<int>.Default.Compare)
-            .ShouldBe(expectedResult);
+    [TestCase(new string[0], null, 0)]
+    [TestCase(new string[0], null, 1)]
+    [TestCase(new string[] { null, null, null }, null, 0)]
+    [TestCase(new string[] { null, null, null }, null, 1)]
+    [TestCase(new[] { "A" }, "A", 0)]
+    [TestCase(new[] { "A" }, "A", 1)]
+    [TestCase(new[] { "A", "C", "B" }, "C", 0)]
+    [TestCase(new[] { "A", "C", "B" }, "C", 1)]
+    [TestCase(new[] { null, "B", null }, "B", 0)]
+    [TestCase(new[] { null, "B", null }, "B", 1)]
+    public void ReferenceTypeMax(IEnumerable<string> source, string expectedResult, int overload)
+    {
+        var result = overload switch
+        {
+            1 => source.Max(StringComparer.Ordinal),
+            _ => source.Max(StringComparer.Ordinal.Compare)
+        };
+        result.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    [TestCase(new[] { 1 }, 1, 0)]
+    [TestCase(new[] { 1 }, 1, 1)]
+    [TestCase(new[] { 1, 3, 2 }, 3, 0)]
+    [TestCase(new[] { 1, 3, 2 }, 3, 1)]
+    public void ValueTypeMax(IEnumerable<int> source, int expectedResult, int overload)
+    {
+        var result = overload switch
+        {
+            1 => source.Max(Comparer<int>.Default),
+            _ => source.Max(Comparer<int>.Default.Compare)
+        };
+        result.ShouldBe(expectedResult);
+    }
 }

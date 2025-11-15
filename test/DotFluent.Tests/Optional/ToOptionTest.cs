@@ -29,7 +29,7 @@ public sealed class OptionToOptionTest
     [TestCase(1, new[] { 1 }, 1)]
     public void ResultToOption(int? source, IEnumerable<int> expectedResult, int overload)
     {
-        var option = overload switch
+        var result = overload switch
         {
             1 => source
                     .Match(Result.Ok<int, int>, () => Result.Error<int, int>(0))
@@ -38,7 +38,6 @@ public sealed class OptionToOptionTest
                     .Match(Result.Ok, () => Result.Error<int>(new()))
                     .ToOption()
         };
-
-        option.ShouldBe(expectedResult);
+        result.ShouldBe(expectedResult);
     }
 }

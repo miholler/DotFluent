@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -33,7 +31,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a left outer join on two sequences.</returns>
     public static IEnumerable<TResult> LeftJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource?, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => outer.LeftJoin(inner, keySelector, resultSelector, EqualityComparer.Create(comparison));
+        => outer.LeftJoin(inner, keySelector, resultSelector, EqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -50,7 +48,7 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a left outer join on two sequences.</returns>
     public static IEnumerable<TResult> LeftJoin<TSource, TKey, TResult>(this IEnumerable<TSource> outer, IEnumerable<TSource> inner, Func<TSource, TKey> keySelector, Func<TSource, TSource?, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
-        => outer.LeftJoin(inner, keySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
+        => outer.LeftJoin(inner, keySelector, resultSelector, EqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -73,23 +71,6 @@ public static partial class Sequence
     }
 
     /// <summary>
-    /// Correlates the elements of two sequences based on matching keys. The default
-    /// equality comparer is used to compare keys.
-    /// </summary>
-    /// <typeparam name="TOuter">The type of the elements of the first sequence.</typeparam>
-    /// <typeparam name="TInner">The type of the elements of the second sequence.</typeparam>
-    /// <typeparam name="TKey">The type of the keys returned by the key selector functions.</typeparam>
-    /// <typeparam name="TResult">The type of the result elements.</typeparam>
-    /// <param name="outer">The first sequence to join.</param>
-    /// <param name="inner">The sequence to join to the first sequence.</param>
-    /// <param name="outerKeySelector">A function to extract the join key from each element of the first sequence.</param>
-    /// <param name="innerKeySelector">A function to extract the join key from each element of the second sequence.</param>
-    /// <param name="resultSelector">A function to create a result element from two matching elements or from one element having no match.</param>
-    /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a left outer join on two sequences.</returns>
-    public static IEnumerable<TResult> LeftJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner?, TResult> resultSelector)
-        => outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer: null);
-
-    /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
     /// function is used to compare keys.
     /// </summary>
@@ -105,7 +86,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare keys.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a left outer join on two sequences.</returns>
     public static IEnumerable<TResult> LeftJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner?, TResult> resultSelector, EqualityComparison<TKey> comparison)
-        => outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison));
+        => outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer<TKey>.Create(comparison));
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. Specified
@@ -124,7 +105,26 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a key.</param>
     /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a left outer join on two sequences.</returns>
     public static IEnumerable<TResult> LeftJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner?, TResult> resultSelector, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector)
-        => outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer.Create(comparison, hashCodeSelector));
+        => outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer<TKey>.Create(comparison, hashCodeSelector));
+
+#if !NET10_0_OR_GREATER
+
+    /// <summary>
+    /// Correlates the elements of two sequences based on matching keys. The default
+    /// equality comparer is used to compare keys.
+    /// </summary>
+    /// <typeparam name="TOuter">The type of the elements of the first sequence.</typeparam>
+    /// <typeparam name="TInner">The type of the elements of the second sequence.</typeparam>
+    /// <typeparam name="TKey">The type of the keys returned by the key selector functions.</typeparam>
+    /// <typeparam name="TResult">The type of the result elements.</typeparam>
+    /// <param name="outer">The first sequence to join.</param>
+    /// <param name="inner">The sequence to join to the first sequence.</param>
+    /// <param name="outerKeySelector">A function to extract the join key from each element of the first sequence.</param>
+    /// <param name="innerKeySelector">A function to extract the join key from each element of the second sequence.</param>
+    /// <param name="resultSelector">A function to create a result element from two matching elements or from one element having no match.</param>
+    /// <returns>An <see cref="IEnumerable{TResult}"/> that has elements of type TResult that are obtained by performing a left outer join on two sequences.</returns>
+    public static IEnumerable<TResult> LeftJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner?, TResult> resultSelector)
+        => outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, comparer: null);
 
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. A specified
@@ -153,4 +153,6 @@ public static partial class Sequence
                from i in g.Inners.DefaultIfEmpty()
                select resultSelector(g.Outer, i);
     }
+
+#endif
 }

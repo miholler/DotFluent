@@ -37,7 +37,6 @@ public sealed class ResultFlattenTest
                     .Flatten()
                     .AsEnumerable()
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 }

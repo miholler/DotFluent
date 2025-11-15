@@ -36,22 +36,20 @@ public sealed class EnumerablePipeTest
     }
 
     [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void Pipe(int overload)
+    [TestCase(new string[0], new string[0], 0)]
+    [TestCase(new string[0], new string[0], 1)]
+    [TestCase(new[] { "A", "B", "C" }, new[] { "A#", "B#", "C#" }, 0)]
+    [TestCase(new[] { "A", "B", "C" }, new[] { "A0", "B1", "C2" }, 1)]
+    public void Pipe(IEnumerable<string> source, IEnumerable<string> expectedResult, int overload)
     {
-        var a = new StringBuilder("A");
-        var b = new StringBuilder("B");
-        var c = new StringBuilder("C");
-        var source = Sequence.Create(a, b, c);
-
-        var result = overload switch
+        var result = source.Select(x => new StringBuilder(x));
+        result = overload switch
         {
-            1 => source.Pipe((x, i) => x.Insert(i - i, '#')),
-            _ => source.Pipe(x => x.Insert(0, '#'))
+            1 => result.Pipe((x, i) => x.Append(i)),
+            _ => result.Pipe(x => x.Append('#'))
         };
         result
             .Select(x => x.ToString())
-            .ShouldBe(["#A", "#B", "#C"]);
+            .ShouldBe(expectedResult);
     }
 }

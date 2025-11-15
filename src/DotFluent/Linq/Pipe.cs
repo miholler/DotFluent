@@ -17,7 +17,9 @@ public static partial class Sequence
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        return PipeIterator(source, action);
+        return source.IsEmptyArray()
+            ? []
+            : PipeIterator(source, action);
     }
 
     /// <summary>
@@ -35,7 +37,9 @@ public static partial class Sequence
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        return PipeIterator(source, action);
+        return source.IsEmptyArray()
+            ? []
+            : PipeIterator(source, action);
     }
 
     private static IEnumerable<TSource> PipeIterator<TSource>(IEnumerable<TSource> source, Action<TSource> action)

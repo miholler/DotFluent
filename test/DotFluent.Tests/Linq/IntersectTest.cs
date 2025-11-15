@@ -62,7 +62,6 @@ public sealed class EnumerableIntersectTest
             1 => first.Intersect(second, (x, y) => x == y, x => x.GetHashCode()),
             _ => first.Intersect(second, (x, y) => x == y)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

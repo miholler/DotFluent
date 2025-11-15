@@ -31,7 +31,7 @@ public static partial class NullableExtensions
     {
         otherFactory.ThrowIfNull();
 
-        return source.IsSome()
+        return source.IsSome
             ? source
             : otherFactory();
     }

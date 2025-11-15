@@ -16,7 +16,9 @@ public static partial class Option
 
         return optionType.IsGenericType
             && !optionType.IsGenericTypeDefinition
-            && typeof(Option<>).IsAssignableFrom(optionType.GetGenericTypeDefinition())
+            && optionType
+                .GetGenericTypeDefinition()
+                .IsEqualTo(typeof(Option<>), reference: true)
              ? optionType
                 .GetGenericArguments()
                 .FirstOrDefault()
@@ -40,7 +42,9 @@ public static partial class Result
 
         return resultType.IsGenericType
             && !resultType.IsGenericTypeDefinition
-            && typeof(Result<>).IsAssignableFrom(resultType.GetGenericTypeDefinition())
+            && resultType
+                .GetGenericTypeDefinition()
+                .IsEqualTo(typeof(Result<>), reference: true)
              ? resultType
                 .GetGenericArguments()
                 .FirstOrDefault()

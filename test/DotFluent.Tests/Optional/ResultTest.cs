@@ -64,7 +64,7 @@ public sealed class ResultTest
     public void Match(int? source, int value, int expectedResult, int overload)
     {
         var currentResult = 0;
-        var result = source.Match(Result<int>.Ok, () => Result<int>.Error(new() { HResult = value }));
+        var result = source.Match(Result<int>.Ok, () => Result<int>.Error(new HResultException(value)));
         switch (overload)
         {
             case 1:
@@ -166,7 +166,6 @@ public sealed class ResultTest
             1 => result.OrElse(() => other.Match(Result<int>.Ok, () => Result<int>.Error(new()))),
             _ => result.OrElse(other.Match(Result<int>.Ok, () => Result<int>.Error(new())))
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 
@@ -262,7 +261,6 @@ public sealed class ResultTest
             4 => StructuralComparisons.StructuralComparer.Compare(result, value.Match(Result<int>.Ok, () => Result<int>.Error(new()))),
             _ => result.CompareTo(value.Match(Result<int>.Ok, () => Result<int>.Error(new())))
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 
@@ -308,7 +306,6 @@ public sealed class ResultTest
             4 => StructuralComparisons.StructuralEqualityComparer.Equals(result, value.Match(Result<int>.Ok, () => Result<int>.Error(new()))),
             _ => result.Equals(value.Match(Result<int>.Ok, () => Result<int>.Error(new())))
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 
@@ -617,7 +614,6 @@ public sealed class Result2Test
             1 => result.OrElse(() => other.Match(Result<int, int>.Ok, () => Result<int, int>.Error(0))),
             _ => result.OrElse(other.Match(Result<int, int>.Ok, () => Result<int, int>.Error(0)))
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 
@@ -713,7 +709,6 @@ public sealed class Result2Test
             4 => StructuralComparisons.StructuralComparer.Compare(result, value.Match(Result<int, int>.Ok, () => Result<int, int>.Error(0))),
             _ => result.CompareTo(value.Match(Result<int, int>.Ok, () => Result<int, int>.Error(0)))
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 
@@ -759,7 +754,6 @@ public sealed class Result2Test
             4 => StructuralComparisons.StructuralEqualityComparer.Equals(result, value.Match(Result<int, int>.Ok, () => Result<int, int>.Error(0))),
             _ => result.Equals(value.Match(Result<int, int>.Ok, () => Result<int, int>.Error(0)))
         };
-
         currentResult.ShouldBe(expectedResult);
     }
 

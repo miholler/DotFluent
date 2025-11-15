@@ -31,7 +31,6 @@ public sealed class ObjectThrowIfNullTest
             1 => source.ThrowIfNull(() => new ArgumentNullException(nameof(source))),
             _ => source.ThrowIfNull()
         };
-
         result.ShouldBe(source);
     }
 }

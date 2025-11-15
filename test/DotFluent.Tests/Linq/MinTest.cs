@@ -14,6 +14,9 @@ public sealed class EnumerableMinTest
         source
             .Invoking(x => x.Min((y, z) => 0))
             .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.Min(Comparer<int>.Default))
+            .ShouldThrow<ArgumentNullException>();
     }
 
     [Test]
@@ -23,6 +26,9 @@ public sealed class EnumerableMinTest
 
         source
             .Invoking(x => x.Min((y, z) => 0))
+            .ShouldThrow<InvalidOperationException>();
+        source
+            .Invoking(x => x.Min(Comparer<int>.Default))
             .ShouldThrow<InvalidOperationException>();
     }
 
@@ -38,21 +44,49 @@ public sealed class EnumerableMinTest
     }
 
     [Test]
-    [TestCase(new string[0], null)]
-    [TestCase(new string[] { null, null, null }, null)]
-    [TestCase(new[] { "A" }, "A")]
-    [TestCase(new[] { "C", "A", "B" }, "A")]
-    [TestCase(new[] { null, "B", null }, "B")]
-    public void ReferenceTypeMin(IEnumerable<string> source, string expectedResult)
-        => source
-            .Min(StringComparer.Ordinal.Compare)
-            .ShouldBe(expectedResult);
+    public void ComparerNullDoesNotThrowException()
+    {
+        var source = Enumerable.Empty<object>();
+        var comparer = default(IComparer<object>);
+
+        source
+            .Invoking(x => x.Min(comparer))
+            .ShouldNotThrow();
+    }
 
     [Test]
-    [TestCase(new[] { 1 }, 1)]
-    [TestCase(new[] { 3, 1, 2 }, 1)]
-    public void ValueTypeMin(IEnumerable<int> source, int expectedResult)
-        => source
-            .Min(Comparer<int>.Default.Compare)
-            .ShouldBe(expectedResult);
+    [TestCase(new string[0], null, 0)]
+    [TestCase(new string[0], null, 1)]
+    [TestCase(new string[] { null, null, null }, null, 0)]
+    [TestCase(new string[] { null, null, null }, null, 1)]
+    [TestCase(new[] { "A" }, "A", 0)]
+    [TestCase(new[] { "A" }, "A", 1)]
+    [TestCase(new[] { "C", "A", "B" }, "A", 0)]
+    [TestCase(new[] { "C", "A", "B" }, "A", 1)]
+    [TestCase(new[] { null, "B", null }, "B", 0)]
+    [TestCase(new[] { null, "B", null }, "B", 1)]
+    public void ReferenceTypeMin(IEnumerable<string> source, string expectedResult, int overload)
+    {
+        var result = overload switch
+        {
+            1 => source.Min(StringComparer.Ordinal),
+            _ => source.Min(StringComparer.Ordinal.Compare)
+        };
+        result.ShouldBe(expectedResult);
+    }
+
+    [Test]
+    [TestCase(new[] { 1 }, 1, 0)]
+    [TestCase(new[] { 1 }, 1, 1)]
+    [TestCase(new[] { 3, 1, 2 }, 1, 0)]
+    [TestCase(new[] { 3, 1, 2 }, 1, 1)]
+    public void ValueTypeMin(IEnumerable<int> source, int expectedResult, int overload)
+    {
+        var result = overload switch
+        {
+            1 => source.Min(Comparer<int>.Default),
+            _ => source.Min(Comparer<int>.Default.Compare)
+        };
+        result.ShouldBe(expectedResult);
+    }
 }

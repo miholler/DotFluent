@@ -48,7 +48,6 @@ public sealed class EnumerableOrderDescendingTest
             2 => source.OrderDescending(Comparer<int>.Default),
             _ => source.OrderDescending()
         };
-
         result.ShouldBe(expectedResult);
     }
 }

@@ -487,7 +487,6 @@ public sealed class EnumerableMinOrDefaultTest
             9 => ToDouble(source.Select(ToDecimal).MinOrDefault(x => x)),
             _ => source.MinOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -547,7 +546,6 @@ public sealed class EnumerableMinOrDefaultTest
             9 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).MinOrDefault(x => x),
             _ => source.OfType<int?>().MinOrDefault()
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -617,7 +615,6 @@ public sealed class EnumerableMinOrDefaultTest
             19 => ToDouble(source.Select(ToDecimal).MinOrDefault(x => x, () => ToDecimal(defaultValue))),
             _ => source.MinOrDefault(ToInt32(defaultValue))
         };
-
         result.ShouldBe(expectedResult);
     }
 
@@ -727,7 +724,6 @@ public sealed class EnumerableMinOrDefaultTest
             19 => (double?)source.OfType<int?>().Select(x => x.Map(ToDecimal)).MinOrDefault(x => x, () => ToDecimal(defaultValue)),
             _ => source.OfType<int?>().MinOrDefault(ToInt32(defaultValue))
         };
-
         result.ShouldBe(expectedResult);
     }
 }

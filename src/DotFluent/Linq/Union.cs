@@ -1,6 +1,4 @@
-﻿using DotFluent.Internal;
-
-namespace DotFluent.Linq;
+﻿namespace DotFluent.Linq;
 
 public static partial class Sequence
 {
@@ -13,7 +11,7 @@ public static partial class Sequence
     /// <param name="comparison">A function to compare values.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements from both input sequences, excluding duplicates.</returns>
     public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison)
-        => first.Union(second, EqualityComparer.Create(comparison));
+        => first.Union(second, EqualityComparer<TSource>.Create(comparison));
 
     /// <summary>
     /// Produces the set union of two sequences by using specified compare functions.
@@ -25,5 +23,5 @@ public static partial class Sequence
     /// <param name="hashCodeSelector">A function to resolve a hash code for a value.</param>
     /// <returns>An <see cref="IEnumerable{TSource}"/> that contains the elements from both input sequences, excluding duplicates.</returns>
     public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, EqualityComparison<TSource> comparison, HashFunc<TSource>? hashCodeSelector)
-        => first.Union(second, EqualityComparer.Create(comparison, hashCodeSelector));
+        => first.Union(second, EqualityComparer<TSource>.Create(comparison, hashCodeSelector));
 }

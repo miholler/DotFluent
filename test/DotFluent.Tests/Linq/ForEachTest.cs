@@ -51,7 +51,6 @@ public sealed class EnumerableForEachTest
                 source.ForEach(x => result += x);
                 break;
         }
-
         result.ShouldBe(expectedResult);
     }
 }

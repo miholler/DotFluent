@@ -12,10 +12,16 @@ public sealed class EnumerableToHashSetTest
         IEnumerable<int> source = null;
 
         source
+            .Invoking(x => x.ToHashSet())
+            .ShouldThrow<ArgumentNullException>();
+        source
             .Invoking(x => x.ToHashSet((y, z) => y == z))
             .ShouldThrow<ArgumentNullException>();
         source
             .Invoking(x => x.ToHashSet((y, z) => y == z, y => y.GetHashCode()))
+            .ShouldThrow<ArgumentNullException>();
+        source
+            .Invoking(x => x.ToHashSet(EqualityComparer<int>.Default))
             .ShouldThrow<ArgumentNullException>();
     }
 
@@ -45,16 +51,18 @@ public sealed class EnumerableToHashSetTest
     }
 
     [Test]
-    [TestCase(new int[0], 0)]
-    [TestCase(new int[0], 1)]
     [TestCase(new[] { 1, 2, 3 }, 0)]
     [TestCase(new[] { 1, 2, 3 }, 1)]
+    [TestCase(new[] { 1, 2, 3 }, 2)]
+    [TestCase(new[] { 1, 2, 3 }, 3)]
     public void ToHashSet(IEnumerable<int> source, int overload)
     {
         var result = overload switch
         {
-            1 => source.ToHashSet((x, y) => x == y, x => x.GetHashCode()),
-            _ => source.ToHashSet((x, y) => x == y)
+            1 => source.ToHashSet((x, y) => x == y),
+            2 => source.ToHashSet((x, y) => x == y, x => x.GetHashCode()),
+            3 => source.ToHashSet(EqualityComparer<int>.Default),
+            _ => source.ToHashSet()
         };
         result.ShouldBe(new HashSet<int>(source));
     }

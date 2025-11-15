@@ -12,7 +12,7 @@ public static partial class NullableExtensions
     {
         none.ThrowIfNull();
 
-        if (source.IsNone())
+        if (source.IsNone)
             none();
     }
 
@@ -26,7 +26,7 @@ public static partial class NullableExtensions
     {
         some.ThrowIfNull();
 
-        if (source.IsSome())
+        if (source.IsSome)
             some(source.Value);
     }
 
@@ -42,7 +42,7 @@ public static partial class NullableExtensions
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        if (source.IsSome())
+        if (source.IsSome)
             some(source.Value);
         else
             none();
@@ -75,7 +75,7 @@ public static partial class NullableExtensions
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.IsSome()
+        return source.IsSome
             ? some(source.Value)
             : none();
     }

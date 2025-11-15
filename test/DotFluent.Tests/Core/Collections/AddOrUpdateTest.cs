@@ -64,12 +64,10 @@ public sealed class DictionaryAddOrUpdateTest
     [TestCase(1, 2, true, 3, 1)]
     public void AddOrUpdate(int key, int value, bool isExisting, int expectedResult, int overload)
     {
-        var source = isExisting
-            ? new Dictionary<int, int>()
-            {
-                [key] = value
-            }
-            : new Dictionary<int, int>();
+        var source = new Dictionary<int, int>();
+        if (isExisting)
+            source[key] = value;
+
         var result = overload switch
         {
             1 => source.AddOrUpdate(key, k => value, (k, v) => ++v),

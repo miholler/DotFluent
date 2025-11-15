@@ -9,11 +9,11 @@ public static partial class NullableExtensions
     /// <typeparam name="TSource">The type of the value of source.</typeparam>
     /// <param name="source">The nullable object in which to locate a value.</param>
     /// <param name="predicate">A function to test the value for a condition.</param>
-    /// <returns>true if the nullable object contains a value that satisfies the condition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the nullable object contains a value that satisfies the condition; otherwise, <see langword="false"/>.</returns>
     public static bool Exists<TSource>(this TSource? source, Func<TSource, bool> predicate) where TSource : struct
     {
         predicate.ThrowIfNull();
 
-        return source.IsSome() && predicate(source.Value);
+        return source.IsSome && predicate(source.Value);
     }
 }

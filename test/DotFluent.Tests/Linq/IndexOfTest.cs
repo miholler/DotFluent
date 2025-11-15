@@ -77,7 +77,6 @@ public sealed class EnumerableIndexOfTest
             3 => source.IndexOf(value, default(IEqualityComparer<int>)),
             _ => source.IndexOf(value)
         };
-
         result.ShouldBe(expectedResult);
     }
 }

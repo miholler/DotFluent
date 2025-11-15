@@ -8,6 +8,16 @@ namespace DotFluent.Optional.Primitives;
 public sealed class SuccessTest
 {
     [Test]
+    public void Set_Value()
+    {
+        var success = new Success<HttpStatusCode>()
+        {
+            Value = HttpStatusCode.OK
+        };
+        success.Value.ShouldBe(HttpStatusCode.OK);
+    }
+
+    [Test]
     public void OP_Implicit()
     {
         Success<HttpStatusCode> success = HttpStatusCode.OK;

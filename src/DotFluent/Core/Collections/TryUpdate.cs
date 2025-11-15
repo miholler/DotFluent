@@ -15,7 +15,7 @@ public static partial class CollectionExtensions
     /// the comparison results in equality.
     /// </param>
     /// <param name="comparisonValue">The value that is compared to the value of the element that has the specified key.</param>
-    /// <returns>true if the value with key was equal to comparisonValue and was replaced with newValue; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the value with key was equal to comparisonValue and was replaced with newValue; otherwise, <see langword="false"/>.</returns>
     public static bool TryUpdate<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue newValue, TValue comparisonValue)
     {
         source.ThrowIfNull();
