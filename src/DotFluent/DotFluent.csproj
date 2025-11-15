@@ -10,7 +10,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>Provides a set of extension methods for commonly used types within .Net (C#) to enable writing code fluently. Also adds support for different patterns like the option or result pattern (unions).</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Provides a set of extension members for commonly used types within .Net (C#) to enable writing code fluently. Also adds support for different patterns like the option or result pattern (unions) and further enhances .Net features like LINQ by adding more methods and overloads to existing methods as well as bringing promise like extensions to .Net Tasks.</Description>
     <PackageProjectUrl>https://bitbucket.org/miholler/dotfluent/wiki/Home</PackageProjectUrl>
     <PackageTags>Fluent, Extensions, Linq, Task, Promise, Result, Either, Option, Maybe, Union, Nullable</PackageTags>
   </PropertyGroup>
@@ -20,5 +21,8 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" PackagePath="\" Pack="true" Visible="false" />
   </ItemGroup>
 </Project>
