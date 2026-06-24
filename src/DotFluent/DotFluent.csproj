@@ -6,12 +6,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Fluent, Extension, Linq, Task, Promise, Result, Either, Option, Maybe, Union, Nullable</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
-  </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+    <PackageReference Include="Microsoft.Bcl.Memory" />
+    <PackageReference Include="PolySharp" PrivateAssets="all" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\README.md" PackagePath="\" Pack="true" Visible="false" />
