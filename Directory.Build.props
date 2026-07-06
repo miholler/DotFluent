@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <Authors>Michael Holler</Authors>
+    <Copyright>Copyright © 2018 Michael Holler</Copyright>	
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/miholler/DotFluent</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/miholler/DotFluent</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
