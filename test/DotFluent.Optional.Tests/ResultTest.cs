@@ -563,7 +563,7 @@ public sealed class Result2Test
         => source
             .Match(Result<int, int>.Error, Result<int, int>.Ok(0))
             .MapError(x => x + 1)
-            .Match(x => Sequence.Create(x), x => Sequence.Create(x))
+            .Match(x => Enumerable.Create(x), x => Enumerable.Create(x))
             .ShouldBe(expectedResult);
 
     [Test]

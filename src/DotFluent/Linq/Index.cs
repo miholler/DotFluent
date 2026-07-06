@@ -1,8 +1,8 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
 #if !NET10_0_OR_GREATER
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Returns a sequence that incorporates the element's index into a tuple.

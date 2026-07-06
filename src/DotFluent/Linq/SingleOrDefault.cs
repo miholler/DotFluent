@@ -1,8 +1,8 @@
-﻿using DotFluent.Internal;
+using DotFluent.Internal;
 
 namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Returns the only element of a sequence, or a default value created by a specified function

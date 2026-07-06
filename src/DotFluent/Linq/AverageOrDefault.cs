@@ -1,8 +1,8 @@
-﻿using static System.Convert;
+using static System.Convert;
 
 namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Computes the average of a sequence of int values,

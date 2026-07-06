@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Correlates the elements of two sequences based on matching keys. The default

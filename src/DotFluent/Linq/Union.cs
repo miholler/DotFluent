@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Produces the set union of two sequences by using a specified compare function.

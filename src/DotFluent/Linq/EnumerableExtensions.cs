@@ -1,10 +1,10 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
 /// <summary>
-/// Provides a set of static methods for querying objects
+/// Provides extension members for querying objects
 /// that implement <see cref="IEnumerable{T}"/>.
 /// </summary>
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     private static bool IsEmptyArray<TSource>(this IEnumerable<TSource> source)
         => source is TSource[] { Length: 0 };

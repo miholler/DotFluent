@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Sorts the elements of a sequence in descending order 

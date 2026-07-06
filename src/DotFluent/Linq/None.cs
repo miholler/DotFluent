@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Determines whether a sequence contains no elements.

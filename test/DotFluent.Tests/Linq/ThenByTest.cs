@@ -49,7 +49,7 @@ public sealed class EnumerableThenByTest
         var b = (Id: 1, Name: "B");
         var c = (Id: 2, Name: "C");
         var d = (Id: 2, Name: "D");
-        var source = Sequence.Create(b, a, d, c);
+        var source = Enumerable.Create(b, a, d, c);
 
         source
             .OrderBy(y => y.Id)
