@@ -2,10 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>1.0.0</Version>
-    <Description></Description>
-    <PackageReadmeFile></PackageReadmeFile>
-    <PackageTags></PackageTags>
+    <Description>A companion package to DotFluent that adds Option&lt;T&gt; and Result&lt;T&gt; / Result&lt;TValue, TError&gt; discriminated unions — functional patterns for expressing optional values and operation outcomes without using null or exceptions for control flow.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Option, Maybe, Result, Either, Discriminated-Union, Functional, Railway, Monad, Fluent, Extensions</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" PackagePath="\" Pack="true" Visible="false" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PolySharp" PrivateAssets="all" />
   </ItemGroup>

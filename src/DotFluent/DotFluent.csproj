@@ -2,16 +2,16 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6.0;net8.0;net10.0</TargetFrameworks>
     <Version>4.1.0</Version>
-    <Description>Provides a set of extension members for commonly used types within .NET (C#) to enable writing code fluently. Also adds support for different patterns like the option or result pattern (unions) and further enhances .NET features like LINQ by adding more methods and overloads to existing methods as well as bringing promise-like extensions to .NET Tasks.</Description>
+    <Description>A .NET library that provides fluent extension members for commonly used types, making everyday guard checks, string tests, dictionary operations, LINQ queries, and async task composition more expressive and readable.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>Fluent, Extension, Linq, Task, Promise, Result, Either, Option, Maybe, Union, Nullable</PackageTags>
+    <PackageTags>Fluent, Extensions, Guard, Nullable, String, Collection, Dictionary, Linq, Task, ValueTask, Promise, Chainable</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" PackagePath="\" Pack="true" Visible="false" />
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Bcl.Memory" />
     <PackageReference Include="PolySharp" PrivateAssets="all" />
     <PackageReference Include="System.Threading.Tasks.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\README.md" PackagePath="\" Pack="true" Visible="false" />
   </ItemGroup>
 </Project>
