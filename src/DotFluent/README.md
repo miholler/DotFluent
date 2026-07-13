@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/DotFluent.svg)](https://www.nuget.org/packages/DotFluent)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![.NET](https://img.shields.io/badge/.NET-Standard%202.0%20%7C%206%20%7C%208%20%7C%2010-blueviolet)
+![.NET](https://img.shields.io/badge/.NET-Standard%202.0%20%7C%208%20%7C%2010-blueviolet)
 
 A .NET library that provides fluent extension members for commonly used types, making everyday guard checks, string tests, dictionary operations, LINQ queries, and async task composition more expressive and readable.
 
@@ -422,11 +422,11 @@ await FetchUserAsync(id)
 
 ```csharp
 await FetchUserAsync(id)
-    .Catch(ex => logger.LogError(ex, "Fetch failed"));
+    .Catch<Exception>(ex => logger.LogError(ex, "Fetch failed"));
 
 // Only handle a specific exception type
 await FetchUserAsync(id)
-    .CatchWhen(() => !isRetrying, ex => logger.LogError(ex, "Non-retry failure"));
+    .CatchWhen<Exception>(ex => !isRetrying, ex => logger.LogError(ex, "Non-retry failure"));
 ```
 
 #### `Finally`
@@ -434,6 +434,6 @@ await FetchUserAsync(id)
 ```csharp
 await FetchUserAsync(id)
     .Then(user => ProcessAsync(user))
-    .Catch(ex  => logger.LogError(ex, "Processing failed"))
+    .Catch<Exception>(ex  => logger.LogError(ex, "Processing failed"))
     .Finally(() => connection.Close());
 ```

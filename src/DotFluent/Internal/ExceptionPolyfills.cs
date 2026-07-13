@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace System;
 
-#if !NET8_0_OR_GREATER
+#if NETSTANDARD
 
 [ExcludeFromCodeCoverage]
 internal static class ExceptionPolyfills

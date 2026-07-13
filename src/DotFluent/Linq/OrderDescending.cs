@@ -13,7 +13,7 @@ public static partial class EnumerableExtensions
     public static IOrderedEnumerable<TSource> OrderDescending<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         => source.OrderDescending(Comparer<TSource>.Create(comparison));
 
-#if !NET8_0_OR_GREATER
+#if NETSTANDARD
 
     /// <summary>
     /// Sorts the elements of a sequence in descending order.
