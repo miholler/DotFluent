@@ -54,7 +54,7 @@ Install-Package DotFluent
 | Namespace | Contents |
 |-----------|----------|
 | [`DotFluent`](#dotfluent-core) | Object, string, collection, and nullable extensions |
-| [`DotFluent.Linq`](#dotfluent-linq) | Additional LINQ operators for `IEnumerable<T>` |
+| [`DotFluent.Linq`](#dotfluent-linq) | Additional LINQ operators for `IEnumerable<T>` and `IAsyncEnumerable<T>` |
 | [`DotFluent.Tasks`](#dotfluent-tasks) | Promise-style continuations for `Task` and `ValueTask` |
 
 ---
@@ -249,7 +249,7 @@ int? result  = primary.OrElse(GetFallback());
 using DotFluent.Linq;
 ```
 
-All members below extend `IEnumerable<T>` unless marked *(static)*.
+All members below either extend `IEnumerable<T>` or `IAsyncEnumerable<T>` unless marked *(static)*.
 
 | Member | Description |
 |--------|-------------|
@@ -257,17 +257,19 @@ All members below extend `IEnumerable<T>` unless marked *(static)*.
 | `AverageOrDefault` | Computes the average, or a default value if the sequence is empty |
 | `Contains` | Determines whether a sequence contains an element using a custom comparison |
 | `CountBy` | Returns the occurrence count of each distinct key |
-| `Create` | *(static)* Creates a sequence from a set of elements |
+| `Create` | *(static)* Creates a sequence or async sequence from a set of elements |
 | `CrossJoin` | Returns the Cartesian product of two sequences |
 | `DefaultIfEmpty` | Returns a singleton sequence with a default value if the source is empty |
 | `Distinct` | Returns distinct elements using a custom comparison |
 | `DistinctBy` | Returns distinct elements by a key selector |
 | `ElementAtOrDefault` | Returns the element at an index or a default value |
+| `Empty` | *(static)* Returns an empty async sequence |
 | `Except` | Removes elements present in a second sequence using a custom comparison |
 | `ExceptBy` | Removes elements whose key is present in a second sequence |
 | `FirstOrDefault` | Returns the first element or a default value |
 | `Flatten` | Flattens nested sequences, or a tree structure via a child selector |
 | `ForEach` | Performs an action on each element (immediate, no return value) |
+| `ForEachAsync` | Performs a synchronous or asynchronous action on each async element |
 | `FullJoin` | Returns all elements from both sequences, matched where possible |
 | `GroupBy` | Groups elements by a key using a custom comparison |
 | `GroupJoin` | Correlates elements of the left sequence with a group of matching right elements |
@@ -293,20 +295,32 @@ All members below extend `IEnumerable<T>` unless marked *(static)*.
 | `OrderBy` | Sorts elements in ascending order by a key using a custom comparison |
 | `OrderByDescending` | Sorts elements in descending order by a key using a custom comparison |
 | `OrderDescending` | Sorts elements in descending order |
-| `Pipe` | Performs an action on each element while passing elements through (lazy, chainable) |
+| `Pipe` | Performs an action on each element while passing elements through (lazy, chainable), including async sequences |
 | `RightJoin` | Returns all right elements with matching left elements (or null for non-matches) |
 | `SequenceEqual` | Determines whether two sequences are equal using a custom comparison |
 | `SingleOrDefault` | Returns the only matching element or a default value |
 | `SumOrDefault` | Computes the sum or a default value if the sequence is empty |
 | `ThenBy` | Performs a secondary ascending sort using a custom comparison |
 | `ThenByDescending` | Performs a secondary descending sort using a custom comparison |
+| `ToArrayAsync` | Creates an array from an async sequence |
+| `ToAsyncEnumerable` | Converts an `IEnumerable<T>` to an `IAsyncEnumerable<T>` |
 | `ToDictionary` | Creates a dictionary using a custom key comparison |
+| `ToDictionaryAsync` | Creates a dictionary from an async sequence using a custom key comparison |
 | `ToHashSet` | Creates a hash set using a custom comparison |
 | `ToLookup` | Creates a lookup using a custom comparison |
+| `ToListAsync` | Creates a list from an async sequence |
 | `Union` | Returns distinct elements from both sequences using a custom comparison |
 | `UnionBy` | Returns distinct elements from both sequences by a key selector |
 
 ### Code Examples
+
+#### Static methods
+
+```csharp
+var numbers = Enumerable.Create(1, 2, 3);
+var asyncNumbers = AsyncEnumerable.Create(1, 2, 3);
+var empty = AsyncEnumerable.Empty<int>();
+```
 
 #### `IsNullOrEmpty` / `None`
 
@@ -332,6 +346,25 @@ var result = users
     .Pipe(u => logger.Log(u.Name))   // side effect
     .Where(u => u.IsActive)
     .ToList();
+```
+
+#### `ForEachAsync` / `Pipe`
+
+```csharp
+// ForEachAsync — immediate async side effects, no return value
+await users
+    .ToAsyncEnumerable()
+    .ForEachAsync(user => Console.WriteLine(user.Name));
+await users
+    .ToAsyncEnumerable()
+    .ForEachAsync((user, i) => Console.WriteLine($"{i}: {user.Name}"));
+
+// Pipe — async side effects while keeping the sequence flowing
+var result = users
+    .ToAsyncEnumerable()
+    .Pipe(user => logger.Log(user.Name))
+    .Where(u => u.IsActive)
+    .ToListAsync();
 ```
 
 #### Join variants
