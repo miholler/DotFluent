@@ -4,7 +4,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![.NET](https://img.shields.io/badge/.NET-Standard%202.0%20%7C%208%20%7C%2010-blueviolet)
 
-A .NET library that provides fluent extension members for commonly used types, making everyday guard checks, string tests, dictionary operations, LINQ queries, and async task composition more expressive and readable.
+A .NET library that provides fluent extension members for commonly used types, making everyday guard checks, string tests, collection operations, LINQ queries, and async task composition more expressive and readable.
 
 ## Why DotFluent?
 
