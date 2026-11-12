@@ -9,6 +9,9 @@
     <PackageReference Include="NUnit" />
     <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netframework48'">
+    <PackageReference Include="PolySharp" PrivateAssets="all" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotFluent\DotFluent.csproj" />
     <ProjectReference Include="..\DotFluent.TestCommon\DotFluent.TestCommon.csproj" />

@@ -10,8 +10,8 @@
     <None Include="README.md" PackagePath="\" Pack="true" Visible="false" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
     <PackageReference Include="Microsoft.Bcl.Memory" />
     <PackageReference Include="PolySharp" PrivateAssets="all" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" />
   </ItemGroup>
 </Project>
