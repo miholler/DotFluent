@@ -14,7 +14,7 @@ public static class ValueTaskPolyfills
         /// Gets a task that has already completed successfully.
         /// </summary>
         /// <returns>A <see cref="ValueTask"/> that has already completed successfully.</returns>
-        public static ValueTask CompletedTask => ValueTaskValues.CompletedTask;
+        public static ValueTask CompletedTask => default;
 
         /// <summary>
         /// Creates a <see cref="ValueTask"/> that has completed due to cancellation
@@ -64,11 +64,6 @@ public static class ValueTaskPolyfills
         public static ValueTask<TResult> FromResult<TResult>(TResult result)
             => new(result);
     }
-}
-
-file static class ValueTaskValues
-{
-    public static readonly ValueTask CompletedTask = default;
 }
 
 #endif

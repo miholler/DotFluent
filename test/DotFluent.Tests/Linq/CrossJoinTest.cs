@@ -65,7 +65,9 @@ public sealed class EnumerableCrossJoinTest
     public void CrossJoin(int overload)
     {
         var outer = Enumerable.Create(1, 2);
-        var inner = Enumerable.Create("a", "b", "c");
+        var inner = Enumerable
+            .Create("a", "b", "c")
+            .AsIterator();
 
         var result = overload switch
         {
