@@ -6,5 +6,4 @@ namespace DotFluent.Optional.Internal;
 internal static class Errors
 {
     public const string FunctionMustNotReturnNull = "{0} must not return null.";
-    public const string OptionNoValue = "Option has no value.";
 }

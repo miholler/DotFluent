@@ -8,20 +8,6 @@ namespace DotFluent.Optional;
 public sealed class OptionTest
 {
     [Test]
-    public void SomeValueReturnsValue()
-        => Option<int>
-            .Some(1)
-            .Value
-            .ShouldBe(1);
-
-    [Test]
-    public void NoneValueThrowsException()
-        => Option<int>
-            .None
-            .Invoking(x => x.Value)
-            .ShouldThrow<InvalidOperationException>();
-
-    [Test]
     public void IsSome()
     {
         var option = Option<int>.Some(1);

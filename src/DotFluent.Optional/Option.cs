@@ -1,5 +1,4 @@
-﻿using DotFluent.Optional.Internal;
-using System.Collections;
+﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DotFluent.Optional;
@@ -14,34 +13,19 @@ public static partial class Option;
 /// Represents an optional value.
 /// </summary>
 /// <typeparam name="T">The underlying type of the <see cref="Option{T}"/> generic type.</typeparam>
-public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable
+public readonly union Option<T>(Some<T>, None) : IEnumerable<T>, IEquatable<Option<T>>, IComparable<Option<T>>, IComparable, IStructuralComparable, IStructuralEquatable
 {
-    private readonly T _value;
-
-    private Option(T value)
-    {
-        _value = value;
-        IsSome = true;
-    }
-
     /// <summary>
-    /// Gets an option value that is a 'None' value.
+    /// Represents an option value that is a 'None' value.
     /// </summary>
     /// <returns>An <see cref="Option{T}"/> representing the absense of a value of type <typeparamref name="T"/>.</returns>
-    public static Option<T> None => default;
-
-    /// <summary>
-    /// Get the value of the current option if it is a 'Some' option.
-    /// An <see cref="InvalidOperationException"/> is thrown if the option is 'None'.
-    /// </summary>
-    /// <returns>The value of the option if it is a 'Some' option.</returns>
-    public T Value => IsSome ? _value : throw new InvalidOperationException(Errors.OptionNoValue);
+    public static readonly Option<T> None = default(None);
 
     /// <summary>
     /// Gets whether the current option is a 'Some' value.
     /// </summary>
     /// <returns><see langword="true"/> if the option is a 'Some' value; otherwise, <see langword="false"/>.</returns>
-    public bool IsSome { get; }
+    public bool IsSome => this is Some<T>;
 
     /// <summary>
     /// Gets whether the current option is a 'None' value. 
@@ -55,7 +39,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="value">The input value.</param>
     /// <returns>An <see cref="Option{T}"/> representing the value.</returns>
     public static Option<T> Some(T value)
-        => new(value);
+        => new Some<T>(value);
 
     /// <summary>
     /// Performs a specified action if the current option is a 'None' value.
@@ -77,8 +61,8 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         some.ThrowIfNull();
 
-        if (IsSome)
-            some(_value);
+        if (this is Some<T> s)
+            some(s.Value);
     }
 
     /// <summary>
@@ -92,10 +76,15 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        if (IsSome)
-            some(_value);
-        else
-            none();
+        switch (this)
+        {
+            case Some<T> s:
+                some(s.Value);
+                break;
+            default:
+                none();
+                break;
+        }
     }
 
     /// <summary>
@@ -122,7 +111,11 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return IsSome ? some(_value) : none();
+        return this switch
+        {
+            Some<T> s => some(s.Value),
+            _ => none()
+        };
     }
 
     /// <summary>
@@ -139,7 +132,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         mapper.ThrowIfNull();
 
-        return Match(x => Option.Some(mapper(x)), Option.None<TResult>);
+        return Match(value => Option.Some(mapper(value)), Option.None<TResult>);
     }
 
     /// <summary>
@@ -197,7 +190,11 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         predicate.ThrowIfNull();
         
-        return IsSome && !predicate(_value) ? None : this;
+        return this switch
+        {
+            Some<T> s when !predicate(s.Value) => None,
+            _ => this
+        };
     }
 
     /// <summary>
@@ -206,7 +203,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="value">The value to locate in the option.</param>
     /// <returns><see langword="true"/> if the option contains the specified value; otherwise, <see langword="false"/>.</returns>
     public bool Contains(T value)
-        => IsSome && EqualityComparer<T>.Default.Equals(_value, value);
+        => this is Some<T> s && EqualityComparer<T>.Default.Equals(s.Value, value);
 
     /// <summary>
     /// Determines whether the current option contains a value that
@@ -218,7 +215,7 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     {
         predicate.ThrowIfNull();
 
-        return IsSome && predicate(_value);
+        return this is Some<T> s && predicate(s.Value);
     }
 
     /// <summary>
@@ -241,8 +238,8 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <returns>An <see cref="IEnumerable{T}"/> containing one or zero elements.</returns>
     public IEnumerable<T> AsEnumerable()
     {
-        if (IsSome)
-            yield return _value;
+        if (this is Some<T> s)
+            yield return s.Value;
     }
 
     /// <summary>
@@ -251,18 +248,13 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="other">The option to compare with the current option.</param>
     /// <returns>An integer indicating the order of the current option relative to the specified option.</returns>
     public int CompareTo(Option<T> other)
-    {
-        if (IsNone && other.IsNone)
-            return 0;
-
-        if (IsSome && other.IsNone)
-            return 1;
-
-        if (IsNone && other.IsSome)
-            return -1;
-
-        return Comparer<T>.Default.Compare(_value, other._value);
-    }
+        => this switch
+        {
+            Some<T> left => other is Some<T> right
+                ? Comparer<T>.Default.Compare(left.Value, right.Value)
+                : 1,
+            _ => other.IsSome ? -1 : 0
+        };
 
     /// <summary>
     /// Compares the specified object with the current option.
@@ -283,16 +275,13 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
         if (other is not Option<T> option)
             return 1;
 
-        if (IsNone && option.IsNone)
-            return 0;
-
-        if (IsSome && option.IsNone)
-            return 1;
-
-        if (IsNone && option.IsSome)
-            return -1;
-
-        return comparer.Compare(_value, option._value);
+        return this switch
+        {
+            Some<T> left => option is Some<T> right
+                ? comparer.Compare(left.Value, right.Value)
+                : 1,
+            _ => option.IsSome ? -1 : 0
+        };
     }
 
     /// <summary>
@@ -301,7 +290,11 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="other">The option to compare with the current option.</param>
     /// <returns><see langword="true"/> if the specified option is equal to the current option; otherwise, <see langword="false"/>.</returns>
     public bool Equals(Option<T> other)
-        => (IsNone && other.IsNone) || (IsSome && other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value));
+        => this switch
+        {
+            Some<T> left => other is Some<T> right && EqualityComparer<T>.Default.Equals(left.Value, right.Value),
+            _ => other.IsNone
+        };
 
     /// <summary>
     /// Determines whether the specified object is equal to the current option.
@@ -319,14 +312,18 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="comparer">The equality comparer to compare the represented values.</param>
     /// <returns><see langword="true"/> if the specified object is equal to the current option; otherwise, <see langword="false"/>.</returns>
     bool IStructuralEquatable.Equals(object? other, IEqualityComparer comparer)
-        => other is Option<T> option && ((IsNone && option.IsNone) || (IsSome && option.IsSome && comparer.Equals(_value, option._value)));
+        => other is Option<T> option && this switch
+        {
+            Some<T> left => option is Some<T> right && comparer.Equals(left.Value, right.Value),
+            _ => option.IsNone
+        };
 
     /// <summary>
     /// Returns a hash code for the current option.
     /// </summary>
     /// <returns>A hash code for the current option.</returns>
     public override int GetHashCode()
-        => Match(x => x?.GetHashCode() ?? 1, 0);
+        => Match(value => value?.GetHashCode() ?? 1, 0);
 
     /// <summary>
     /// Returns a hash code for the current option
@@ -335,14 +332,14 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     /// <param name="comparer">The equality comparer that computes the hash code of the current option.</param>
     /// <returns>A hash code for the current option.</returns>
     int IStructuralEquatable.GetHashCode(IEqualityComparer comparer)
-        => Match(x => x.IsNotNull() ? comparer.GetHashCode(x) : 1, 0);
+        => Match(value => value.IsNotNull() ? comparer.GetHashCode(value) : 1, 0);
 
     /// <summary>
     /// Returns a string that represents the current option.
     /// </summary>
     /// <returns>A string that represents the current option.</returns>
     public override string ToString()
-        => Match(x => $"Some({x?.ToString() ?? "null"})", () => "None");
+        => Match(value => $"Some({value?.ToString() ?? "null"})", () => nameof(None));
 
     /// <summary>
     /// Implicitly converts a value into an option.
@@ -440,3 +437,15 @@ public readonly struct Option<T> : IEnumerable<T>, IEquatable<Option<T>>, ICompa
     public static bool operator false(Option<T> option)
         => option.IsNone;
 }
+
+/// <summary>
+/// Represents the case of <see cref="Option{T}"/> in which a value is present.
+/// </summary>
+/// <typeparam name="T">The underlying type of the <see cref="Some{T}"/> generic type.</typeparam>
+/// <param name="Value">The contained value, which may be null if <typeparamref name="T"/> allows it.</param>
+public readonly record struct Some<T>(T Value);
+
+/// <summary>
+/// Represents the case of <see cref="Option{T}"/> in which no value is present.
+/// </summary>
+public readonly record struct None;
