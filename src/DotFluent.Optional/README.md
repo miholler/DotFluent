@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/DotFluent.Optional.svg)](https://www.nuget.org/packages/DotFluent.Optional)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![.NET](https://img.shields.io/badge/.NET-Standard%202.0-blueviolet)
+![.NET](https://img.shields.io/badge/.NET-Standard%202.0%20%7C%208%20%7C%2010-blueviolet)
 
 A companion package to [DotFluent](https://www.nuget.org/packages/DotFluent) that adds `Option<T>` and `Result<T>` / `Result<TValue, TError>` discriminated unions — functional patterns for expressing optional values and operation outcomes without using `null` or exceptions for control flow.
 
@@ -69,24 +69,24 @@ An immutable value type that is either `Some(value)` — holding a non-null valu
 
 | Member | Description |
 |--------|-------------|
-| `Option.Some<T>(value)` | *(static)* Creates a `Some` option |
-| `Option.None<T>()` | *(static)* Creates a `None` option |
-| `ToOption` | Creates an `Option<T>` from a reference type, value type, or `Result<T>` |
-| `IsSome` | `true` if the option holds a value |
-| `IsNone` | `true` if the option holds no value |
-| `Value` | Gets the inner value; throws `InvalidOperationException` if `None` |
-| `Match` | Branches on `Some`/`None` — performs actions or returns a projected value |
-| `Map` | Transforms the inner value; propagates `None` |
-| `FlatMap` | Chains an option-returning function; flattens the result |
-| `Filter` | Discards the value if it does not satisfy a predicate |
-| `OrElse` | Returns a fallback option if `None` |
+| `AsEnumerable` | Converts the option to a sequence with zero or one element |
 | `Contains` | `true` if the option holds a specific value |
 | `Exists` | `true` if the value satisfies a predicate |
-| `GetValueOrDefault` | Returns the value or a specified/computed default |
-| `AsEnumerable` | Converts the option to a sequence with zero or one element |
+| `Filter` | Discards the value if it does not satisfy a predicate |
+| `FlatMap` | Chains an option-returning function; flattens the result |
 | `Flatten` | Flattens `Option<Option<T>>` to `Option<T>` |
+| `GetValueOrDefault` | Returns the value or a specified/computed default |
+| `IsNone` | `true` if the option holds no value |
+| `IsSome` | `true` if the option holds a value |
+| `Map` | Transforms the inner value; propagates `None` |
+| `Match` | Branches on `Some`/`None` — performs actions or returns a projected value |
+| `Option.None<T>()` | *(static)* Creates a `None` option |
+| `Option.Some<T>(value)` | *(static)* Creates a `Some` option |
+| `OrElse` | Returns a fallback option if `None` |
 | `Secure` | Strips null inner values from `Option<T?>` → `Option<T>` |
 | `ToNullable` | Converts `Option<T>` to `T?` |
+| `ToOption` | Creates an `Option<T>` from a reference type, value type, or `Result<T>` |
+| `Value` | Gets the inner value; throws `InvalidOperationException` if `None` |
 
 Async variants of all operations are available via `using DotFluent.Optional.Tasks;`.
 
@@ -180,22 +180,22 @@ An immutable value type that is either `Ok(value)` — holding a success value �
 
 | Member | Description |
 |--------|-------------|
-| `Result.Ok<T>(value)` | *(static)* Creates an `Ok` result |
-| `Result.Error<T>(exception)` | *(static)* Creates an `Error` result from an `Exception` |
-| `IsOk` | `true` if the result holds a success value |
-| `IsError` | `true` if the result holds an error |
-| `Match` | Branches on `Ok`/`Error` — performs actions or returns a projected value |
-| `Map` | Transforms the success value; propagates the error |
-| `MapError` | Transforms the error; propagates the success value |
-| `FlatMap` | Chains a result-returning function; flattens the result |
-| `OrElse` | Returns a fallback result if `Error` |
+| `AsEnumerable` | Converts to a sequence with zero or one element |
 | `Contains` | `true` if the result holds a specific success value |
 | `Exists` | `true` if the success value satisfies a predicate |
-| `GetValueOrDefault` | Returns the success value or a specified/computed default |
-| `AsEnumerable` | Converts to a sequence with zero or one element |
+| `FlatMap` | Chains a result-returning function; flattens the result |
 | `Flatten` | Flattens `Result<Result<T>>` to `Result<T>` |
-| `ToOption` | Converts to `Option<T>`, discarding the error |
+| `GetValueOrDefault` | Returns the success value or a specified/computed default |
+| `IsError` | `true` if the result holds an error |
+| `IsOk` | `true` if the result holds a success value |
+| `Map` | Transforms the success value; propagates the error |
+| `MapError` | Transforms the error; propagates the success value |
+| `Match` | Branches on `Ok`/`Error` — performs actions or returns a projected value |
+| `OrElse` | Returns a fallback result if `Error` |
+| `Result.Error<T>(exception)` | *(static)* Creates an `Error` result from an `Exception` |
+| `Result.Ok<T>(value)` | *(static)* Creates an `Ok` result |
 | `ToNullable` | Converts `Result<T>` to `T?` |
+| `ToOption` | Converts to `Option<T>`, discarding the error |
 
 Async variants of all operations are available via `using DotFluent.Optional.Tasks;`.
 
@@ -267,22 +267,22 @@ The two-parameter variant for when you prefer a domain-specific error type over 
 
 | Member | Description |
 |--------|-------------|
-| `Result.Ok<TValue, TError>(value)` | *(static)* Creates an `Ok` result |
-| `Result.Error<TValue, TError>(error)` | *(static)* Creates an `Error` result from a typed value |
-| `IsOk` | `true` if the result holds a success value |
-| `IsError` | `true` if the result holds an error |
-| `Match` | Branches on `Ok`/`Error` — performs actions or returns a projected value |
-| `Map` | Transforms the success value; propagates the error |
-| `MapError` | Transforms the error value; propagates the success value |
-| `FlatMap` | Chains a result-returning function; flattens the result |
-| `OrElse` | Returns a fallback result if `Error` |
+| `AsEnumerable` | Converts to a sequence with zero or one element |
 | `Contains` | `true` if the result holds a specific success value |
 | `Exists` | `true` if the success value satisfies a predicate |
-| `GetValueOrDefault` | Returns the success value or a specified/computed default |
-| `AsEnumerable` | Converts to a sequence with zero or one element |
+| `FlatMap` | Chains a result-returning function; flattens the result |
 | `Flatten` | Flattens `Result<Result<TValue, TError>, TError>` |
-| `ToOption` | Converts to `Option<TValue>`, discarding the error |
+| `GetValueOrDefault` | Returns the success value or a specified/computed default |
+| `IsError` | `true` if the result holds an error |
+| `IsOk` | `true` if the result holds a success value |
+| `Map` | Transforms the success value; propagates the error |
+| `MapError` | Transforms the error value; propagates the success value |
+| `Match` | Branches on `Ok`/`Error` — performs actions or returns a projected value |
+| `OrElse` | Returns a fallback result if `Error` |
+| `Result.Error<TValue, TError>(error)` | *(static)* Creates an `Error` result from a typed value |
+| `Result.Ok<TValue, TError>(value)` | *(static)* Creates an `Ok` result |
 | `ToNullable` | Converts `Result<TValue, TError>` to `TValue?` |
+| `ToOption` | Converts to `Option<TValue>`, discarding the error |
 
 Async variants of all operations are available via `using DotFluent.Optional.Tasks;`.
 
