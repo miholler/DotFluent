@@ -9,7 +9,7 @@ public static partial class Option
     /// <param name="source">The option with a nested option to flatten.</param>
     /// <returns>An <see cref="Option{TSource}"/> representing the flattened result.</returns>
     public static Option<TSource> Flatten<TSource>(this Option<Option<TSource>> source)
-        => source.FlatMap(x => x);
+        => source.FlatMap(option => option);
 }
 
 public static partial class Result
@@ -21,7 +21,7 @@ public static partial class Result
     /// <param name="source">The result with a nested result to flatten.</param>
     /// <returns>An <see cref="Result{TSource}"/> representing the flattened result.</returns>
     public static Result<TSource> Flatten<TSource>(this Result<Result<TSource>> source)
-        => source.FlatMap(x => x);
+        => source.FlatMap(result => result);
 
     /// <summary>
     /// Flattens a result with a nested result into one result.
@@ -31,5 +31,5 @@ public static partial class Result
     /// <param name="source">The result with a nested result to flatten.</param>
     /// <returns>A <see cref="Result{TValue, TError}"/> representing the flattened result.</returns>
     public static Result<TValue, TError> Flatten<TValue, TError>(this Result<Result<TValue, TError>, TError> source)
-        => source.FlatMap(x => x);
+        => source.FlatMap(result => result);
 }

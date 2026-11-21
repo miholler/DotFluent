@@ -9,7 +9,7 @@ public static partial class Option
     /// <param name="source">The option to create the nullable object from.</param>
     /// <returns>A <see cref="Nullable{TSource}"/> representing the value of source.</returns>
     public static TSource? ToNullable<TSource>(this Option<TSource> source) where TSource : struct
-        => source.Match(x => new TSource?(x), () => default);
+        => source.Match(value => new TSource?(value), () => default);
 }
 
 public static partial class Result
@@ -21,7 +21,7 @@ public static partial class Result
     /// <param name="source">The result to create the nullable object from.</param>
     /// <returns>A <see cref="Nullable{TSource}"/> representing the success value of source.</returns>
     public static TSource? ToNullable<TSource>(this Result<TSource> source) where TSource : struct
-        => source.Match(x => new TSource?(x), _ => default);
+        => source.Match(value => new TSource?(value), _ => default);
 
     /// <summary>
     /// Creates a nullable object from a result.
@@ -31,5 +31,5 @@ public static partial class Result
     /// <param name="source">The result to create the nullable object from.</param>
     /// <returns>A <see cref="Nullable{TValue}"/> representing the success value of source.</returns>
     public static TValue? ToNullable<TValue, TError>(this Result<TValue, TError> source) where TValue : struct
-        => source.Match(x => new TValue?(x), _ => default);
+        => source.Match(value => new TValue?(value), _ => default);
 }

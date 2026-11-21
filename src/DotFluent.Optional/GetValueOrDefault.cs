@@ -33,7 +33,7 @@ public static partial class Option
     {
         defaultFactory.ThrowIfNull();
 
-        return source.Match(x => x, defaultFactory);
+        return source.Match(value => value, defaultFactory);
     }
 }
 
@@ -70,7 +70,7 @@ public static partial class Result
     {
         defaultFactory.ThrowIfNull();
 
-        return source.Match(x => x, _ => defaultFactory());
+        return source.Match(value => value, _ => defaultFactory());
     }
 
     /// <summary>
@@ -107,6 +107,6 @@ public static partial class Result
     {
         defaultFactory.ThrowIfNull();
 
-        return source.Match(x => x, _ => defaultFactory());
+        return source.Match(value => value, _ => defaultFactory());
     }
 }

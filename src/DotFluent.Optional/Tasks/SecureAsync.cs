@@ -48,7 +48,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.Secure(), cancellationToken);
+        return source.Then(option => option.Secure(), cancellationToken);
     }
 
     /// <summary>
@@ -65,6 +65,6 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.Secure(), cancellationToken);
+        return source.Then(option => option.Secure(), cancellationToken);
     }
 }

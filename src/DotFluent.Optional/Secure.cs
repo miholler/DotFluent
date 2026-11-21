@@ -12,7 +12,7 @@ public static partial class Option
     /// otherwise, an empty <see cref="Option{TSource}"/>.
     /// </returns>
     public static Option<TSource> Secure<TSource>(this Option<TSource?> source) where TSource : class
-        => source.FlatMap(x => x.ToOption());
+        => source.FlatMap(value => value.ToOption());
 
     /// <summary>
     /// Removes the value from an option if it is a null value.
@@ -24,5 +24,5 @@ public static partial class Option
     /// otherwise, an empty <see cref="Option{TSource}"/>.
     /// </returns>
     public static Option<TSource> Secure<TSource>(this Option<TSource?> source) where TSource : struct
-        => source.FlatMap(x => x.ToOption());
+        => source.FlatMap(value => value.ToOption());
 }

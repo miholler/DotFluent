@@ -25,8 +25,8 @@ public static partial class OptionTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Option<TResult>>(cancellationToken)
-            : source.Match(x => 
-                mapper(x)
+            : source.Match(value => 
+                mapper(value)
                     .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper))))
                     .Then(Option.Some, cancellationToken),
                 None<TResult>);
@@ -51,7 +51,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         mapper.ThrowIfNull();
 
-        return source.Then(x => x.Map(mapper), cancellationToken);
+        return source.Then(option => option.Map(mapper), cancellationToken);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         mapper.ThrowIfNull();
 
-        return source.Then(x => x.MapAsync(mapper, cancellationToken), cancellationToken);
+        return source.Then(option => option.MapAsync(mapper, cancellationToken), cancellationToken);
     }
 }
 
@@ -99,8 +99,8 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Result<TResult>>(cancellationToken)
-            : source.Match(x =>
-                mapper(x)
+            : source.Match(value =>
+                mapper(value)
                     .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper))))
                     .Then(Result.Ok, cancellationToken),
                 Error<TResult>);
@@ -125,7 +125,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         mapper.ThrowIfNull();
 
-        return source.Then(x => x.Map(mapper), cancellationToken);
+        return source.Then(result => result.Map(mapper), cancellationToken);
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         mapper.ThrowIfNull();
 
-        return source.Then(x => x.MapAsync(mapper, cancellationToken), cancellationToken);
+        return source.Then(result => result.MapAsync(mapper, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -171,8 +171,8 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Result<TResult, TError>>(cancellationToken)
-            : source.Match(x =>
-                mapper(x)
+            : source.Match(value =>
+                mapper(value)
                     .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(mapper))))
                     .Then(Result.Ok<TResult, TError>, cancellationToken),
                 Error<TResult, TError>);
@@ -198,7 +198,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         mapper.ThrowIfNull();
 
-        return source.Then(x => x.Map(mapper), cancellationToken);
+        return source.Then(result => result.Map(mapper), cancellationToken);
     }
 
     /// <summary>
@@ -221,6 +221,6 @@ public static partial class ResultTask
         source.ThrowIfNull();
         mapper.ThrowIfNull();
 
-        return source.Then(x => x.MapAsync(mapper, cancellationToken), cancellationToken);
+        return source.Then(result => result.MapAsync(mapper, cancellationToken), cancellationToken);
     }
 }

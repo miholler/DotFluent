@@ -79,7 +79,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.ToOption(), cancellationToken);
+        return source.Then(value => value.ToOption(), cancellationToken);
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.ToOption(), cancellationToken);
+        return source.Then(value => value.ToOption(), cancellationToken);
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.ToOption(), cancellationToken);
+        return source.Then(result => result.ToOption(), cancellationToken);
     }
 
     /// <summary>
@@ -131,6 +131,6 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.ToOption(), cancellationToken);
+        return source.Then(result => result.ToOption(), cancellationToken);
     }
 }

@@ -44,7 +44,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.OrElse(other), cancellationToken);
+        return source.Then(option => option.OrElse(other), cancellationToken);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         otherFactory.ThrowIfNull();
 
-        return source.Then(x => x.OrElse(otherFactory), cancellationToken);
+        return source.Then(option => option.OrElse(otherFactory), cancellationToken);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         otherFactory.ThrowIfNull();
 
-        return source.Then(x => x.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
+        return source.Then(option => option.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
     }
 }
 
@@ -131,7 +131,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.OrElse(other), cancellationToken);
+        return source.Then(result => result.OrElse(other), cancellationToken);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         otherFactory.ThrowIfNull();
 
-        return source.Then(x => x.OrElse(otherFactory), cancellationToken);
+        return source.Then(result => result.OrElse(otherFactory), cancellationToken);
     }
 
     /// <summary>
@@ -173,7 +173,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         otherFactory.ThrowIfNull();
 
-        return source.Then(x => x.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
+        return source.Then(result => result.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -217,7 +217,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.OrElse(other), cancellationToken);
+        return source.Then(result => result.OrElse(other), cancellationToken);
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         otherFactory.ThrowIfNull();
 
-        return source.Then(x => x.OrElse(otherFactory), cancellationToken);
+        return source.Then(result => result.OrElse(otherFactory), cancellationToken);
     }
 
     /// <summary>
@@ -261,6 +261,6 @@ public static partial class ResultTask
         source.ThrowIfNull();
         otherFactory.ThrowIfNull();
 
-        return source.Then(x => x.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
+        return source.Then(result => result.OrElseAsync(otherFactory, cancellationToken), cancellationToken);
     }
 }

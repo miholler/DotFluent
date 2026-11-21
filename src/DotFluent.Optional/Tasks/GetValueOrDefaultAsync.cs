@@ -37,7 +37,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(), cancellationToken);
+        return source.Then(option => option.GetValueOrDefault(), cancellationToken);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(defaultValue), cancellationToken);
+        return source.Then(option => option.GetValueOrDefault(defaultValue), cancellationToken);
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(defaultFactory), cancellationToken);
+        return source.Then(option => option.GetValueOrDefault(defaultFactory), cancellationToken);
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
+        return source.Then(option => option.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
     }
 }
 
@@ -134,7 +134,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(), cancellationToken);
+        return source.Then(result => result.GetValueOrDefault(), cancellationToken);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(defaultValue), cancellationToken);
+        return source.Then(result => result.GetValueOrDefault(defaultValue), cancellationToken);
     }
 
     /// <summary>
@@ -172,7 +172,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(defaultFactory), cancellationToken);
+        return source.Then(result => result.GetValueOrDefault(defaultFactory), cancellationToken);
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
+        return source.Then(result => result.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -230,7 +230,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(), cancellationToken);
+        return source.Then(result => result.GetValueOrDefault(), cancellationToken);
     }
 
     /// <summary>
@@ -249,7 +249,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(defaultValue), cancellationToken);
+        return source.Then(result => result.GetValueOrDefault(defaultValue), cancellationToken);
     }
 
     /// <summary>
@@ -270,7 +270,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefault(defaultFactory), cancellationToken);
+        return source.Then(result => result.GetValueOrDefault(defaultFactory), cancellationToken);
     }
 
     /// <summary>
@@ -291,6 +291,6 @@ public static partial class ResultTask
         source.ThrowIfNull();
         defaultFactory.ThrowIfNull();
 
-        return source.Then(x => x.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
+        return source.Then(result => result.GetValueOrDefaultAsync(defaultFactory, cancellationToken), cancellationToken);
     }
 }

@@ -23,8 +23,8 @@ public static partial class OptionTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<Option<TSource>>(cancellationToken)
-            : source.Match(x => 
-                predicate(x)
+            : source.Match(value => 
+                predicate(value)
                     .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate))))
                     .Then(isMatch => isMatch ? source : Option.None<TSource>(), cancellationToken),
                 None<TSource>);
@@ -47,7 +47,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.Filter(predicate), cancellationToken);
+        return source.Then(option => option.Filter(predicate), cancellationToken);
     }
 
     /// <summary>
@@ -67,6 +67,6 @@ public static partial class OptionTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.FilterAsync(predicate, cancellationToken), cancellationToken);
+        return source.Then(option => option.FilterAsync(predicate, cancellationToken), cancellationToken);
     }
 }

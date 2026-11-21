@@ -22,8 +22,8 @@ public static partial class OptionTask
         
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
-            : source.Match(x => 
-                predicate(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
+            : source.Match(value => 
+                predicate(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
                 () => Task.FromResult(false));
     }
 
@@ -43,7 +43,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.Exists(predicate), cancellationToken);
+        return source.Then(option => option.Exists(predicate), cancellationToken);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.ExistsAsync(predicate, cancellationToken), cancellationToken);
+        return source.Then(option => option.ExistsAsync(predicate, cancellationToken), cancellationToken);
     }
 }
 
@@ -85,8 +85,8 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
-            : source.Match(x =>
-                predicate(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
+            : source.Match(value =>
+                predicate(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
                 _ => Task.FromResult(false));
     }
 
@@ -106,7 +106,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.Exists(predicate), cancellationToken);
+        return source.Then(result => result.Exists(predicate), cancellationToken);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.ExistsAsync(predicate, cancellationToken), cancellationToken);
+        return source.Then(result => result.ExistsAsync(predicate, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -146,8 +146,8 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<bool>(cancellationToken)
-            : source.Match(x =>
-                predicate(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
+            : source.Match(value =>
+                predicate(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(predicate)))),
                 _ => Task.FromResult(false));
     }
 
@@ -168,7 +168,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.Exists(predicate), cancellationToken);
+        return source.Then(result => result.Exists(predicate), cancellationToken);
     }
 
     /// <summary>
@@ -188,6 +188,6 @@ public static partial class ResultTask
         source.ThrowIfNull();
         predicate.ThrowIfNull();
 
-        return source.Then(x => x.ExistsAsync(predicate, cancellationToken), cancellationToken);
+        return source.Then(result => result.ExistsAsync(predicate, cancellationToken), cancellationToken);
     }
 }

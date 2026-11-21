@@ -62,9 +62,9 @@ public static partial class OptionTask
     {
         some.ThrowIfNull();
 
-        return source.MatchAsync(x =>
+        return source.MatchAsync(value =>
         {
-            some(x);
+            some(value);
             return Task.CompletedTask;
         }, none, cancellationToken);
     }
@@ -86,8 +86,8 @@ public static partial class OptionTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled(cancellationToken)
-            : source.Match(x => 
-                some(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(some)))),
+            : source.Match(value => 
+                some(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(some)))),
                 () => none().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(none)))));
     }
 
@@ -147,7 +147,7 @@ public static partial class OptionTask
     {
         some.ThrowIfNull();
 
-        return source.MatchAsync(x => Task.FromResult(some(x)), none, cancellationToken);
+        return source.MatchAsync(value => Task.FromResult(some(value)), none, cancellationToken);
     }
 
     /// <summary>
@@ -171,8 +171,8 @@ public static partial class OptionTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TResult>(cancellationToken)
-            : source.Match(x =>
-                some(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(some)))),
+            : source.Match(value =>
+                some(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(some)))),
                 () => none().ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(none)))));
     }
 
@@ -189,7 +189,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.Match(none), cancellationToken);
+        return source.Then(option => option.Match(none), cancellationToken);
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         some.ThrowIfNull();
 
-        return source.Then(x => x.Match(some), cancellationToken);
+        return source.Then(option => option.Match(some), cancellationToken);
     }
 
     /// <summary>
@@ -237,7 +237,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         some.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -256,7 +256,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.Match(some, none), cancellationToken);
+        return source.Then(option => option.Match(some, none), cancellationToken);
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -294,7 +294,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -313,7 +313,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -335,7 +335,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         some.ThrowIfNull();
 
-        return source.Then(x => x.Match(some, none), cancellationToken);
+        return source.Then(option => option.Match(some, none), cancellationToken);
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         some.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -380,7 +380,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.Match(some, none), cancellationToken);
+        return source.Then(option => option.Match(some, none), cancellationToken);
     }
 
     /// <summary>
@@ -403,7 +403,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -426,7 +426,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -449,7 +449,7 @@ public static partial class OptionTask
         some.ThrowIfNull();
         none.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(some, none, cancellationToken), cancellationToken);
+        return source.Then(option => option.MatchAsync(some, none, cancellationToken), cancellationToken);
     }
 }
 
@@ -469,9 +469,9 @@ public static partial class ResultTask
     {
         error.ThrowIfNull();
 
-        return source.MatchAsync(ok, x =>
+        return source.MatchAsync(ok, ex =>
         {
-            error(x);
+            error(ex);
             return Task.CompletedTask;
         }, cancellationToken);
     }
@@ -490,9 +490,9 @@ public static partial class ResultTask
     {
         ok.ThrowIfNull();
 
-        return source.MatchAsync(x =>
+        return source.MatchAsync(value =>
         {
-            ok(x);
+            ok(value);
             return Task.CompletedTask;
         }, error, cancellationToken);
     }
@@ -514,9 +514,9 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled(cancellationToken)
-            : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
+            : source.Match(value =>
+                ok(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                ex => error(ex).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -537,7 +537,7 @@ public static partial class ResultTask
     {
         error.ThrowIfNull();
 
-        return source.MatchAsync(ok, x => Task.FromResult(error(x)), cancellationToken);
+        return source.MatchAsync(ok, ex => Task.FromResult(error(ex)), cancellationToken);
     }
 
     /// <summary>
@@ -558,7 +558,7 @@ public static partial class ResultTask
     {
         ok.ThrowIfNull();
 
-        return source.MatchAsync(x => Task.FromResult(ok(x)), error, cancellationToken);
+        return source.MatchAsync(value => Task.FromResult(ok(value)), error, cancellationToken);
     }
 
     /// <summary>
@@ -582,9 +582,9 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TResult>(cancellationToken)
-            : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
+            : source.Match(value =>
+                ok(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                ex => error(ex).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -603,7 +603,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.Match(ok, error), cancellationToken);
+        return source.Then(result => result.Match(ok, error), cancellationToken);
     }
 
     /// <summary>
@@ -622,7 +622,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -641,7 +641,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -660,7 +660,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -683,7 +683,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.Match(ok, error), cancellationToken);
+        return source.Then(result => result.Match(ok, error), cancellationToken);
     }
 
     /// <summary>
@@ -706,7 +706,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -729,7 +729,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -752,7 +752,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -770,9 +770,9 @@ public static partial class ResultTask
     {
         error.ThrowIfNull();
 
-        return source.MatchAsync(ok, x =>
+        return source.MatchAsync(ok, value =>
         {
-            error(x);
+            error(value);
             return Task.CompletedTask;
         }, cancellationToken);
     }
@@ -792,9 +792,9 @@ public static partial class ResultTask
     {
         ok.ThrowIfNull();
 
-        return source.MatchAsync(x =>
+        return source.MatchAsync(value =>
         {
-            ok(x);
+            ok(value);
             return Task.CompletedTask;
         }, error, cancellationToken);
     }
@@ -817,9 +817,9 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled(cancellationToken)
-            : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
+            : source.Match(value =>
+                ok(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                value => error(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -841,7 +841,7 @@ public static partial class ResultTask
     {
         error.ThrowIfNull();
 
-        return source.MatchAsync(ok, x => Task.FromResult(error(x)), cancellationToken);
+        return source.MatchAsync(ok, value => Task.FromResult(error(value)), cancellationToken);
     }
 
     /// <summary>
@@ -863,7 +863,7 @@ public static partial class ResultTask
     {
         ok.ThrowIfNull();
 
-        return source.MatchAsync(x => Task.FromResult(ok(x)), error, cancellationToken);
+        return source.MatchAsync(value => Task.FromResult(ok(value)), error, cancellationToken);
     }
 
     /// <summary>
@@ -888,9 +888,9 @@ public static partial class ResultTask
 
         return cancellationToken.IsCancellationRequested
             ? Task.FromCanceled<TResult>(cancellationToken)
-            : source.Match(x =>
-                ok(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
-                x => error(x).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
+            : source.Match(value =>
+                ok(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(ok)))),
+                value => error(value).ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(error)))));
     }
 
     /// <summary>
@@ -910,7 +910,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.Match(ok, error), cancellationToken);
+        return source.Then(result => result.Match(ok, error), cancellationToken);
     }
 
     /// <summary>
@@ -930,7 +930,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -950,7 +950,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -970,7 +970,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -994,7 +994,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.Match(ok, error), cancellationToken);
+        return source.Then(result => result.Match(ok, error), cancellationToken);
     }
 
     /// <summary>
@@ -1018,7 +1018,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -1042,7 +1042,7 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -1066,6 +1066,6 @@ public static partial class ResultTask
         ok.ThrowIfNull();
         error.ThrowIfNull();
 
-        return source.Then(x => x.MatchAsync(ok, error, cancellationToken), cancellationToken);
+        return source.Then(result => result.MatchAsync(ok, error, cancellationToken), cancellationToken);
     }
 }

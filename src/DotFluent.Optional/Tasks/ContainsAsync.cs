@@ -42,7 +42,7 @@ public static partial class OptionTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.Contains(value), cancellationToken);
+        return source.Then(option => option.Contains(value), cancellationToken);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public static partial class OptionTask
         source.ThrowIfNull();
         valueFactory.ThrowIfNull();
 
-        return source.Then(x => x.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
+        return source.Then(option => option.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
     }
 }
 
@@ -104,7 +104,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.Contains(value), cancellationToken);
+        return source.Then(result => result.Contains(value), cancellationToken);
     }
 
     /// <summary>
@@ -123,7 +123,7 @@ public static partial class ResultTask
         source.ThrowIfNull();
         valueFactory.ThrowIfNull();
 
-        return source.Then(x => x.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
+        return source.Then(result => result.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
     }
 
     /// <summary>
@@ -165,7 +165,7 @@ public static partial class ResultTask
     {
         source.ThrowIfNull();
 
-        return source.Then(x => x.Contains(value), cancellationToken);
+        return source.Then(result => result.Contains(value), cancellationToken);
     }
 
     /// <summary>
@@ -185,6 +185,6 @@ public static partial class ResultTask
         source.ThrowIfNull();
         valueFactory.ThrowIfNull();
 
-        return source.Then(x => x.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
+        return source.Then(result => result.ContainsAsync(valueFactory, cancellationToken), cancellationToken);
     }
 }
