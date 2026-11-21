@@ -184,9 +184,6 @@ public sealed class ValueTaskFinallyTest
                     await (isFailed
                         ? ValueTask.FromException(new())
                         : ValueTask.CompletedTask)
-                        .Finally(() => isFailed
-                            ? ValueTask.FromException(new())
-                            : ValueTask.CompletedTask)
                         .Finally(() =>
                         {
                             result += value;
@@ -203,9 +200,6 @@ public sealed class ValueTaskFinallyTest
                     await (isFailed
                         ? ValueTask.FromException<int>(new())
                         : ValueTask.FromResult(result))
-                        .Finally(() => isFailed
-                            ? ValueTask.FromException(new())
-                            : ValueTask.CompletedTask)
                         .Finally(() =>
                         {
                             result += value;

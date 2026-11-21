@@ -367,74 +367,56 @@ public sealed class ValueTaskThenTest
         cts.Cancel();
 
         await cts.Token
-            .Awaiting(x => ValueTask
-                .FromCanceled(x)
-                .Then(() => { }, CancellationToken.None))
+            .Awaiting(x => ValueTask.CompletedTask.Then(() => { }, x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
-            .Awaiting(x => ValueTask.CompletedTask
-                .Then(() => ValueTask
-                    .FromCanceled(x)
-                    .Then(() => ValueTask.FromCanceled(x), CancellationToken.None), CancellationToken.None))
+            .Awaiting(x => ValueTask.CompletedTask.Then(() => ValueTask.CompletedTask, x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
-            .Awaiting(x => ValueTask
-                .FromCanceled(x)
-                .Then(() => 0, CancellationToken.None))
+            .Awaiting(x => ValueTask.CompletedTask.Then(() => 0, x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
-            .Awaiting(x => ValueTask.CompletedTask
-                .Then(() => ValueTask
-                    .FromCanceled(x)
-                    .Then(() => ValueTask.FromCanceled<int>(x), CancellationToken.None), CancellationToken.None))
-            .ShouldThrowAsync<TaskCanceledException>();
-        await cts.Token
-            .Awaiting(x => ValueTask
-                .FromCanceled<int>(x)
-                .Then(() => { }, CancellationToken.None))
+            .Awaiting(x => ValueTask.CompletedTask.Then(() => ValueTask.FromResult(0), x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
             .Awaiting(x => ValueTask
                 .FromResult(0)
-                .Then(() => ValueTask
-                    .FromCanceled<int>(x)
-                    .Then(() => ValueTask.FromCanceled(x), CancellationToken.None), CancellationToken.None))
-            .ShouldThrowAsync<TaskCanceledException>();
-        await cts.Token
-            .Awaiting(x => ValueTask
-                .FromCanceled<int>(x)
-                .Then(_ => { }, CancellationToken.None))
+                .Then(() => { }, x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
             .Awaiting(x => ValueTask
                 .FromResult(0)
-                .Then(_ => ValueTask
-                    .FromCanceled<int>(x)
-                    .Then(_ => ValueTask.FromCanceled(x), CancellationToken.None), CancellationToken.None))
-            .ShouldThrowAsync<TaskCanceledException>();
-        await cts.Token
-            .Awaiting(x => ValueTask
-                .FromCanceled<int>(x)
-                .Then(() => 0, CancellationToken.None))
+                .Then(() => ValueTask.CompletedTask, x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
             .Awaiting(x => ValueTask
                 .FromResult(0)
-                .Then(() => ValueTask
-                    .FromCanceled<int>(x)
-                    .Then(() => ValueTask.FromCanceled<int>(x), CancellationToken.None), CancellationToken.None))
-            .ShouldThrowAsync<TaskCanceledException>();
-        await cts.Token
-            .Awaiting(x => ValueTask
-                .FromCanceled<int>(x)
-                .Then(y => y, CancellationToken.None))
+                .Then(_ => { }, x))
             .ShouldThrowAsync<TaskCanceledException>();
         await cts.Token
             .Awaiting(x => ValueTask
                 .FromResult(0)
-                .Then(_ => ValueTask
-                    .FromCanceled<int>(x)
-                    .Then(_ => ValueTask.FromCanceled<int>(x), CancellationToken.None), CancellationToken.None))
+                .Then(_ => ValueTask.CompletedTask, x))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await cts.Token
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Then(() => 0, x))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await cts.Token
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Then(() => ValueTask.FromResult(0), x))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await cts.Token
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Then(_ => 0, x))
+            .ShouldThrowAsync<TaskCanceledException>();
+        await cts.Token
+            .Awaiting(x => ValueTask
+                .FromResult(0)
+                .Then(_ => ValueTask.FromResult(0), x))
             .ShouldThrowAsync<TaskCanceledException>();
     }
 }

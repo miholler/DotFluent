@@ -36,11 +36,18 @@ public static partial class EnumerableExtensions
 
     private static IEnumerable<TResult> CrossJoinIterator<TOuter, TInner, TResult>(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TInner, TResult> resultSelector)
     {
-        if (inner is not ICollection<TInner> elements)
-            elements = [.. inner];
+        using var enumerator = outer.GetEnumerator();
+        if (!enumerator.MoveNext())
+            yield break;
 
-        foreach (var outerItem in outer)
-            foreach (var innerItem in elements)
-                yield return resultSelector(outerItem, innerItem);
+        if (inner is not ICollection<TInner>)
+            inner = [.. inner];
+
+        do
+        {
+            foreach (var item in inner)
+                yield return resultSelector(enumerator.Current, item);
+        }
+        while (enumerator.MoveNext());
     }
 }

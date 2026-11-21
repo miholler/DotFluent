@@ -71,30 +71,30 @@ using DotFluent;
 
 | Member | Description |
 |--------|-------------|
-| `ThrowIfNull` | Throws `ArgumentNullException` (or a custom exception) if the object is null; otherwise returns the object |
-| `IsNull` | `true` if the object is null |
-| `IsNotNull` | `true` if the object is not null |
 | `Is` | `true` if the object satisfies a predicate; `false` when null |
-| `IsNot` | `true` if the object does not satisfy a predicate; `true` when null |
 | `IsEqualTo` | Value or reference equality check |
+| `IsNot` | `true` if the object does not satisfy a predicate; `true` when null |
 | `IsNotEqualTo` | Value or reference inequality check |
+| `IsNotNull` | `true` if the object is not null |
+| `IsNull` | `true` if the object is null |
+| `ThrowIfNull` | Throws `ArgumentNullException` (or a custom exception) if the object is null; otherwise returns the object |
 
 ### Strings — `StringExtensions`
 
 | Member | Description |
 |--------|-------------|
-| `IsNullOrEmpty` | `true` if the string is null or `""` |
+| `DefaultIfEmpty` | Returns a default value if the string is null, empty, or whitespace |
+| `IsEqualTo` | Case-sensitive string equality check |
+| `IsLike` | Case-insensitive equality (`OrdinalIgnoreCase`) |
+| `IsNotEqualTo` | Case-sensitive string inequality check |
+| `IsNotLike` | Case-insensitive inequality (`OrdinalIgnoreCase`) |
 | `IsNotNullNorEmpty` | `true` if the string is not null and not `""` |
-| `IsNullOrWhiteSpace` | `true` if the string is null, empty, or whitespace-only |
 | `IsNotNullNorWhiteSpace` | `true` if the string is not null, not empty, and not whitespace-only |
+| `IsNullOrEmpty` | `true` if the string is null or `""` |
+| `IsNullOrWhiteSpace` | `true` if the string is null, empty, or whitespace-only |
+| `Replace` | Replaces multiple characters or substrings in a single pass |
 | `ThrowIfNullOrEmpty` | Throws if null or empty; returns the string otherwise |
 | `ThrowIfNullOrWhiteSpace` | Throws if null, empty, or whitespace; returns the string otherwise |
-| `IsEqualTo` | Case-sensitive string equality check |
-| `IsNotEqualTo` | Case-sensitive string inequality check |
-| `IsLike` | Case-insensitive equality (`OrdinalIgnoreCase`) |
-| `IsNotLike` | Case-insensitive inequality (`OrdinalIgnoreCase`) |
-| `DefaultIfEmpty` | Returns a default value if the string is null, empty, or whitespace |
-| `Replace` | Replaces multiple characters or substrings in a single pass |
 
 ### Collections — `CollectionExtensions`
 
@@ -102,8 +102,8 @@ Extensions on `IDictionary<TKey, TValue>` that mirror the thread-safe API of `Co
 
 | Member | Description |
 |--------|-------------|
-| `GetOrAdd` | Returns the existing value or inserts and returns a new one |
 | `AddOrUpdate` | Inserts a new entry or updates an existing one using a factory |
+| `GetOrAdd` | Returns the existing value or inserts and returns a new one |
 | `TryAdd` | Adds a key/value pair if the key does not exist; returns `false` if it does |
 | `TryRemove` | Removes a key and returns its value via `out`; returns `false` if not found |
 | `TryUpdate` | Updates a value only if the current value equals a comparison value |
@@ -114,16 +114,16 @@ Functional-style extensions for `Nullable<T>` (value types).
 
 | Member | Description |
 |--------|-------------|
-| `IsSome` | `true` if the nullable has a value (`HasValue`) |
-| `IsNone` | `true` if the nullable has no value |
-| `Map` | Transforms the inner value; propagates `null` if none |
-| `FlatMap` | Transforms the inner value into another nullable; flattens the result |
-| `Match` | Executes an action or projects a value based on `Some`/`None` state |
-| `Filter` | Removes the value if it does not satisfy a predicate |
-| `OrElse` | Returns a fallback nullable if none |
 | `Contains` | `true` if the nullable contains a specific value |
 | `Exists` | `true` if the nullable contains a value satisfying a predicate |
+| `Filter` | Removes the value if it does not satisfy a predicate |
+| `FlatMap` | Transforms the inner value into another nullable; flattens the result |
 | `GetValueOrDefault` | Returns the value or a specified/computed default |
+| `IsNone` | `true` if the nullable has no value |
+| `IsSome` | `true` if the nullable has a value (`HasValue`) |
+| `Map` | Transforms the inner value; propagates `null` if none |
+| `Match` | Executes an action or projects a value based on `Some`/`None` state |
+| `OrElse` | Returns a fallback nullable if none |
 | `ToNullable` | Wraps a value type in a `Nullable<T>` |
 
 ---
@@ -307,8 +307,8 @@ All members below either extend `IEnumerable<T>` or `IAsyncEnumerable<T>` unless
 | `ToDictionary` | Creates a dictionary using a custom key comparison |
 | `ToDictionaryAsync` | Creates a dictionary from an async sequence using a custom key comparison |
 | `ToHashSet` | Creates a hash set using a custom comparison |
-| `ToLookup` | Creates a lookup using a custom comparison |
 | `ToListAsync` | Creates a list from an async sequence |
+| `ToLookup` | Creates a lookup using a custom comparison |
 | `Union` | Returns distinct elements from both sequences using a custom comparison |
 | `UnionBy` | Returns distinct elements from both sequences by a key selector |
 
@@ -431,11 +431,11 @@ Promise-style continuations for `Task`, `Task<T>`, `ValueTask`, and `ValueTask<T
 
 | Member | Description |
 |--------|-------------|
-| `Then` | Chains a synchronous or asynchronous continuation after a task completes successfully |
+| `AsValueTask` | Converts a `Task` / `Task<T>` to `ValueTask` / `ValueTask<T>` |
 | `Catch` | Handles a failure in the task chain, like a `catch` block |
 | `CatchWhen` | Handles a failure only when a specified condition is met |
 | `Finally` | Always-execute continuation after a task, regardless of success or failure |
-| `AsValueTask` | Converts a `Task` / `Task<T>` to `ValueTask` / `ValueTask<T>` |
+| `Then` | Chains a synchronous or asynchronous continuation after a task completes successfully |
 | `Unwrap` | Flattens a `ValueTask<ValueTask>` or `ValueTask<ValueTask<T>>` |
 
 ### Code Examples
@@ -455,11 +455,13 @@ await FetchUserAsync(id)
 
 ```csharp
 await FetchUserAsync(id)
-    .Catch<Exception>(ex => logger.LogError(ex, "Fetch failed"));
+    .Catch<TimeoutException>(ex => logger.LogWarning(ex, "The request timed out"))
+    .Catch<InvalidOperationException>(ex => logger.LogError(ex, "The operation failed"));
 
-// Only handle a specific exception type
+// CatchWhen handlers can target different exception types and conditions
 await FetchUserAsync(id)
-    .CatchWhen<Exception>(ex => !isRetrying, ex => logger.LogError(ex, "Non-retry failure"));
+    .CatchWhen<TimeoutException>(ex => !isRetrying, ex => logger.LogWarning(ex, "The request timed out"))
+    .CatchWhen<InvalidOperationException>(ex => isRetrying, ex => logger.LogError(ex, "The operation failed while retrying"));
 ```
 
 #### `Finally`
@@ -467,6 +469,6 @@ await FetchUserAsync(id)
 ```csharp
 await FetchUserAsync(id)
     .Then(user => ProcessAsync(user))
-    .Catch<Exception>(ex  => logger.LogError(ex, "Processing failed"))
+    .Catch<InvalidOperationException>(ex => logger.LogError(ex, "Processing failed"))
     .Finally(() => connection.Close());
 ```

@@ -1,6 +1,6 @@
 # DotFluent
 
-Null guards, async flows, and optional values — the patterns that show up everywhere tend to be the noisiest. DotFluent is a collection of extension members and types that keep them readable.
+DotFluent is a .NET library with fluent extensions for everyday operations like guarding against null, transforming nullable values, and chaining async tasks. Its companion package, `DotFluent.Optional`, adds `Option<T>` for values that may be absent and `Result` types for operations that can fail.
 
 ## Installation
 

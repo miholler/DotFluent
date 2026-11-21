@@ -1,4 +1,6 @@
-﻿namespace System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace System.Threading.Tasks;
 
 #if NETSTANDARD
 
@@ -6,6 +8,7 @@
 /// Provides extension members for <see cref="ValueTask"/> 
 /// and <see cref="ValueTask{TResult}"/> objects.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ValueTaskPolyfills
 {
     extension(ValueTask)

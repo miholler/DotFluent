@@ -1,5 +1,4 @@
-﻿using DotFluent.Optional.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Shouldly;
 
 namespace DotFluent.Optional.Tasks;
