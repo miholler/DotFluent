@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Returns the element at a specified index in a sequence or a specified default value 

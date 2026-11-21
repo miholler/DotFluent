@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Inserts the elements of a sequence into another sequence at a specified index.

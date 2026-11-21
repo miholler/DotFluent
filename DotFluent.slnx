@@ -1,8 +1,11 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/DotFluent/DotFluent.csproj" />
+    <Project Path="src/DotFluent.Optional/DotFluent.Optional.csproj" Id="4369a435-8d7c-41a7-896c-960f65e64eb7" />
+    <Project Path="src/DotFluent/DotFluent.csproj" Id="e4429c0c-f280-411b-bc10-e28f6cd395dc" />
   </Folder>
   <Folder Name="/test/">
-    <Project Path="test/DotFluent.Tests/DotFluent.Tests.csproj" />
+    <Project Path="test/DotFluent.Optional.Tests/DotFluent.Optional.Tests.csproj" Id="8fe9d294-2cfa-48e2-b936-d5ce433fcad3" />
+    <Project Path="test/DotFluent.TestCommon/DotFluent.TestCommon.csproj" Id="0c6a8521-4d8b-4ab8-bfdf-71d2bf5d61f6" />
+    <Project Path="test/DotFluent.Tests/DotFluent.Tests.csproj" Id="e26adeb1-eb41-4f27-aa89-53d0dfc773aa" />
   </Folder>
 </Solution>

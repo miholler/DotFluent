@@ -1,8 +1,8 @@
-﻿using DotFluent.Internal;
+using DotFluent.Internal;
 
 namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Returns the minimum value in a generic sequence according to a specified key selector function

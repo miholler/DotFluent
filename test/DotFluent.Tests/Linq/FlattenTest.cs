@@ -33,24 +33,24 @@ public sealed class EnumerableFlattenTest
 
     [Test]
     public void Flatten()
-        => Sequence
+        => Enumerable
             .Create(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 7, 8, 9 })
             .Flatten()
             .ShouldBe(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 
     [Test]
     public void FlattenWithSelector()
-        => Sequence
+        => Enumerable
             .Create(new TreeItem(1)
             {
-                Children = Sequence.Create(new TreeItem(2)
+                Children = Enumerable.Create(new TreeItem(2)
                 {
-                    Children = Sequence.Create(new TreeItem(3))
+                    Children = Enumerable.Create(new TreeItem(3))
                 })
             },
             new TreeItem(4)
             {
-                Children = Sequence.Create(new TreeItem(5), new TreeItem(6))
+                Children = Enumerable.Create(new TreeItem(5), new TreeItem(6))
             })
             .Flatten(x => x.Children)
             .Select(x => x.Id)

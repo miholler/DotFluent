@@ -175,7 +175,7 @@ public sealed class EnumerableGroupByTest
         var a = (Id: 1, Name: "A");
         var b = (Id: 2, Name: "B");
         var c = (Id: 3, Name: "C");
-        var source = Sequence.Create(a, b, c, a);
+        var source = Enumerable.Create(a, b, c, a);
 
         var result = overload switch
         {
@@ -191,8 +191,8 @@ public sealed class EnumerableGroupByTest
         result
             .Select(x => x.AsEnumerable())
             .ShouldBe([
-                Sequence.Create(a, a),
-                Sequence.Create(b),
-                Sequence.Create(c)]);
+                Enumerable.Create(a, a),
+                Enumerable.Create(b),
+                Enumerable.Create(c)]);
     }
 }

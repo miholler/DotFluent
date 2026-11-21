@@ -184,8 +184,8 @@ public sealed class EnumerableFullJoinTest
         var b = (Id: 2, Name: "B");
         var c = (Id: 3, Name: "C");
         var d = (Id: 4, Name: "D");
-        var outer = Sequence.Create(a, b, c);
-        var inner = Sequence.Create(b, b, d);
+        var outer = Enumerable.Create(a, b, c);
+        var inner = Enumerable.Create(b, b, d);
 
         var result = overload switch
         {

@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Sorts the elements of a sequence in ascending order 
@@ -13,7 +13,7 @@ public static partial class Sequence
     public static IOrderedEnumerable<TSource> Order<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         => source.Order(Comparer<TSource>.Create(comparison));
 
-#if !NET8_0_OR_GREATER
+#if NETSTANDARD
 
     /// <summary>
     /// Sorts the elements of a sequence in ascending order.

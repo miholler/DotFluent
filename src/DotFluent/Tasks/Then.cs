@@ -16,14 +16,14 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        static async Task ContinueWithAsync(Task source, Action action, CancellationToken cancellationToken)
+        static async Task Core(Task source, Action action, CancellationToken cancellationToken)
         {
             await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             action();
         }
-        return ContinueWithAsync(source, action, cancellationToken);
+        return Core(source, action, cancellationToken);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        static async Task ContinueWithAsync(Task source, Func<Task> selector, CancellationToken cancellationToken)
+        static async Task Core(Task source, Func<Task> selector, CancellationToken cancellationToken)
         {
             await source.ConfigureAwait(false);
 
@@ -47,7 +47,7 @@ public static partial class TaskExtensions
                 .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -63,14 +63,14 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        static async Task<TResult> ContinueWithAsync(Task source, Func<TResult> selector, CancellationToken cancellationToken)
+        static async Task<TResult> Core(Task source, Func<TResult> selector, CancellationToken cancellationToken)
         {
             await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             return selector();
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        static async Task<TResult> ContinueWithAsync(Task source, Func<Task<TResult>> selector, CancellationToken cancellationToken)
+        static async Task<TResult> Core(Task source, Func<Task<TResult>> selector, CancellationToken cancellationToken)
         {
             await source.ConfigureAwait(false);
 
@@ -95,7 +95,7 @@ public static partial class TaskExtensions
                 .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -111,14 +111,14 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         action.ThrowIfNull();
 
-        static async Task ContinueWithAsync(Task<TSource> source, Action<TSource> action, CancellationToken cancellationToken)
+        static async Task Core(Task<TSource> source, Action<TSource> action, CancellationToken cancellationToken)
         {
             var result = await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             action(result);
         }
-        return ContinueWithAsync(source, action, cancellationToken);
+        return Core(source, action, cancellationToken);
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        static async Task ContinueWithAsync(Task<TSource> source, Func<TSource, Task> selector, CancellationToken cancellationToken)
+        static async Task Core(Task<TSource> source, Func<TSource, Task> selector, CancellationToken cancellationToken)
         {
             var result = await source.ConfigureAwait(false);
 
@@ -143,7 +143,7 @@ public static partial class TaskExtensions
                 .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -160,14 +160,14 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        static async Task<TResult> ContinueWithAsync(Task<TSource> source, Func<TSource, TResult> selector, CancellationToken cancellationToken)
+        static async Task<TResult> Core(Task<TSource> source, Func<TSource, TResult> selector, CancellationToken cancellationToken)
         {
             var result = await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             return selector(result);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -184,7 +184,7 @@ public static partial class TaskExtensions
         source.ThrowIfNull();
         selector.ThrowIfNull();
 
-        static async Task<TResult> ContinueWithAsync(Task<TSource> source, Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken)
+        static async Task<TResult> Core(Task<TSource> source, Func<TSource, Task<TResult>> selector, CancellationToken cancellationToken)
         {
             var result = await source.ConfigureAwait(false);
 
@@ -193,7 +193,7 @@ public static partial class TaskExtensions
                 .ThrowIfNull(() => new InvalidOperationException(string.Format(Errors.FunctionMustNotReturnNull, nameof(selector))))
                 .ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 }
 
@@ -210,15 +210,14 @@ public static partial class ValueTaskExtensions
     {
         action.ThrowIfNull();
 
-        static async ValueTask ContinueWithAsync(ValueTask source, Action action, CancellationToken cancellationToken)
+        static async ValueTask Core(ValueTask source, Action action, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             action();
         }
-        return ContinueWithAsync(source, action, cancellationToken);
+        return Core(source, action, cancellationToken);
     }
 
     /// <summary>
@@ -232,18 +231,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask ContinueWithAsync(ValueTask source, Func<ValueTask> selector, CancellationToken cancellationToken)
+        static async ValueTask Core(ValueTask source, Func<ValueTask> selector, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var handler = selector();
-            if (!handler.IsCompletedSuccessfully)
-                await handler.ConfigureAwait(false);
+            await selector().ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -258,15 +253,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask<TResult> ContinueWithAsync(ValueTask source, Func<TResult> selector, CancellationToken cancellationToken)
+        static async ValueTask<TResult> Core(ValueTask source, Func<TResult> selector, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             return selector();
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -281,19 +275,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask<TResult> ContinueWithAsync(ValueTask source, Func<ValueTask<TResult>> selector, CancellationToken cancellationToken)
+        static async ValueTask<TResult> Core(ValueTask source, Func<ValueTask<TResult>> selector, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var handler = selector();
-            return handler.IsCompletedSuccessfully
-                ? handler.Result
-                : await handler.ConfigureAwait(false);
+            return await selector().ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -308,15 +297,14 @@ public static partial class ValueTaskExtensions
     {
         action.ThrowIfNull();
 
-        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Action action, CancellationToken cancellationToken)
+        static async ValueTask Core(ValueTask<TSource> source, Action action, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             action();
         }
-        return ContinueWithAsync(source, action, cancellationToken);
+        return Core(source, action, cancellationToken);
     }
 
     /// <summary>
@@ -331,18 +319,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Func<ValueTask> selector, CancellationToken cancellationToken)
+        static async ValueTask Core(ValueTask<TSource> source, Func<ValueTask> selector, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var handler = selector();
-            if (!handler.IsCompletedSuccessfully)
-                await handler.ConfigureAwait(false);
+            await selector().ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -357,16 +341,14 @@ public static partial class ValueTaskExtensions
     {
         action.ThrowIfNull();
 
-        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Action<TSource> action, CancellationToken cancellationToken)
+        static async ValueTask Core(ValueTask<TSource> source, Action<TSource> action, CancellationToken cancellationToken)
         {
-            var result = source.IsCompletedSuccessfully
-                ? source.Result
-                : await source.ConfigureAwait(false);
+            var result = await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             action(result);
         }
-        return ContinueWithAsync(source, action, cancellationToken);
+        return Core(source, action, cancellationToken);
     }
 
     /// <summary>
@@ -381,19 +363,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask ContinueWithAsync(ValueTask<TSource> source, Func<TSource, ValueTask> selector, CancellationToken cancellationToken)
+        static async ValueTask Core(ValueTask<TSource> source, Func<TSource, ValueTask> selector, CancellationToken cancellationToken)
         {
-            var result = source.IsCompletedSuccessfully
-                ? source.Result
-                : await source.ConfigureAwait(false);
+            var result = await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var handler = selector(result);
-            if (!handler.IsCompletedSuccessfully)
-                await handler.ConfigureAwait(false);
+            await selector(result).ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -409,15 +386,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask<TResult> ContinueWithAsync(ValueTask<TSource> source, Func<TResult> selector, CancellationToken cancellationToken)
+        static async ValueTask<TResult> Core(ValueTask<TSource> source, Func<TResult> selector, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             return selector();
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -433,19 +409,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask<TResult> ContinueWithAsync(ValueTask<TSource> source, Func<ValueTask<TResult>> selector, CancellationToken cancellationToken)
+        static async ValueTask<TResult> Core(ValueTask<TSource> source, Func<ValueTask<TResult>> selector, CancellationToken cancellationToken)
         {
-            if (!source.IsCompletedSuccessfully)
-                await source.ConfigureAwait(false);
+            await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var handler = selector();
-            return handler.IsCompletedSuccessfully
-                ? handler.Result
-                : await handler.ConfigureAwait(false);
+            return await selector().ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -461,16 +432,14 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask<TResult> ContinueWithAsync(ValueTask<TSource> source, Func<TSource, TResult> selector, CancellationToken cancellationToken)
+        static async ValueTask<TResult> Core(ValueTask<TSource> source, Func<TSource, TResult> selector, CancellationToken cancellationToken)
         {
-            var result = source.IsCompletedSuccessfully
-                ? source.Result
-                : await source.ConfigureAwait(false);
+            var result = await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
             return selector(result);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 
     /// <summary>
@@ -486,19 +455,13 @@ public static partial class ValueTaskExtensions
     {
         selector.ThrowIfNull();
 
-        static async ValueTask<TResult> ContinueWithAsync(ValueTask<TSource> source, Func<TSource, ValueTask<TResult>> selector, CancellationToken cancellationToken)
+        static async ValueTask<TResult> Core(ValueTask<TSource> source, Func<TSource, ValueTask<TResult>> selector, CancellationToken cancellationToken)
         {
-            var result = source.IsCompletedSuccessfully
-                ? source.Result
-                : await source.ConfigureAwait(false);
+            var result = await source.ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var handler = selector(result);
-            return handler.IsCompletedSuccessfully
-                ? handler.Result
-                : await handler.ConfigureAwait(false);
+            return await selector(result).ConfigureAwait(false);
         }
-        return ContinueWithAsync(source, selector, cancellationToken);
+        return Core(source, selector, cancellationToken);
     }
 }

@@ -402,7 +402,6 @@ public sealed class ValueTaskCatchWhenTest
                 await (isFailed
                     ? ValueTask.FromException(new())
                     : ValueTask.CompletedTask)
-                    .CatchWhen(() => true, () => ValueTask.FromException(new()))
                     .CatchWhen(() => true, () =>
                     {
                         result += value;
@@ -419,7 +418,6 @@ public sealed class ValueTaskCatchWhenTest
                 await (isFailed
                     ? ValueTask.FromException(new())
                     : ValueTask.CompletedTask)
-                    .CatchWhen<Exception>(_ => true, ValueTask.FromException)
                     .CatchWhen<Exception>(_ => true, _ =>
                     {
                         result += value;
@@ -436,7 +434,6 @@ public sealed class ValueTaskCatchWhenTest
                 await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
-                    .CatchWhen(() => true, () => ValueTask.FromException(new()))
                     .CatchWhen(() => true, () =>
                     {
                         result += value;
@@ -453,7 +450,6 @@ public sealed class ValueTaskCatchWhenTest
                 result = await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
-                    .CatchWhen(() => true, () => ValueTask.FromException<int>(new()))
                     .CatchWhen(() => true, () => ValueTask.FromResult(result + value));
                 break;
             case 8:
@@ -466,8 +462,7 @@ public sealed class ValueTaskCatchWhenTest
                 await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
-                    .CatchWhen<int, Exception>(_ => true, ValueTask.FromException)
-                    .CatchWhen<Exception>(_ => true, _ =>
+                    .CatchWhen<int, Exception>(_ => true, _ =>
                     {
                         result += value;
                         return ValueTask.CompletedTask;
@@ -483,7 +478,6 @@ public sealed class ValueTaskCatchWhenTest
                 result = await (isFailed
                     ? ValueTask.FromException<int>(new())
                     : ValueTask.FromResult(result))
-                    .CatchWhen<int, Exception>(_ => true, ValueTask.FromException<int>)
                     .CatchWhen<int, Exception>(_ => true, _ => ValueTask.FromResult(result + value));
                 break;
             default:

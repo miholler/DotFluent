@@ -159,7 +159,7 @@ public sealed class EnumerableToDictionaryTest
         var a = (Id: 1, Name: "A");
         var b = (Id: 2, Name: "B");
         var c = (Id: 3, Name: "C");
-        var source = Sequence.Create(a, b, c);
+        var source = Enumerable.Create(a, b, c);
 
         var result = overload switch
         {

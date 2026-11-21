@@ -1,6 +1,6 @@
-﻿namespace DotFluent.Linq;
+namespace DotFluent.Linq;
 
-public static partial class Sequence
+public static partial class EnumerableExtensions
 {
     /// <summary>
     /// Creates a dictionary from a sequence according to a specified
@@ -118,7 +118,7 @@ public static partial class Sequence
     public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source, EqualityComparison<TKey> comparison, HashFunc<TKey>? hashCodeSelector) where TKey : notnull
         => source.ToDictionary(EqualityComparer<TKey>.Create(comparison, hashCodeSelector));
 
-#if !NET8_0_OR_GREATER
+#if NETSTANDARD
 
     /// <summary>
     /// Creates a dictionary from a sequence according to the default comparer for
