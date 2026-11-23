@@ -21,9 +21,7 @@ public sealed class ObjectThrowIfNullTest
     }
 
     [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void ObjectNotNullReturnsObject(int overload)
+    public void ObjectNotNullReturnsObject([Values(0, 1)]int overload)
     {
         var source = new object();
         var result = overload switch

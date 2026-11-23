@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DotFluent.Optional.Internal;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DotFluent.Optional;
@@ -262,7 +263,12 @@ public readonly union Option<T>(Some<T>, None) : IEnumerable<T>, IEquatable<Opti
     /// <param name="other">The object to compare with the current option.</param>
     /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
     int IComparable.CompareTo(object? other)
-        => other is Option<T> option ? CompareTo(option) : 1;
+        => other switch
+        {
+            Option<T> option => CompareTo(option),
+            null => 1,
+            _ => throw new ArgumentException(string.Format(Errors.ArgumentMustBeOfType, GetType()), nameof(other))
+        };
 
     /// <summary>
     /// Compares the specified object with the current option by using a specified comparer.
@@ -271,18 +277,18 @@ public readonly union Option<T>(Some<T>, None) : IEnumerable<T>, IEquatable<Opti
     /// <param name="comparer">The comparer to compare the represented values.</param>
     /// <returns>An integer indicating the order of the current option relative to the specified object.</returns>
     int IStructuralComparable.CompareTo(object? other, IComparer comparer)
-    {
-        if (other is not Option<T> option)
-            return 1;
-
-        return this switch
+        => other switch
         {
-            Some<T> left => option is Some<T> right
-                ? comparer.Compare(left.Value, right.Value)
-                : 1,
-            _ => option.IsSome ? -1 : 0
+            Option<T> option => this switch
+            {
+                Some<T> left => option is Some<T> right
+                    ? comparer.Compare(left.Value, right.Value)
+                    : 1,
+                _ => option.IsSome ? -1 : 0
+            },
+            null => 1,
+            _ => throw new ArgumentException(string.Format(Errors.ArgumentMustBeOfType, GetType()), nameof(other))
         };
-    }
 
     /// <summary>
     /// Determines whether the specified option is equal to the current option.

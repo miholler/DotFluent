@@ -146,13 +146,7 @@ public sealed class EnumerableGroupJoinTest
     }
 
     [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    [TestCase(2)]
-    [TestCase(3)]
-    [TestCase(4)]
-    [TestCase(5)]
-    public void GroupJoin(int overload)
+    public void GroupJoin([Values(0, 1, 2, 3, 4, 5)]int overload)
     {
         var a = (Id: 1, Name: "A");
         var b = (Id: 2, Name: "B");

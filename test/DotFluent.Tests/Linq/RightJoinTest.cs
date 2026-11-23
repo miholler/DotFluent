@@ -170,15 +170,7 @@ public sealed class EnumerableRightJoinTest
     }
 
     [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    [TestCase(2)]
-    [TestCase(3)]
-    [TestCase(4)]
-    [TestCase(5)]
-    [TestCase(6)]
-    [TestCase(7)]
-    public void RightJoin(int overload)
+    public void RightJoin([Values(0, 1, 2, 3, 4, 5, 6, 7)]int overload)
     {
         var a = (Id: 1, Name: "A");
         var b = (Id: 2, Name: "B");

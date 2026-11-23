@@ -94,11 +94,7 @@ public sealed class EnumerableToLookupTest
     }
 
     [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    [TestCase(2)]
-    [TestCase(3)]
-    public void ToLookup(int overload)
+    public void ToLookup([Values(0, 1, 2, 3)]int overload)
     {
         var a = (Id: 1, Name: "A");
         var b = (Id: 2, Name: "B");

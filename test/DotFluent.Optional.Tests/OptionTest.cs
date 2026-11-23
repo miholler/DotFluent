@@ -244,47 +244,53 @@ public sealed class OptionTest
             .ShouldBe(expectedResult);
 
     [Test]
-    [TestCase(null, 1, -1, 0)]
-    [TestCase(null, 1, 1, 1)]
-    [TestCase(null, 1, -1, 2)]
-    [TestCase(null, 1, 1, 3)]
-    [TestCase(null, 1, -1, 4)]
-    [TestCase(1, null, 1, 0)]
-    [TestCase(1, null, 1, 1)]
-    [TestCase(1, null, 1, 2)]
-    [TestCase(1, null, 1, 3)]
-    [TestCase(1, null, 1, 4)]
-    [TestCase(null, null, 0, 0)]
-    [TestCase(null, null, 1, 1)]
-    [TestCase(null, null, 0, 2)]
-    [TestCase(null, null, 1, 3)]
-    [TestCase(null, null, 0, 4)]
-    [TestCase(1, 1, 0, 0)]
-    [TestCase(1, 1, 1, 1)]
-    [TestCase(1, 1, 0, 2)]
-    [TestCase(1, 1, 1, 3)]
-    [TestCase(1, 1, 0, 4)]
-    [TestCase(1, 2, -1, 0)]
-    [TestCase(1, 2, 1, 1)]
-    [TestCase(1, 2, -1, 2)]
-    [TestCase(1, 2, 1, 3)]
-    [TestCase(1, 2, -1, 4)]
-    [TestCase(2, 1, 1, 0)]
-    [TestCase(2, 1, 1, 1)]
-    [TestCase(2, 1, 1, 2)]
-    [TestCase(2, 1, 1, 3)]
-    [TestCase(2, 1, 1, 4)]
-    public void CompareTo(int? source, int? value, int expectedResult, int overload)
+    public void CompareToDifferentTypeThrowsException()
     {
-        var option = source.ToOption();
+        var option = Option<int>.None;
+
+        Comparer<object>.Default
+            .Invoking(x => x.Compare(option, 0))
+            .ShouldThrow<ArgumentException>();
+        StructuralComparisons.StructuralComparer
+            .Invoking(x => x.Compare(option, 0))
+            .ShouldThrow<ArgumentException>();
+    }
+
+    [Test]
+    public void CompareToNull([Values(0, 1)]int overload)
+    {
+        var option = Option<int>.None;
+
         var result = overload switch
         {
-            1 => Comparer<object>.Default.Compare(option, value),
-            2 => Comparer<object>.Default.Compare(option, value.ToOption()),
-            3 => StructuralComparisons.StructuralComparer.Compare(option, value),
-            4 => StructuralComparisons.StructuralComparer.Compare(option, value.ToOption()),
-            _ => option.CompareTo(value.ToOption())
+            1 => ((IStructuralComparable)option).CompareTo(null, StructuralComparisons.StructuralComparer),
+            _ => ((IComparable)option).CompareTo(null)
         };
+        result.ShouldBe(1);
+    }
+
+    [Test]
+    public void CompareTo([Values]OptionState leftState, [Values]OptionState rightState, [Values(0, 1, 2)]int overload)
+    {
+        static (Option<object> Option, int Rank) CreateRankedOption(OptionState state)
+            => state switch
+            {
+                OptionState.SomeValue => (Option<object>.Some(1), 2),
+                OptionState.SomeNull => (Option<object>.Some(null), 1),
+                OptionState.None => (Option<object>.None, 0),
+                _ => default
+            };
+
+        var (leftOption, leftRank) = CreateRankedOption(leftState);
+        var (rightOption, rightRank) = CreateRankedOption(rightState);
+        var result = overload switch
+        {
+            1 => Comparer<object>.Default.Compare(leftOption, rightOption),
+            2 => StructuralComparisons.StructuralComparer.Compare(leftOption, rightOption),
+            _ => leftOption.CompareTo(rightOption)
+        };
+        var expectedResult = leftRank.CompareTo(rightRank);
+
         result.ShouldBe(expectedResult);
     }
 
@@ -356,15 +362,18 @@ public sealed class OptionTest
     }
 
     [Test]
-    [TestCase(1, "Some(1)", true)]
-    [TestCase(null, "Some(null)", true)]
-    [TestCase(null, "None", false)]
-    public void ToString(object source, string expectedResult, bool isSome)
+    [TestCase(1, true, "Some(1)")]
+    [TestCase(null, true, "Some(null)")]
+    [TestCase(null, false, "None")]
+    [TestCase(null, null, "None")]
+    public void ToString(object source, bool? isSome, string expectedResult)
     {
-        var option = isSome
-            ? Option<object>.Some(source)
-            : Option<object>.None;
-
+        var option = isSome switch
+        {
+            true => Option<object>.Some(source),
+            false => Option<object>.None,
+            _ => default
+        };
         option
             .ToString()
             .ShouldBe(expectedResult);
@@ -521,4 +530,12 @@ public sealed class OptionTest
 
         result.ShouldBe(expectedResult);
     }
+}
+
+public enum OptionState
+{
+    Default = 0,
+    None = 1,
+    SomeNull = 2,
+    SomeValue = 3
 }

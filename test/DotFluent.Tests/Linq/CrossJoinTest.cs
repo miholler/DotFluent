@@ -60,9 +60,7 @@ public sealed class EnumerableCrossJoinTest
     }
 
     [Test]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void CrossJoin(int overload)
+    public void CrossJoin([Values(0, 1)]int overload)
     {
         var outer = Enumerable.Create(1, 2);
         var inner = Enumerable
